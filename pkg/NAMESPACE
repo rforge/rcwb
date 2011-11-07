@@ -1,0 +1,17 @@
+#our @EXPORT = (
+#           qw<cqi_connect cqi_bye cqi_ask_feature>,
+#           qw<cqi_list_corpora cqi_charset cqi_properties cqi_attributes cqi_structural_attribute_has_values cqi_full_name cqi_corpus_info cqi_drop_corpus>,
+#           qw<cqi_attribute_size cqi_lexicon_size cqi_drop_attribute cqi_str2id cqi_id2str cqi_id2freq cqi_cpos2id cqi_cpos2str cqi_cpos2struc cqi_cpos2lbound cqi_cpos2rbound cqi_cpos2alg cqi_struc2str cqi_id2cpos cqi_idlist2cpos cqi_regex2id cqi_struc2cpos cqi_alg2cpos>,
+#           qw<cqi_query cqi_list_subcorpora cqi_subcorpus_size cqi_subcorpus_has_field cqi_dump_subcorpus cqi_drop_subcorpus cqi_fdist>,
+#          );
+
+
+#exportClasses();
+#exportMethods();
+#export();
+
+
+export(conv);
+
+# cqpshell
+

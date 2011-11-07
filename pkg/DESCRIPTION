@@ -1,0 +1,11 @@
+Package: Rcwb
+Type: Package
+Title: Wrapper for CWB
+Version: 1.0
+Date: 2011-03-08
+Author: Sylvain Loiseau
+Maintainer: Sylvain Loiseau <sloiseau@u-paris10.fr>
+Description: Wrapper for the IMS CWB corpus workbench
+Depends: R (>= 2.9.0), bitops
+License: BSD
+LazyLoad: yes
