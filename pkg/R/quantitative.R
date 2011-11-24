@@ -1,3 +1,9 @@
+#
+# Sylvain Loiseau
+# sylvain.loiseau@univ-paris13.fr
+#
+# This code is in the public domain
+
 #subcorpus <- function(corpus, left_from, left_to, right_from, right_to, con) {
 ##  query <- paste("[]{", left_from, ",", left_to, "} ["));
 ##[]{6,6} [lemma="bois"] []{6,6};

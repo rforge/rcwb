@@ -1,3 +1,9 @@
+#
+# Sylvain Loiseau
+# sylvain.loiseau@univ-paris13.fr
+#
+# This code is in the public domain
+
 check_StructuralAttr <- function(object) {
   errors <- character();
   structural_attributes <- cqi_attributes(object@corpus@id, "s", object@corpus@con);

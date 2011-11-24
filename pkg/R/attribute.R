@@ -1,3 +1,9 @@
+#
+# Sylvain Loiseau
+# sylvain.loiseau@univ-paris13.fr
+#
+# This code is in the public domain
+
 # att <- get_attribute(corpus, "word");
 # get_lexicon_size(att);
 # get_string(att, id);
