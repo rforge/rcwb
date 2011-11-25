@@ -1,0 +1,2 @@
+
+concordance("DICKENKS", "[lemma=\"be\"]", left.context=10, right.context=10, show=c("word","lemma"), print=function(x) {paste(x[1], x[2], sep="/"})
