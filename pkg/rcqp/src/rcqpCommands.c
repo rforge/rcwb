@@ -1329,13 +1329,13 @@ SEXP rcqpCmd_drop_subcorpus(SEXP inSubcorpus)
 /* 
  * ------------------------------------------------------------------------
  * 
- * "rcqpCmd_fdist(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SEXP inOffset)" --
+ * "rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SEXP inOffset)" --
  * 
  * 
  * 
  * ------------------------------------------------------------------------
  */
-SEXP rcqpCmd_fdist(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SEXP inOffset)
+SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SEXP inOffset)
 {
 	SEXP			result;
 	char 			*subcorpus, *att;
@@ -1396,4 +1396,71 @@ SEXP rcqpCmd_fdist(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SE
 
 	
 
+/* 
+ * ------------------------------------------------------------------------
+ * 
+ * "rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2, SEXP inKey2, SEXP inCutoff)" --
+ * 
+ * 
+ * 
+ * ------------------------------------------------------------------------
+ */
+SEXP rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2, SEXP inKey2, SEXP inCutoff)
+{
+	SEXP			result;
+	char 			*subcorpus, *att1, *att2;
+	CorpusList *	cl;
+	int				i, cutoff, offset, size;
+	Group *			table;
+	FieldType		fieldtype1 = NoField;
+	FieldType		fieldtype2 = NoField;
+
+	PROTECT(inSubcorpus);
+	PROTECT(inField1);
+	PROTECT(inKey1);
+	PROTECT(inField2);
+	PROTECT(inKey2);
+	PROTECT(inCutoff);
+	
+	subcorpus = (char*)CHAR(STRING_ELT(inSubcorpus,0));
+	cl = cqi_find_corpus(subcorpus);
+	if (cl == NULL) {
+		UNPROTECT(3);
+		rcqp_error_code(cqi_errno);
+	}
+	
+	cutoff = asInteger(inCutoff);
+	if (cutoff == NA_INTEGER) {
+		UNPROTECT(4);
+	    error("invalid 'cutoff' value (too large or NA)");
+	}
+	
+	fieldtype1 = rcqp_get_field_type(inField1);
+	fieldtype2 = rcqp_get_field_type(inField2);
+	att1 = (char*)CHAR(STRING_ELT(inKey1,0));
+	att2 = (char*)CHAR(STRING_ELT(inKey2,0));
+	
+    // compute_grouping() returns tokens with f > cutoff, 
+    // but CQi specifies f >= cutoff
+    cutoff = (cutoff > 0) ? cutoff - 1 : 0;
+
+	table = compute_grouping(cl, fieldtype1, 0, att1, fieldtype2, 0, att2, cutoff);
+    if (table == NULL) {
+      rcqp_error_code(CQI_CQP_ERROR_GENERAL);
+    } else {
+      size = table->nr_cells;
+	  result = PROTECT(allocMatrix(INTSXP, size, 3));
+
+	  for (i=0; i < size; i++) {
+		  INTEGER(result)[i] = table->count_cells[i].s;
+		  INTEGER(result)[i+size] = table->count_cells[i].t;
+		  INTEGER(result)[i+(size*2)] = table->count_cells[i].freq;
+      }
+      free_group(&table);
+    }
+
+	UNPROTECT(7);
+	
+	return result;
+}
 

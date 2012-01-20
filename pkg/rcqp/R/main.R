@@ -177,8 +177,26 @@ cqi_drop_subcorpus <- function(subcorpus) {
  # 
  # ------------------------------------------------------------------------
  ##
-cqi_fdist <- function(subcorpus, field, key, cutoff=0, offset=0) {
-	ans <- .Call("rcqpCmd_fdist", subcorpus, field, key, as.integer(cutoff), as.integer(offset), PACKAGE="rcqp")
+cqi_fdist1 <- function(subcorpus, field, key, cutoff=0, offset=0) {
+	ans <- .Call("rcqpCmd_fdist1", subcorpus, field, key, as.integer(cutoff), as.integer(offset), PACKAGE="rcqp")
+    return(ans)
+}
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "cqi_fdist2(subcorpus, field1, key1, field2, key2 cutoff=0)" --
+ # 
+ # fied1 and field2 can be one of : 'match', 'matchend', 'target', 'keyword'.
+ # key1 and key2 argument are a positional attribute ('word', 'pos', 'lemma', etc.).
+ # 
+ # Example:
+ #     cqi_fdist2("DICKENS:Go","matchend","pos", target, lemma)
+ # 
+ # ------------------------------------------------------------------------
+ ##
+cqi_fdist2 <- function(subcorpus, field1, key1, field2, key2, cutoff=0) {
+	ans <- .Call("rcqpCmd_fdist2", subcorpus, field2, key2, field2, key2, as.integer(cutoff), PACKAGE="rcqp")
     return(ans)
 }
 
