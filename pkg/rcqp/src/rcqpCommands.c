@@ -1451,7 +1451,7 @@ SEXP rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2,
 	
 	cutoff = asInteger(inCutoff);
 	if (cutoff == NA_INTEGER) {
-		UNPROTECT(4);
+		UNPROTECT(6);
 	    error("invalid 'cutoff' value (too large or NA)");
 	}
 	
