@@ -1,0 +1,28 @@
+à indiquer à équipe cwb :
+-------------------------
+
+CQI_CORPUS_INFO : pas appelé, pourtant dans l'interface perl
+CQI_CORPUS_DROP_CORPUS : pas appelé, pourtant dans l'interface perl
+
+et CQI_CQP_DROP_SUBCORPUS
+
+fdist qui n'est pas implémenté correctement dans Perl (l'argument offset est manquant).
+dans l'implémentation côté serveur do_cqi_cqp_fdist_1 (cqpserver.c), l'argument est forcément 0.
+
+Signaler : trois fonctions définies en double (find_prime, hash_string, is_prime) définies dans lexhash.c et hash.c
+
+à faire :
+---------
+
+config platform
+en R :
+faire en R idlist2cpos
+fdist2 ; matrice à trois colonnes
+
+Question : envoyer un vecteur de cpos.
+
+- laisser les DICKENS:GO ?
+- facteur ?
+
+interface de plus haut niveau
+
