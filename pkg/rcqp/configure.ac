@@ -49,6 +49,7 @@ AC_PROG_YACC()
 # ---------------------
 AC_CONFIG_FILES(
 [ src/Makefile
+cwb/cl/MakefileRcqp
 cwb/cqp/MakefileRcqp
 ])
 

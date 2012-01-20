@@ -151,13 +151,13 @@ cqi_dump_subcorpus <- function(subcorpus, first, last) {
  # "cqi_drop_subcorpus(subcorpus)" --
  # 
  # Example:
- # 
+#     cqi_drop_subcorpus("DICKENS:Foo")
  # 
  # ------------------------------------------------------------------------
  ##
 cqi_drop_subcorpus <- function(subcorpus) {
-	ans <- .Call("rcqpCmd_drop_subcorpus", subcorpus, PACKAGE="rcqp")
-    return(ans)
+	.Call("rcqpCmd_drop_subcorpus", subcorpus, PACKAGE="rcqp")
+    return(invisible())
 }
 
 
