@@ -1,2 +1,18 @@
 
-concordance("DICKENKS", "[lemma=\"be\"]", left.context=10, right.context=10, show=c("word","lemma"), print=function(x) {paste(x[1], x[2], sep="/"})
+concordance(corpus="DICKENKS", query="[lemma=\"be\"]", left.context=10, right.context=10, show=c("word","lemma"), print=function(x) {paste(x[1], x[2], sep="/"})
+
+concordance <- function(...) {
+  cpos <- cqi_query(corpus, query);
+}
+
+
+cqi_query(corpus, query) <- function() {
+.Call("cqi_query", corpus, query, package="rcq");
+}
+
+
+sous.corpus.commun <- souscorpus1 %-% souscorpus2
+
+cqi_query2cpos
+
+%-%
