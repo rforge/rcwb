@@ -1,0 +1,72 @@
+# ===========================================================================
+# File: "Makefile.in"
+#                        Created: 2012-01-14 11:45:26
+#              Last modification: 2012-01-14 11:45:28
+# Author: Bernard Desgraupes
+# e-mail: <bernard.desgraupes@u-paris10.fr>
+# ===========================================================================
+# NB: on Mac OSX 10.5, use -gdwarf-2 instead of -g to avoid warnings about
+# missing "atom for N_GSYM stabs".
+# 
+# ARCHIS := -arch i386 -arch ppc -arch x86_64 -arch ppc64
+
+
+## Read configuration settings for cwb
+TOP = $(shell pwd)/../cwb
+include $(TOP)/config.mk
+
+
+# Source files
+# ------------
+
+# C files
+RCQP_C_SRC := rcqpCommands.c rcqpUtils.c
+
+RCQP_C_OBJ := $(RCQP_C_SRC:.c=.o)
+
+
+# Substitutable variables
+# -----------------------
+
+# CC=gcc
+# CFLAGS=-g -O2
+# R_HOME=@R_HOME@
+# R_INCLUDE_DIR=@R_INCLUDE_DIR@
+# LIBR=@LIBR@
+
+RCQP_STATLIB_CL=../cwb/cl/libcl.a
+RCQP_STATLIB_CQP=../cwb/cqp/libcqp.a
+
+# R_XTRA_CPPFLAGS=`R CMD config CPPFLAGS`
+R_XTRA_CPPFLAGS=-I/Library/Frameworks/R.framework/Versions/2.12/Resources/include
+
+LIBR=-F/Library/Frameworks/R.framework/.. -framework R
+
+
+# Targets
+# -------
+
+rcqp: ${RCQP_C_SRC} cwb
+	# Compile the C files
+	${CC} -c ${RCQP_C_SRC} ${R_XTRA_CPPFLAGS}
+	#
+	# Link the library
+	${CC} -o $@.so -dynamiclib ${RCQP_C_OBJ} \
+		${RCQP_STATLIB_CL} ${RCQP_STATLIB_CQP} \
+	    $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
+		${LIBR}
+
+
+cwb:
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp
+
+
+.PHONY: clean
+
+
+clean:
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl clean
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp clean
+	rm -f *.o *.so *.mod
+

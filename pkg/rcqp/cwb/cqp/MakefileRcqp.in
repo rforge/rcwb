@@ -1,0 +1,95 @@
+# ===========================================================================
+# File: "Makefile.in"
+#                        Created: 2012-01-14 14:18:07
+#              Last modification: 2012-01-16 11:57:37
+# Author: Bernard Desgraupes
+# e-mail: <bdesgraupes@users.sourceforge.net>
+# ===========================================================================
+
+
+## Read configuration settings and standard definitions
+TOP = $(shell pwd)/..
+include $(TOP)/config.mk
+
+
+# Source files
+# ------------
+
+CWB_C_SRC :=  ascii-print.c attlist.c builtins.c concordance.c \
+	context_descriptor.c corpmanag.c cqp.c eval.c groups.c hash.c \
+	html-print.c latex-print.c macro.c matchlist.c options.c output.c \
+	parse_actions.c print-modes.c print_align.c ranges.c regex2dfa.c \
+	sgml-print.c symtab.c table.c targets.c tree.c variables.c \
+	../CQi/server.c ../CQi/auth.c 
+
+CWB_C_H := $(CWB_C_SRC:.c=.h) ../CQi/cqi.h
+
+CWB_C_OBJ := $(CWB_C_SRC:.c=.o)
+
+
+CWB_FLEX_SRC := parser.l
+CWB_FLEX_OUT := $(CWB_FLEX_SRC:.l=.yy.c)
+CWB_FLEX_H := $(CWB_FLEX_SRC:.l=.yy.h)
+CWB_FLEX_OBJ := $(CWB_FLEX_OUT:.c=.o)
+
+CWB_BISON_SRC := parser.y
+CWB_BISON_OUT := $(CWB_BISON_SRC:.y=.tab.c)
+CWB_BISON_H := $(CWB_BISON_SRC:.y=.tab.h)
+CWB_BISON_OBJ := $(CWB_BISON_OUT:.c=.o)
+
+
+# Substitutable variables
+# -----------------------
+
+CC=@CC@
+CFLAGS=@CFLAGS@
+FLEX_PRG=@LEX@
+BISON_PRG=@YACC@
+# FLEX_FLAGS=--debug
+## The --verbose option is synonym of --report=state.
+# BISON_FLAGS=--debug --report=all --report-file=${BISON_REPORT}
+FLEX_FLAGS=
+BISON_FLAGS=
+
+
+
+# Targets
+# -------
+
+all: libcqp.a
+
+# The order of the prerequisite is important: bison, then flex, 
+# then the C source files
+libcqp.a: ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
+	$(RM) $@
+	$(AR) $@ ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} 
+	$(RANLIB) $@
+
+
+${CWB_FLEX_OUT}: ${CWB_FLEX_SRC}
+	${FLEX_PRG} ${FLEX_FLAGS} --header-file=${CWB_FLEX_H} -o ${CWB_FLEX_OUT} ${CWB_FLEX_SRC}
+
+
+${CWB_BISON_OUT}: ${CWB_BISON_SRC}
+	${BISON_PRG} ${BISON_FLAGS} --defines=${CWB_BISON_H} -o ${CWB_BISON_OUT} ${CWB_BISON_SRC}
+
+
+${CWB_FLEX_OBJ}: ${CWB_FLEX_OUT}
+	${CC} -c ${CFLAGS} -o ${CWB_FLEX_OBJ} ${CWB_FLEX_OUT}
+
+
+${CWB_BISON_OBJ}: ${CWB_BISON_OUT}
+	${CC} -c ${CFLAGS} -o ${CWB_BISON_OBJ} ${CWB_BISON_OUT}
+
+
+.PHONY: all clean clean-all
+
+
+clean:
+	-$(RM) -rf ${CWB_C_OBJ} ${CWB_FLEX_OUT} ${CWB_FLEX_H} \
+	       ${CWB_BISON_OUT} ${CWB_BISON_H} libcqp.a
+
+
+clean-all: clean
+	##rm -rf aidaLib.c Makefile config.h config.h.in
+
