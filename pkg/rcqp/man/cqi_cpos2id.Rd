@@ -31,11 +31,18 @@
 }
 
 \details{
-details...
+	The \code{cqi_cpos2id} and \code{cqi_cpos2str} functions apply to
+	positional attributes.
+
+	The \code{cqi_cpos2lbound}, \code{cqi_cpos2rbound} and
+	\code{cqi_cpos2struc} functions apply to structural attributes.
+
+	The \code{cqi_alg2cpos} function applies to alignment attributes (in
+	the case of aligned corpora).
 }
 
 \value{
-return values...
+	\code{cqi_cpos2str} returns a vector of strings. The other functions return a vector of integers.
 }
 
 \author{
@@ -63,7 +70,24 @@ return values...
 }
 
 \examples{
-# TODO
+cqi_query("DICKENS","Foo","\"eas(y|ier|iest)\";")
+cpos <- cqi_dump_subcorpus("DICKENS:Foo")[1:20,1]
+
+cqi_cpos2id("DICKENS.pos", cpos)
+cqi_cpos2str("DICKENS.pos", cpos)
+cqi_cpos2id("DICKENS.word", cpos)
+cqi_cpos2str("DICKENS.word", cpos)
+cqi_cpos2id("DICKENS.lemma", cpos)
+cqi_cpos2str("DICKENS.lemma", cpos)
+
+cqi_query("DICKENS","Foo","\"interesting\";")
+cpos <- cqi_dump_subcorpus("DICKENS:Foo",1,10)[,1]
+
+# Expects structural attributes
+cqi_cpos2lbound("DICKENS.chapter", cpos)
+cqi_cpos2rbound("DICKENS.chapter", cpos)
+
+cqi_cpos2struc("DICKENS.chapter", cpos)
 }
 
 \keyword{corpus positions}

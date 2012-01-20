@@ -5,7 +5,7 @@
 \title{Convert structural indices}
 
 \description{
-TODO...
+	Get the corpus positions or the string associated to a structural position.
 }
 
 \usage{
@@ -20,11 +20,22 @@ TODO...
 }
 
 \details{
-TODO...
+	The structural attributes correspond to XML pairs of tags in the
+	corpus. The struc parameter is the index of a particular pair of tags.
+	The \code{cqi_struc2cpos} function associates the corpus positions of
+	the specified pair.
+	
+	Matching pairs of XML start and end tags are encoded as token regions.
+	
 }
 
 \value{
-TODO...
+	The \code{cqi_struc2cpos} function returns a pair of corpus positions:
+	the corpus positions of the first token (immediately following the
+	start tag) and the last token (immediately preceding the end tag) of
+	the token region.
+	
+	The \code{cqi_struc2str} function returns a string.
 }
 
 \author{
@@ -56,7 +67,12 @@ TODO...
 }
 
 \examples{
-# TODO...
+for (i in 0:10) {
+	print(cqi_struc2cpos("DICKENS.novel", i))
+}
+
+cqi_struc2str("DICKENS.novel_title", 1:10)
+cqi_struc2str("DICKENS.chapter_title", 1:10)
 }
 
 \keyword{corpus position}

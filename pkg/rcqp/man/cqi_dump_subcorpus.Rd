@@ -1,8 +1,9 @@
 \name{cqi_dump_subcorpus}
 \alias{cqi_dump_subcorpus}
 \alias{cqi_subcorpus_size}
+\alias{cqi_drop_subcorpus}
 
-\title{Results of a query}
+\title{Handle subcorpora}
 
 \description{
 	Get size and corpus positions corresponding to the results of a query. 
@@ -11,6 +12,7 @@
 \usage{
 	cqi_dump_subcorpus(subcorpus, first, last)
 	cqi_subcorpus_size(subcorpus)
+	cqi_drop_subcorpus(subcorpus)
 }
 
 \arguments{
@@ -29,6 +31,9 @@
 	The \code{cqi_dump_subcorpus} function builds a two-dimension array (a
 	matrix) of corpus positions corresponding to the results of a query.
 
+	The \code{cqi_drop_subcorpus} function frees the memory allocated to a
+	subcorpus.
+
 }
 
 \value{
@@ -40,6 +45,9 @@
 	respectively. Each row corresponds to a query match. The number of rows
 	is \code{last-first+1}. This is the size of the subcorpus if the
 	\code{first} and \code{last} arguments are not specified.
+	
+	\code{cqi_drop_subcorpus} does not return anything.
+	
 	}
 
 \author{

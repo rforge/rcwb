@@ -25,11 +25,19 @@
 }
 
 \details{
-TODO...
+	
+	These functions take as argument the ID of a positional attribute item
+	and associate corresponding parameters such as the corpus position, the
+	frequency or the string it represents.
+	
+	The \code{cqi_str2id} function does the opposite: it associates the ID
+	to a given positional parameter.
+	
 }
 
 \value{
-TODO...
+	The \code{cqi_id2cpos}, \code{cqi_id2freq}, \code{cqi_str2id} functions
+	return an integer. The \code{cqi_id2str} function returns a string.
 }
 
 \author{
@@ -60,7 +68,45 @@ TODO...
 }
 
 \examples{
-# TODO...
+cqi_query("DICKENS","Foo","\"eas(y|ier|iest)\";")
+cpos <- cqi_dump_subcorpus("DICKENS:Foo")[1,1]
+
+# # cqi_id2cpos
+pids <- unique(cqi_cpos2id("DICKENS.pos", cpos))
+ppos <- cqi_id2cpos("DICKENS.pos", pids[1])
+ppos[1:50]
+
+wids <- unique(cqi_cpos2id("DICKENS.word", cpos))
+wpos <- cqi_id2cpos("DICKENS.word", wids[1])
+wpos[1:50]
+
+lids <- unique(cqi_cpos2id("DICKENS.lemma", cpos))
+lpos <- cqi_id2cpos("DICKENS.lemma", lids[1])
+lpos[1:50]
+
+# # cqi_str2id and cqi_id2str
+pid <- cqi_str2id("DICKENS.pos", "JJ")
+cqi_id2str("DICKENS.pos", pid)
+
+wid <- cqi_str2id("DICKENS.word", "easiest")
+cqi_id2str("DICKENS.word", wid)
+
+lid <- cqi_str2id("DICKENS.lemma", "easy")
+cqi_id2str("DICKENS.lemma", lid)
+
+# # cqi_id2freq
+# Take the 20 first positions
+cpos <- cqi_dump_subcorpus("DICKENS:Foo")[1:20,1]
+
+pids <- unique(cqi_cpos2id("DICKENS.pos", cpos))
+cqi_id2freq("DICKENS.pos", pids)
+
+wids <- unique(cqi_cpos2id("DICKENS.word", cpos))
+cqi_id2freq("DICKENS.word", wids)
+
+lids <- unique(cqi_cpos2id("DICKENS.lemma", cpos))
+cqi_id2freq("DICKENS.lemma", lids)
+
 }
 
 \keyword{corpus position}

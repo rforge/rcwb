@@ -4,7 +4,7 @@
 \title{List of currently defined subcorpora}
 
 \description{
-TODO...
+	Get a list of the currently defined subcorpora in a given corpus.
 }
 
 \usage{

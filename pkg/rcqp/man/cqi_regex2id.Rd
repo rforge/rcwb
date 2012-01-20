@@ -1,10 +1,10 @@
 \name{cqi_regex2id}
 \alias{cqi_regex2id}
 
-\title{* cqi_regex2id *}
+\title{Find IDs by regular expression}
 
 \description{
-TODO...
+    Build a list of IDs of positional attributes whose names match a regular expression.
 }
 
 \usage{
@@ -17,11 +17,13 @@ TODO...
 }
 
 \details{
-TODO...
+	This function looks in the index files corresponding to the specified
+	positional attribute, finds the strings described by the regular
+	expression and return the associated indices.
 }
 
 \value{
-TODO...
+	\code{cqi_regex2id} returns a list of integers.
 }
 
 \author{
@@ -38,11 +40,24 @@ TODO...
 }
 
 \seealso{
-TODO...
+\code{\link{cqi_id2cpos}},
+\code{\link{cqi_id2freq}},
+\code{\link{cqi_id2str}},
+\code{\link{cqi_str2id}}
 }
 
 \examples{
-# TODO...
+rgx <- "eas(y|ier|iest)"
+wids <- cqi_regex2id("DICKENS.word", rgx)
+cqi_id2str("DICKENS.word", wids)
+
+rgx <- "V.*"
+pids <- cqi_regex2id("DICKENS.pos", rgx)
+cqi_id2str("DICKENS.pos", pids)
+
+rgx <- "V[aeiou].+e"
+lids <- cqi_regex2id("DICKENS.lemma", rgx)
+cqi_id2str("DICKENS.lemma", lids)
 }
 
 \keyword{corpus position}
