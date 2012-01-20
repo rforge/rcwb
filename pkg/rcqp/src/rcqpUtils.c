@@ -13,6 +13,16 @@
 
 #define RCQP_ATT_HASH_SIZE 16384
 
+
+/* 
+ * ------------------------------------------------------------------------
+ * 
+ * "R_init_rcqp()" --
+ * 
+ * This function is automatically called by R when the package is loaded.
+ * 
+ * ------------------------------------------------------------------------
+ */
 void
 R_init_rcqp(DllInfo * info)
 {
@@ -31,7 +41,6 @@ R_init_rcqp(DllInfo * info)
 	}
 	
 	av[0] = "rcqp";
-	
 	which_app = cqp;
 	silent = 1; 
 	paging = 0;

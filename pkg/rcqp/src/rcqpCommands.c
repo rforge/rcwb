@@ -63,8 +63,6 @@ SEXP rcqpCmd_full_name(SEXP inCorpus)
 	char *			c;
 	CorpusList *	cl;
 	
-	// rcqp_initialize();
-
 	if (!isString(inCorpus) || length(inCorpus) != 1) error("invalid corpus name");
 	PROTECT(inCorpus);
 
@@ -102,8 +100,6 @@ SEXP rcqpCmd_charset(SEXP inCorpus)
 	char *			c;
 	CorpusList *	cl;
 	
-	// rcqp_initialize();
-
 	if (!isString(inCorpus) || length(inCorpus) != 1) error("invalid corpus name");
 
 	result = PROTECT(allocVector(STRSXP, 1));
@@ -200,8 +196,6 @@ SEXP rcqpCmd_attribute_size(SEXP inAttribute)
 	int				size;
 	int				found = 0;
 	
-	// rcqp_initialize();
-
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
 	PROTECT(inAttribute);
 
@@ -1017,8 +1011,6 @@ SEXP rcqpCmd_idlist2cpos(SEXP inAttribute, SEXP inIds)
 {
 	SEXP			result;
 	
-	// rcqp_initialize();
-
 	return result;
 }
 
@@ -1213,8 +1205,6 @@ SEXP rcqpCmd_subcorpus_size(SEXP inSubcorpus)
 	char *			subcorpus;
 	CorpusList *	cl;
 	
-	// rcqp_initialize();
-
 	PROTECT(inSubcorpus);
 
 	subcorpus = (char*)CHAR(STRING_ELT(inSubcorpus,0));
@@ -1315,13 +1305,43 @@ SEXP rcqpCmd_dump_subcorpus(SEXP inSubcorpus, SEXP inFirst, SEXP inLast)
  * 
  * "rcqpCmd_drop_subcorpus(SEXP inSubcorpus)" --
  * 
- * The CQI_CORPUS_DROP_CORPUS switch is not yet implemented in cqpserver.
+ * 
  * 
  * ------------------------------------------------------------------------
  */
 SEXP rcqpCmd_drop_subcorpus(SEXP inSubcorpus)
 {
-	error("feature not yet implemented in CQP");
+	SEXP			result = R_NilValue;
+	char *			subcorpus;
+	char 			*c, *sc;
+	CorpusList *	cl;
+	
+	PROTECT(inSubcorpus);
+	
+	subcorpus = (char*)CHAR(STRING_ELT(inSubcorpus,0));
+	
+	// Make sure it is a subcorpus, not a root corpus
+	if (!split_subcorpus_spec(subcorpus, &c, &sc)) {
+		UNPROTECT(1);
+		rcqp_error_code(cqi_errno);
+	} else if (sc == NULL) {
+		free(c);
+		UNPROTECT(1);
+		error("can't drop a root corpus.");
+	} else {
+		free(c); free(sc);
+		cl = cqi_find_corpus(subcorpus);
+		if (cl == NULL) {
+			UNPROTECT(1);
+			rcqp_error_code(cqi_errno);
+		} else {
+			dropcorpus(cl);
+		}
+	}
+	
+	UNPROTECT(1);
+	
+	return result;
 }
 
 	
