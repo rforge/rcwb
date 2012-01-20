@@ -4,6 +4,8 @@
 #
 # This code is in the public domain
 
+library(bitops);
+
 #
 #
 #  Error Handling
