@@ -1,0 +1,58 @@
+\documentclass{article}
+\SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=5,height=3,strip.white=TRUE,keep.source=TRUE}
+\title{Introduction to the rcqp package}
+\author{Bernard Desgraupes and Sylvain Loiseau\\<bdesgraupes@orange.fr>, <sylvain.loiseau@univ-paris13.fr>}
+\date{\today}
+\begin{document}
+\maketitle
+\begin{abstract}
+
+rcqp is a wrapper onto the CWB software. The CWB, used in the field of corpus
+linguistics, allows for index and querying large annotated corpora. The rcqp
+wrapper turn cwb into a shared library and allow using R for running cwb and
+turning results into statistical analyses.
+
+\end{abstract}
+<<preliminaries, echo=FALSE>>=
+options(width=75)
+@
+
+\section{Introduction}
+\label{sec:Intro}
+
+The CWB (Corpus Workbench) software\footnote{http://cwb.sourceforge.net/} is a
+set of tools for corpus linguistics, providing a powerful indexation and query
+engine for annotated copora. An interactive command line program called CQP
+(corpus query processor) is provided, as well as a client/server solution.
+
+CWB offers access to corpora through manipulation of vectors of positions
+(offsets of the adressed / requested word(s) in the corpus) which can be turned
+into the corresponding word form, lemma, or part of speech if the corpus
+provide these information.
+
+In rcqp, CWB is turned into a shared library. As a result:
+\begin{itemize}
+\item the CWB data structures are mainly vectors, which are very convenient to manipulate in R;
+\item R vector are wrapper onto the inner CWB C arrays, without conversion of socket communication;
+\item rcqp provide an easy way to run and query CWB, without having to separatly compile and
+install CWB;
+\item rcqp allows for examinating the the complexe data accessed though CWB with the statistical power of R.
+\end{itemize}
+
+\section{A sample session}
+\label{sec:session}
+
+\section{The Corpus workbench}
+\label{sec:CWB}
+
+
+\section{TODO}
+\label{sec:TODO}
+
+\begin{Schunk}
+\begin{Sinput}
+
+\end{Sinput}
+\end{Schunk}
+
+\end{document}
