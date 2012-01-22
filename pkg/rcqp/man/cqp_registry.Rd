@@ -10,7 +10,7 @@ Setting the CQP registry for rcqp.
 \details{
 
 Corpora are declared in files located in a directory called "registry"
-(see CWB documentation for more details). One of the mechanisms provided by cwb
+(see CWB documentation for more details). One of the mechanisms provided by CWB
 in order to set the registry directory is to define the environment variable
 "CORPUS_REGISTRY".
 
