@@ -45,6 +45,11 @@ install CWB;
 \section{The Corpus workbench}
 \label{sec:CWB}
 
+\section{The CQi set of functions}
+\label{sec:TODO}
+
+\section{Other functions}
+\label{sec:TODO}
 
 \section{TODO}
 \label{sec:TODO}
