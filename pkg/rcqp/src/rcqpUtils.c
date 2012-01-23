@@ -36,7 +36,7 @@ R_init_rcqp(DllInfo * info)
 	if (envregdir == NULL) {
 		printf("The environment variable CORPUS_REGISTRY is not defined.\n");
 		printf("Using default registry '%s'.\n", stdregdir);
-		printf("See ?cqp_registry for more info on how setting the registry.\n");
+		printf("See ?cqp_registry for more info on how to set the registry.\n");
 	} else {
 		printf("Using registry '%s'.\n", envregdir);
 	}

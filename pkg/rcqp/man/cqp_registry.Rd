@@ -9,20 +9,20 @@ Setting the CQP registry for rcqp.
 
 \details{
 
-Corpora are declared in files located in a directory called "registry"
+Corpora are declared in files located in a directory called \emph{"registry"}
 (see CWB documentation for more details). One of the mechanisms provided by CWB
 in order to set the registry directory is to define the environment variable
-"CORPUS_REGISTRY".
+\code{CORPUS_REGISTRY}.
 
-In rcqp, the CORPUS_REGISTRY environment variable is first read. If this
+In rcqp, the \code{CORPUS_REGISTRY} environment variable is first read. If this
 environment variable is not set, rcqp tries to use the default registry
 directory, which varies according to your system (on most Unixes, it is
-/usr/local/share/cwb/registry; on Windows it is C:\\CWB\\Registry. If this
+/usr/local/share/cwb/registry; on Windows, it is C:\\CWB\\Registry. If this
 directory does not exist, rcqp cannot proceed further.
 
-In order to set the CORPUS_REGISTRY variable, you can either use the
+In order to set the \code{CORPUS_REGISTRY} variable, you can either use the
 definition mechanisms provided by your system (and in this case, the
-CORPUS_REGISTRY variable will be used also if you use CQP outside of R), or
+\code{CORPUS_REGISTRY} variable will be used also if you use CQP outside of R), or
 define this variable in the ~/.Renviron file which is read by R at startup
 (in that case, the environment variable is defined only for rcqp, and
 will not be seen by any other CWB program).
