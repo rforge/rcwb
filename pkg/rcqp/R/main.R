@@ -177,8 +177,8 @@ cqi_drop_subcorpus <- function(subcorpus) {
  # 
  # ------------------------------------------------------------------------
  ##
-cqi_fdist1 <- function(subcorpus, field, key, cutoff=0, offset=0) {
-	ans <- .Call("rcqpCmd_fdist1", subcorpus, field, key, as.integer(cutoff), as.integer(offset), PACKAGE="rcqp")
+cqi_fdist1 <- function(subcorpus, field1, key1, cutoff=0, offset=0) {
+	ans <- .Call("rcqpCmd_fdist1", subcorpus, field1, key1, as.integer(cutoff), as.integer(offset), PACKAGE="rcqp")
     return(ans)
 }
 
@@ -196,7 +196,7 @@ cqi_fdist1 <- function(subcorpus, field, key, cutoff=0, offset=0) {
  # ------------------------------------------------------------------------
  ##
 cqi_fdist2 <- function(subcorpus, field1, key1, field2, key2, cutoff=0) {
-	ans <- .Call("rcqpCmd_fdist2", subcorpus, field2, key2, field2, key2, as.integer(cutoff), PACKAGE="rcqp")
+	ans <- .Call("rcqpCmd_fdist2", subcorpus, field1, key1, field2, key2, as.integer(cutoff), PACKAGE="rcqp")
     return(ans)
 }
 
