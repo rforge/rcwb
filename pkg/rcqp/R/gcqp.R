@@ -8,7 +8,6 @@
 # All rights reserved.
 # ===========================================================================
 
-library(rcqp);
 library(tcltk);
 tclRequire("Tktable")
 
