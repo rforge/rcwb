@@ -1349,13 +1349,18 @@ SEXP rcqpCmd_drop_subcorpus(SEXP inSubcorpus)
 /* 
  * ------------------------------------------------------------------------
  * 
- * "rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SEXP inOffset)" --
+ * "rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inCutoff, SEXP inOffset)" --
  * 
- * 
+ * NB:
+ *     inField1 and inKey1 are the "target" parameters in compute_grouping()
+ * -> group Go matchend pos;
+ *             <  target  >
+ * corresponds to
+ * -> cqi_fdist1("DICKENS:Go","matchend","pos")
  * 
  * ------------------------------------------------------------------------
  */
-SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, SEXP inOffset)
+SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inCutoff, SEXP inOffset)
 {
 	SEXP			result;
 	char 			*subcorpus, *att;
@@ -1365,21 +1370,21 @@ SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, S
 	FieldType		fieldtype = NoField;
 	
 	PROTECT(inSubcorpus);
-	PROTECT(inField);
-	PROTECT(inKey);
+	PROTECT(inField1);
+	PROTECT(inKey1);
 	PROTECT(inCutoff);
 	PROTECT(inOffset);
 	
 	subcorpus = (char*)CHAR(STRING_ELT(inSubcorpus,0));
 	cl = cqi_find_corpus(subcorpus);
 	if (cl == NULL) {
-		UNPROTECT(3);
+		UNPROTECT(5);
 		rcqp_error_code(cqi_errno);
 	}
 	
 	cutoff = asInteger(inCutoff);
 	if (cutoff == NA_INTEGER) {
-		UNPROTECT(4);
+		UNPROTECT(5);
 	    error("invalid 'cutoff' value (too large or NA)");
 	}
 	
@@ -1389,8 +1394,8 @@ SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, S
 	    error("invalid 'offset' value (too large or NA)");
 	}
 	
-	fieldtype = rcqp_get_field_type(inField);
-	att = (char*)CHAR(STRING_ELT(inKey,0));
+	fieldtype = rcqp_get_field_type(inField1);
+	att = (char*)CHAR(STRING_ELT(inKey1,0));
 	
     // compute_grouping() returns tokens with f > cutoff, 
     // but CQi specifies f >= cutoff
@@ -1421,7 +1426,13 @@ SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField, SEXP inKey, SEXP inCutoff, S
  * 
  * "rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2, SEXP inKey2, SEXP inCutoff)" --
  * 
- * 
+ * NB:
+ *     inField1 and inKey1 are the "source" parameters in compute_grouping()
+ *     inField2 and inKey2 are the "target" parameters in compute_grouping()
+ * -> group NP matchend word by target lemma;
+ *             <   target  >    <  source  >
+ * corresponds to
+ * -> cqi_fdist2("DICKENS:NP","target", "lemma", "matchend","word")
  * 
  * ------------------------------------------------------------------------
  */
@@ -1445,7 +1456,7 @@ SEXP rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2,
 	subcorpus = (char*)CHAR(STRING_ELT(inSubcorpus,0));
 	cl = cqi_find_corpus(subcorpus);
 	if (cl == NULL) {
-		UNPROTECT(3);
+		UNPROTECT(6);
 		rcqp_error_code(cqi_errno);
 	}
 	
@@ -1476,6 +1487,7 @@ SEXP rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2,
 		  INTEGER(result)[i+size] = table->count_cells[i].t;
 		  INTEGER(result)[i+(size*2)] = table->count_cells[i].freq;
       }
+
       free_group(&table);
     }
 
