@@ -699,7 +699,7 @@ ascii_print_group(Group *group, int expand, FILE *fd)
       if ((UseExternalGrouping) || (cell == 0))
         fprintf(fd, SEPARATOR);
       
-      fprintf(fd, "%-28s  %-28s\t%6d\n",
+     fprintf(fd, "%-28s  %-28s\t%6d\n",
               (nr_targets == 0) ? source_s : " ", target_s, count);
     }
     else {
