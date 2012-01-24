@@ -7,10 +7,10 @@
 \maketitle
 \begin{abstract}
 
-rcqp is a wrapper onto the CWB software. The CWB, used in the field of corpus
-linguistics, allows for index and querying large annotated corpora. The rcqp
-wrapper turn cwb into a shared library and allow using R for running cwb and
-turning results into statistical analyses.
+rcqp R library is a wrapper onto the CWB software. The CWB, used in the field of corpus
+linguistics, allows for indexing and querying large annotated corpora. The rcqp
+library include CWB (as shared library) and allows using R for running
+cwb and import cwb output into statistical analyses.
 
 \end{abstract}
 <<preliminaries, echo=FALSE>>=
@@ -38,6 +38,8 @@ In rcqp, CWB is turned into a shared library. As a result:
 install CWB;
 \item rcqp allows for examinating the the complexe data accessed though CWB with the statistical power of R.
 \end{itemize}
+
+TODO : a low level and a high levels set of functions.
 
 \section{A sample session}
 \label{sec:session}
