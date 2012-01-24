@@ -1,27 +1,36 @@
 \name{cqi_fdist}
-\alias{cqi_fdist}
+\alias{cqi_fdist1}
+\alias{cqi_fdist2}
 
 \title{Frequency distributions}
 
 \description{
-	Calculate a frequency distribution for 
+	Calculate a frequency list or a cross-tabulated frequency table. 
 }
 
 \usage{
-	cqi_fdist(subcorpus, field, key, cutoff=0, offset=0)
+	cqi_fdist1(subcorpus, field, key, cutoff=0, offset=0)
+	cqi_fdist2(subcorpus, field, key, field2, key2, cutoff=0)
 }
 
 \arguments{
 	\item{subcorpus}{(string) qualified name of a subcorpus.}
 	\item{field}{(string) the name of the anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
 	\item{key}{(string) the name of a positional attribute.}
+	\item{field2}{(string) the name of a second anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
+	\item{key2}{(string) the name of a positional attribute for the second anchor.}
 	\item{cutoff}{(integer) a floor value under which results are not displayed. Default value is 0.}
 	\item{offset}{(integer) an offset relative to the specified anchor.}
 }
 
 \details{
-	This function builds a frequency table of the occurrences of the
-	different values of a positional attribute.
+
+	fdist1 builds a frequency list given individuals (occurrences)
+        and modalities (a positional attribute).
+	
+	The occurrences are defined by providing one of the anchor of
+        a query (\emph{'match'}, \emph{'matchend'}, \emph{'target'},
+        \emph{'keyword'}).
 
 	The results are sorted in decreasing order of frequency. The \code{cut}
 	argument specifies a value under which the results will not be
@@ -33,15 +42,28 @@
 	The \code{offset} argument lets specify a position relative to the
 	anchor specified by the \code{field} argument. For instance, if
 	\code{field} is set to \emph{'match'} and offset is equal to -1, the
-	frequency table is computed on all the tokens located before the match
+	frequency list is computed on all the tokens located before the match
 	anchor. The default value of this argument is 0.
-	
+
+	fdist2 builds a frequency table of the values found
+        in one anchor (such as \emph{'match'}, \emph{'matchend'},
+        \emph{'target'}, \emph{'keyword'}) cross-tabulated with the
+        values found in an other anchor. In other words, it gives
+        the frequency of every different cooccurrences found according
+        to the two given anchors.
+
 }
 
 \value{
-	\code{cqi_fdist} returns a matrix with two columns. The first column
+	\code{cqi_fdist1} returns a matrix with two columns. The first column
 	contains the IDs of the attributes and the second column the
 	corresponding frequency (number of occurrences).
+
+	\code{cqi_fdist2} returns a matrix with three columns. The first column
+contains the IDs of an attributes of the occurrences found at the first anchor,
+the second column contains the IDs of an attributes of the occurrences found in
+the second anchor and the third column give the frequency of the co-occurrence.
+
 }
 
 \author{
@@ -63,12 +85,13 @@
 
 \examples{
 cqi_query("DICKENS","Go","[lemma=\"go\"] \"and\" [];")
-m <- cqi_fdist("DICKENS:Go","matchend","pos")
+m <- cqi_fdist1("DICKENS:Go","matchend","pos")
 cqi_cpos2str("DICKENS.pos", m[,1])
 
 cqi_query("DICKENS","NP","[pos=\"DT\"] @[pos=\"JJ\"]? [pos=\"NNS?\"];")
-m <- cqi_fdist("DICKENS:NP","target","lemma",300)
-m <- cqi_fdist("DICKENS:NP","match","lemma", cutoff=2000, offset=-1)
+m <- cqi_fdist1("DICKENS:NP","target","lemma",300)
+m <- cqi_fdist1("DICKENS:NP","match","lemma", cutoff=2000, offset=-1)
+m <- cqi_fdist2("DICKENS:NP","match","lemma", "target", "lemma", cutoff=2000)
 }
 
 \keyword{frequency}
