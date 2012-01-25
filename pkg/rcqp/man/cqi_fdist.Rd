@@ -26,10 +26,10 @@
 
 \details{
 
-	fdist1 builds a frequency list given individuals (occurrences)
+	\code{cqi_fdist1} builds a frequency list given individuals (occurrences)
         and modalities (a positional attribute).
 	
-	The occurrences are defined by providing one of the anchor of
+	The occurrences are defined by providing one of the anchors of
         a query (\emph{'match'}, \emph{'matchend'}, \emph{'target'}, 
         \emph{'keyword'}).
 
@@ -46,11 +46,11 @@
 	frequency list is computed on all the tokens located before the match
 	anchor. The default value of this argument is 0.
 
-	fdist2 builds a frequency table of the values found
+	\code{cqi_fdist2} builds a frequency table of the values found
         in one anchor (such as \emph{'match'}, \emph{'matchend'},
         \emph{'target'}, \emph{'keyword'}) cross-tabulated with the
-        values found in an other anchor. In other words, it gives
-        the frequency of every different cooccurrences found according
+        values found in another anchor. In other words, it gives
+        the frequency of every different co-occurrences found according
         to the two given anchors.
 
 }
@@ -61,9 +61,9 @@
 	corresponding frequency (number of occurrences).
 
 	\code{cqi_fdist2} returns a matrix with three columns. The first column
-contains the IDs of an attributes of the occurrences found at the first anchor,
-the second column contains the IDs of an attributes of the occurrences found in
-the second anchor and the third column give the frequency of the co-occurrence.
+contains the IDs of an attribute of the occurrences found at the first anchor,
+the second column contains the IDs of an attribute of the occurrences found in
+the second anchor and the third column gives the frequency of the co-occurrences.
 
 }
 

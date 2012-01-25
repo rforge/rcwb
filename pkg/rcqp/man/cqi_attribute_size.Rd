@@ -26,11 +26,11 @@ attribute.
 
 	The \code{cqi_attribute_size} indicates the number of actual elements
         (number of occurrences) of an attributes:
-\begin{itemize}
-\item on a positionnal attribute, it give the number of tokens
-\item on a structural attribute, it give the number of regions
-\item on an alignment attribute, it give the number of aligned pairs.
-\end{itemize}
+\itemize {
+	\item on a positionnal attribute, it gives the number of tokens.
+	\item on a structural attribute, it gives the number of regions.
+	\item on an alignment attribute, it gives the number of aligned pairs.
+}
 
 	The \code{cqi_lexicon_size} function indicates the number of different
 values of a positional attribute (number of types, or categories). It applies only to positional attributes. 
