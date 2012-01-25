@@ -6,8 +6,10 @@
 \title{Get the size of an attribute}
 
 \description{
-	Find the number of items corresponding to a specified attribute in a
-	given corpus.
+
+	Find the number of items (type/category or token/individual) of an
+attribute.
+
 }
 
 \usage{
@@ -21,24 +23,29 @@
 }
 
 \details{
+
+	The \code{cqi_attribute_size} indicates the number of actual elements
+        (number of occurrences) of an attributes:
+\begin{itemize}
+\item on a positionnal attribute, it give the number of tokens
+\item on a structural attribute, it give the number of regions
+\item on an alignment attribute, it give the number of aligned pairs.
+\end{itemize}
+
+	The \code{cqi_lexicon_size} function indicates the number of different
+values of a positional attribute (number of types, or categories). It applies only to positional attributes. 
+
+	The \code{cqi_structural_attribute_has_values} indicates if the
+specified attribute does have values. This concerns only the structural
+attributes. Positional attributes always have values.  In order to get the
+value of a positionnal attribute with value, consider using
+\link{cqi_struc2str}.
+
 	The \code{attribute} argument is the qualified name of an attribute.
 	This concerns any kind of attribute. The syntax is of the form
 	\code{name_of_corpus.name_of_attribute}. For instance
 	\emph{"DICKENS.lemma"} (positional attribute) or
 	\emph{"DICKENS.chapter"} (structural attribute).
-	
-	The \code{cqi_lexicon_size} function indicates the number of possible
-	values of a positional attribute. It applies only to positional
-	attributes.
-	
-	The \code{cqi_attribute_size} function applies only to attributes which
-	can have values. This can be checked with the
-	\link{cqi_structural_attribute_has_values} function.
-
-	The \code{cqi_attribute_size} function is typically invoked before the
-	\link{cqi_attribute_size} function. The latter makes sense only if the
-	specified attribute does have values. This concerns only the structural
-	attributes. Positional attributes always have values.
 	
 }
 
@@ -67,7 +74,7 @@
 }
 
 \seealso{
-\link{cqi_attributes}
+\link{cqi_attributes}, \link{cqi_struc2str}.
 }
 
 \examples{
