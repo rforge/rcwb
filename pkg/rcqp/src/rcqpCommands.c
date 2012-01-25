@@ -297,7 +297,25 @@ SEXP rcqpCmd_structural_attribute_has_values(SEXP inAttribute)
  */
 SEXP rcqpCmd_corpus_info(SEXP inCorpus)
 {
-	error("feature not yet implemented in CQP");
+	SEXP			result = R_NilValue;
+	char *			c;
+	CorpusList *	cl;
+	
+	if (!isString(inCorpus) || length(inCorpus) != 1) error("invalid corpus name");
+	PROTECT(inCorpus);
+
+	c = (char*)CHAR(STRING_ELT(inCorpus,0));
+	cl = findcorpus(c, SYSTEM, 0);
+
+	if (cl == NULL || !access_corpus(cl)) {
+		rcqp_error_code(CQI_CQP_ERROR_NO_SUCH_CORPUS);
+	} else {
+		describe_corpus(cl->corpus);
+	}
+	
+	UNPROTECT(1);
+		
+	return result;
 }
 
 	
