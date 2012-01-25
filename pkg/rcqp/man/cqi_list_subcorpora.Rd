@@ -38,7 +38,8 @@
 \seealso{
 \code{\link{cqi_list_corpora}}, 
 \code{\link{cqi_query}}, 
-\code{\link{cqi_subcorpus_size}}
+\code{\link{cqi_subcorpus_size}}, 
+\code{\link{cqi_attributes}}
 }
 
 \examples{

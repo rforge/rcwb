@@ -43,8 +43,8 @@
 }
 
 \seealso{
-\link{cqi_attribute_size},
-\link{cqi_structural_attribute_has_values}
+\code{\link{cqi_attribute_size}}, 
+\code{\link{cqi_structural_attribute_has_values}}
 }
 
 \examples{

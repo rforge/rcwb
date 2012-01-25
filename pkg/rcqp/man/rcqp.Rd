@@ -15,7 +15,12 @@
 }
 
 \details{
-  \code{rcqp} is an implementation in R of the Corpus Query Protocol.
+	\code{rcqp} is an implementation in R of the Corpus Query Protocol.
+  
+	See the \code{\link{cqp_registry}} help page or type
+	\code{?cqp_registry} from the R console to see how to set the
+	"\emph{registry}" directory.
+	
 }
 
 \section{Author}{
@@ -33,7 +38,20 @@
 }
 
 \seealso{
-\code{\link{cqi_query}}
+List of available help pages:\cr
+\code{\link{cqi_attribute_size}}\cr
+\code{\link{cqi_attributes}}\cr
+\code{\link{cqi_cpos2id}}\cr
+\code{\link{cqi_dump_subcorpus}}\cr
+\code{\link{cqi_fdist}}\cr
+\code{\link{cqi_full_name}}\cr
+\code{\link{cqi_id2cpos}}\cr
+\code{\link{cqi_list_corpora}}\cr
+\code{\link{cqi_list_subcorpora}}\cr
+\code{\link{cqi_query}}\cr
+\code{\link{cqi_regex2id}}\cr
+\code{\link{cqi_struc2cpos}}\cr
+\code{\link{cqp_registry}}\cr
 }
 
 \keyword{package}

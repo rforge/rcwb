@@ -39,7 +39,8 @@
 
 \seealso{
 \code{\link{cqi_list_subcorpora}}, 
-\code{\link{cqi_query}}
+\code{\link{cqi_query}}, 
+\code{\link{cqi_attributes}}
 }
 
 \examples{

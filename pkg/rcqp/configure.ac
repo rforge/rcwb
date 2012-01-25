@@ -21,7 +21,7 @@ AC_PROG_CC()
 AC_PROG_LEX()
 AC_PROG_YACC()
 
-# AC_CHECK_LIB(pcre,pcre_free,,AC_MSG_ERROR(please install pcre library))
+# AC_CHECK_LIB(pcre,pcre_free,,AC_MSG_ERROR(the pcre library is required))
 
 # Process the .in files
 # ---------------------

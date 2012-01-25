@@ -60,12 +60,12 @@
 
 \seealso{
 \code{\link{cqi_alg2cpos}}
-\code{\link{cqi_id2cpos}},
-\code{\link{cqi_id2freq}},
-\code{\link{cqi_id2str}},
-\code{\link{cqi_regex2id}},
-\code{\link{cqi_str2id}},
-\code{\link{cqi_struc2cpos}},
+\code{\link{cqi_id2cpos}}, 
+\code{\link{cqi_id2freq}}, 
+\code{\link{cqi_id2str}}, 
+\code{\link{cqi_regex2id}}, 
+\code{\link{cqi_str2id}}, 
+\code{\link{cqi_struc2cpos}}, 
 \code{\link{cqi_struc2str}}
 }
 

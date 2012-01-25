@@ -52,23 +52,26 @@
 
 
 \seealso{
-\code{\link{cqi_dump_subcorpus}},
-\code{\link{cqi_drop_subcorpus}}\cr
+\code{\link{cqi_dump_subcorpus}}, 
+\code{\link{cqi_drop_subcorpus}}, 
+\code{\link{cqi_attributes}}, 
+\code{\link{cqi_attribute_size}}
+\cr
 
 Conversion functions:
-\code{\link{cqi_alg2cpos}},
-\code{\link{cqi_cpos2alg}},
-\code{\link{cqi_cpos2id}},
-\code{\link{cqi_cpos2lbound}},
-\code{\link{cqi_cpos2rbound}},
-\code{\link{cqi_cpos2str}},
-\code{\link{cqi_cpos2struc}},
-\code{\link{cqi_id2cpos}},
-\code{\link{cqi_id2freq}},
-\code{\link{cqi_id2str}},
-\code{\link{cqi_regex2id}},
-\code{\link{cqi_str2id}},
-\code{\link{cqi_struc2cpos}},
+\code{\link{cqi_alg2cpos}}, 
+\code{\link{cqi_cpos2alg}}, 
+\code{\link{cqi_cpos2id}}, 
+\code{\link{cqi_cpos2lbound}}, 
+\code{\link{cqi_cpos2rbound}}, 
+\code{\link{cqi_cpos2str}}, 
+\code{\link{cqi_cpos2struc}}, 
+\code{\link{cqi_id2cpos}}, 
+\code{\link{cqi_id2freq}}, 
+\code{\link{cqi_id2str}}, 
+\code{\link{cqi_regex2id}}, 
+\code{\link{cqi_str2id}}, 
+\code{\link{cqi_struc2cpos}}, 
 \code{\link{cqi_struc2str}}
 
 }

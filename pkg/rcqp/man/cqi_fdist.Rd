@@ -1,4 +1,5 @@
 \name{cqi_fdist}
+\alias{cqi_fdist}
 \alias{cqi_fdist1}
 \alias{cqi_fdist2}
 
@@ -29,7 +30,7 @@
         and modalities (a positional attribute).
 	
 	The occurrences are defined by providing one of the anchor of
-        a query (\emph{'match'}, \emph{'matchend'}, \emph{'target'},
+        a query (\emph{'match'}, \emph{'matchend'}, \emph{'target'}, 
         \emph{'keyword'}).
 
 	The results are sorted in decreasing order of frequency. The \code{cut}
