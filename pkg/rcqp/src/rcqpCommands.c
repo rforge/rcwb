@@ -1,7 +1,7 @@
 // ===========================================================================
 // File: "rcqpCommands.c"
 //                        Created: 2012-01-13 18:49:02
-//              Last modification: 2012-01-17 15:19:37
+//              Last modification: 2012-01-25 15:07:01
 // Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 //          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 // (c) Copyright: 2011-2012
@@ -383,7 +383,7 @@ SEXP rcqpCmd_str2id(SEXP inAttribute, SEXP inStrs)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isString(inStrs)) error("strs must be a vector of strings");
+	if (!isString(inStrs)) error("argument 'strs' must be a vector of strings");
 	PROTECT(inStrs);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -481,7 +481,7 @@ SEXP rcqpCmd_id2freq(SEXP inAttribute, SEXP inIds)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inIds)) error("ids must be a vector of integers");
+	if (!isVector(inIds)) error("argument 'ids' must be a vector of integers");
 	PROTECT(inIds);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -530,7 +530,7 @@ SEXP rcqpCmd_id2cpos(SEXP inAttribute, SEXP inId)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inId) || length(inId) != 1) error("id must be an integer");
+	if (!isVector(inId) || length(inId) != 1) error("argument 'id' must be an integer");
 	PROTECT(inId);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -581,7 +581,7 @@ SEXP rcqpCmd_cpos2id(SEXP inAttribute, SEXP inCpos)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inCpos)) error("cpos must be a vector of integers");
+	if (!isVector(inCpos)) error("argument 'cpos' must be a vector of integers");
 	PROTECT(inCpos);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -629,7 +629,7 @@ SEXP rcqpCmd_cpos2str(SEXP inAttribute, SEXP inCpos)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inCpos)) error("cpos must be a vector of integers");
+	if (!isVector(inCpos)) error("argument 'cpos' must be a vector of integers");
 	PROTECT(inCpos);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -678,7 +678,7 @@ SEXP rcqpCmd_cpos2struc(SEXP inAttribute, SEXP inCpos)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inCpos)) error("cpos must be a vector of integers");
+	if (!isVector(inCpos)) error("argument 'cpos' must be a vector of integers");
 	PROTECT(inCpos);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -726,7 +726,7 @@ SEXP rcqpCmd_cpos2lbound(SEXP inAttribute, SEXP inCpos)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inCpos)) error("cpos must be a vector of integers");
+	if (!isVector(inCpos)) error("argument 'cpos' must be a vector of integers");
 	PROTECT(inCpos);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -783,7 +783,7 @@ SEXP rcqpCmd_cpos2rbound(SEXP inAttribute, SEXP inCpos)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inCpos)) error("cpos must be a vector of integers");
+	if (!isVector(inCpos)) error("argument 'cpos' must be a vector of integers");
 	PROTECT(inCpos);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -892,7 +892,7 @@ SEXP rcqpCmd_cpos2alg(SEXP inAttribute, SEXP inCpos)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inCpos)) error("cpos must be a vector of integers");
+	if (!isVector(inCpos)) error("argument 'cpos' must be a vector of integers");
 	PROTECT(inCpos);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -939,7 +939,7 @@ SEXP rcqpCmd_struc2cpos(SEXP inAttribute, SEXP inStruc)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inStruc) || length(inStruc) != 1) error("struc must be an integer");
+	if (!isVector(inStruc) || length(inStruc) != 1) error("argument 'struc' must be an integer");
 	PROTECT(inStruc);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -986,7 +986,7 @@ SEXP rcqpCmd_struc2str(SEXP inAttribute, SEXP inIds)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inIds)) error("ids must be a vector of integers");
+	if (!isVector(inIds)) error("argument 'ids' must be a vector of integers");
 	PROTECT(inIds);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -1053,7 +1053,7 @@ SEXP rcqpCmd_regex2id(SEXP inAttribute, SEXP inRegex)
 	
 	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isString(inRegex) || length(inRegex) != 1) error("regexp must be a string");
+	if (!isString(inRegex) || length(inRegex) != 1) error("argument 'regexp' must be a string");
 	PROTECT(inRegex);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
