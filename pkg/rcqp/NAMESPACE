@@ -9,7 +9,7 @@ export(
 	"cqi_cpos2struc",
 	"cqi_dump_subcorpus",
 	"cqi_fdist1",
- 	"cqi_fdist2",
+	"cqi_fdist2",
 	"cqi_full_name",
 	"cqi_id2cpos",
 	"cqi_id2freq",
