@@ -8,8 +8,7 @@
 # All rights reserved.
 # ===========================================================================
 
-#
-# 4 s3 objects are defined: 
+# Four s3 objects are defined: 
 # - corpus
 # - subcorpus (a sub-type of corpus)
 # - flist (frequency list)
@@ -176,7 +175,6 @@ flist <- function(corpus, attribute, field, left.context=0, right.context=0, cut
  # 
  # ------------------------------------------------------------------------
  ##
-
 struct2ftable.cqp_corpus <- function(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL) {
 
 	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
@@ -251,9 +249,6 @@ struct2ftable.cqp_corpus <- function(corpus, structure, attribute, use.value=F, 
 	
 	if (debug) print("cross-tabulation");
 	done <- xtabs(data=done, sparse=TRUE);
-# 	done <- matrix(c(var1, var2), nrow=length(var1), ncol=2, byrow=FALSE);
-# 	done <- table(done);
-# 	class(done) <- c("ftable", class(done));
 
 	return(done);
 }
