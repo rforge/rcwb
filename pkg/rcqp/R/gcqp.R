@@ -97,7 +97,7 @@ tkfocus(dlg)
 #
 ############################################################
 
-query <- function (query.string, corpus, start <- 1, end <- 10, left.context=5, right.context=5) {
+query <- function (query.string, corpus, start=1, end=10, left.context=5, right.context=5) {
 
   subcorpusname = "Last";
   #status <- cqi_query(corpus, subcorpusname, query.string);
