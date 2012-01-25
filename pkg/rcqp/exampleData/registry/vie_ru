@@ -7,9 +7,9 @@ NAME ""
 # corpus ID (must be lowercase in registry!)
 ID   vie_ru
 # path to binary data files
-HOME /Users/sylvainloiseau/TXM/corpora/vie_ru
+HOME
 # optional info file (displayed by "info;" command in CQP)
-INFO /Users/sylvainloiseau/TXM/corpora/vie_ru/.info
+INFO /.info
 
 # corpus properties provide additional information about the corpus:
 ##:: charset = "utf8"	# character encoding of corpus data
