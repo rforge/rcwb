@@ -196,7 +196,7 @@ SEXP rcqpCmd_attribute_size(SEXP inAttribute)
 	int				size;
 	int				found = 0;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -266,7 +266,7 @@ SEXP rcqpCmd_structural_attribute_has_values(SEXP inAttribute)
 	
 	
 	// rcqp_initialize();
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -336,7 +336,7 @@ SEXP rcqpCmd_lexicon_size(SEXP inAttribute)
 	Attribute *		attribute;
 	int 			size;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -381,7 +381,7 @@ SEXP rcqpCmd_str2id(SEXP inAttribute, SEXP inStrs)
 	char 			*a, *str;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isString(inStrs)) error("strs must be a vector of strings");
 	PROTECT(inStrs);
@@ -430,9 +430,9 @@ SEXP rcqpCmd_id2str(SEXP inAttribute, SEXP inIds)
 	char 			*a, *str;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
-	if (!isVector(inIds)) error("ids must be a vector of integers");
+	if (!isVector(inIds)) error("argument 'ids' must be a vector of integers");
 	PROTECT(inIds);
 	
 	a = (char*)CHAR(STRING_ELT(inAttribute,0));
@@ -479,7 +479,7 @@ SEXP rcqpCmd_id2freq(SEXP inAttribute, SEXP inIds)
 	char 			*a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inIds)) error("ids must be a vector of integers");
 	PROTECT(inIds);
@@ -528,7 +528,7 @@ SEXP rcqpCmd_id2cpos(SEXP inAttribute, SEXP inId)
 	char 			*a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inId) || length(inId) != 1) error("id must be an integer");
 	PROTECT(inId);
@@ -579,7 +579,7 @@ SEXP rcqpCmd_cpos2id(SEXP inAttribute, SEXP inCpos)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inCpos)) error("cpos must be a vector of integers");
 	PROTECT(inCpos);
@@ -627,7 +627,7 @@ SEXP rcqpCmd_cpos2str(SEXP inAttribute, SEXP inCpos)
 	char 			*a, *str;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inCpos)) error("cpos must be a vector of integers");
 	PROTECT(inCpos);
@@ -676,7 +676,7 @@ SEXP rcqpCmd_cpos2struc(SEXP inAttribute, SEXP inCpos)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inCpos)) error("cpos must be a vector of integers");
 	PROTECT(inCpos);
@@ -724,7 +724,7 @@ SEXP rcqpCmd_cpos2lbound(SEXP inAttribute, SEXP inCpos)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inCpos)) error("cpos must be a vector of integers");
 	PROTECT(inCpos);
@@ -781,7 +781,7 @@ SEXP rcqpCmd_cpos2rbound(SEXP inAttribute, SEXP inCpos)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inCpos)) error("cpos must be a vector of integers");
 	PROTECT(inCpos);
@@ -837,8 +837,8 @@ SEXP rcqpCmd_alg2cpos(SEXP inAttribute, SEXP inAlg)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
-	if (!isString(inAlg) || length(inAlg) != 1) error("attribute must be an integer");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
+	if (!isVector(inAlg) || length(inAlg) != 1) error("argument 'alg' must be an integer");
 	PROTECT(inAttribute);
 	PROTECT(inAlg);
 	
@@ -890,7 +890,7 @@ SEXP rcqpCmd_cpos2alg(SEXP inAttribute, SEXP inCpos)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inCpos)) error("cpos must be a vector of integers");
 	PROTECT(inCpos);
@@ -937,7 +937,7 @@ SEXP rcqpCmd_struc2cpos(SEXP inAttribute, SEXP inStruc)
 	char *			a;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inStruc) || length(inStruc) != 1) error("struc must be an integer");
 	PROTECT(inStruc);
@@ -984,7 +984,7 @@ SEXP rcqpCmd_struc2str(SEXP inAttribute, SEXP inIds)
 	char 			*a, *str;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isVector(inIds)) error("ids must be a vector of integers");
 	PROTECT(inIds);
@@ -1051,7 +1051,7 @@ SEXP rcqpCmd_regex2id(SEXP inAttribute, SEXP inRegex)
 	char 			*a, *r;
 	Attribute *		attribute;
 	
-	if (!isString(inAttribute) || length(inAttribute) != 1) error("attribute must be a string");
+	if (!isString(inAttribute) || length(inAttribute) != 1) error("argument 'attribute' must be a string");
 	PROTECT(inAttribute);
 	if (!isString(inRegex) || length(inRegex) != 1) error("regexp must be a string");
 	PROTECT(inRegex);

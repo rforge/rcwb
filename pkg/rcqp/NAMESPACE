@@ -1,6 +1,7 @@
 export(
 	"cqi_attribute_size",
 	"cqi_attributes",
+	"cqi_alg2cpos",
 	"cqi_cpos2alg",
 	"cqi_cpos2id",
 	"cqi_cpos2lbound",
