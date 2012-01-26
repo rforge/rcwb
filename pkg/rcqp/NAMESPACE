@@ -2,12 +2,14 @@ export(
 	"cqi_attribute_size",
 	"cqi_attributes",
 	"cqi_alg2cpos",
+ 	"cqi_corpus_info",
 	"cqi_cpos2alg",
 	"cqi_cpos2id",
 	"cqi_cpos2lbound",
 	"cqi_cpos2rbound",
 	"cqi_cpos2str",
 	"cqi_cpos2struc",
+	"cqi_drop_subcorpus",
 	"cqi_dump_subcorpus",
 	"cqi_fdist1",
 	"cqi_fdist2",
@@ -28,7 +30,5 @@ export(
 )
 
 # 	"cqi_charset",
-# 	"cqi_corpus_info",
-# 	"cqi_drop_subcorpus",
 # 	"cqi_idlist2cpos",
 # 	"cqi_properties",

@@ -93,20 +93,20 @@ cqi_full_name <- function(corpus) {
 }
 
 
-# ## 
-#  # ------------------------------------------------------------------------
-#  # 
-#  # "cqi_corpus_info(corpus)" --
-#  # 
-#  # Example:
-#  # 
-#  # 
-#  # ------------------------------------------------------------------------
-#  ##
-# cqi_corpus_info <- function(corpus) {
-# 	ans <- .Call("rcqpCmd_corpus_info", corpus, PACKAGE="rcqp")
-#     return(ans)
-# }
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "cqi_corpus_info(corpus)" --
+ # 
+ # Example:
+ # 
+ # 
+ # ------------------------------------------------------------------------
+ ##
+cqi_corpus_info <- function(corpus) {
+	ans <- .Call("rcqpCmd_corpus_info", corpus, PACKAGE="rcqp")
+    return(invisible())
+}
 
 
 ## 
