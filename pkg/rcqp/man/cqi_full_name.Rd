@@ -12,7 +12,7 @@
 }
 
 \arguments{
-	\item{corpus}{(string) the name of a corpus (in uppercase letters).}
+	\item{corpus}{(\emph{string}) the name of a corpus (in uppercase letters).}
 }
 
 \details{
@@ -30,7 +30,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{

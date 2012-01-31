@@ -18,10 +18,10 @@
 }
 
 \arguments{
-	\item{attribute}{(string) the qualified name of an attribute.}
-	\item{id}{(integer) a single value}
-	\item{ids}{(integer vector) }
-	\item{strs}{(character vector) }
+	\item{attribute}{(\emph{string}) the qualified name of an attribute.}
+	\item{id}{(\emph{integer}) a single value}
+	\item{ids}{(\emph{integer vector}) }
+	\item{strs}{(\emph{character vector}) }
 }
 
 \details{
@@ -46,7 +46,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{

@@ -12,14 +12,14 @@
 }
 
 \arguments{
-	\item{attribute}{(string) the name of a positional attribute.}
-	\item{regex}{(string) a regular expression.}
+	\item{attribute}{(\emph{\emph{string}}) the name of a positional attribute.}
+	\item{regex}{(\emph{\emph{string}}) a regular expression.}
 }
 
 \details{
 	This function looks in the index files corresponding to the specified
 	positional attribute, finds the strings described by the regular
-	expression and return the associated indices.
+	expression and returns the associated indices.
 }
 
 \value{
@@ -32,7 +32,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{
@@ -43,7 +43,9 @@
 \code{\link{cqi_id2cpos}}, 
 \code{\link{cqi_id2freq}}, 
 \code{\link{cqi_id2str}}, 
-\code{\link{cqi_str2id}}
+\code{\link{cqi_str2id}}, 
+\code{\link{cqi_struc2cpos}}, 
+\code{\link{cqi_struc2str}}
 }
 
 \examples{

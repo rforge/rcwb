@@ -12,8 +12,8 @@
 }
 
 \arguments{
-	\item{corpus}{(string) the name of the corpus (in uppercase letters).}
-	\item{type}{(character) a character designating a type of attributes. Possible values are "a" for alignment attributes, "p" for positional attributes and "s" for structural attributes.}
+	\item{corpus}{(\emph{string}) the name of the corpus (in uppercase letters).}
+	\item{type}{(\emph{character}) a character designating a type of attributes. Possible values are "a" for alignment attributes, "p" for positional attributes and "s" for structural attributes.}
 }
 
 \details{
@@ -35,7 +35,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{

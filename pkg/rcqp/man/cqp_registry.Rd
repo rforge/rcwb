@@ -9,24 +9,33 @@ Setting the CQP registry for rcqp.
 
 \details{
 
-Corpora are declared in files located in a directory called \emph{"registry"}
-(see CWB documentation for more details). One of the mechanisms provided by CWB
-in order to set the registry directory is to define the environment variable
+Corpora are declared in files located in a directory called
+\emph{registry} (see CWB documentation for more details). One of the
+mechanisms provided by CWB in order to set the path of the \emph{registry}
+directory is to define the environment variable
 \code{CORPUS_REGISTRY}.
 
-In rcqp, the \code{CORPUS_REGISTRY} environment variable is first read. If this
-environment variable is not set, rcqp tries to use the default registry
-directory, which varies according to your system (on most Unixes, it is
-/usr/local/share/cwb/registry; on Windows, it is C:\\CWB\\Registry. If this
-directory does not exist, rcqp cannot proceed further.
+In \code{rcqp}, the \code{CORPUS_REGISTRY} environment variable is first
+read. If it is not set, rcqp tries to use the default registry directory,
+which varies according to your system (on most Unixes, it is
+\emph{/usr/local/share/cwb/registry}; on Windows, it is \emph{C:\\CWB\\Registry}). If this default
+directory does not exist, \code{rcqp} cannot proceed further.
 
-In order to set the \code{CORPUS_REGISTRY} variable, you can either use the
-definition mechanisms provided by your system (and in this case, the
-\code{CORPUS_REGISTRY} variable will be used also if you use CQP outside of R), or
-define this variable in the ~/.Renviron file which is read by R at startup
-(in that case, the environment variable is defined only for rcqp, and
-will not be seen by any other CWB program).
+In order to set the \code{CORPUS_REGISTRY} variable, you can 
+\itemize{
+	\item either use the mechanisms provided by your system to
+	set the environment variable before the R command is executed.
+
+	\item or define the variable from the R console using the
+	\code{\link{Sys.setenv}} function. This must be done before the package
+	is loaded. 
 	
+	\item or define this variable in the configuration file
+	\code{~/.Renviron} which is read by R at startup. In that case,
+	the environment variable is defined only for \code{rcqp}, and will not be seen
+	by any other CWB program.
+	
+	}
 }
 
 \author{
@@ -35,11 +44,21 @@ will not be seen by any other CWB program).
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{
 	\url{http://cwb.sourceforge.net/documentation.php}
+}
+
+\seealso{
+\code{\link{cqi_list_corpora}}, 
+\code{\link{cqi_list_subcorpora}}, 
+\code{\link{cqi_query}}
+}
+
+\examples{
+Sys.setenv(CORPUS_REGISTRY="/users/vhugo/cwb/registry")
 }
 
 \keyword{registry}

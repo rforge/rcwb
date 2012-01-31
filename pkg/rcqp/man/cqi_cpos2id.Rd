@@ -25,9 +25,9 @@
 }
 
 \arguments{
-	\item{attribute}{(string) the qualified name of an attribute.}
-	\item{cpos}{(integer vector) a list of corpus positions}
-	\item{alg}{(integer) an alignment ID}
+	\item{attribute}{(\emph{string}) the qualified name of an attribute.}
+	\item{cpos}{(\emph{integer vector}) a list of corpus positions}
+	\item{alg}{(\emph{integer}) an alignment ID}
 }
 
 \details{
@@ -42,8 +42,16 @@
 }
 
 \value{
-	\code{cqi_cpos2str} returns a vector of strings. The other functions return a vector of integers.
-}
+	\code{cqi_cpos2str} returns a vector of strings.
+
+	The \code{cqi_alg2cpos} function returns a 4-elements vector
+	representing the start and end positions of an alignment in the source
+	corpus and the start and end positions in the target corpus.
+	
+	The other functions return a vector of integers representing corpus
+	positions.
+
+	}
 
 \author{
 	Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
@@ -51,7 +59,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{
@@ -59,7 +67,6 @@
 }
 
 \seealso{
-\code{\link{cqi_alg2cpos}}
 \code{\link{cqi_id2cpos}}, 
 \code{\link{cqi_id2freq}}, 
 \code{\link{cqi_id2str}}, 

@@ -16,9 +16,9 @@
 }
 
 \arguments{
-	\item{subcorpus}{(string) qualified name of a subcorpus.}
-	\item{first}{(integer) first index. Optional: default is 0.}
-	\item{last}{(integer) last index. Optional: default is \code{size-1}.}
+	\item{subcorpus}{(\emph{string}) qualified name of a subcorpus.}
+	\item{first}{(\emph{integer}) first index. Optional: default is 0.}
+	\item{last}{(\emph{integer}) last index. Optional: default is \code{size-1}.}
 }
 
 \details{

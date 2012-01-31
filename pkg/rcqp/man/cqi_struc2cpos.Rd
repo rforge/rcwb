@@ -14,25 +14,24 @@
 }
 
 \arguments{
-	\item{attribute}{(string) the qualified name of an attribute.}
-	\item{struc}{(integer) }
-	\item{ids}{(integer vector)}
+	\item{attribute}{(\emph{string}) the qualified name of an attribute.}
+	\item{struc}{(\emph{integer}) }
+	\item{ids}{(\emph{integer vector})}
 }
 
 \details{
 	The structural attributes correspond to XML pairs of tags in the
-	corpus. The struc parameter is the index of a particular pair of tags.
-	The \code{cqi_struc2cpos} function associates the corpus positions of
-	the specified pair.
+	corpus. Matching pairs of XML start and end tags are encoded as token
+	regions. The \emph{struc} parameter is the index of a particular pair
+	of tags. The \code{cqi_struc2cpos} function associates the corpus
+	positions of the specified pair. 
 	
-	Matching pairs of XML start and end tags are encoded as token regions.
-	
-}
+	}
 
 \value{
 	The \code{cqi_struc2cpos} function returns a pair of corpus positions:
 	the corpus positions of the first token (immediately following the
-	start tag) and the last token (immediately preceding the end tag) of
+	start tag) and of the last token (immediately preceding the end tag) of
 	the token region.
 	
 	The \code{cqi_struc2str} function returns a string.
@@ -44,7 +43,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{

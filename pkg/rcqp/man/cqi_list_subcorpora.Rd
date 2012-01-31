@@ -12,7 +12,7 @@
 }
 
 \arguments{
-	\item{corpus}{(string) the name of the parent corpus (in uppercase letters).}
+	\item{corpus}{(\emph{string}) the name of the parent corpus (in uppercase letters).}
 }
 
 \details{
@@ -32,14 +32,15 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \seealso{
 \code{\link{cqi_list_corpora}}, 
 \code{\link{cqi_query}}, 
 \code{\link{cqi_subcorpus_size}}, 
-\code{\link{cqi_attributes}}
+\code{\link{cqi_attributes}}, 
+\code{\link{cqi_fdist}}
 }
 
 \examples{

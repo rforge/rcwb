@@ -14,9 +14,9 @@
 }
 
 \arguments{
-	\item{mother}{(string) the name of the corpus.}
-	\item{child}{(string) the name given to the subcorpus containing the results of the query.}
-	\item{query}{(string) the query string.}
+	\item{mother}{(\emph{string}) the name of the corpus.}
+	\item{child}{(\emph{string}) the name given to the subcorpus which will contain the results of the query.}
+	\item{query}{(\emph{string}) the query string.}
 }
 
 \details{
@@ -29,7 +29,7 @@
 
 \value{
 	\code{cqi_query} does not return anything. In order to manipulate the
-	results one must invoke the \emph{cqi_dump_subcorpus} function.
+	results, one must invoke the \emph{cqi_dump_subcorpus} function.
 }
 
 \author{
@@ -38,7 +38,7 @@
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{

@@ -19,7 +19,7 @@ attribute.
 }	
 
 \arguments{
-	\item{attribute}{(string) the qualified name of an attribute.}
+	\item{attribute}{(\emph{string}) the qualified name of an attribute.}
 }
 
 \details{
@@ -66,7 +66,7 @@ value of a positionnal attribute with value, consider using
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{

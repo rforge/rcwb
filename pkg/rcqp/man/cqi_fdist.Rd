@@ -15,13 +15,13 @@
 }
 
 \arguments{
-	\item{subcorpus}{(string) qualified name of a subcorpus.}
-	\item{field}{(string) the name of the anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
-	\item{key}{(string) the name of a positional attribute.}
-	\item{field2}{(string) the name of a second anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
-	\item{key2}{(string) the name of a positional attribute for the second anchor.}
-	\item{cutoff}{(integer) a floor value under which results are not displayed. Default value is 0.}
-	\item{offset}{(integer) an offset relative to the specified anchor.}
+	\item{subcorpus}{(\emph{string}) qualified name of a subcorpus.}
+	\item{field}{(\emph{string}) the name of the anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
+	\item{key}{(\emph{string}) the name of a positional attribute.}
+	\item{field2}{(\emph{string}) the name of a second anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
+	\item{key2}{(\emph{string}) the name of a positional attribute for the second anchor.}
+	\item{cutoff}{(\emph{integer}) a floor value under which results are not displayed. Default value is 0.}
+	\item{offset}{(\emph{integer}) an offset relative to the specified anchor.}
 }
 
 \details{
@@ -73,7 +73,7 @@ the second anchor and the third column gives the frequency of the co-occurrences
 }
 
 \source{
-	The IMS Open Corpus Workbench (CWB) \url{http://cwb.sourceforge.net/}
+	The IMS Open Corpus Workbench (CWB) at \url{http://cwb.sourceforge.net/}
 }
 
 \references{
@@ -81,6 +81,7 @@ the second anchor and the third column gives the frequency of the co-occurrences
 }
 
 \seealso{
+\code{\link{cqi_list_subcorpora}}, 
 \code{\link{cqi_dump_subcorpus}}
 }
 
