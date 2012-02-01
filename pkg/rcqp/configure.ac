@@ -2,8 +2,9 @@
 ### File: "configure.ac"
 ###                        Created: 2010-06-24 08:46:27
 ###              Last modification: 2012-01-28 12:49:10
-### Author: Bernard Desgraupes
-### e-mail: <bernard.desgraupes@u-paris10.fr>
+### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+### This is part of the R package 'rcqp'.
 ### ===========================================================================
 ###
 ### Process this file with autoconf to produce a configure script.

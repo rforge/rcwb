@@ -2,8 +2,9 @@
 # File: "Makefile.in"
 #                        Created: 2012-01-14 11:45:26
 #              Last modification: 2012-01-25 09:56:26
-# Author: Bernard Desgraupes
-# e-mail: <bernard.desgraupes@u-paris10.fr>
+# Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+#          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+# This is part of the R package 'rcqp'.
 # ===========================================================================
 # NB: on Mac OSX 10.5, use -gdwarf-2 instead of -g to avoid warnings about
 # missing "atom for N_GSYM stabs".

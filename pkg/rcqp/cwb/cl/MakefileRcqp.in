@@ -1,3 +1,13 @@
+# ===========================================================================
+# File: "MakefileRcqp.in"
+#                        Created: 2012-01-14 14:18:07
+#              Last modification: 2012-01-28 12:29:29
+# Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+#          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+# This is part of the R package 'rcqp'.
+# Modifies the original cwb/cl/Makefile.
+# ===========================================================================
+
 ##   -*-Makefile-*-
 ## 
 ##  IMS Open Corpus Workbench (CWB)
