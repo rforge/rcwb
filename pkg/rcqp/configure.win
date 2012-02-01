@@ -1,0 +1,15 @@
+#!/bin/sh
+
+### ===========================================================================
+### File: "configure.win"
+###                        Created: 2012-02-01 10:07:44
+###              Last modification: 2012-02-01 10:07:58
+### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+### This is part of the R package 'rcqp'.
+### ===========================================================================
+
+
+echo "The R package 'rcqp' is not yet supported on Windows"
+exit 1
+
