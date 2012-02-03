@@ -16,7 +16,7 @@ cwb and import cwb output into statistical analyses.
 
 <<preliminaries, echo=FALSE>>=
 options(width=75)
-Sys.setenv("CORPUS_REGISTRY"=system.file("extdata", "registry", package = "rcqp"))
+#Sys.setenv("CORPUS_REGISTRY"=system.file("extdata", "registry", package = "rcqp"))
 @
 
 \section{Introduction}
@@ -30,7 +30,7 @@ engine for annotated copora. An interactive command line program called CQP
 CWB offers access to corpora through manipulation of vectors of positions
 (offsets of the adressed / requested word(s) in the corpus) which can be turned
 into the corresponding word form, lemma, or part of speech if the corpus
-provide these information.
+provide these pieces of information.
 
 In rcqp, CWB is turned into a shared library. As a result:
 \begin{itemize}
@@ -44,7 +44,7 @@ install CWB;
 In rcqp, four different ways of calling CWB are provided:
 
 \begin{itemize}
-\item You can call CWB through the "cqi_*" set of functions. These 
+\item You can call CWB through the "cqi_\ast" set of functions. These 
 functions implement an interface defined by CWB (CQi). 
 \item You can use a set of more "high-level" functions for producing 
 quantitative structures (frequency list, cross-tabulated frequency table), 
@@ -123,10 +123,12 @@ c <- corpus("DICKENS")
 c
 @
 
-They are, first, several columns corresponding to "structural attribute", 
-i.e. span of tokens like XML tag surrounding tokens. Each 
-span for each structural attribute as an id. While the id is the 
-same in a column, the corresponding tokens belong to the same span. 
+First, they are several columns corresponding to "structural attribute", 
+i.e. span of tokens like XML tag surrounding tokens, called regions. Each 
+region for each structural attribute as an id. While the id is the 
+same in a column, the corresponding tokens belong to the same region. 
+Tokens between two regions in a given structural attributes have a value of 
+"-1".
 
 They are, then, several columns containing string. They are the 
 "positional attribute" of each word: lemma, word-form, pos, other 
@@ -134,7 +136,7 @@ information... Each positional attribute has his list of ids for coding
 each possible form.
 
 Moreover, certains structural attribute have a string value associated 
-with each id (while each id is unique, string value can be repeated). For 
+with each id (region) (while each id is unique, string value can be repeated). For 
 instance, the np_h structural attribute, giving the head of the noun 
 phrase, hold a string value.
 
@@ -143,7 +145,7 @@ In CQi function names, the following convention are used:
 \begin{itemize}
 \item cpos : a position, or rank, identifying a unique token in the corpus
 \item id : a form of a given positional attribute.
-\item struc : a given span of a structural attribute 
+\item struc : a given region of a structural attribute 
 \item str : the corresponding to a given id of a positional attribute or 
 of a structural attribute having a value.
 \end{itemize}
@@ -151,34 +153,70 @@ of a structural attribute having a value.
 \subsection{Functions}
 \label{sec:cqi-functions}
 
+For more information about the actual use of this function, see their help 
+page.
+
 \paragraph{cqi_attribute_size}
-\paragraph{cqi_attributes}
-\paragraph{cqi_alg2cpos}
-\paragraph{cqi_corpus_info}
-\paragraph{cqi_cpos2alg}
-\paragraph{cqi_cpos2id}
-\paragraph{cqi_cpos2lbound}
-\paragraph{cqi_cpos2rbound}
-\paragraph{cqi_cpos2str}
-\paragraph{cqi_cpos2struc}
-\paragraph{cqi_drop_subcorpus}
-\paragraph{cqi_dump_subcorpus}
-\paragraph{cqi_fdist1}
-\paragraph{cqi_fdist2}
-\paragraph{cqi_full_name}
-\paragraph{cqi_id2cpos}
-\paragraph{cqi_id2freq}
-\paragraph{cqi_id2str}
-\paragraph{cqi_lexicon_size}
-\paragraph{cqi_list_corpora}
-\paragraph{cqi_list_subcorpora}
-\paragraph{cqi_query}
-\paragraph{cqi_regex2id}
-\paragraph{cqi_str2id}
-\paragraph{cqi_struc2cpos}
-\paragraph{cqi_struc2str}
-\paragraph{cqi_structural_attribute_has_values}
-\paragraph{cqi_subcorpus_size}
+
+indicates number of actual elements (number of occurrences).
+\begin{itemize}
+\item on a positionnal attribute, it gives the number of tokens.
+\item on a structural attribute, it gives the number of regions.
+\item on an alignment attribute, it gives the number of aligned pairs.
+\end{itemize}
+
+\paragraph{cqi\_attributes}
+
+Get the list of attributes (positional, structural, or aligned) in a 
+corpus.
+
+\paragraph{cqi\_alg2cpos}
+
+From id of region of an alignment attribute to cpos of tokens contained into this 
+region.
+
+\paragraph{cqi\_corpus\_info}
+
+Various information about a corpus
+
+\paragraph{cqi\_cpos2alg}
+
+From token cpos to the corresponding region id of an alignment attribute.
+
+\paragraph{cqi\_cpos2id}
+
+From token cpos to the corresponding id in a given positional attribute.
+
+\paragraph{cqi\_cpos2lbound}
+
+?? Given a token cpos, give the left most token cpos bellonging to the same 
+region in the given structural attribute.
+
+\paragraph{cqi\_cpos2rbound}
+
+?? Given a token cpos, give the right most token cpos bellonging to the same 
+region in the given structural attribute.
+
+\paragraph{cqi\_cpos2str}
+\paragraph{cqi\_cpos2struc}
+\paragraph{cqi\_drop\_subcorpus}
+\paragraph{cqi\_dump\_subcorpus}
+\paragraph{cqi\_fdist1}
+\paragraph{cqi\_fdist2}
+\paragraph{cqi\_full\_name}
+\paragraph{cqi\_id2cpos}
+\paragraph{cqi\_id2freq}
+\paragraph{cqi\_id2str}
+\paragraph{cqi\_lexicon\_size}
+\paragraph{cqi\_list\_corpora}
+\paragraph{cqi\_list\_subcorpora}
+\paragraph{cqi\_query}
+\paragraph{cqi\_regex2id}
+\paragraph{cqi\_str2id}
+\paragraph{cqi\_struc2cpos}
+\paragraph{cqi\_struc2str}
+\paragraph{cqi\_structural\_attribute\_has\_values}
+\paragraph{cqi\_subcorpus\_size}
 
 % ----------------------------------------------------------------
 % ----------------------------------------------------------------
@@ -210,58 +248,58 @@ summary(c)
 
 \label{sec:rcqp-functions}
 
-\subsubsection{S3 object cqp_corpus}
+\subsubsection{S3 object cqp\_corpus}
 
-An object cqp_corpus is created with the function corpus(). This object 
+An object cqp\_corpus is created with the function corpus(). This object 
 may be used with the two functions below, as well as for creating 
-cqp_subcorpus, cqp_filst and cqp_ftable objects (see bellow).
+cqp\_subcorpus, cqp\_filst and cqp\_ftable objects (see bellow).
 
-\paragraph{print.cqp_corpus}
+\paragraph{print.cqp\_corpus}
 
 Print all information (but the value of structural attribute having a 
 value) as a data.frame.
 
-\paragraph{summary.cqp_corpus}
+\paragraph{summary.cqp\_corpus}
 
 Give the number of tokens of a corpus, list all the attributes 
 (positionnal, structural, alignment) ; for each positional attribute (and 
 structural attribute having a value) give the number of types and print 
 some types.
 
-\subsubsection{S3 object cqp_subcorpus}
+\subsubsection{S3 object cqp\_subcorpus}
 
-An object cqp_subcorpus is created with the function subcorpus().
+An object cqp\_subcorpus is created with the function subcorpus().
 
-\paragraph{print.cqp_subcorpus}
+\paragraph{print.cqp\_subcorpus}
 
 Print a given positional attribute (default: word) in a KWIC (key-word in 
 context) form.
 
-\paragraph{summary.cqp_corpus}
+\paragraph{summary.cqp\_corpus}
 
-\subsubsection{S3 object cqp_flist}
+\subsubsection{S3 object cqp\_flist}
 
-An object cqp_flist hold a frequency list and is created with the function 
+An object cqp\_flist hold a frequency list and is created with the function 
 flist().
 
 A frequency list give the number of tokens for each types of a positional 
 attribute.
 
-\paragraph{print.cqp_corpus}
+\paragraph{print.cqp\_corpus}
 
-\paragraph{summary.cqp_corpus}
+\paragraph{summary.cqp\_corpus}
 
-\subsubsection{S3 object cqp_ftable}
+\subsubsection{S3 object cqp\_ftable}
 
-An object cqp_ftable hold a frequency table and is created with the 
-functions struct2ftable.cqp_corpus() or ftable.cqp_subcorpus().
+An object cqp\_ftable hold a frequency table and is created with the 
+functions struct2ftable.cqp\_corpus() or ftable.cqp\_subcorpus().
 
 A frequency table give the number of tokens for each types of a positional 
 attribute and for a set of sub-parts of the corpus.
 
-\paragraph{print.cqp_corpus}
+\paragraph{print.cqp\_corpus}
 
-\paragraph{summary.cqp_corpus}
+\paragraph{summary.cqp\_corpus}
 
 
 % ----------------------------------------------------------------
