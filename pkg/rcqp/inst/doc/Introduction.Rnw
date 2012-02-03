@@ -1,3 +1,20 @@
+%%% ===========================================================================
+%%% File: "configure.ac"
+%%%                        Created: 2012-02-03 14:37:33
+%%%              Last modification: 2012-02-03 14:37:34
+%%% Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+%%%          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+%%% This is part of the R package 'rcqp'.
+%%% ===========================================================================
+
+% % Vignette meta-information
+% % -------------------------
+%\VignetteIndexEntry{An R Package for plotting conic curves}
+%\VignetteDepends{conics}
+%\VignetteKeywords{conic, plot, matrix}
+%\VignettePackage{conics}
+
+
 \documentclass{article}
 \SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=5,height=3,strip.white=TRUE,keep.source=TRUE}
 \title{Introduction to the rcqp package}
