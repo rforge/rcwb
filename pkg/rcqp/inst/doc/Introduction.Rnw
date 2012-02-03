@@ -1,7 +1,7 @@
 \documentclass{article}
 \SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=5,height=3,strip.white=TRUE,keep.source=TRUE}
 \title{Introduction to the rcqp package}
-\author{Bernard Desgraupes and Sylvain Loiseau\\<bdesgraupes@orange.fr>, <sylvain.loiseau@univ-paris13.fr>}
+\author{Bernard Desgraupes and Sylvain Loiseau\\<bernard.desgraupes@u-paris10.fr>, <sylvain.loiseau@univ-paris13.fr>}
 \date{\today}
 \begin{document}
 \maketitle

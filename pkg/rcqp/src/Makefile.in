@@ -25,6 +25,10 @@ RCQP_C_SRC := rcqpCommands.c rcqpUtils.c
 
 RCQP_C_OBJ := $(RCQP_C_SRC:.c=.o)
 
+RCQP_VIGNETTE_RNW := Introduction.Rnw
+RCQP_VIGNETTE_TEX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
+RCQP_VIGNETTE_PDF :=  $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
+
 
 # Substitutable variables
 # -----------------------
@@ -72,4 +76,12 @@ clean:
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl clean
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp clean
 	rm -f *.o *.so *.mod
+	cd ../inst/doc/; rm -f *.tex *.pdf *.aux *.log
+
+
+vignette:
+	cd ../inst/doc; \
+	rm -f ${RCQP_VIGNETTE_TEX}; \
+	echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
+	pdflatex ${RCQP_VIGNETTE_TEX}
 
