@@ -77,7 +77,21 @@ void rcqp_send_error()
  * 
  * "rcqp_error_code()" --
  * 
- * 
+ * CQI_ERROR_GENERAL_ERROR          	0x0201	513
+ * CQI_ERROR_CONNECT_REFUSED        	0x0202	514
+ * CQI_ERROR_USER_ABORT             	0x0203	515
+ * CQI_ERROR_SYNTAX_ERROR           	0x0204	516
+ * CQI_CL_ERROR_NO_SUCH_ATTRIBUTE   	0x0401	1025
+ * CQI_CL_ERROR_WRONG_ATTRIBUTE_TYPE	0x0402	1026
+ * CQI_CL_ERROR_OUT_OF_RANGE        	0x0403	1027
+ * CQI_CL_ERROR_REGEX               	0x0404	1028
+ * CQI_CL_ERROR_CORPUS_ACCESS       	0x0405	1029
+ * CQI_CL_ERROR_OUT_OF_MEMORY       	0x0406	1030
+ * CQI_CL_ERROR_INTERNAL            	0x0407	1031
+ * CQI_CQP_ERROR_GENERAL            	0x0501	1281
+ * CQI_CQP_ERROR_NO_SUCH_CORPUS     	0x0502	1282
+ * CQI_CQP_ERROR_INVALID_FIELD      	0x0503	1283
+ * CQI_CQP_ERROR_OUT_OF_RANGE       	0x0504	1284
  * 
  * ------------------------------------------------------------------------
  */
