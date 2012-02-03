@@ -9,5 +9,5 @@ Description: implements Corpus Query Protocol functions based on the CWB softwar
 License: GPL (>= 2)
 Lazyload: yes
 URL: http://www.r-project.org
-Collate: main.R zzz.R post-install.R
+Collate: main.R zzz.R post-install.R gui_cqp.R kwic.R s3.R shell.R
 Encoding: latin1
