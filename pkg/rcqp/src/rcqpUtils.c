@@ -84,10 +84,55 @@ void rcqp_send_error()
 void rcqp_error_code(int inCode)
 {
 	if (inCode != 0) {
-		error("cqp returned error code #%d\n", inCode);
+		switch (inCode) {
+			case 516:
+			error("Syntax error\n");
+			break;
+			
+			case 1025:
+			error("Error: no such attribute\n");
+			break;
+			
+			case 1026:
+			error("Error: wrong attribute type\n");
+			break;
+			
+			case 1028:
+			error("Regex error\n");
+			break;
+			
+			case 1029:
+			error("Error corpus access\n");
+			break;
+			
+			case 1030:
+			error("Error: out of memory\n");
+			break;
+			
+			case 1031:
+			error("Internal error\n");
+			break;
+			
+			case 1282:
+			error("Error: no such corpus\n");
+			break;
+			
+			case 1283:
+			error("Error: invalid field\n");
+			break;
+			
+			case 1027:
+			case 1284:
+			error("Error: out of range\n");
+			break;
+			
+			default:
+			error("cqp returned error code #%d\n", inCode);
+			break;
+			
+		}
 	} 
 }
-
 
 
 /* 
