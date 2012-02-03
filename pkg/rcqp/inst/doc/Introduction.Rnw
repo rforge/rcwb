@@ -1,20 +1,3 @@
-%%% ===========================================================================
-%%% File: "configure.ac"
-%%%                        Created: 2012-02-03 14:37:33
-%%%              Last modification: 2012-02-03 14:37:34
-%%% Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
-%%%          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
-%%% This is part of the R package 'rcqp'.
-%%% ===========================================================================
-
-% % Vignette meta-information
-% % -------------------------
-%\VignetteIndexEntry{An R Package for plotting conic curves}
-%\VignetteDepends{conics}
-%\VignetteKeywords{conic, plot, matrix}
-%\VignettePackage{conics}
-
-
 \documentclass{article}
 \SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=5,height=3,strip.white=TRUE,keep.source=TRUE}
 \title{Introduction to the rcqp package}
@@ -61,7 +44,7 @@ install CWB;
 In rcqp, four different ways of calling CWB are provided:
 
 \begin{itemize}
-\item You can call CWB through the "cqi_\ast" set of functions. These 
+\item You can call CWB through the "cqi\_*" set of functions. These 
 functions implement an interface defined by CWB (CQi). 
 \item You can use a set of more "high-level" functions for producing 
 quantitative structures (frequency list, cross-tabulated frequency table), 
@@ -79,7 +62,7 @@ displaying result as a kwic list.
 \section{The CQi set of functions}
 \label{sec:cqi}
 
-All functions are prefixed with cqi_.
+All functions are prefixed with cqi\_.
 
 \subsection{A sample session}
 
@@ -127,22 +110,28 @@ data.frame(cqi_id2str("DICKENS.word", flist[,1]), flist[,2])
 
 \subsection{Data-model}
 
-In order to get a picture of the data model used into CWB, see section 1.2 
+In order to get information on the data model used into CWB, see section 1.2 
 of the \textit{CQP Query Language Tutorial}, Stefan Evert \& The OCWB 
 Development Team, 17 February 2010.
 
-A corpus is divided in position (rank), each token having a position. 
-A corpus may be represented in an array. Here are the first 20 positions 
-of the DICKENS demo corpus.
+The fundamental information is the position, or rank, of each token: each token
+have a position, 0-based, called \textbf{cpos}.
+
+A corpus may be represented as an array where each line represent a token.
+Here are the first 20 lines of such an array representing the DICKENS demo 
+corpus.
 
 <<cqi_corpus_representation, echo=FALSE>>=
 c <- corpus("DICKENS")
 c
 @
 
-First, they are several columns corresponding to "structural attribute", 
-i.e. span of tokens like XML tag surrounding tokens, called regions. Each 
-region for each structural attribute as an id. While the id is the 
+Each column represent an \textbf{attribute}.
+
+The first n columns represent "\textbf{structural attribute}": this type of 
+attribute define spans of consecutive tokens (like XML tag surrounding 
+tokens), called regions. In each structural attribute, each region
+as an id, called \textbf{struc}. While the id is the 
 same in a column, the corresponding tokens belong to the same region. 
 Tokens between two regions in a given structural attributes have a value of 
 "-1".
@@ -154,7 +143,7 @@ each possible form.
 
 Moreover, certains structural attribute have a string value associated 
 with each id (region) (while each id is unique, string value can be repeated). For 
-instance, the np_h structural attribute, giving the head of the noun 
+instance, the np\_h structural attribute, giving the head of the noun 
 phrase, hold a string value.
 
 In CQi function names, the following convention are used:
