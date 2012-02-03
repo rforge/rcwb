@@ -752,9 +752,8 @@ SEXP rcqpCmd_cpos2lbound(SEXP inAttribute, SEXP inCpos)
 					struc = -1;
 				}
 			}
+			INTEGER(result)[i] = struc;
 		}
-		
-		INTEGER(result)[i] = struc;
 	}
 	
 	UNPROTECT(3);
@@ -809,9 +808,8 @@ SEXP rcqpCmd_cpos2rbound(SEXP inAttribute, SEXP inCpos)
 					struc = -1;
 				}
 			}
+			INTEGER(result)[i] = struc;
 		}
-		
-		INTEGER(result)[i] = struc;
 	}
 	
 	UNPROTECT(3);
