@@ -26,7 +26,22 @@ export(
 	"cqi_struc2cpos",
 	"cqi_struc2str",
 	"cqi_structural_attribute_has_values",
-	"cqi_subcorpus_size"
+	"cqi_subcorpus_size",
+
+	"gui_cqp",
+
+	"corpus",
+	"flist",
+	"ftable.cqp_subcorpus",
+	"kwic.cqp_subcorpus",
+	"print.cqp_corpus",
+	"print.cqp_subcorpus",
+	"struct2ftable.cqp_corpus",
+	"subcorpus",
+	"summary.cqp_corpus",
+	"summary.cqp_subcorpus",
+	"summary.flist",
+	"summary.ftable" 
 )
 
 # 	"cqi_charset",
