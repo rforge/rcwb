@@ -77,6 +77,8 @@ Conversion functions:
 }
 
 \examples{
+
+\dontrun{
 cqi_query("DICKENS","Foo","\"eas(y|ier|iest)\";")
 cqi_dump_subcorpus("DICKENS:Foo",0,10)
 cqi_drop_subcorpus("DICKENS:Foo")
@@ -88,6 +90,7 @@ cqi_drop_subcorpus("DICKENS:Go")
 cqi_query("DICKENS","NP","[pos=\"DT\"] @[pos=\"JJ\"]? [pos=\"NNS?\"];")
 cqi_dump_subcorpus("DICKENS:NP",0,10)
 cqi_drop_subcorpus("DICKENS:NP")
+}
 }
 
 \keyword{corpus, query}

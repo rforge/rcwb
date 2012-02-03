@@ -68,6 +68,7 @@
 }
 
 \examples{
+\dontrun{
 cqi_query("DICKENS","Foo","\"eas(y|ier|iest)\";")
 cpos <- cqi_dump_subcorpus("DICKENS:Foo")[1,1]
 
@@ -106,7 +107,7 @@ cqi_id2freq("DICKENS.word", wids)
 
 lids <- unique(cqi_cpos2id("DICKENS.lemma", cpos))
 cqi_id2freq("DICKENS.lemma", lids)
-
+}
 }
 
 \keyword{corpus position}

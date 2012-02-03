@@ -49,6 +49,8 @@
 }
 
 \examples{
+
+\dontrun{
 rgx <- "eas(y|ier|iest)"
 wids <- cqi_regex2id("DICKENS.word", rgx)
 cqi_id2str("DICKENS.word", wids)
@@ -60,6 +62,7 @@ cqi_id2str("DICKENS.pos", pids)
 rgx <- "V[aeiou].+e"
 lids <- cqi_regex2id("DICKENS.lemma", rgx)
 cqi_id2str("DICKENS.lemma", lids)
+}
 }
 
 \keyword{corpus position}

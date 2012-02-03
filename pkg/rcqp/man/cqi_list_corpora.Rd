@@ -48,7 +48,9 @@
 }
 
 \examples{
+\dontrun{
 cqi_list_corpora()
+}
 }
 
 \keyword{corpus, registry}

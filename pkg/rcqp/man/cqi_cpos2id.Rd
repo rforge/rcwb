@@ -77,6 +77,7 @@
 }
 
 \examples{
+\dontrun{
 cqi_query("DICKENS","Foo","\"eas(y|ier|iest)\";")
 cpos <- cqi_dump_subcorpus("DICKENS:Foo")[1:20,1]
 
@@ -95,6 +96,7 @@ cqi_cpos2lbound("DICKENS.chapter", cpos)
 cqi_cpos2rbound("DICKENS.chapter", cpos)
 
 cqi_cpos2struc("DICKENS.chapter", cpos)
+}
 }
 
 \keyword{corpus positions}

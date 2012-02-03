@@ -86,6 +86,7 @@ the second anchor and the third column gives the frequency of the co-occurrences
 }
 
 \examples{
+\dontrun{
 cqi_query("DICKENS","Go","[lemma=\"go\"] \"and\" [];")
 m <- cqi_fdist1("DICKENS:Go","matchend","pos")
 cqi_id2str("DICKENS.pos", m[,1])
@@ -96,6 +97,7 @@ cqi_fdist1("DICKENS:NP","match","lemma", cutoff=2000, offset=-1)
 
 cqi_fdist2("DICKENS:Go","matchend", "pos", "matchend","lemma")
 cqi_fdist2("DICKENS:NP","target", "lemma", "matchend","word", cutoff=300)
+}
 }
 
 \keyword{frequency}

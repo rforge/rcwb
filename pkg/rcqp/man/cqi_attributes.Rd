@@ -48,9 +48,11 @@
 }
 
 \examples{
+\dontrun{
 cqi_attributes("DICKENS", "p")
 cqi_attributes("DICKENS", "s")
 cqi_attributes("DICKENS", "a")
+}
 }
 
 \keyword{corpus, attributes}

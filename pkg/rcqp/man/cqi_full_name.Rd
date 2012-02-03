@@ -42,7 +42,9 @@
 }
 
 \examples{
+\dontrun{
 cqi_full_name("DICKENS")
+}
 }
 
 \keyword{corpus}

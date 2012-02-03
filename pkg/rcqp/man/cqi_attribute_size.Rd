@@ -78,6 +78,7 @@ value of a positionnal attribute with value, consider using
 }
 
 \examples{
+\dontrun{
 cqi_structural_attribute_has_values("DICKENS.file")
 cqi_structural_attribute_has_values("DICKENS.file_name")
 cqi_structural_attribute_has_values("DICKENS.chapter")
@@ -96,7 +97,7 @@ cqi_attribute_size("DICKENS.word")
 cqi_attribute_size("DICKENS.book")
 cqi_attribute_size("DICKENS.file")
 cqi_attribute_size("DICKENS.chapter")
-
+}
 }
 
 \keyword{attribute}

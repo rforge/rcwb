@@ -66,10 +66,12 @@
 }
 
 \examples{
+\dontrun{
 cqi_query("DICKENS","Foo","\"interesting\";")
 cqi_subcorpus_size("DICKENS:Foo")
 cqi_dump_subcorpus("DICKENS:Foo")
 cqi_dump_subcorpus("DICKENS:Foo",4,10)
+}
 }
 
 \keyword{subcorpus, indices}

@@ -66,12 +66,15 @@
 }
 
 \examples{
+
+\dontrun{
 for (i in 0:10) {
 	print(cqi_struc2cpos("DICKENS.novel", i))
 }
 
 cqi_struc2str("DICKENS.novel_title", 1:10)
 cqi_struc2str("DICKENS.chapter_title", 1:10)
+}
 }
 
 \keyword{corpus position}

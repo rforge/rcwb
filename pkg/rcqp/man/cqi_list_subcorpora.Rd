@@ -44,9 +44,11 @@
 }
 
 \examples{
+\dontrun{
 cqi_query("DICKENS","Foo","\"interesting\"")
 # The returned string should contain at least "Last" and "Foo"
 cqi_list_subcorpora("DICKENS")
+}
 }
 
 \keyword{corpus, subcorpus}
