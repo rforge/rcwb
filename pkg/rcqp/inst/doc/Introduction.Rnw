@@ -162,7 +162,7 @@ of a structural attribute having a value.
 For more information about the actual use of this function, see their help 
 page.
 
-\paragraph{cqi_attribute_size}
+\paragraph{cqi\_attribute\_size}
 
 indicates number of actual elements (number of occurrences).
 \begin{itemize}
