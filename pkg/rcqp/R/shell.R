@@ -1,5 +1,5 @@
 # ===========================================================================
-# File: "s3.R"
+# File: "shell.R"
 #                        Created: 2012-01-23 07:50:09
 #              Last modification: 2012-01-23 07:50:09
 # Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
@@ -114,24 +114,9 @@ print_kwic_line <- function(match, matchend, corpus) {
 }
 
 
-
-# convert range of IDs to list of tokens with <nc>..</nc> tags inserted if available
-# @tokens = range_to_string($corpus, @cpos);
 range_to_string <- function(corpus, cpos) {
   word = cqi_cpos2str(paste(corpus, "word", sep="."), cpos);
-  #if ($HaveNCAtt) {
-  #  my $nc = "$corpus.np";
-  #  my @lb = cqi_cpos2lbound($nc, @_);
-  #  for (my $i = 0; $i < @word; $i++) {
-  #    $word[$i] = "[".$word[$i]
-  #      if $_[$i] == $lb[$i];
-  #  }
-  #  my @rb = cqi_cpos2rbound($nc, @_);
-  #  for (my $i = 0; $i < @word; $i++) {
-  #    $word[$i] = $word[$i]."]"
-  #      if $cpos[$i] == $rb[$i];
-  #  }
-  #}
+
   return(word);
 }
 
