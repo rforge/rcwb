@@ -155,6 +155,8 @@ summary.cqp_corpus <- function(x) {
  # ------------------------------------------------------------------------
  ##
 print.cqp_corpus <- function(x, from=0, to=20) {
+	# TODO 0-based ou 1-based ?
+	max <- cqi_attribute_size(paste(attr(x, "cqp_corpus.name"), "word", sep="."));
 	if (any(c(from, to) > max)) {
 		stop("Token ids cannot be greater than corpus size");
 	}
@@ -201,7 +203,7 @@ print.cqp_corpus <- function(x, from=0, to=20) {
  ##
 write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
-	size <- cqi_corpus_size(cqp_corpus.name);
+	size <- cqi_attribute_size(paste(cqp_corpus.name, "word", sep="."));
 	# TODO
 	mat <- .cqp_corpus2matrix(corpus, 0, size);
 	write.table(mat, file=filename, ...);
@@ -266,12 +268,12 @@ region_sizes.cqp_corpus <- function(corpus, structural_attribute) {
 	
 	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
 
-	att <- cqi_attributes(cqp_corpus.name, "s");
+	atts <- cqi_attributes(cqp_corpus.name, "s");
 	if (! structural_attribute %in% atts) {
 		stop("structural_attribute is not a structural attribute on this corpus");
 	}
 
-	qualified_attribute <- paste(cqp_corpus.name, attribute, sep=".");
+	qualified_attribute <- paste(cqp_corpus.name, structural_attribute, sep=".");
 	att_size <- cqi_attribute_size(qualified_attribute);
 	return(
 		sapply(
@@ -340,16 +342,16 @@ summary.cqp_subcorpus <- function(x) {
 	if (class(x) != "cqp_subcorpus") {
 		stop("x must be cqp_subcorpus object");
 	}
-  parent.corpus <- attr(x, "parent.cqp_corpus.name");
-  cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-  query <- attr(x, "query");
-
-  size <- cqi_subcorpus_size(paste(parent.corpus, cqp_subcorpus.name, sep=":"));
-
-  cat(paste("Parent corpus name:", parent.corpus, "\n"));
-  cat(paste("Number of matches:", size, "\n"));
-  cat(paste("Query:", query, "\n"));
-  # TODO : some samples of the first lines
+	parent.corpus <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	query <- attr(x, "query");
+	
+	size <- cqi_subcorpus_size(paste(parent.corpus, cqp_subcorpus.name, sep=":"));
+	
+	cat(paste("Parent corpus name:", parent.corpus, "\n"));
+	cat(paste("Number of matches:", size, "\n"));
+	cat(paste("Query:", query, "\n"));
+	# TODO : some samples of the first lines
 }
 
 
@@ -366,7 +368,7 @@ summary.cqp_subcorpus <- function(x) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=20) {
+print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10) {
 	if (class(x) != "cqp_subcorpus") {
 		stop("x must be cqp_subcorpus object");
 	}
@@ -375,19 +377,17 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=20) {
 	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
 	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
 
-	if (any(c(from, to) < 0)) {
-		stop("Token ids cannot be < 0");
+	size <- cqi_subcorpus_size(qualified.sub_corpus.name);
+	# TODO : -1 ?
+	if (to > size) {
+		stop(paste("Number of hit:", size, "; max lines requested:", to));
 	}
-	# TODO
-	max <- cqi_subcorpus_size(qualified.sub_corpus.name) - 1;
-	if (any(c(from, to) > max)) {
-		stop("Token ids cannot be greater than corpus size");
+	
+	k <- kwic.cqp_subcorpus(x);
+	l <- print(k, 	from=from, to=to);
+	for(i in l) {
+		cat(paste(i, "\n", sep=""));
 	}
-	if (from >= to) {
-		stop("'from' must be lesser than 'to'");
-	}
-
-	# TODO : utiliser kwic.
 }
 
 
@@ -419,6 +419,11 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=20) {
 # S3 object cqp_flist
 ###########################################################################
 
+
+setGeneric("flist", function(x) standardGeneric("flist"));
+
+
+
 flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
 	if (class(corpus) != "cqp_corpus") {
 		stop("corpus: not a corpus object");
@@ -430,9 +435,9 @@ flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
 	
 	qualified.attribute.name <- paste(cqp_corpus.name, attribute, sep=".");
 
-	if (attribute %in% positional)Ê{
+	if (attribute %in% positional) {
 		# TODO : 0-based ou 1-based
-		max.id - 1 <- cqi_lexicon_size(qualified.attribute.name);
+		max.id <- cqi_lexicon_size(qualified.attribute.name) - 1;
 		ids <- 0:max.id;
 		flist <- cqi_id2freq(qualified.attribute.name, ids);
 		str <- cqi_id2str(qualified.attribute.name, ids);
@@ -461,7 +466,7 @@ flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
 
    class(flist) <- "cqp_flist";
 
-   attr(flist, "parent.corpus") <- corpus;
+   attr(flist, "cqp_corpus.name") <- cqp_corpus.name;
    attr(flist, "attribute") <- attribute;
    return(flist);	
 }
@@ -479,8 +484,6 @@ flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
  # 
  # Example:
  #              flist(my_sub_corpus, "lemma", "match", 4, 4)
- # 
- # If the object is not a subcorpus, the arguments "field", "left.context" and "right.context" have no use.
  #
  # "left.context" and "right.context" define a span around the target word.
  #
@@ -488,44 +491,71 @@ flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
  # with all the word contained between match and matchend.
  # ------------------------------------------------------------------------
  ##
-flist.cqp_subcorpus <- function(subcorpus, attribute, field, left.context=0, right.context=0, cutoff=0, offset=0) {
+flist.cqp_subcorpus <- function(subcorpus, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0) {
 
-	if (class(corpus) != "cqp_subcorpus") {
+	if (class(subcorpus) != "cqp_subcorpus") {
 		stop("subcorpus is not an S3 object of class cqp_subcorpus");
 	}
 	
-	cqp_subcorpus.name <- attr(corpus, "cqp_subcorpus.name");
-	parent.cqp_corpus.name <- attr(corpus, "parent.cqp_corpus.name");
-	if (length(field) == 1 & left.context == 0 & right.context == 0) {
-		flist <- cqi_fdist1(cqp_subcorpus.name, field, attribute, cutoff, offset);
+	if (length(anchor) > 2 || length(anchor) < 1) {
+		stop("anchor must be a vector of lenth 1 or 2");
+	}
+	
+	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
+	parent.cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");
+	qualified.subcorpus.name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+	qualified.attribute <- paste(parent.cqp_corpus.name, attribute, sep=".");
+
+	flist <- 0;
+	
+	if (length(anchor) == 1 & left.context == 0 & right.context == 0) {
+ 		print(qualified.subcorpus.name);
+ 		print(anchor);
+ 		print(attribute);
+ 		print(cutoff);
+ 		print(offset);
+		print(qualified.subcorpus.name);
+		flist <- cqi_fdist1(qualified.subcorpus.name, anchor, attribute, cutoff=cutoff, offset=offset);
+		
 		names(flist) <- cqi_cpos2str(
 			paste(parent.cqp_corpus.name, attribute, sep="."),
 			flist[,1]
 		);
 	} else {
 		dump <- cqi_dump_subcorpus(paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":"));
-		# TODO check
-		colnames(dump) <- c("match", "matchend", "anchor", "target");
-		left.cpos <- dump[,field[1]];
+		colnames(dump) <- c("match", "matchend", "target", "keyword");
+		left.cpos <- dump[,anchor[1]];
+		left.cpos <- left.cpos + offset;
 		if (left.context > 0) {
 			left.cpos <- left.cpos - left.context;
 		}
-		right.field <- ifelse(length(field) > 1, field[2], field[1])
-		right.cpos <- dump[,right.field] + right.context;
+		right.anchor <- ifelse(length(anchor) > 1, anchor[2], anchor[1])
+		right.cpos <- dump[,right.anchor] + right.context;
 		
-		# TODO TODO TODO
+		#nbr_tokens <- sum(right.cpos-left.cpos);
+		tokens <- sapply(
+			1:length(left.cpos),
+			function(x) {
+				cqi_cpos2id(qualified.attribute, left.cpos[x]:right.cpos[x]);
+			}
+		);
+		tokens <- as.numeric(tokens);
 		
-		
-		# manipuler les cpos/id jusqu'au bout (cpos, puis cpos2id, puis table(), puis les id2str.
+		flist <- table(tokens);
+		ids <- as.numeric(names(flist));
+		names(flist) <- cqi_id2str(qualified.attribute, ids);
 	}		
 	
    class(flist) <- "cqp_flist";
 
-   attr(flist, "parent.corpus") <- corpus;
-   attr(flist, "field") <- field;
+   attr(flist, "cqp_subcorpus.name") <- cqp_subcorpus.name;   
+   attr(flist, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
+   attr(flist, "anchor") <- anchor;
    attr(flist, "left.context") <- left.context;
    attr(flist, "right.context") <- right.context;
-   
+   attr(flist, "attribute") <- attribute;
+   attr(flist, "offset") <- offset;
+
    return(flist);
 }
 
@@ -544,11 +574,38 @@ flist.cqp_subcorpus <- function(subcorpus, attribute, field, left.context=0, rig
  #
  # ------------------------------------------------------------------------
  ##
-summary.flist <- function(x) {
+summary.cqp_flist <- function(x) {
 
-  # TODO : give parent (sub)corpus, parameters, number of tokens, number of types. 
-  stop("Not implemented yet.");
+	if (class(x) != "cqp_flist") {
+		stop("x must be cqp_flist object");
+	}
 
+	cat("A frequency list\n");
+	cat(paste("  Number of tokens:", sum(x), "\n"));
+	cat(paste("  Number of types:", length(x), "\n"));
+
+	# a cqp_flist made with a corpus
+	cqp_corpus.name <- attr(flist, "cqp_corpus.name");
+	if (!is.null(cqp_corpus.name)) {
+		attribute <- attr(flist, "attribute");
+		cat(paste("  Corpus:", cqp_corpus.name, "\n"));
+		cat(paste("  Attribute:", attribute, "\n"));
+	} else {	
+		cqp_subcorpus.name     <- attr(flist, "cqp_subcorpus.name");   
+		parent.cqp_corpus.name <- attr(flist, "parent.cqp_corpus.name");
+		anchor                 <- attr(flist, "anchor");
+		left.context           <- attr(flist, "left.context");
+		right.context          <- attr(flist, "right.context");
+		attribute              <- attr(flist, "attribute");
+		offset                 <- attr(flist, "offset");
+		cat(paste("  Subcorpus:", cqp_subcorpus.name, "\n"));
+		cat(paste("  Parent corpus:", parent.cqp_corpus.name, "\n"));
+		cat(paste("  anchor:", anchor, "\n"));
+		cat(paste("  left.context:", left.context, "\n"));
+		cat(paste("  right.context:", right.context, "\n"));
+		cat(paste("  attribute:", attribute, "\n"));
+		cat(paste("  offset:", offset, "\n"));
+	}
 }
 
 
@@ -559,6 +616,9 @@ summary.flist <- function(x) {
 ####
 #### cross tabulation plut™t ; en prenant en compte d'autres cas de figure : deux structural attributes avec value par exemple.
 ####
+
+
+setGeneric("ftable", function(x) standardGeneric("ftable"));
 
 
 ## 
@@ -578,7 +638,7 @@ summary.flist <- function(x) {
  # 
  # ------------------------------------------------------------------------
  ##
-struct2ftable.cqp_corpus <- function(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL) {
+ftable.cqp_corpus <- function(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL) {
 
 	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
 	if (! structure %in% cqi_attributes(cqp_corpus.name, "s")) {
@@ -696,57 +756,51 @@ summary.ftable <- function(x) {
 
 # cqi_query("DICKENS", "Foo", "\"the\"");
 
-kwic <- function(subcorpus, attribute, left.span, right.span) {
-	cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");	
-    cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
-	qualified.cqp_subcorpus.name <- paste(cqp_corpus.name, cqp_subcorpus.name, sep=":");
-	
-	if (cqi_subcorpus_size(qualified.cqp_subcorpus.name) == 0) {
-		stop("cannot create KWIC for zero-length subcorpus");
-	}
-	
-	d <- cqi_dump_subcorpus(qualified.cqp_subcorpus.name);
-	l <- .cpos2kwic.list(cqp_corpus.name, d[,1], d[,2], attribute, left.span, right.span);
-	class(l) <- "kwic";
-	return(l);
-}
-
-
-.cpos2kwic.list <- function(cqp_corpus.name, match, matchend, attribute, left.span, right.span) {
-	if (length(match) != length(matchend)) {
-		stop("match and matchend must match");
-	}
-	
-	kwic <- vector(length(match), mode="list");
-	for (i in 1:length(match)) {
-		# TODO : attention ˆ ne pas aller < 0 ou > size-1
-		lb <- match[i] - left.span;
-		rb <- matchend[i] + right.span;
-		
-		lc = .range_to_string_vector(cqp_corpus.name, attribute, lb:(match-1));
-		mat = .range_to_string_vector(cqp_corpus.name, attribute, match:matchend);
-		rc = .range_to_string_vector(cqp_corpus.name, attribute, (matchend+1):rb);
-		kwic[[i]] <- list(lc, mat, rc);
-	}
-	
-	return(kwic);
-	# 	cat(sprintf("%10d ", match));
-	#   cat(sprintf("%40s", paste(lc, collapse=" ")));
-	#   cat(sprintf("%10s", paste(" << ",paste(mat, collapse=" ")," >> ", sep="")));
-	#   cat(sprintf("%-30s", paste(rc, collapse=" ")));
-	#   cat("\n");
-}
-
-.range_to_string_vector <- function(corpus, attribute, cpos) {
-	word = cqi_cpos2str(paste(corpus, attribute, sep="."), cpos);
-	return(word);
-}
-
-
-
-###########################################################################
-# private
-###########################################################################
+# kwic <- function(subcorpus, attribute="word", left.span=5, right.span=5) {
+# 	cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");	
+#     cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
+# 	qualified.cqp_subcorpus.name <- paste(cqp_corpus.name, cqp_subcorpus.name, sep=":");
+# 	
+# 	if (cqi_subcorpus_size(qualified.cqp_subcorpus.name) == 0) {
+# 		stop("cannot create KWIC for zero-length subcorpus");
+# 	}
+# 	
+# 	d <- cqi_dump_subcorpus(qualified.cqp_subcorpus.name);
+# 	l <- .cpos2kwic.list(cqp_corpus.name, d[,1], d[,2], attribute, left.span, right.span);
+# 	class(l) <- "kwic";
+# 	return(l);
+# }
+# 
+# 
+# .cpos2kwic.list <- function(cqp_corpus.name, match, matchend, attribute, left.span, right.span) {
+# 	if (length(match) != length(matchend)) {
+# 		stop("match and matchend must match");
+# 	}
+# 	
+# 	kwic <- vector(length(match), mode="list");
+# 	for (i in 1:length(match)) {
+# 		# TODO : attention ˆ ne pas aller < 0 ou > size-1
+# 		lb <- match[i] - left.span;
+# 		rb <- matchend[i] + right.span;
+# 		
+# 		lc = .range_to_string_vector(cqp_corpus.name, attribute, lb:(match-1));
+# 		mat = .range_to_string_vector(cqp_corpus.name, attribute, match:matchend);
+# 		rc = .range_to_string_vector(cqp_corpus.name, attribute, (matchend+1):rb);
+# 		kwic[[i]] <- list(lc, mat, rc);
+# 	}
+# 	
+# 	return(kwic);
+# 	# 	cat(sprintf("%10d ", match));
+# 	#   cat(sprintf("%40s", paste(lc, collapse=" ")));
+# 	#   cat(sprintf("%10s", paste(" << ",paste(mat, collapse=" ")," >> ", sep="")));
+# 	#   cat(sprintf("%-30s", paste(rc, collapse=" ")));
+# 	#   cat("\n");
+# }
+# 
+# .range_to_string_vector <- function(corpus, attribute, cpos) {
+# 	word = cqi_cpos2str(paste(corpus, attribute, sep="."), cpos);
+# 	return(word);
+# }
 
 
  
@@ -784,18 +838,19 @@ kwic <- function(subcorpus, attribute, left.span, right.span) {
 # }
 # 
 
+setGeneric("kwic", function(x) standardGeneric("kwic"));
 
 kwic.cqp_subcorpus <- function(subcorpus,
 	right.context=5,
 	left.context=5,
-	sort.key="matchend",
-	sort.key.attribute="word",
-	sort.key.offset=1
+	sort.anchor="matchend",
+	sort.anchor.attribute="word",
+	sort.anchor.offset=1
 ) {
 	m <- .get.kwic.matrix(subcorpus, right.context, left.context);
 	
 	parent.cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");
-	s <- .sort.kwic(parent.cqp_corpus.name, m, sort.key, sort.key.attribute, sort.key.offset);
+	s <- .sort.kwic(parent.cqp_corpus.name, m, sort.anchor, sort.anchor.attribute, sort.anchor.offset);
 
 	attr(s, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
 	attr(s, "corpus") <- attr(subcorpus, "corpus");
@@ -818,18 +873,18 @@ kwic.cqp_subcorpus <- function(subcorpus,
 
 	dump <- cbind(dump, left.boundary, right.boundary);
 	# TODO : anchor?
-	colnames(dump) <- c("match", "matchend", "anchor", "keyword", "left", "right");
+	colnames(dump) <- c("match", "matchend", "target", "keyword", "left", "right");
 	return(dump);
 }
 
-.sort.kwic <- function(corpus.name, m, sort.key, sort.key.attribute, sort.key.offset) {
+.sort.kwic <- function(corpus.name, m, sort.anchor, sort.anchor.attribute, sort.anchor.offset) {
 	# attention au -1
-	cpos <- m[, sort.key];
-	if (sort.key.offset != 0) {
-		cpos + sort.key.offset;
+	cpos <- m[, sort.anchor];
+	if (sort.anchor.offset != 0) {
+		cpos + sort.anchor.offset;
 	}
 
-	qualified_attribute <- paste(corpus.name, sort.key.attribute, sep=".");
+	qualified_attribute <- paste(corpus.name, sort.anchor.attribute, sep=".");
 	str <- cqi_cpos2str(qualified_attribute, cpos);
 	i <- order(str);
 	
@@ -839,22 +894,25 @@ kwic.cqp_subcorpus <- function(subcorpus,
 
 print.kwic <- function(kwic,
 	print.function=function(x) cqi_cpos2str(paste(attr(kwic, "parent.cqp_corpus.name"), "word", sep="."), x),
+# TODO
 	from=1,
 	to=20,
 	left.separator=" <<",
 	right.separator=">> "
-    ) {		
+    ) {
+		
 		if (from < 0 || to-from < 0 || to >= nrow(kwic)) {
 			stop("0 <= from < to < nrow(kwic)");
 		}
 		
-	lines <- character(to-from);
-	for (i in 1:(to-from)) {
-		lines[i] <- .do_kwic_line(kwic[from + i,], print.function, left.separator, right.separator);
+		lines <- character(to-from);
+		for (i in 1:(to-from)) {
+			# TODO : offset ?
+			lines[i] <- .do_kwic_line(kwic[from + i,], print.function, left.separator, right.separator);
+		}
+		
+		return(lines);
 	}
-	
-	return(lines);
-}
 
 .do_kwic_line <- function(line, print.function, left.separator, right.separator) {
 	
@@ -872,6 +930,7 @@ print.kwic <- function(kwic,
 #   hit.size <- max(nchar(hit));
 #   right.size <- max(nchar(right));
   
+  # TODO : faire remonter ces paramtres (nombre de char affichŽs).
   format <- paste("%10d %40s%15s%-40s", sep="");
   line <- sprintf(format, line["match"], left, hit, right);
   return(line);
