@@ -1,5 +1,6 @@
 \documentclass{article}
 \SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=5,height=3,strip.white=TRUE,keep.source=TRUE}
+%\VignetteIndexEntry{Introduction to rcqp}
 \usepackage{lmodern}
 
 \title{Introduction to the rcqp package}
@@ -24,7 +25,7 @@ cwb and import cwb output into statistical analyses.
 \section{Introduction}
 \label{sec:Intro}
 
-The CWB (Corpus Workbench) software\footnote{\url{http://cwb.sourceforge.net/}} is a
+The CWB (Corpus Workbench) software\footnote{http://cwb.sourceforge.net/} is a
 set of tools for corpus linguistics, providing a powerful indexation and query
 engine for annotated copora. An interactive command line program called CQP
 (corpus query processor) is provided, as well as a client/server 
@@ -160,11 +161,11 @@ In short, in CQi function names, the following convention are used:
 
 \begin{description}
 \item [cpos] a position, or rank, identifying a unique token in the corpus
-\item [id] a numeric code holding for form in a given positional attribute 
+\item [id] an id for a form (type) in the lexicon of a positional attribute 
 lexicon.
-\item [str] the string corresponding to a given id in a positional 
+\item [str] the string corresponding to an id in the lexicon of a positional 
 attribute lexicon 
-\item [struc] a region in a given structural attribute 
+\item [struc] the id of a region in a given structural attribute 
 \end{description}
 
 A subcorpus is created thanks to the \textbf{cqi\_query} function. See 
@@ -172,19 +173,22 @@ A subcorpus is created thanks to the \textbf{cqi\_query} function. See
 Development Team, 17 February 2010, for a definition of the CQP query 
 language.
 
-Subcorpus are collection of tokens matched by the query and identified by 
-their cpos. Since a query may match a sequence of tokens, a subcorpus is a 
-collection of (match, matchend) pairs, where \textbf{match} is the first token 
-matched and \textbf{matchend} the last token matched in the 
-sequence. When only one token is matched, matchend is identical to match.
+A subcorpus is a collection of sequence of tokens matched by the query and
+identified by their cpos. Since a query may match a sequence of tokens, a
+subcorpus is a collection of (match, matchend) pairs, where \textbf{match}
+is the cpos of 
+the first token and \textbf{matchend} the cpos of the last token in the
+sequence matched.
+When only one token is addressed by a query, matchend is identical to match.
 \textbf{match}, \textbf{matchend} (together with two other optionnal pieces of 
 information: \textbf{target} and \textbf{keyword}) are the
-\textbf{fields} available on each hit. 
+\textbf{anchor}s (or sometime \textbf{field}: see cqi\_fdist1 et 2) 
+available on each hit. 
 
 \subsection{Functions}
 \label{sec:cqi-functions}
 
-For more information about the actual use of this function, see their help 
+For more information about the actual use of these functions, see their help 
 page.
 
 \paragraph{cqi\_list\_corpora}
@@ -462,9 +466,9 @@ In the following example, all part-of-speech tag
 
 <<fdist1, echo=TRUE>>=
 cqi_query("DICKENS", "Noun", "[pos=\"N.*\"]")
-fdist <- cqi_fdist1("DICKENS:Npr", "match", "pos")
-cqi_id2str("DICKENS.pos", fdist1[,1])
-fdist1[,2]
+fdist <- cqi_fdist1("DICKENS:Noun", "match", "pos")
+cqi_id2str("DICKENS.pos", fdist[,1])
+fdist[,2]
 @
 
 \paragraph{cqi\_fdist2}
@@ -521,38 +525,109 @@ Give the number of tokens of a corpus, list all the attributes
 structural attribute having a value) give the number of types and print 
 some types.
 
+\paragraph{write.cqp\_corpus}
+
+\paragraph{region\_sizes.cqp\_corpus}
+
+Create a variable containing the size (in tokens) of a given structural 
+attribute.
+
+<<region_size_session, fig=TRUE, echo=TRUE>>=
+c <- corpus("DICKENS");
+sentences <- region_sizes.cqp_corpus(c, "s");
+hist(sentences);
+@
+
+% ======================================================
+
 \subsubsection{S3 object cqp\_subcorpus}
 
-An object cqp\_subcorpus is created with the function subcorpus().
+<<subcorpus_session, echo=TRUE>>=
+
+c <- corpus("DICKENS");
+sc <- subcorpus(c, "\"interesting\" \"to\" @ []");
+sc
+#
+# if you want to change the lines printed:
+print(sc, from=2, to=5);
+#
+# if you want more access on the kwic presentation
+# (sorting, printing), you can construct a kwic object):
+k <- kwic.cqp_subcorpus(sc, sort.anchor="target", sort.anchor.attribute="pos")
+print(k, from=5, to=10)
+@
+
+An object \texttt{cqp\_subcorpus}
+is created with the function \texttt{subcorpus()}. In the CWB 
+terminology, a subcorpus is the set of the sequences matched by a query.
 
 \paragraph{print.cqp\_subcorpus}
 
-Print a given positional attribute (default: word) in a KWIC (key-word in 
-context) form.
+Print a KWIC (key-word in context) form.
 
 \paragraph{summary.cqp\_subcorpus}
 
+Get a kwic summary of the size and content of the subcorpus.
+
 \subsubsection{S3 object cqp\_flist}
 
-An object cqp\_flist hold a frequency list and is created with the function 
-flist().
+An object \texttt{cqp\_flist} hold a frequency list and is created with the function 
+\texttt{flist()}.
 
-A frequency list give the number of tokens for each types of a positional 
-attribute.
+A frequency list may be created either with a corpus or with a subcorpus.
 
-\paragraph{print.cqp\_flist}
+<<flist_session, echo=TRUE>>=
+
+c <- corpus("DICKENS");
+fl <- flist.cqp_corpus(c, "word");
+summary(fl);
+#
+# get only the 1% most frequent forms
+fl <- flist.cqp_corpus(c, "word", cutoff=0.01);
+summary(fl);
+fl[1:30]
+#
+# get only the forms with freq > 100
+fl <- flist.cqp_corpus(c, "word", cutoff=100);
+summary(fl);
+fl[1:30]
+@
+
+With a subcorpus, a lot of options are available in order to construct the 
+frequency list with a particular anchor, an offset for address tokens 
+before or after this anchor, and left and right context in order to 
+include tokens in a span.
+
+<<flist_session2, echo=TRUE>>=
+
+c <- corpus("DICKENS");
+sc <- subcorpus(c, "\"interesting\" \"to\" @ []");
+#
+# Create a flist with the target anchor
+fl <- flist.cqp_subcorpus(sc, "target", "word");
+summary(fl);
+#
+fl <- flist.cqp_subcorpus(sc, "target", "pos");
+fl;
+#
+# or with the match..matchend span, extended to -5 .. +5 tokens :
+fl <- flist.cqp_subcorpus(sc, c("match", "matchend"), "word", left.context=5, right.context=5);
+summary(fl);
+fl[1:10]
+@
 
 \paragraph{summary.cqp\_flist}
 
+Print information about the frequency list
+
 \subsubsection{S3 object cqp\_ftable}
 
-An object cqp\_ftable hold a frequency table and 
-
-A cqp\_ftable hold a cross-tabulated frequency count according to two 
-modalities of token amongst attributes.
+An object \texttt{cqp\_ftable} hold a frequency table: a cross-tabulated
+frequency count according to two attributes.
 
 This object is created with the functions 
-ftable.cqp\_corpus() or ftable.cqp\_subcorpus().
+\texttt{ftable.cqp\_corpus()} or
+\texttt{ftable.cqp\_subcorpus()}.
 
 \paragraph{ftable.cqp\_corpus}
 
