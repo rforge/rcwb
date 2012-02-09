@@ -43,13 +43,15 @@ export(
 	"summary.cqp_flist",
 
 	"ftable.cqp_subcorpus",
-	"summary.ftable",
+	"ftable.cqp_corpus",
 
 	"kwic.cqp_subcorpus",
 	"print.kwic",
 
-	"struct2ftable.cqp_corpus"
+	"region_sizes.cqp_corpus"
 )
+
+#S3method(flist, cqp_subcorpus)
 
 # 	"cqi_charset",
 # 	"cqi_idlist2cpos",

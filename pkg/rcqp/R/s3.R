@@ -422,6 +422,9 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10) {
 
 setGeneric("flist", function(x) standardGeneric("flist"));
 
+flist <- function(x, ...) {
+	UseMethod("flist");
+}
 
 
 flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
@@ -620,6 +623,10 @@ summary.cqp_flist <- function(x) {
 
 setGeneric("ftable", function(x) standardGeneric("ftable"));
 
+ftable <- function(x, y, ...) {
+	UseMethod("ftable");
+}
+
 
 ## 
  # ------------------------------------------------------------------------
@@ -638,111 +645,111 @@ setGeneric("ftable", function(x) standardGeneric("ftable"));
  # 
  # ------------------------------------------------------------------------
  ##
-ftable.cqp_corpus <- function(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL) {
-
+ftable.cqp_corpus <- function(corpus, attribute1, attribute2, 
+	attribute1.use.id=FALSE, attribute2.use.id=FALSE,
+	structural.attribute.unique.id=FALSE, subcorpus=NULL
+) {
 	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
-	if (! structure %in% cqi_attributes(cqp_corpus.name, "s")) {
-		stop(paste("The structure", structure, "does not exist in this corpora."))
-	}
-	if (! attribute %in% cqi_attributes(cqp_corpus.name, "p")) {
-		stop(paste("The attribute", attribute, "does not exist in this corpora."))
-	}
+	qualified.attribute1 <- paste(cqp_corpus.name, attribute1, sep=".");
+	qualified.attribute2 <- paste(cqp_corpus.name, attribute2, sep=".");
 	
-	qualified.attribute.name <- paste(cqp_corpus.name, attribute, sep=".")
-	qualified.structure.name <- paste(cqp_corpus.name, structure, sep=".")
+	corpus_size <- cqi_attribute_size(paste(cqp_corpus.name, "word", sep="."));
+	
+	s_atts <- cqi_attributes(cqp_corpus.name, "s");
+	p_atts <- cqi_attributes(cqp_corpus.name, "p");
 
-	debug <- TRUE;
-
-	# if cutoff, list the ids to be kept
-	max.id <- cqi_lexicon_size(qualified.attribute.name);
-	all_ids <- 0:(max.id - 1);
-	if (cutoff > 0) {
-		# warning: copied from flist
-		freq <- cqi_id2freq(qualified.attribute.name, all_ids);
-		if (cutoff >= max(freq)) {
-			stop(paste("The cutoff (", cutoff, ") is greater than the greatest frequency in the corpus (", max(freq), ").", sep=""));
-		}
-		
-		ids_kept <- all_ids[freq > cutoff];
+	##
+	## extract id.
+	##
+	
+	att1 <- 0;
+	if (attribute1 %in% s_atts) {
+		# TODO array base
+		att1 <- cqi_cpos2struc(qualified.attribute1, 0:(corpus_size-1));
+	} else if (attribute1 %in% p_atts) {
+		# TODO array base
+		att1 <- cqi_cpos2id(qualified.attribute1, 0:(corpus_size-1));
 	} else {
-		ids_kept <- all_ids;
+		stop(paste("Unknown attribute:", attribute1));
 	}
 
-    nbr.structure <- cqi_attribute_size(qualified.structure.name);
-	all_ids_structure <- 0:(nbr.structure - 1);
-	l <- vector(nbr.structure, mode="list")
-	if (debug) print("Iteration on part");
-	for (i in all_ids_structure) {
-		# TODO filtrer les struc si ! is.null(subcorpus)
-		boundaries <- cqi_struc2cpos(qualified.structure.name, i);
-		ids <- cqi_cpos2id(qualified.attribute.name, boundaries[1]:boundaries[2])
-		if (cutoff > 0) {
-			ids <- ids[ids %in% ids_kept];
-		}
-		l[[i+1]] <- ids;
-		# maybe not a pb if some vectors are zero-length:
-		# the rep function bellow is ok with 0:
-# 		> rep(c("un", "deux", "trois"), c(1, 0, 3))
-# 		[1] "un"    "trois" "trois" "trois"
-	}
-	
-	if (debug) print("Post-treatment");
-	# the tokens are grouped by structure with the same value.
-	if (use.value) {
-		struc_values <- cqi_struc2str(qualified.structure.name, all_ids_structure);
-		grouped <- tapply(l, struc_values, c);
-		l <- lapply(grouped, unlist);
-	}
-	
-	# replace all ids by the corresponding str, repeated.
-	types <- cqi_id2str(qualified.attribute.name, all_ids); # and not ids_kept, so that the ids bellow address the correct form.
-	token_id <- unlist(l);
-	var2 <- types[token_id + 1];
-	
-	# generate a parallel vector with the repeated name of each struct. 
-	if (use.value) {
-		modalities <- struc_values;
+	att2 <- 0;
+	if (attribute2 %in% s_atts) {
+		# TODO array base
+		att2 <- cqi_cpos2struc(qualified.attribute2, 0:(corpus_size-1));
+	} else if (attribute2 %in% p_atts) {
+		# TODO array base
+		att2 <- cqi_cpos2id(qualified.attribute2, 0:(corpus_size-1));
 	} else {
-		modalities <- as.character(1:nbr.structure);
+		stop(paste("Unknown attribute:", attribute2));
 	}
-	time <- sapply(l, length);
-	var1 <- rep(modalities, time);
-	
-	done <- data.frame(var1, var2);
-	
-	if (debug) print("cross-tabulation");
-	done <- xtabs(data=done, sparse=TRUE);
 
-	# class <- cqp_ftable
+	##
+	## Create the id matrix
+	##
+
+	ids <- matrix(c(att1, att2), ncol=2);
+
+	if (structural.attribute.unique.id) {
+		if (! (attribute1 %in% s_atts)
+			||
+			! (attribute2 %in% s_atts)
+		) {
+			stop("Both attribute must be structural attributes in order to reduce id");
+		}
+		ids <- unique(ids);
+	}
+
+	##
+	## replace id with string if requested.
+	##
+
+	res <- data.frame(attribute1=ids[,1], attribute2=ids[,2]);
+	if (attribute1 %in% s_atts) {
+		if ((!attribute1.use.id) & cqi_structural_attribute_has_values(qualified.attribute1)) {
+			res[,1] <- cqi_struc2str(qualified.attribute1, ids[,1]);
+		}
+	} else {
+		if (!attribute1.use.id) {
+			res[,1] <- cqi_id2str(qualified.attribute1, ids[,1]);
+		}
+	}
+
+	if (attribute2 %in% s_atts) {
+		if ((!attribute2.use.id) & cqi_structural_attribute_has_values(qualified.attribute2)) {
+			res[,2] <- cqi_struc2str(qualified.attribute2, ids[,2]);
+		}
+	} else {
+		if (!attribute2.use.id) {
+			res[,2] <- cqi_id2str(qualified.attribute2, ids[,2]);
+		}
+	}
 	
-	return(done);
+	##
+	## Count unique combinaison.
+	##
+
+	t <- count(res);
+	#t <- table(res[,1], res[,2]);
+	return(t);
 }
 
-ftable.cqp_subcorpus <- function(subcorpus, field1, att1, field2, att2, cutoff) {
-	stop("Not implemented yet.");
+
+ftable.cqp_subcorpus <- function(subcorpus, anchor1, att1, anchor2, att2, cutoff=0) {
+	parent.corpus <- attr(subcorpus, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
+	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
+	
+	m <- cqi_fdist2(qualified.sub_corpus.name, anchor1, att1, anchor2, att2, cutoff=cutoff);
+
+	att1.str <- cqi_id2str(paste(parent.corpus, att1, sep="."), m[,1]);
+  	att2.str <- cqi_id2str(paste(parent.corpus, att2, sep="."), m[,2]);
+ 
+	df <- data.frame(att1.str, att2.str, m[,3]);
+#  	df <- data.frame(m[,1], m[,2], m[,3]);
+	colnames(df) <- c(att1, att2, "frequency");
+	return(df);
 }
-
-
-
-## 
- # ------------------------------------------------------------------------
- # 
- # "summary(ftable)" --
- #
- # Applying generic method "summary" to ftable object: print basic information.
- # 
- # Example:
- # TODO
- #
- # ------------------------------------------------------------------------
- ##
-summary.ftable <- function(x) {
-
-  # TODO : give parent (sub)corpus, parameters, number of modality in both variables, total frequency
-  stop("Not implemented yet.");
-
-}
-
 
 
 ###########################################################################
@@ -839,6 +846,11 @@ summary.ftable <- function(x) {
 # 
 
 setGeneric("kwic", function(x) standardGeneric("kwic"));
+
+kwic <- function(x, y, ...) {
+	UseMethod("kwic");
+}
+
 
 kwic.cqp_subcorpus <- function(subcorpus,
 	right.context=5,

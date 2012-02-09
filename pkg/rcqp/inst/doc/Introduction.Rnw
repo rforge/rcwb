@@ -52,9 +52,9 @@ In \textbf{rcqp}, two different ways of calling CWB are provided:
 \begin{itemize}
 \item You can call CWB through the \textbf{cqi\_*} set of functions. These 
 functions implement an interface defined by CWB (CQi). 
-\item You can use a set of more "high-level" functions for producing 
-quantitative structures (frequency list, cross-tabulated frequency table), 
-or kwic.
+\item You can use a set of functions trying to help producing 
+quantitative structures (frequency list, cross-tabulated frequency table) 
+for statistical analyses of CWB corpora with R.
 \end{itemize}
 
 % ----------------------------------------------------------------
@@ -599,7 +599,6 @@ before or after this anchor, and left and right context in order to
 include tokens in a span.
 
 <<flist_session2, echo=TRUE>>=
-
 c <- corpus("DICKENS");
 sc <- subcorpus(c, "\"interesting\" \"to\" @ []");
 #
@@ -618,7 +617,7 @@ fl[1:10]
 
 \paragraph{summary.cqp\_flist}
 
-Print information about the frequency list
+Print information about the frequency list.
 
 \subsubsection{S3 object cqp\_ftable}
 
@@ -631,11 +630,77 @@ This object is created with the functions
 
 \paragraph{ftable.cqp\_corpus}
 
+\texttt{cqp\_ftable.cqp\_corpus} allows for creating frequency tables using a 
+corpus object. The cross-tabulated fields may be positional or  
+structural attributes.
+
+<<ftable_session1, fig=TRUE, echo=TRUE>>=
+library(reshape);
+c <- corpus("DICKENS");
+f <- ftable.cqp_corpus(c, "novel_title", "pos");
+f[1:10,]
+#
+# create a contingency table
+t <- cast(f, attribute1 ~ attribute2, value="freq", fun.aggregate=sum )
+#
+# Visual inspection of frequency of various POS in the different novels
+mosaicplot(as.matrix(t));
+@
+
+Positional attributes (and structural attributes having values) are 
+represented with their string representations rather than with ids. For 
+positional attributes, it is only a matter of presentation, since each 
+ids has it own string; but for structural attributes having values,
+it may entails different counting: occurrence of phenomena belonging to
+different struc but with same value are then counted together.
+You can force the use of ids rather than string/value with the 
+\texttt{attribute1.use.id} and \texttt{attribute2.use.id} options.
+
+Counts are made on token basis, i.e. each token of the corpus is an 
+individual on which the two modalities (attributes) are considered. If you 
+use two structural attributes as argument in \texttt{cqp\_ftable.cqp\_corpus},
+and one of them does not have values the third column count the number of 
+tokens in the smallest region. In the following example, each line give
+the length (in number of tokens, third column) of each sentence (second column)
+in each novel, represented by its title:
+
+<<ftable_session2, echo=TRUE>>=
+f <- ftable.cqp_corpus(c, "novel_title", "s")
+f[1:10,]
+@
+
+If both structural attributes have values, you may want to count the of 
+times the modalities are co-occurring, rather than the total number of 
+tokens included in these cooccurrences. Fot that purpose you can use the
+\texttt{structural.attribute.unique.id=TRUE} option. In the following 
+example, we count the number of time each head appears in each novel :
+
+<<ftable_session3, echo=TRUE>>=
+f <- ftable.cqp_corpus(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
+f[1:10,]
+@
+
+Here on the contrary, we count the total number of tokens in each 
+prepositional phrases having a given head :
+
+<<ftable_session4, echo=TRUE>>=
+f <- ftable.cqp_corpus(c, "novel_title", "pp_h")
+f[1:10,]
+@
+
+
 \paragraph{ftable.cqp\_subcorpus}
 
-\paragraph{print.cqp\_ftable}
+The \texttt{ftable.cqp\_subcorpus} function is mainly a wrapper on the 
+\texttt{cqi\_fdist2} function. It retuns a data.frame with strings rather 
+than a matrix with ids like \texttt{cqi\_fdist2}.
 
-\paragraph{summary.cqp\_ftable}
+<<ftable_session5, echo=TRUE>>=
+c <- corpus("DICKENS");
+sc <- subcorpus(c, "\"from\" @ [] \"to\" []")
+f <- ftable.cqp_subcorpus(sc, "target", "word", "matchend", "word");
+f[1:10,]
+@
 
 % ----------------------------------------------------------------
 % ----------------------------------------------------------------
