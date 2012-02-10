@@ -4,6 +4,7 @@
 \usepackage{lmodern}
 
 \title{Introduction to the rcqp package}
+
 \author{Bernard Desgraupes and Sylvain Loiseau\\<bernard.desgraupes@u-paris10.fr>, <sylvain.loiseau@univ-paris13.fr>}
 
 \date{\today}
@@ -33,7 +34,7 @@ architecture.
 
 CWB offers access to corpora through manipulation of vectors of positions
 (offsets of the adressed / requested word(s) in the corpus) which can be turned
-into the corresponding word form, lemma, or part of speech if the corpus
+into the corresponding word forms, lemmas, or parts of speech if the corpus
 provide these pieces of information.
 
 In \textbf{rcqp}, CWB is turned into a shared library. As a result:
