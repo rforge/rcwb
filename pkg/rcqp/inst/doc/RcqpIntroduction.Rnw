@@ -65,57 +65,6 @@ for statistical analyses of CWB corpora with R.
 \section{The CQi set of functions}
 \label{sec:cqi}
 
-All functions are prefixed with \textbf{cqi\_}.
-
-\subsection{A sample session}
-
-<<cqi_session, echo=TRUE>>=
-
-library(rcqp)
-
-corpora <- cqi_list_corpora()
-corpora[1:5]
-
-# create the subcorpus "Interesting" (create the subcorpus internaliy
-# with the given name but does not return any result).
-cqi_query("DICKENS", "Interesting", "\"interesting\"");
-
-# in the CQi API, the qualified name of subcorpus is corpus:subcorpus:
-nbr_hit <- cqi_subcorpus_size("DICKENS:Interesting");
-nbr_hit
-
-### TODO : zero-based?
-# A matrix: one line by hit, four columns: match, matchend, target, keyword.
-dump <- cqi_dump_subcorpus("DICKENS:Interesting",1,20)
-dump[1:10,]
-
-# get the lemma of the "match" slot of each hit:
-# Word's attributes (such as "lemma", "word", "pos") are always accessed 
-# through qualified name : "corpus.attribute"
-lemma <- cqi_cpos2str("DICKENS.lemma", dump[,1])
-lemma[1:10]
-
-# You can acheave the same result in one more steps, using id as an 
-# intermediate step: 
-ids <- cqi_cpos2id("DICKENS.lemma", dump[,1]);
-lemma <- cqi_id2str("DICKENS.lemma", ids);
-lemma[1:10]
-
-# cqi_fdist1 create a frequency list according to one field (match, 
-# matchend...) in a query; cqi_fdist2 a cross tabulated 
-# frequency table according to two fields in a query
-
-flist <- cqi_fdist1("DICKENS:Interesting", "match", "word")
-flist
-
-# cqi_fdist1 et cqi_fdist2 return numeric matrix : (lemma) id -> freq.
-# use id2str in order to turn the (word) id into its form. 
-data.frame(cqi_id2str("DICKENS.word", flist[,1]), flist[,2])
-
-@
-
-\label{sec:cqi-session}
-
 \subsection{CWB data-model}
 
 Detailled information about the data model used into CWB is available in
@@ -184,13 +133,66 @@ When only one token is addressed by a query, matchend is identical to match.
 \textbf{match}, \textbf{matchend} (together with two other optionnal pieces of 
 information: \textbf{target} and \textbf{keyword}) are the
 \textbf{anchor}s (or sometime \textbf{field}: see cqi\_fdist1 et 2) 
-available on each hit. 
+available on each hit.
+
+All index are 0-based in CWB: the cpos of the first token is 0, the first 
+id for an positional attribute or the first struc for a structural 
+attribute is 0, etc.
+
+\subsection{A sample session}
+
+<<cqi_session, echo=TRUE>>=
+
+library(rcqp)
+
+corpora <- cqi_list_corpora()
+corpora[1:5]
+
+# create the subcorpus "Interesting" (create the subcorpus internaliy
+# with the given name but does not return any result).
+cqi_query("DICKENS", "Interesting", '"interesting"');
+
+# in the CQi API, the qualified name of subcorpus is corpus:subcorpus:
+nbr_hit <- cqi_subcorpus_size("DICKENS:Interesting");
+nbr_hit
+
+### TODO : zero-based?
+# A matrix: one line by hit, four columns: match, matchend, target, keyword.
+dump <- cqi_dump_subcorpus("DICKENS:Interesting",1,20)
+dump[1:10,]
+
+# get the lemma of the "match" slot of each hit:
+# Word's attributes (such as "lemma", "word", "pos") are always accessed 
+# through qualified name : "corpus.attribute"
+lemma <- cqi_cpos2str("DICKENS.lemma", dump[,1])
+lemma[1:10]
+
+# You can acheave the same result in one more steps, using id as an 
+# intermediate step: 
+ids <- cqi_cpos2id("DICKENS.lemma", dump[,1]);
+lemma <- cqi_id2str("DICKENS.lemma", ids);
+lemma[1:10]
+
+# cqi_fdist1 create a frequency list according to one field (match, 
+# matchend...) in a query; cqi_fdist2 a cross tabulated 
+# frequency table according to two fields in a query
+
+flist <- cqi_fdist1("DICKENS:Interesting", "match", "word")
+flist
+
+# cqi_fdist1 et cqi_fdist2 return numeric matrix : (lemma) id -> freq.
+# use id2str in order to turn the (word) id into its form. 
+data.frame(cqi_id2str("DICKENS.word", flist[,1]), flist[,2])
+
+@
 
 \subsection{Functions}
 \label{sec:cqi-functions}
 
 For more information about the actual use of these functions, see their help 
 page.
+
+All functions are prefixed with \textbf{cqi\_}.
 
 \paragraph{cqi\_list\_corpora}
 
@@ -220,7 +222,7 @@ textbf{keyword}.
 
 <<cqi_query, echo=TRUE>>=
 corpora <- cqi_list_corpora()
-cqi_query("DICKENS", "Subcorpus", "\"interesting\"");
+cqi_query("DICKENS", "Subcorpus", '"interesting"');
 @
 
 The \texttt{cqi\_query} does not return any value; it create the 
@@ -242,7 +244,7 @@ four-column matrix: one row by hit, and one column for each of the four
 \textbf{field}s stored for each hit (see \texttt{cqi\_query}).
 
 <<dump_subcorpus, echo=TRUE>>=
-cqi_query("DICKENS", "Subcorpus", "\"interesting\"");
+cqi_query("DICKENS", "Subcorpus", '"interesting"');
 x <- cqi_dump_subcorpus("DICKENS:Subcorpus");
 x[1:10,];
 @
@@ -274,7 +276,7 @@ lexicon_size <- cqi_lexicon_size("DICKENS:word");
 lexicon_size
 @
 
-The greatest id of an attribute is lexicon\_size $ + 1 $.
+The greatest id of an attribute is lexicon\_size $ - 1 $.
 
 \paragraph{cqi\_structural\_attribute\_has\_values}
 
@@ -322,7 +324,8 @@ All the tokens (cpos) having the given id of a given positional attribute.
 <<id2cpos, echo=TRUE>>=
 id <- cqi_str2id("DICKENS.word", "interesting");
 cpos <- cqi_id2cpos("DICKENS.word", id);
-cpos
+cpos[1:10]
+length(cpos);
 @
 
 \paragraph{cqi\_id2freq}
@@ -361,18 +364,26 @@ Get the id corresponding to string of a positional attribute matched by a
 given regex.
 
 <<regex2id, echo=TRUE>>=
-id <- cqi_regex2id("DICKENS.word", "\"Interest.*\"");
+id <- cqi_regex2id("DICKENS.word", '"Interest.*"');
 id
 @
 
 \paragraph{cqi\_cpos2struc}
 
 Get the region id (the struc, of a given structural attribute) to which 
-belong a given token.
+belong a given token. Below, we are in the sentence with struc 53, then 54.
 
 <<cpos2struc, echo=TRUE>>=
-struc <- cqi_cpos2struc("DICKENS.np_h", 1000:1010);
+struc <- cqi_cpos2struc("DICKENS.s", 1010:1020);
 struc
+@
+
+If the token is outside any region in the given structural attribute, -1 
+is returned.
+
+<<cpos2struc, echo=TRUE>>=
+# In this sequence, tokens are not in nominal phrases.
+cqi_cpos2struc("DICKENS.np", 1000:1010)
 @
 
 \paragraph{cqi\_struc2cpos}
@@ -433,24 +444,15 @@ attribute containing aligned chunk of text. The alignment attribute
 is \textbf{vie\_fr} in the corpus \textbf{VIE\_RU} and \textbf{vie\_ru} 
 in the corpus \textbf{VIE\_FR}.
 
-For the region 5 of \textbf{tu\_id} in \textbf{VIE\_FR}, the 
+For the region 5 of \textbf{tu\_id} attribute in \textbf{VIE\_RU}, the 
 corresponding cpos in corpus \textbf{VIE\_RU} are fetched with:
 
 \begin{verbatim}
-> cpos <- cqi_alg2cpos("VIE_FR.vie_ru", 5)
+> cpos <- cqi_alg2cpos("VIE_RU.vie_fr", 5)
 > cpos
-[1] 110 166  89 132
-> str <- cqi_cpos2str("VIE_RU.word", cpos)
-[1] "???????" "???????" "?????"   "."
-\end{verbatim}
-
-The corresponding strings in the \textbf{VIE\_FR} corpus are:
-
-\begin{verbatim}
-> boundaries <- cqi_struc2cpos("VIE_FR.tu", 3)
-> cqi_cpos2str("VIE_FR.word", boundaries[1]:boundaries[2])
-[1] "Des"       "rafales"   "passaient" "pleines"   "d'"        "une"      
-[7] "chaleur"   "lourde"    "."        
+[1]  89 132 110 166
+> str <- cqi_cpos2str("VIE_FR.word", cpos)
+[1] "comme"  "dont"   "Jeanne" "."
 \end{verbatim}
 
 \paragraph{cqi\_cpos2alg}
@@ -466,7 +468,7 @@ subcorpus.
 In the following example, all part-of-speech tag 
 
 <<fdist1, echo=TRUE>>=
-cqi_query("DICKENS", "Noun", "[pos=\"N.*\"]")
+cqi_query("DICKENS", "Noun", '[pos="N.*"]')
 fdist <- cqi_fdist1("DICKENS:Noun", "match", "pos")
 cqi_id2str("DICKENS.pos", fdist[,1])
 fdist[,2]
@@ -480,7 +482,7 @@ attribute in a subcorpus * strings of a given.
 % ----------------------------------------------------------------
 % ----------------------------------------------------------------
 
-\section{Integrating CQP into S3 R objects}
+\section{Integrating CQP into R S3 objects and quantitative structures}
 
 A set of high-level functions is aimed at making more easy the use of cqp 
 with R and more self-expanatory the data model of CWB. It provides in 
@@ -491,42 +493,42 @@ particular functions for creating easily quantitative data structures.
 
 <<rcqp_session, echo=TRUE>>=
 # create a corpus
-c <- corpus("VIE_FR")
-c # print all information for a span of tokens (default : 0->20).
-print(c, from=200, to=210) # change the default token span.
-
 c <- corpus("DICKENS")
-c
-
 # summary give a quick view of the information available in the corpus,
 # it does not display actual information:
 summary(c)
-
+#
+# printing the corpus (by default, first tokens only)
+c
 @
 
 \subsection{Functions}
 
 \label{sec:rcqp-functions}
 
-\subsubsection{S3 object cqp\_corpus}
+\subsubsection{Creating a corpus}
 
-An object cqp\_corpus is created with the function corpus(). This object 
-may be used with the two functions below, as well as for creating 
-cqp\_subcorpus, cqp\_filst and cqp\_ftable objects (see bellow).
+The first step in any sequence of this set of functions is creating a 
+corpus. A corpus is created with the function \texttt{corpus()}.
+This object may be used with the two functions below, as well as for creating 
+subcorpus, flist and ftable objects (see bellow).
 
-\paragraph{print.cqp\_corpus}
+\paragraph{print}
 
 Print all information (but the value of structural attribute having a 
 value) as a data.frame.
 
-\paragraph{summary.cqp\_corpus}
+\paragraph{summary}
 
 Give the number of tokens of a corpus, list all the attributes 
 (positionnal, structural, alignment) ; for each positional attribute (and 
 structural attribute having a value) give the number of types and print 
 some types.
 
-\paragraph{write.cqp\_corpus}
+\paragraph{write}
+
+Write into a file with an argument "filename" and options arguments "from" 
+and "to" denoting token cpos.
 
 \paragraph{region\_sizes.cqp\_corpus}
 
@@ -541,55 +543,51 @@ hist(sentences);
 
 % ======================================================
 
-\subsubsection{S3 object cqp\_subcorpus}
+\subsubsection{Creating a subcorpus: the function \textt{subcorpus}}
+
+An object \texttt{subcorpus}
+is created with the function \texttt{subcorpus()}. In the CWB 
+terminology, a subcorpus is the set of the sequences matched by a query.
 
 <<subcorpus_session, echo=TRUE>>=
-
 c <- corpus("DICKENS");
-sc <- subcorpus(c, "\"interesting\" \"to\" @ []");
+sc <- subcorpus(c, '"interesting" "to" @ []');
 sc
 #
-# if you want to change the lines printed:
+# if you want to change the lines printed (0-based):
 print(sc, from=2, to=5);
 #
 # if you want more access on the kwic presentation
 # (sorting, printing), you can construct a kwic object):
-k <- kwic.cqp_subcorpus(sc, sort.anchor="target", sort.anchor.attribute="pos")
-print(k, from=5, to=10)
+k <- kwic(sc, sort.anchor="target", sort.anchor.attribute="pos")
+print(k, from=5, to=10, left.char=40, right.char=25)
 @
 
-An object \texttt{cqp\_subcorpus}
-is created with the function \texttt{subcorpus()}. In the CWB 
-terminology, a subcorpus is the set of the sequences matched by a query.
-
-\paragraph{print.cqp\_subcorpus}
+\paragraph{print}
 
 Print a KWIC (key-word in context) form.
 
-\paragraph{summary.cqp\_subcorpus}
+\paragraph{summary}
 
 Get a kwic summary of the size and content of the subcorpus.
 
-\subsubsection{S3 object cqp\_flist}
-
-An object \texttt{cqp\_flist} hold a frequency list and is created with the function 
-\texttt{flist()}.
+\subsubsection{Creating frequency list: the \texttt{flist} function}
 
 A frequency list may be created either with a corpus or with a subcorpus.
 
 <<flist_session, echo=TRUE>>=
 
 c <- corpus("DICKENS");
-fl <- flist.cqp_corpus(c, "word");
+fl <- flist(c, "word");
 summary(fl);
 #
 # get only the 1% most frequent forms
-fl <- flist.cqp_corpus(c, "word", cutoff=0.01);
+fl <- flist(c, "word", cutoff=0.01);
 summary(fl);
 fl[1:30]
 #
 # get only the forms with freq > 100
-fl <- flist.cqp_corpus(c, "word", cutoff=100);
+fl <- flist(c, "word", cutoff=100);
 summary(fl);
 fl[1:30]
 @
@@ -601,17 +599,17 @@ include tokens in a span.
 
 <<flist_session2, echo=TRUE>>=
 c <- corpus("DICKENS");
-sc <- subcorpus(c, "\"interesting\" \"to\" @ []");
+sc <- subcorpus(c, '"interesting" "to" @ []');
 #
 # Create a flist with the target anchor
-fl <- flist.cqp_subcorpus(sc, "target", "word");
+fl <- flist(sc, "target", "word");
 summary(fl);
 #
-fl <- flist.cqp_subcorpus(sc, "target", "pos");
+fl <- flist(sc, "target", "pos");
 fl;
 #
 # or with the match..matchend span, extended to -5 .. +5 tokens :
-fl <- flist.cqp_subcorpus(sc, c("match", "matchend"), "word", left.context=5, right.context=5);
+fl <- flist(sc, c("match", "matchend"), "word", left.context=5, right.context=5);
 summary(fl);
 fl[1:10]
 @
@@ -620,25 +618,23 @@ fl[1:10]
 
 Print information about the frequency list.
 
-\subsubsection{S3 object cqp\_ftable}
+\subsubsection{Create a frequency table: the \texttt{ftable} function}
 
-An object \texttt{cqp\_ftable} hold a frequency table: a cross-tabulated
+\texttt{ftable} create a frequency table: a cross-tabulated
 frequency count according to two attributes.
+\texttt{ftable} is applied either on a corpus or a subcorpus.
+It produces a data.frame.
 
-This object is created with the functions 
-\texttt{ftable.cqp\_corpus()} or
-\texttt{ftable.cqp\_subcorpus()}.
+\paragraph{ftable with corpus}
 
-\paragraph{ftable.cqp\_corpus}
-
-\texttt{cqp\_ftable.cqp\_corpus} allows for creating frequency tables using a 
+\texttt{ftable} allows for creating frequency tables using a 
 corpus object. The cross-tabulated fields may be positional or  
 structural attributes.
 
 <<ftable_session1, fig=TRUE, echo=TRUE>>=
 library(reshape);
 c <- corpus("DICKENS");
-f <- ftable.cqp_corpus(c, "novel_title", "pos");
+f <- ftable(c, "novel_title", "pos");
 f[1:10,]
 #
 # create a contingency table
@@ -659,14 +655,14 @@ You can force the use of ids rather than string/value with the
 
 Counts are made on token basis, i.e. each token of the corpus is an 
 individual on which the two modalities (attributes) are considered. If you 
-use two structural attributes as argument in \texttt{cqp\_ftable.cqp\_corpus},
+use two structural attributes as argument in \texttt{ftable},
 and one of them does not have values the third column count the number of 
 tokens in the smallest region. In the following example, each line give
 the length (in number of tokens, third column) of each sentence (second column)
 in each novel, represented by its title:
 
 <<ftable_session2, echo=TRUE>>=
-f <- ftable.cqp_corpus(c, "novel_title", "s")
+f <- ftable(c, "novel_title", "s")
 f[1:10,]
 @
 
@@ -677,7 +673,7 @@ tokens included in these cooccurrences. Fot that purpose you can use the
 example, we count the number of time each head appears in each novel :
 
 <<ftable_session3, echo=TRUE>>=
-f <- ftable.cqp_corpus(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
+f <- ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
 f[1:10,]
 @
 
@@ -685,21 +681,21 @@ Here on the contrary, we count the total number of tokens in each
 prepositional phrases having a given head :
 
 <<ftable_session4, echo=TRUE>>=
-f <- ftable.cqp_corpus(c, "novel_title", "pp_h")
+f <- ftable(c, "novel_title", "pp_h")
 f[1:10,]
 @
 
+\paragraph{ftable with subcorpus}
 
-\paragraph{ftable.cqp\_subcorpus}
-
-The \texttt{ftable.cqp\_subcorpus} function is mainly a wrapper on the 
-\texttt{cqi\_fdist2} function. It retuns a data.frame with strings rather 
-than a matrix with ids like \texttt{cqi\_fdist2}.
+Applied on subcorpus, the \texttt{ftable} function is mainly a wrapper on the 
+\texttt{cqi\_fdist2} function. However, it retuns a three columns data.frame
+with <strings>, <string>, <freq> rather than a three columns matrix with 
+<ids>, <ids>, <freq> like \texttt{cqi\_fdist2}.
 
 <<ftable_session5, echo=TRUE>>=
 c <- corpus("DICKENS");
-sc <- subcorpus(c, "\"from\" @ [] \"to\" []")
-f <- ftable.cqp_subcorpus(sc, "target", "word", "matchend", "word");
+sc <- subcorpus(c, '"from" @ [] "to" []')
+f <- ftable(sc, "target", "word", "matchend", "word");
 f[1:10,]
 @
 

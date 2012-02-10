@@ -1,3 +1,107 @@
+syntaxe particulière pour générer la coquille des fonctions gnéériques : S3 method for class "subcorpus"...
+
+sample session : moins de sortie et plus de commandes
+
+doc dans les pages man qui contiennent rbound et lbound
+
+
+summary.cqp_corpus
+Je me demande comment on peut avoir "1 tokens and 2 types", je regarde...
+
+
+
+Corpora are defined in files located in a directory called "registry" (see CWB
+documentation for more details). One of the mechanisms provided by CWB in order
+to set the registry directory is to define the environment variable
+"CORPUS_REGISTRY".
+
+In rcqp, the CORPUS_REGISTRY environment variable is first read. If this
+environment variable is not set, rcqp try to use the default registry
+directory, which varies according to your system (on most Unixes it is
+/usr/local/share/cwb/registry; on Windows it is C:\\CWB\\Regisgry). If neither
+the environment variable neither the default directory exist, rcqp cannot
+proceed further.
+
+In order to set the CORPUS_REGISTRY variable you can either use the definition
+mechanisms provided by your system (and in this case, the CORPUS_REGISTRY will
+be use also if you use CQP outside of R) or define this variable in the
+~/.Renviron file which is read at R startup (and in this case, the environment
+variable is defined only for rcqp, and will not be seen by any other CWB
+program).
+
+
+
+aide 
+- avec reshape
+
+Voici quelques éléments, à chaque fois si tu es ok je "procède" plus avant :
+
+
+3/ Faire un corpus de démo avec un balzac fr / ru. Certes ce n'est pas de
+l'anglais, mais c'est deux autres langues
+
+4/ définir des fonctions de plus haut niveau
+
+une fonction "query(corpus, query)" qui retourne un objet S3 contenant le nom du sous corpus, avec un nom généré.
+
+save/write
+
+objet S3 retourné par query
+- laisser les DICKENS:GO ?
+- facteur ?
+
+interface de plus haut niveau
+
+faire en R idlist2cpos
+
+5/ 
+
+Il y a une fonction RangeSetop (Ligne 97 of cqp/table.h) assez simple
+d'appel semble-t-il, qui prend comme argument 2 corpus et une constante
+indiquant s'il faut en faire l'union, l'intersection, etc.
+
+Je me demande s'il ne serait pas intéressant
+
+Random, etc.: les fonctions de cqp...
+
+union, intersection... qui sont accessibles dans "cqp -e"
+
+Question : envoyer un vecteur de cpos.
+
+
+6/ Faire un corpus test ; vérifier la procédure de test.
+
+The examples provided by the package's documentation are run. (see Writing R
+documentation files, for information on using \examples to create executable
+example code.) If there is a file tests/Examples/pkg-Ex.Rout.save, the output
+of running the examples is compared to that file.
+
+Dans
+
+Writing R Extensions
+http://cran.r-project.org/doc/manuals/R-exts.html
+
+8/ Compiler sur windows
+
+config platform
+
+1.3.2 Building package tarballs
+et
+1.3.3 Building binary packages
+
+de
+
+Writing R Extensions
+http://cran.r-project.org/doc/manuals/R-exts.html
+
+9/ A indiquer à l'équipe CWB
+
+en R :
+
+ * These are used as parameters to the table_setp() function.
+=> table_setop()
+
+
 à indiquer à équipe cwb :
 -------------------------
 
@@ -11,18 +115,4 @@ dans l'implémentation côté serveur do_cqi_cqp_fdist_1 (cqpserver.c), l'argume
 
 Signaler : trois fonctions définies en double (find_prime, hash_string, is_prime) définies dans lexhash.c et hash.c
 
-à faire :
----------
-
-config platform
-en R :
-faire en R idlist2cpos
-fdist2 ; matrice à trois colonnes
-
-Question : envoyer un vecteur de cpos.
-
-- laisser les DICKENS:GO ?
-- facteur ?
-
-interface de plus haut niveau
 
