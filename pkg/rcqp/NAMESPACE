@@ -38,20 +38,20 @@ export(
 	"summary.cqp_subcorpus",
 	"print.cqp_subcorpus",
 
-	"flist.cqp_corpus",
-	"flist.cqp_subcorpus",
+	"flist",
+  	"flist.cqp_corpus",
+  	"flist.cqp_subcorpus",
 	"summary.cqp_flist",
 
-	"ftable.cqp_subcorpus",
-	"ftable.cqp_corpus",
+	"ftable",
+ 	"ftable.cqp_subcorpus",
+ 	"ftable.cqp_corpus",
 
 	"kwic.cqp_subcorpus",
 	"print.kwic",
 
 	"region_sizes.cqp_corpus"
 )
-
-#S3method(flist, cqp_subcorpus)
 
 # 	"cqi_charset",
 # 	"cqi_idlist2cpos",

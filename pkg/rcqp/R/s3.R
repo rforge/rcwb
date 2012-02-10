@@ -420,12 +420,6 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10) {
 ###########################################################################
 
 
-setGeneric("flist", function(x) standardGeneric("flist"));
-
-flist <- function(x, ...) {
-	UseMethod("flist");
-}
-
 
 flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
 	if (class(corpus) != "cqp_corpus") {
@@ -612,6 +606,15 @@ summary.cqp_flist <- function(x) {
 }
 
 
+#setGeneric("flist", function(x, ...) standardGeneric("flist"));
+flist <- function(x, ...) {
+ 	UseMethod("flist");
+}
+
+# setMethod(f="flist", signature="cqp_subcorpus", definition=flist.cqp_subcorpus);
+# setMethod(f="flist", signature="cqp_corpus", definition=flist.cqp_corpus);
+
+
 ###########################################################################
 # S3 Object cqp_ftable
 ###########################################################################
@@ -620,12 +623,6 @@ summary.cqp_flist <- function(x) {
 #### cross tabulation plut™t ; en prenant en compte d'autres cas de figure : deux structural attributes avec value par exemple.
 ####
 
-
-setGeneric("ftable", function(x) standardGeneric("ftable"));
-
-ftable <- function(x, y, ...) {
-	UseMethod("ftable");
-}
 
 
 ## 
@@ -750,6 +747,14 @@ ftable.cqp_subcorpus <- function(subcorpus, anchor1, att1, anchor2, att2, cutoff
 	colnames(df) <- c(att1, att2, "frequency");
 	return(df);
 }
+
+#setGeneric("ftable", function(x, ...) standardGeneric("ftable"));
+# setMethod(f="ftable", signature="cqp_subcorpus", definition=ftable.cqp_subcorpus);
+# setMethod(f="ftable", signature="cqp_corpus", definition=ftable.cqp_corpus);
+ftable <- function(x, y, ...) {
+	UseMethod("ftable");
+}
+
 
 
 ###########################################################################
