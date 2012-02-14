@@ -66,11 +66,11 @@ string; but for structural attributes having values, it may entails different
 counting, since these values are not unique: occurrence of phenomena belonging
 to different struc are then counted together if two struct have the same
 values. You can force the use of ids rather than string/value with the
-\texttt{attribute1.use.id} and \texttt{attribute2.use.id} options.
+\code{attribute1.use.id} and \code{attribute2.use.id} options.
 
 Counts are made on token basis, i.e. each token of the corpus is an
 individual on which the two modalities (attributes) are considered. If you
-use two structural attributes as argument in \texttt{ftable},
+use two structural attributes as argument in \code{ftable},
 and one of them does not have values the third column count the number of
 tokens in the smallest region. In the following example, each line give
 the length (in number of tokens, third column) of each sentence (second column)
@@ -85,7 +85,7 @@ f[1:10,]
 If both structural attributes have values, you may want to count the of
 times the modalities are co-occurring, rather than the total number of
 tokens included in these cooccurrences. Fot that purpose you can use the
-\texttt{structural.attribute.unique.id=TRUE} option. In the following
+\code{structural.attribute.unique.id=TRUE} option. In the following
 example, we count the number of time each head appears in each novel :
 
 \code{

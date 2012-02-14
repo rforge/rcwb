@@ -78,3 +78,4 @@ fl <- flist(sc, "target", "word");
 sc <- subcorpus(c, '"interesting"');
 fl <- flist(sc, "target", "lemma", left.context = 10, right.context = 10, cutoff = 5)
 }
+}

@@ -24,10 +24,10 @@ print(x, from = 0, to = 20)
 
 ## S3 method for class 'cqp_subcorpus'
 print(x, positional.attribute = "word", from = 0, to = 10)
-}
 
 ## S3 method for class 'kwic'
 print(x, print.function = function(x) cqi_cpos2str(paste(attr(kwic, "parent.cqp_corpus.name"), "word", sep = "."), x), from = 0, to = 20, left.separator = " <<", right.separator = ">> ", hit.char = 15, left.char = 40, right.char = 40)
+}
 
 \arguments{
   \item{x}{
