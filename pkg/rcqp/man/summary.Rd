@@ -12,19 +12,23 @@ Print summary for corpus, subcorpus, or frequency list.
 \usage{
 
 ## S3 method for class 'cqp_flist'
-summary(x)
+summary.cqp_flist(object, ...)
 
 ## S3 method for class 'cqp_corpus'
-summary(x)
+summary.cqp_corpus(object, ...)
 
 ## S3 method for class 'cqp_subcorpus'
-summary(x)
+summary.cqp_subcorpus(object, ...)
 }
 
 \arguments{
-  \item{x}{
+  \item{object}{
 An rcqp object, created with \code{\link{flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}.
 }
+  \item{...}{
+Ignored.
+}
+
 }
 
 \references{                                                                    

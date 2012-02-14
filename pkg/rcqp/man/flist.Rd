@@ -13,21 +13,15 @@
 flist(x, ...)
 
 ## S3 method for class 'cqp_corpus'
-flist(corpus, attribute, cutoff = 0)
+flist(x, attribute, cutoff = 0, ...)
 
 ## S3 method for class 'cqp_subcorpus'
-flist(subcorpus, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0)
+flist(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A corpus or a subcorpus object
-}
-  \item{corpus}{
-An object created with the function \code{\link{corpus}}
-}
-  \item{subcorpus}{
-An object created with the function \code{\link{subcorpus}}
+A corpus or a subcorpus object, created with the function \code{\link{corpus}} or \code{\link{subcorpus}}.
 }
   \item{attribute}{
 The attribute giving the modality to be counted. May be a structural attribute if x is a corpus.
@@ -41,14 +35,14 @@ Consider also n tokens at the left of the selected anchor for counting frequenci
   \item{right.context}{
 Consider also n tokens at the right of the selected anchor for counting frequencies.
 }
-  \item{cutoff}{
-%%     ~~Describe \code{cutoff} here~~
-}
   \item{offset}{
 switch the anchor at n token from the left (if negative) or to the right of the anchor given above.
 }
   \item{cutoff}{
 Keep only frequency above this cutoff. If cutoff is 0, keep all forms. If cutoff is between 0 and 1 (exclusive), the $ (cutoff * 100) \% $ more frequent forms are kept.
+}
+  \item{...}{
+Ignored.
 }
 }
 \details{

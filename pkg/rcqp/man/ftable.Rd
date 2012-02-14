@@ -13,10 +13,10 @@ Create a frequency table either with a corpus or with a subcorpus. With a corpus
 ftable(x, ...)
 
 ## S3 method for class 'cqp_corpus'
-ftable(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL)
+ftable(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL, ...)
 
 ## S3 method for class 'cqp_subcorpus'
-ftable(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0)
+ftable(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
 }
 
 \arguments{
@@ -30,10 +30,10 @@ The attribute for the modalities of the first variable of the cross-tabulation. 
 The attribute for the modalities of the second variable of the cross-tabulation. If x is a subcorpus, positional attribute only.
 }
   \item{attribute1.use.id}{
-If attribute1 is a structural attribute and has values (see \code{\link{cqi_positional_attribute_has_values}}), switch between region ids (struc) and values (default).
+If attribute1 is a structural attribute and has values (see \code{\link{cqi_structural_attribute_has_values}}), switch between region ids (struc) and values (default).
 }
   \item{attribute2.use.id}{
-If attribute2 is a structural attribute and has values (see \code{\link{cqi_positional_attribute_has_values}}), switch between region ids (struc) and values (default).
+If attribute2 is a structural attribute and has values (see \code{\link{cqi_structural_attribute_has_values}}), switch between region ids (struc) and values (default).
 }
   \item{structural.attribute.unique.id}{
 If one of the attribute (at least) is a positional attribute, and that values
@@ -53,6 +53,9 @@ The anchor for individual of the first variable, if x is a subcorpus (anchor may
 }
   \item{cutoff}{
 Filter the frequency table.
+}
+  \item{...}{
+Ignored.
 }
 
 }
@@ -116,7 +119,4 @@ column the observed frequency of the cooccurrence.
 \author{                                                                        
         Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
-}
-
-\examples{
 }

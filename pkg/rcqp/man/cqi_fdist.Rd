@@ -10,14 +10,14 @@
 }
 
 \usage{
-	cqi_fdist1(subcorpus, field, key, cutoff=0, offset=0)
-	cqi_fdist2(subcorpus, field, key, field2, key2, cutoff=0)
+	cqi_fdist1(subcorpus, field1, key1, cutoff=0, offset=0)
+	cqi_fdist2(subcorpus, field1, key1, field2, key2, cutoff=0)
 }
 
 \arguments{
 	\item{subcorpus}{(\emph{string}) qualified name of a subcorpus.}
-	\item{field}{(\emph{string}) the name of the anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
-	\item{key}{(\emph{string}) the name of a positional attribute.}
+	\item{field1}{(\emph{string}) the name of the anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
+	\item{key1}{(\emph{string}) the name of a positional attribute.}
 	\item{field2}{(\emph{string}) the name of a second anchor. It can be one of : \emph{'match'}, \emph{'matchend'}, \emph{'target'}, \emph{'keyword'}.}
 	\item{key2}{(\emph{string}) the name of a positional attribute for the second anchor.}
 	\item{cutoff}{(\emph{integer}) a floor value under which results are not displayed. Default value is 0.}

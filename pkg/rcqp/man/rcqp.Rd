@@ -52,6 +52,7 @@ List of available help pages:\cr
 \code{\link{cqi_regex2id}}\cr
 \code{\link{cqi_struc2cpos}}\cr
 \code{\link{cqp_registry}}\cr
+\code{\link{cqi_corpus_info}}\cr
 }
 
 \keyword{package}

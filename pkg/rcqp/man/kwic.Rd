@@ -1,5 +1,6 @@
 \name{kwic}
 \alias{kwic}
+\alias{kwic.cqp_subcorpus}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Create a "keyword in context" list with a subcorpus.
@@ -12,7 +13,7 @@ arranging and filtering items. The list can then be printed chunk by chunk.
 kwic(x, ...)
 
 ## S3 method for class 'cqp_subcorpus'
-kwic(subcorpus, right.context = 5, left.context = 5, sort.anchor = "matchend", sort.anchor.attribute = "word", sort.anchor.offset = 1)
+kwic(x, right.context = 5, left.context = 5, sort.anchor = "matchend", sort.anchor.attribute = "word", sort.anchor.offset = 1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,6 +35,10 @@ The attribute (such as word, lemma... according to available attribute in a give
   \item{sort.anchor.offset}{
 Sort on the anchor selected, or $n$ tokens before or after?
 }
+  \item{...}{
+Ignored.
+}
+
 }
 
 \value{
@@ -50,7 +55,4 @@ Create a kwic object ready to be printed (with more options for the display) wit
 
 \seealso{
 \code{\link{print.kwic}}
-}
-
-\examples{
 }
