@@ -56,8 +56,8 @@ corpus <- function(corpus.name) {
  #
  # ------------------------------------------------------------------------
  ##
-summary.cqp_corpus <- function(x) {
-	cqp_corpus.name <- attr(x, "cqp_corpus.name");
+summary.cqp_corpus <- function(object, ...) {
+	cqp_corpus.name <- attr(object, "cqp_corpus.name");
 	cat(paste(cqp_corpus.name, "\n"));
 		
 	p_attributes <- sort(cqi_attributes(cqp_corpus.name, "p"));
@@ -136,7 +136,7 @@ summary.cqp_corpus <- function(x) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_corpus <- function(x, from=0, to=20) {
+print.cqp_corpus <- function(x, from=0, to=20, ...) {
 	max <- cqi_attribute_size(paste(attr(x, "cqp_corpus.name"), "word", sep="."));
 	if (any(c(from, to) >= max)) {
 		stop("Token ids cannot be greater than corpus size");
@@ -319,13 +319,13 @@ subcorpus <- function(corpus, query) {
  #
  # ------------------------------------------------------------------------
  ##
-summary.cqp_subcorpus <- function(x) {
-	if (class(x) != "cqp_subcorpus") {
-		stop("x must be cqp_subcorpus object");
+summary.cqp_subcorpus <- function(object, ...) {
+	if (class(object) != "cqp_subcorpus") {
+		stop("object must be cqp_subcorpus object");
 	}
-	parent.corpus <- attr(x, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-	query <- attr(x, "query");
+	parent.corpus <- attr(object, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(object, "cqp_subcorpus.name");
+	query <- attr(object, "query");
 	
 	size <- cqi_subcorpus_size(paste(parent.corpus, cqp_subcorpus.name, sep=":"));
 	
@@ -349,7 +349,7 @@ summary.cqp_subcorpus <- function(x) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10) {
+print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, ...) {
 	if (class(x) != "cqp_subcorpus") {
 		stop("x must be cqp_subcorpus object");
 	}
@@ -402,11 +402,11 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10) {
 
 
 
-flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
-	if (class(corpus) != "cqp_corpus") {
-		stop("corpus: not a corpus object");
+flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
+	if (class(x) != "cqp_corpus") {
+		stop("x: not a corpus object");
 	}
-	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
+	cqp_corpus.name <- attr(x, "cqp_corpus.name");
 	
 	positional <- cqi_attributes(cqp_corpus.name, "p");
 	structural <- cqi_attributes(cqp_corpus.name, "s");
@@ -421,7 +421,7 @@ flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
 		str <- cqi_id2str(qualified.attribute.name, ids);
 		names(flist) <- str;
 	} else {
-		if (cqi_structural_attribute_has_value(qualified.attribute.name)) {
+		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
 			# TODO : zero-based ?
 			values <- cqi_struc2str(qualified.attribute.name, 0:(cqi_attribute_size(qualified.attribute.name)-1));
 			t <- table(values);
@@ -469,18 +469,18 @@ flist.cqp_corpus <- function(corpus, attribute, cutoff=0) {
  # with all the word contained between match and matchend.
  # ------------------------------------------------------------------------
  ##
-flist.cqp_subcorpus <- function(subcorpus, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0) {
+flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0, ...) {
 
-	if (class(subcorpus) != "cqp_subcorpus") {
-		stop("subcorpus is not an S3 object of class cqp_subcorpus");
+	if (class(x) != "cqp_subcorpus") {
+		stop("x is not an S3 object of class cqp_subcorpus");
 	}
 	
 	if (length(anchor) > 2 || length(anchor) < 1) {
 		stop("anchor must be a vector of lenth 1 or 2");
 	}
 	
-	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
-	parent.cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
 	qualified.subcorpus.name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
 	qualified.attribute <- paste(parent.cqp_corpus.name, attribute, sep=".");
 
@@ -552,15 +552,15 @@ flist.cqp_subcorpus <- function(subcorpus, anchor, attribute, left.context=0, ri
  #
  # ------------------------------------------------------------------------
  ##
-summary.cqp_flist <- function(x) {
+summary.cqp_flist <- function(object, ...) {
 
-	if (class(x) != "cqp_flist") {
-		stop("x must be cqp_flist object");
+	if (class(object) != "cqp_flist") {
+		stop("object must be cqp_flist object");
 	}
 
 	cat("A frequency list\n");
-	cat(paste("  Number of tokens:", sum(x), "\n"));
-	cat(paste("  Number of types:", length(x), "\n"));
+	cat(paste("  Number of tokens:", sum(object), "\n"));
+	cat(paste("  Number of types:", length(object), "\n"));
 
 	cqp_corpus.name <- attr(flist, "cqp_corpus.name");
 	# a cqp_flist made with a corpus
@@ -593,7 +593,7 @@ summary.cqp_flist <- function(x) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_flist <- function(x) {
+print.cqp_flist <- function(x, ...) {
 	print(c(x));
 }
 
@@ -621,11 +621,12 @@ flist <- function(x, ...) UseMethod("flist");
  # 
  # ------------------------------------------------------------------------
  ##
-ftable.cqp_corpus <- function(corpus, attribute1, attribute2, 
+ftable.cqp_corpus <- function(x, attribute1, attribute2, 
 	attribute1.use.id=FALSE, attribute2.use.id=FALSE,
-	structural.attribute.unique.id=FALSE, subcorpus=NULL
+	structural.attribute.unique.id=FALSE, subcorpus=NULL,
+	...
 ) {
-	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
+	cqp_corpus.name <- attr(x, "cqp_corpus.name");
 	qualified.attribute1 <- paste(cqp_corpus.name, attribute1, sep=".");
 	qualified.attribute2 <- paste(cqp_corpus.name, attribute2, sep=".");
 	
@@ -716,9 +717,9 @@ ftable.cqp_corpus <- function(corpus, attribute1, attribute2,
 }
 
 
-ftable.cqp_subcorpus <- function(subcorpus, anchor1, attribute1, anchor2, attribute2, cutoff=0) {
-	parent.corpus <- attr(subcorpus, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
+ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2, cutoff=0, ...) {
+	parent.corpus <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
 	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
 	
 	m <- cqi_fdist2(qualified.sub_corpus.name, anchor1, attribute1, anchor2, attribute2, cutoff=cutoff);
@@ -803,7 +804,8 @@ print.kwic <- function(x,
 	right.separator=">> ",
 	hit.char=15,
 	left.char=40,
-	right.char=40
+	right.char=40,
+	...
     ) {
 		
 		if (from < 0 || to-from < 0 || to >= nrow(x)) {
