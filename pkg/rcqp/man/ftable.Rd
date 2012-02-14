@@ -1,0 +1,122 @@
+\name{ftable}
+\alias{ftable}
+\alias{ftable.cqp_corpus}
+\alias{ftable.cqp_subcorpus}
+
+\title{
+Create a frequency table
+}
+\description{
+Create a frequency table either with a corpus or with a subcorpus. With a corpus, a frequency table is a based on two attribute (structural or positional). With a subcorpus object, a frequency table is based on two anchor (match, matchend, target, keyword) and a positional attribute for each anchor.
+}
+\usage{
+ftable(x, ...)
+
+## S3 method for class 'cqp_corpus'
+ftable(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL)
+
+## S3 method for class 'cqp_subcorpus'
+ftable(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0)
+}
+
+\arguments{
+  \item{x}{
+An rcqp object, created with \code{\link{corpus}} or \code{\link{subcorpus}}.
+}
+  \item{attribute1}{
+The attribute for the modalities of the first variable of the cross-tabulation. If x is a subcorpus, positional attribute only.
+}
+  \item{attribute2}{
+The attribute for the modalities of the second variable of the cross-tabulation. If x is a subcorpus, positional attribute only.
+}
+  \item{attribute1.use.id}{
+If attribute1 is a structural attribute and has values (see \code{\link{cqi_positional_attribute_has_values}}), switch between region ids (struc) and values (default).
+}
+  \item{attribute2.use.id}{
+If attribute2 is a structural attribute and has values (see \code{\link{cqi_positional_attribute_has_values}}), switch between region ids (struc) and values (default).
+}
+  \item{structural.attribute.unique.id}{
+If one of the attribute (at least) is a positional attribute, and that values
+rather than region ids are used, you can create various grouping and counting
+according to the point that unique combinaison with ids (before using values)
+are used or not. See details for more info.
+}
+  \item{subcorpus}{
+Not implemented yet.
+}
+
+  \item{anchor1}{
+The anchor for individual of the first variable, if x is a subcorpus (anchor may be : match, matchend, target, keyword).
+}
+  \item{anchor2}{
+The anchor for individual of the first variable, if x is a subcorpus (anchor may be : match, matchend, target, keyword).
+}
+  \item{cutoff}{
+Filter the frequency table.
+}
+
+}
+\details{
+Some explanation for the \code{structural.attribute.unique.id} option (see the vignette RcqpIntroduction).
+
+Positional attributes (and structural attributes having values) are represented
+with their string representations rather than with ids. For positional
+attributes, it is only a matter of presentation, since each ids has it own
+string; but for structural attributes having values, it may entails different
+counting, since these values are not unique: occurrence of phenomena belonging
+to different struc are then counted together if two struct have the same
+values. You can force the use of ids rather than string/value with the
+\texttt{attribute1.use.id} and \texttt{attribute2.use.id} options.
+
+Counts are made on token basis, i.e. each token of the corpus is an
+individual on which the two modalities (attributes) are considered. If you
+use two structural attributes as argument in \texttt{ftable},
+and one of them does not have values the third column count the number of
+tokens in the smallest region. In the following example, each line give
+the length (in number of tokens, third column) of each sentence (second column)
+in each novel, represented by its title:
+
+\code{
+c <- corpus("DICKENS");
+f <- ftable(c, "novel_title", "s")
+f[1:10,]
+}
+
+If both structural attributes have values, you may want to count the of
+times the modalities are co-occurring, rather than the total number of
+tokens included in these cooccurrences. Fot that purpose you can use the
+\texttt{structural.attribute.unique.id=TRUE} option. In the following
+example, we count the number of time each head appears in each novel :
+
+\code{
+f <- ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
+f[1:10,]
+}
+
+Here on the contrary, we count the total number of tokens in each
+prepositional phrases having a given head :
+
+\code{
+f <- ftable(c, "novel_title", "pp_h")
+f[1:10,]
+}
+
+}
+
+\value{
+A frequency table stored as a flat (3-column) data.frame : for each observed
+combinaison of modalities, the first column give the modality in the first
+variable, the second column the modality in the second variable, and the third
+column the observed frequency of the cooccurrence.
+}
+
+\references{                                                                    
+  \url{http://cwb.sourceforge.net/documentation.php}                            
+} 
+\author{                                                                        
+        Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
+        Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
+}
+
+\examples{
+}
