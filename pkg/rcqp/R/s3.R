@@ -593,11 +593,8 @@ summary.cqp_flist <- function(x) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_flist <- function(flist, from=1, to=20) {
-	cat("A frequency list\n");
-	cat(paste("  Number of tokens:", sum(x), "\n"));
-	cat(paste("  Number of types:", length(x), "\n"));
-	print(c(flist[from:to]));
+print.cqp_flist <- function(x) {
+	print(c(x));
 }
 
 
@@ -719,26 +716,26 @@ ftable.cqp_corpus <- function(corpus, attribute1, attribute2,
 }
 
 
-ftable.cqp_subcorpus <- function(subcorpus, anchor1, att1, anchor2, att2, cutoff=0) {
+ftable.cqp_subcorpus <- function(subcorpus, anchor1, attribute1, anchor2, attribute2, cutoff=0) {
 	parent.corpus <- attr(subcorpus, "parent.cqp_corpus.name");
 	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
 	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
 	
-	m <- cqi_fdist2(qualified.sub_corpus.name, anchor1, att1, anchor2, att2, cutoff=cutoff);
+	m <- cqi_fdist2(qualified.sub_corpus.name, anchor1, attribute1, anchor2, attribute2, cutoff=cutoff);
 
-	att1.str <- cqi_id2str(paste(parent.corpus, att1, sep="."), m[,1]);
-  	att2.str <- cqi_id2str(paste(parent.corpus, att2, sep="."), m[,2]);
+	attribute1.str <- cqi_id2str(paste(parent.corpus, attribute1, sep="."), m[,1]);
+  	attribute2.str <- cqi_id2str(paste(parent.corpus, attribute2, sep="."), m[,2]);
  
-	df <- data.frame(att1.str, att2.str, m[,3]);
+	df <- data.frame(attribute1.str, attribute2.str, m[,3]);
 #  	df <- data.frame(m[,1], m[,2], m[,3]);
 	colnames(df) <- c(
-		paste(anchor1, att1, sep="."),
-		paste(anchor2, att2, sep="."),
+		paste(anchor1, attribute1, sep="."),
+		paste(anchor2, attribute2, sep="."),
 		"freq");
 	return(df);
 }
 
-ftable <- function(x, y, ...) UseMethod("ftable");
+ftable <- function(x, ...) UseMethod("ftable");
 
 
 ###########################################################################
@@ -746,16 +743,16 @@ ftable <- function(x, y, ...) UseMethod("ftable");
 ###########################################################################
 
 
-kwic.cqp_subcorpus <- function(subcorpus,
+kwic.cqp_subcorpus <- function(x,
 	right.context=5,
 	left.context=5,
 	sort.anchor="matchend",
 	sort.anchor.attribute="word",
 	sort.anchor.offset=1
 ) {
-	m <- .get.kwic.matrix(subcorpus, right.context, left.context);
+	m <- .get.kwic.matrix(x, right.context, left.context);
 	
-	parent.cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");
+	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
 	s <- .sort.kwic(parent.cqp_corpus.name, m, sort.anchor, sort.anchor.attribute, sort.anchor.offset);
 
 	attr(s, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
@@ -798,8 +795,8 @@ kwic.cqp_subcorpus <- function(subcorpus,
 	return(sorted);
 }
 
-print.kwic <- function(kwic,
-	print.function=function(x) cqi_cpos2str(paste(attr(kwic, "parent.cqp_corpus.name"), "word", sep="."), x),
+print.kwic <- function(x,
+	print.function=function(x) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), x),
 	from=0,
 	to=20,
 	left.separator=" <<",
@@ -809,14 +806,14 @@ print.kwic <- function(kwic,
 	right.char=40
     ) {
 		
-		if (from < 0 || to-from < 0 || to >= nrow(kwic)) {
-			stop("0 <= from < to < nrow(kwic)");
+		if (from < 0 || to-from < 0 || to >= nrow(x)) {
+			stop("0 <= from < to < nrow(x)");
 		}
 		
 		lines <- character(to-from);
 		for (i in 1:(to-from)) {
 			# TODO : offset ?
-			lines[i] <- .do_kwic_line(kwic[from + i,], print.function, left.separator, hit.char=hit.char, left.char=left.char, right.char=right.char);
+			lines[i] <- .do_kwic_line(x[from + i,], print.function, left.separator, hit.char=hit.char, left.char=left.char, right.char=right.char);
 		}
 		
 		return(lines);
@@ -846,4 +843,4 @@ print.kwic <- function(kwic,
   return(line);
 }
 
-kwic <- function(x, y, ...) UseMethod("kwic");
+kwic <- function(x, ...) UseMethod("kwic");

@@ -83,6 +83,7 @@ Here are the first 20 lines of such an array representing the DICKENS demo
 corpus, with 38 columns.
 
 <<cqi_corpus_representation, echo=FALSE>>=
+library(rcqp)
 c <- corpus("DICKENS")
 c
 @
@@ -142,9 +143,6 @@ attribute is 0, etc.
 \subsection{A sample session}
 
 <<cqi_session, echo=TRUE>>=
-
-library(rcqp)
-
 corpora <- cqi_list_corpora()
 corpora[1:5]
 
