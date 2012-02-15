@@ -11,14 +11,11 @@ Print summary for corpus, subcorpus, or frequency list.
 }
 \usage{
 
-## S3 method for class 'cqp_flist'
-summary.cqp_flist(object, ...)
+ \method{summary}{cqp_flist}(object, ...)
 
-## S3 method for class 'cqp_corpus'
-summary.cqp_corpus(object, ...)
+ \method{summary}{cqp_corpus}(object, ...)
 
-## S3 method for class 'cqp_subcorpus'
-summary.cqp_subcorpus(object, ...)
+ \method{summary}{cqp_subcorpus}(object, ...)
 }
 
 \arguments{

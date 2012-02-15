@@ -8,7 +8,7 @@ Save a CWB corpus in a file in a tabular representation
 Save a CWB corpus in a file as a data frame where each column represent an attribute (positional or structural).
 }
 \usage{
-write.cqp_corpus(corpus, filename, from = 0, to = 1000, ...)
+ \method{write}{cqp_corpus}(corpus, filename, from = 0, to = 1000, ...)
 }
 
 \arguments{

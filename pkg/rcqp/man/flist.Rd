@@ -12,11 +12,9 @@
 \usage{
 flist(x, ...)
 
-## S3 method for class 'cqp_corpus'
-flist(x, attribute, cutoff = 0, ...)
-
-## S3 method for class 'cqp_subcorpus'
-flist(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
+ \method{flist}{cqp_corpus}(x, attribute, cutoff = 0, ...)
+ 
+ \method{flist}{cqp_subcorpus}(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

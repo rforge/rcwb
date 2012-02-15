@@ -12,8 +12,7 @@ arranging and filtering items. The list can then be printed chunk by chunk.
 \usage{
 kwic(x, ...)
 
-## S3 method for class 'cqp_subcorpus'
-kwic(x, right.context = 5, left.context = 5, sort.anchor = "matchend", sort.anchor.attribute = "word", sort.anchor.offset = 1, ...)
+ \method{kwic}{cqp_subcorpus}(x, right.context = 5, left.context = 5, sort.anchor = "match", sort.anchor.attribute = "word", sort.anchor.offset = 1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

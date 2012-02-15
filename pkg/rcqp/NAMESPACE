@@ -32,7 +32,6 @@ export(
 	"summary.cqp_corpus",
 	"print.cqp_corpus",
 	"write.cqp_corpus",
-	"region_sizes.cqp_corpus",
 
 	"subcorpus",
 	"summary.cqp_subcorpus",
@@ -47,10 +46,11 @@ export(
  	"ftable.cqp_subcorpus",
  	"ftable.cqp_corpus",
 
+	"kwic",
 	"kwic.cqp_subcorpus",
 	"print.kwic",
 
-	"region_sizes.cqp_corpus"
+	"region_sizes"
 )
 
 # 	"cqi_charset",

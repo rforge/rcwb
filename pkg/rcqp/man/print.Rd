@@ -16,17 +16,15 @@ subcorpus is printed as a \code{kwic} list (or concordancier); a \code{kwic} obj
 printed... as expected.
 }
 \usage{
-## S3 method for class 'cqp_flist'
-print.cqp_flist(x, ...)
 
-## S3 method for class 'cqp_corpus'
-print.cqp_corpus(x, from = 0, to = 20, ...)
+ \method{print}{cqp_flist}(x, ...)
 
-## S3 method for class 'cqp_subcorpus'
-print.cqp_subcorpus(x, positional.attribute = "word", from = 0, to = 10, ...)
+ \method{print}{cqp_corpus}(x, from = 0, to = 20, ...)
 
-## S3 method for class 'kwic'
-print.kwic(x, print.function = function(x) cqi_cpos2str(paste(attr(kwic, "parent.cqp_corpus.name"), "word", sep = "."), x), from = 0, to = 20, left.separator = " <<", right.separator = ">> ", hit.char = 15, left.char = 40, right.char = 40, ...)
+ \method{print}{cqp_subcorpus}(x, positional.attribute = "word", from = 0, to = 10, ...)
+
+ \method{print}{kwic}(x, print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), from = 0, to = 20, left.separator = " <<", right.separator = ">> ", hit.char = 15, left.char = 40, right.char = 40, ...)
+
 }
 
 \arguments{

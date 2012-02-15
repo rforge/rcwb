@@ -12,11 +12,9 @@ Create a frequency table either with a corpus or with a subcorpus. With a corpus
 \usage{
 ftable(x, ...)
 
-## S3 method for class 'cqp_corpus'
-ftable(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL, ...)
-
-## S3 method for class 'cqp_subcorpus'
-ftable(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
+ \method{ftable}{cqp_corpus}(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL, ...)
+ 
+ \method{ftable}{cqp_subcorpus}(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
 }
 
 \arguments{

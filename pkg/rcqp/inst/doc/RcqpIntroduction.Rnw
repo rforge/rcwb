@@ -535,13 +535,13 @@ attribute.
 
 <<region_size_session, fig=TRUE, echo=TRUE>>=
 c <- corpus("DICKENS");
-sentences <- region_sizes.cqp_corpus(c, "s");
+sentences <- region_sizes(c, "s");
 hist(sentences);
 @
 
 % ======================================================
 
-\subsubsection{Creating a subcorpus: the function \textt{subcorpus}}
+\subsubsection{Creating a subcorpus: the function \texttt{subcorpus}}
 
 An object \texttt{subcorpus}
 is created with the function \texttt{subcorpus()}. In the CWB 
@@ -557,8 +557,8 @@ print(sc, from=2, to=5);
 #
 # if you want more access on the kwic presentation
 # (sorting, printing), you can construct a kwic object):
-k <- kwic(sc, sort.anchor="target", sort.anchor.attribute="pos")
-print(k, from=5, to=10, left.char=40, right.char=25)
+k <- kwic(sc, sort.anchor="target", sort.anchor.offset=0, sort.anchor.attribute="pos", right.context=10, left.context=10)
+print(k, from=5, to=10, left.char=25, right.char=25)
 @
 
 \paragraph{print}
@@ -636,7 +636,7 @@ f <- ftable(c, "novel_title", "pos");
 f[1:10,]
 #
 # create a contingency table
-t <- cast(f, attribute1 ~ attribute2, value="freq", fun.aggregate=sum )
+t <- cast(f, novel_title ~ pos, value="freq", fun.aggregate=sum )
 #
 # Visual inspection of frequency of various POS in the different novels
 mosaicplot(as.matrix(t));

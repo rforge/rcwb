@@ -242,7 +242,7 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 
 ## TODO il y aurait encore plus simple : table() sur tous les struc.
 
-region_sizes.cqp_corpus <- function(corpus, structural_attribute) {
+region_sizes <- function(corpus, structural_attribute) {
 	if (class(corpus) != "cqp_corpus") {
 		stop("corpus: not a corpus object");
 	}
@@ -365,10 +365,7 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 	}
 	
 	k <- kwic(x);
-	l <- print(k, from=from, to=to);
-	for(i in l) {
-		cat(paste(i, "\n", sep=""));
-	}
+	print(k, from=from, to=to);
 }
 
 
@@ -747,9 +744,10 @@ ftable <- function(x, ...) UseMethod("ftable");
 kwic.cqp_subcorpus <- function(x,
 	right.context=5,
 	left.context=5,
-	sort.anchor="matchend",
+	sort.anchor="match",
 	sort.anchor.attribute="word",
-	sort.anchor.offset=1
+	sort.anchor.offset=1,
+	...
 ) {
 	m <- .get.kwic.matrix(x, right.context, left.context);
 	
@@ -769,10 +767,10 @@ kwic.cqp_subcorpus <- function(x,
 	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
 
 	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
-	left.boundary <- dump[,2] - left.context;
+	left.boundary <- dump[,1] - left.context;
 	dim(left.boundary) <- c(nrow(dump), 1);
 
-	right.boundary <- dump[,1] + right.context;
+	right.boundary <- dump[,2] + right.context;
 	dim(right.boundary) <- c(nrow(dump), 1);
 
 	dump <- cbind(dump, left.boundary, right.boundary);
@@ -797,7 +795,7 @@ kwic.cqp_subcorpus <- function(x,
 }
 
 print.kwic <- function(x,
-	print.function=function(x) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), x),
+	print_tokens=function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), cpos),
 	from=0,
 	to=20,
 	left.separator=" <<",
@@ -806,23 +804,27 @@ print.kwic <- function(x,
 	left.char=40,
 	right.char=40,
 	...
-    ) {
-		
-		if (from < 0 || to-from < 0 || to >= nrow(x)) {
-			stop("0 <= from < to < nrow(x)");
-		}
-		
-		lines <- character(to-from);
-		for (i in 1:(to-from)) {
-			# TODO : offset ?
-			lines[i] <- .do_kwic_line(x[from + i,], print.function, left.separator, hit.char=hit.char, left.char=left.char, right.char=right.char);
-		}
-		
-		return(lines);
+)
+{
+	
+	if (from < 0 || to-from < 0 || to >= nrow(x)) {
+		stop("0 <= from < to < nrow(x)");
 	}
+	
+	lines <- character(to-from);
+	for (i in 1:(to-from)) {
+		# TODO : offset ?
+		lines[i] <- .do_kwic_line(x, x[from + i,], print_tokens, left.separator, right.separator, hit.char=hit.char, left.char=left.char, right.char=right.char);
+	}
+	
+	for(i in lines) {
+		cat(paste(i, "\n", sep=""));
+	}
+}
 
-.do_kwic_line <- function(line,
-	print.function,
+.do_kwic_line <- function(x,
+	line,
+	print_tokens,
 	left.separator,
 	right.separator,
 	hit.char,
@@ -830,9 +832,9 @@ print.kwic <- function(x,
 	right.char)
 {
 	
-  left = print.function(line["left"]:(line["match"]-1));
-  hit = print.function(line["match"]:line["matchend"]);
-  right = print.function((line["matchend"]+1):line["right"]);
+  left = print_tokens(x, line["left"]:(line["match"]-1));
+  hit = print_tokens(x, line["match"]:line["matchend"]);
+  right = print_tokens(x, (line["matchend"]+1):line["right"]);
 
   left <- paste(left, collapse=" ");
   hit <- paste(hit, collapse=" ");

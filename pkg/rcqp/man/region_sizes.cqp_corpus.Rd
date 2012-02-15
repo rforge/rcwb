@@ -8,7 +8,7 @@ Size of regions
 Compute the size (in number of tokens) of the regions of a structural attribute.
 }
 \usage{
-region_sizes.cqp_corpus(corpus, structural_attribute)
+region_sizes(corpus, structural_attribute)
 }
 
 \arguments{
