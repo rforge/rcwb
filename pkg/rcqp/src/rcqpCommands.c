@@ -1262,12 +1262,12 @@ SEXP rcqpCmd_dump_subcorpus(SEXP inSubcorpus, SEXP inFirst, SEXP inLast)
 	PROTECT(inFirst);
 	PROTECT(inLast);
 	
-	first = asInteger(inFirst)-1;
+	first = asInteger(inFirst);
 	if (first == NA_INTEGER) {
 		UNPROTECT(3);
 	    error("invalid 'first' value (too large or NA)");
 	}
-	last = asInteger(inLast)-1;
+	last = asInteger(inLast);
 	if (last == NA_INTEGER) {
 		UNPROTECT(3);
 	    error("invalid 'last' value (too large or NA)");
