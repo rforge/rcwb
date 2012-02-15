@@ -40,7 +40,7 @@ Select tokens (for a corpus object) or matches (for a subcorpus or kwic object) 
   \item{positional.attribute}{
 Print each token of the subcorpus using the given positional attribute. 
 }
-  \item{print.function}{
+  \item{print_tokens}{
 A function allowing a fine access to the way tokens are displayed in a concordancier.
 }
   \item{left.separator}{
