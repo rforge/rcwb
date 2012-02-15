@@ -9,10 +9,10 @@
 Print a CWB object
 }
 \description{
-Print a CWB object in a exhaustive way. An flist is printed just as an
-integer vector; a corpus is printed as a data.frame where row represent tokens
+Print a CWB object in an exhaustive way. An \code{flist} is printed just as an
+integer vector; a corpus is printed as a data.frame where rows represent tokens
 and columns represent attributes (positional as well as structural); a
-subcorpus is printed as a kwic list (or concordancier); a kwic object is
+subcorpus is printed as a \code{kwic} list (or concordancier); a \code{kwic} object is
 printed... as expected.
 }
 \usage{
@@ -31,7 +31,7 @@ print.kwic(x, print.function = function(x) cqi_cpos2str(paste(attr(kwic, "parent
 
 \arguments{
   \item{x}{
-An rcqp object, created with \code{\link{flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{kwic}}.
+An \code{rcqp} object, created with \code{\link{flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{kwic}}.
 }
   \item{from}{
 Select tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
@@ -43,13 +43,13 @@ Select tokens (for a corpus object) or matches (for a subcorpus or kwic object) 
 Print each token of the subcorpus using the given positional attribute. 
 }
   \item{print.function}{
-A function allowing to fine access to the way token are displayed in a concordancier.
+A function allowing a fine access to the way tokens are displayed in a concordancier.
 }
   \item{left.separator}{
-String insterted at the left of the keyword in concordancier.
+String inserted at the left of the keyword in a concordancier.
 }
   \item{right.separator}{
-String insterted at the right of the keyword in concordancier.
+String inserted at the right of the keyword in a concordancier.
 }
   \item{hit.char}{
 Size (in characters) of the column containing the keyword.
@@ -68,10 +68,10 @@ Ignored.
 
 \details{
 
-Print on a subcorpus object is a shortcut for :\cr
+The \code{print} command applied on  a subcorpus object is a shortcut for :\cr
 \code{k <- kwic(subcorpus)} \cr
 \code{print(k)} \cr
-Creating a kwic object give more control on the printing options.
+Creating a \code{kwic} object gives more control on the printing options.
 }
 
 \references{                                                                    

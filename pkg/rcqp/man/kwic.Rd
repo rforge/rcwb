@@ -24,16 +24,16 @@ An object created with \code{\link{subcorpus}}.
 The number of tokens to select on the right.
 }
   \item{left.context}{
-The number of tokens to select on the right.
+The number of tokens to select on the left.
 }
   \item{sort.anchor}{
-The anchor (match, matchend, target, keyword) to be used as keyword.
+The anchor (\emph{match, matchend, target, keyword}) to be used as keyword.
 }
   \item{sort.anchor.attribute}{
-The attribute (such as word, lemma... according to available attribute in a given corpus) for sorting the lines of the concordancer.
+The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordancer.
 }
   \item{sort.anchor.offset}{
-Sort on the anchor selected, or $n$ tokens before or after?
+Sort on the anchor selected, or \emph{n} tokens before or after.
 }
   \item{...}{
 Ignored.
@@ -42,7 +42,7 @@ Ignored.
 }
 
 \value{
-Create a kwic object ready to be printed (with more options for the display) with print (see \code{\link{print.kwic}}).
+Create a \code{kwic} object ready to be printed (with more options for the display) with print (see \code{\link{print.kwic}}).
 }
 
 \references{                                                                    

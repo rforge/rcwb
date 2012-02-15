@@ -10,7 +10,7 @@
 }
 
 \usage{
-	cqi_dump_subcorpus(subcorpus, first, last)
+	cqi_dump_subcorpus(subcorpus, first=0, last=cqi_subcorpus_size(subcorpus)-1)
 	cqi_subcorpus_size(subcorpus)
 	cqi_drop_subcorpus(subcorpus)
 }

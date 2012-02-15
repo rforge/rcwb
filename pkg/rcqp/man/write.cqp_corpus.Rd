@@ -19,10 +19,10 @@ An object created with \code{\link{corpus}}.
 The file to be used
 }
   \item{from}{
-First token to save (token cpos of the first line of the data.frame).
+First token to save (token cpos of the first line of the dataframe).
 }
   \item{to}{
-Last token to save (token cpos of the last line of the data.frame).
+Last token to save (token cpos of the last line of the dataframe).
 }
   \item{\dots}{
 Not used.
