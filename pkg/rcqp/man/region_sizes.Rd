@@ -1,5 +1,5 @@
-\name{region_sizes.cqp_corpus}
-\alias{region_sizes.cqp_corpus}
+\name{region_sizes}
+\alias{region_sizes}
 
 \title{
 Size of regions
@@ -35,6 +35,6 @@ An integer vector.
 \examples{
 \dontrun{
 c <- corpus("DICKENS");
-s <- region_sizes.cqp_corpus(c, "chapter");
+s <- region_sizes(c, "chapter");
 }
 }
