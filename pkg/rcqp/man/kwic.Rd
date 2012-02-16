@@ -6,7 +6,7 @@
 Create a "keyword in context" list with a subcorpus.
 }
 \description{
-Create a "keyword in context" list with a subcorpus, with parameters for
+Create a "keyword in context" (aka \emph{kwic}) list with a subcorpus, with parameters for
 arranging and filtering items. The list can then be printed chunk by chunk.
 }
 \usage{
@@ -29,10 +29,10 @@ The number of tokens to select on the left.
 The anchor (\emph{match, matchend, target, keyword}) to be used as keyword.
 }
   \item{sort.anchor.attribute}{
-The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordancer.
+The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordancier.
 }
   \item{sort.anchor.offset}{
-Sort on the anchor selected, or \emph{n} tokens before or after.
+Sort on the selected anchor, or \emph{n} tokens before or after it.
 }
   \item{...}{
 Ignored.
@@ -41,7 +41,7 @@ Ignored.
 }
 
 \value{
-Create a \code{kwic} object ready to be printed (with more options for the display) with print (see \code{\link{print.kwic}}).
+Create a \code{kwic} object ready to be printed (with more options for the display) with \code{print} (see \code{\link{print.kwic}}).
 }
 
 \references{                                                                    
@@ -53,5 +53,8 @@ Create a \code{kwic} object ready to be printed (with more options for the displ
 }
 
 \seealso{
+\code{\link{corpus}}, 
+\code{\link{subcorpus}}, 
 \code{\link{print.kwic}}
+\code{\link{write.cqp_corpus}}.
 }

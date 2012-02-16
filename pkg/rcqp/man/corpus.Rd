@@ -5,7 +5,7 @@
 Create a corpus object
 }
 \description{
-Create a corpus object wrapping a cwb corpus object.
+Create a corpus object wrapping a CWB corpus object.
 }
 \usage{
 corpus(corpus.name)
@@ -13,7 +13,7 @@ corpus(corpus.name)
 
 \arguments{
   \item{corpus.name}{
- The name of a corpus in the CWB registry (upper case).
+The name of a corpus in the CWB registry (must be uppercase).
 }
 }
 
@@ -30,7 +30,11 @@ A corpus object.
 }
 
 \seealso{
-\code{\link{subcorpus}}, \code{\link{flist}}, \code{\link{ftable}}.
+\code{\link{subcorpus}}, 
+\code{\link{print.cqp_corpus}}, 
+\code{\link{summary.cqp_corpus}}, 
+\code{\link{write.cqp_corpus}}, 
+\code{\link{kwic}}.
 }
 
 \examples{

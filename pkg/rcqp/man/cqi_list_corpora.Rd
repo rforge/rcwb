@@ -44,7 +44,9 @@
 \code{\link{cqi_full_name}}, 
 \code{\link{cqi_list_subcorpora}}, 
 \code{\link{cqi_query}}, 
-\code{\link{cqi_attributes}}
+\code{\link{cqi_attributes}}.\cr
+\code{\link{subcorpus}}, 
+\code{\link{corpus}}.
 }
 
 \examples{

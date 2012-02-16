@@ -6,9 +6,11 @@
 \title{
 Create a frequency table
 }
+
 \description{
 Create a frequency table either with a corpus or with a subcorpus. With a corpus, a frequency table is a based on two attributes (structural or positional). With a subcorpus object, a frequency table is based on two anchors (\emph{match, matchend, target, keyword}) and a positional attribute for each anchor.
 }
+
 \usage{
 ftable(x, ...)
 
@@ -66,18 +68,18 @@ attributes, it is only a matter of presentation, since each id has its own
 string; but for structural attributes having values, it may entail a different
 counting, since these values are not unique: occurrences of phenomena belonging
 to different structs are then counted together if two structs have the same
-value. You can force the use of ids rather than string/value with the
+value. You can force the use of ids rather than string values with the
 \code{attribute1.use.id} and \code{attribute2.use.id} options.
 
 Counts are made on token basis, i.e. each token of the corpus is an
 individual on which the two modalities (attributes) are considered. If you
-use two structural attributes as argument in \code{ftable},
+use two structural attributes as arguments in \code{ftable},
 and one of them does not have values, then the third column counts the number of
 tokens in the smallest region. In the following example, each line gives
 the length (in number of tokens, third column) of each sentence (second column)
 in each novel represented by its title:
 
-\code{
+\preformatted{
 c <- corpus("DICKENS");
 f <- ftable(c, "novel_title", "s")
 f[1:10,]
@@ -89,7 +91,7 @@ tokens included in these cooccurrences. For that purpose, you can use the
 \code{structural.attribute.unique.id=TRUE} option. In the following
 example, we count the number of time each head appears in each novel :
 
-\code{
+\preformatted{
 f <- ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
 f[1:10,]
 }
@@ -97,7 +99,7 @@ f[1:10,]
 Here on the contrary, we count the total number of tokens in each
 prepositional phrase having a given head :
 
-\code{
+\preformatted{
 f <- ftable(c, "novel_title", "pp_h")
 f[1:10,]
 }
@@ -114,7 +116,15 @@ column the observed frequency of the cooccurrence.
 \references{                                                                    
   \url{http://cwb.sourceforge.net/documentation.php}                            
 } 
+
 \author{                                                                        
         Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
 }
+
+\seealso{
+\code{\link{flist}}, 
+\code{\link{kwic}}, 
+\code{\link{subcorpus}}.
+}
+

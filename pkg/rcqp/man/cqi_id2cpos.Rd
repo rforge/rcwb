@@ -64,7 +64,7 @@
 \code{\link{cqi_regex2id}}, 
 \code{\link{cqi_str2id}}, 
 \code{\link{cqi_struc2cpos}}, 
-\code{\link{cqi_struc2str}}
+\code{\link{cqi_struc2str}}.
 }
 
 \examples{

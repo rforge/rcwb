@@ -55,7 +55,10 @@
 \code{\link{cqi_dump_subcorpus}}, 
 \code{\link{cqi_drop_subcorpus}}, 
 \code{\link{cqi_attributes}}, 
-\code{\link{cqi_attribute_size}}
+\code{\link{cqi_attribute_size}}.
+\cr
+\code{\link{subcorpus}}, 
+\code{\link{corpus}}.
 \cr
 
 Conversion functions:
@@ -72,7 +75,7 @@ Conversion functions:
 \code{\link{cqi_regex2id}}, 
 \code{\link{cqi_str2id}}, 
 \code{\link{cqi_struc2cpos}}, 
-\code{\link{cqi_struc2str}}
+\code{\link{cqi_struc2str}}.
 
 }
 

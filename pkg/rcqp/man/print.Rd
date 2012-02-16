@@ -3,14 +3,13 @@
 \alias{print.cqp_subcorpus}
 \alias{print.cqp_corpus}
 \alias{print.kwic}
-\alias{print.kwic}
 
 \title{
 Print a CWB object
 }
 \description{
 Print a CWB object in an exhaustive way. An \code{flist} is printed just as an
-integer vector; a corpus is printed as a data.frame where rows represent tokens
+integer vector; a corpus is printed as a dataframe where rows represent tokens
 and columns represent attributes (positional as well as structural); a
 subcorpus is printed as a \code{kwic} list (or concordancier); a \code{kwic} object is
 printed... as expected.
@@ -66,9 +65,12 @@ Ignored.
 
 \details{
 
-The \code{print} command applied on  a subcorpus object is a shortcut for :\cr
-\code{k <- kwic(subcorpus)} \cr
-\code{print(k)} \cr
+The \code{print} command applied on a subcorpus object is a shortcut for :
+\preformatted{
+k <- kwic(subcorpus)
+print(k)
+}
+
 Creating a \code{kwic} object gives more control on the printing options.
 }
 
@@ -80,6 +82,16 @@ Creating a \code{kwic} object gives more control on the printing options.
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
 }
 
+\seealso{
+\code{\link{corpus}}, 
+\code{\link{subcorpus}}, 
+\code{\link{kwic}}, 
+\code{\link{flist}}, 
+\code{\link{ftable}}, 
+\code{\link{summary.cqp_flist}}, 
+\code{\link{summary.cqp_corpus}}, 
+\code{\link{summary.cqp_subcorpus}}.
+}
 
 \examples{
 \dontrun{

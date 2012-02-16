@@ -53,6 +53,14 @@ List of available help pages:\cr
 \code{\link{cqi_struc2cpos}}\cr
 \code{\link{cqp_registry}}\cr
 \code{\link{cqi_corpus_info}}\cr
+
+Object model:\cr
+\code{\link{corpus}}\cr
+\code{\link{subcorpus}}\cr
+\code{\link{flist}}\cr
+\code{\link{ftable}}\cr
+\code{\link{kwic}}\cr
+
 }
 
 \keyword{package}

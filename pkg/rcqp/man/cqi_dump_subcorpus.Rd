@@ -62,7 +62,7 @@
 \seealso{
 \code{\link{cqi_query}}, 
 \code{\link{cqi_list_corpora}}, 
-\code{\link{cqi_list_subcorpora}}
+\code{\link{cqi_list_subcorpora}}.
 }
 
 \examples{

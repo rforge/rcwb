@@ -40,7 +40,9 @@
 \code{\link{cqi_query}}, 
 \code{\link{cqi_subcorpus_size}}, 
 \code{\link{cqi_attributes}}, 
-\code{\link{cqi_fdist}}
+\code{\link{cqi_fdist}}.\cr
+\code{\link{subcorpus}}, 
+\code{\link{corpus}}.
 }
 
 \examples{

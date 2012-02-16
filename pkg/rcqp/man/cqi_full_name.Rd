@@ -38,7 +38,7 @@
 }
 
 \seealso{
-\code{\link{cqi_list_corpora}}
+\code{\link{cqi_list_corpora}}.
 }
 
 \examples{

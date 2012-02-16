@@ -82,7 +82,7 @@ the second anchor and the third column gives the frequency of the co-occurrences
 
 \seealso{
 \code{\link{cqi_list_subcorpora}}, 
-\code{\link{cqi_dump_subcorpus}}
+\code{\link{cqi_dump_subcorpus}}.
 }
 
 \examples{

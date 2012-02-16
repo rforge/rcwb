@@ -54,7 +54,7 @@ In order to set the \code{CORPUS_REGISTRY} variable, you can
 \seealso{
 \code{\link{cqi_list_corpora}}, 
 \code{\link{cqi_list_subcorpora}}, 
-\code{\link{cqi_query}}
+\code{\link{cqi_query}}.
 }
 
 \examples{

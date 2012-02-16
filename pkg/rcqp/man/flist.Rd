@@ -6,9 +6,11 @@
 \title{
  Create a frequency list
 }
+
 \description{
- Create a frequency list either on any phenomenon available in a CWB corpus: frequency of forms of a positional attribute, of a value of a structural attribute, or frequency of forms found in an anchor (\emph{match, matchend, target, keyword}) of a subcorpus.
+ Create a frequency list on any phenomenon available in a CWB corpus: frequency of forms of a positional attribute, frequency of a value of a structural attribute, or frequency of forms found in an anchor (\emph{match, matchend, target, keyword}) of a subcorpus.
 }
+
 \usage{
 flist(x, ...)
 
@@ -22,41 +24,52 @@ flist(x, ...)
 A corpus or a subcorpus object, created with the function \code{\link{corpus}} or \code{\link{subcorpus}}.
 }
   \item{attribute}{
-The attribute giving the modality to be counted. May be a structural attribute if x is a corpus.
+The attribute giving the modality to be counted. May be a structural attribute if \code{x} is a corpus.
 }
   \item{anchor}{
 Where to count the modality : on the \emph{match}, \emph{matchend}, \emph{target} or \emph{keyword} anchor of a subcorpus.
 }
   \item{left.context}{
-Consider also \emph{n} tokens at the left of the selected anchor for counting frequencies.
+Consider also \emph{n} tokens on the left of the selected anchor for counting frequencies.
 }
   \item{right.context}{
-Consider also \emph{n} tokens at the right of the selected anchor for counting frequencies.
+Consider also \emph{n} tokens on the right of the selected anchor for counting frequencies.
 }
   \item{offset}{
 Switch the anchor at \emph{n} tokens from the left (if negative) or to the right of the anchor given above.
 }
   \item{cutoff}{
-Keep only frequency above this cutoff. If \code{cutoff} is 0, keep all forms. If \code{cutoff} is between 0 and 1 (exclusive), the \code{(cutoff * 100) }\% more frequent forms are kept.
+Keep only frequencies above this cutoff. If \code{cutoff} is 0, keep all forms. If \code{cutoff} is between 0 and 1 (exclusive), the \code{(cutoff * 100) }\% more frequent forms are kept.
 }
   \item{...}{
 Ignored.
 }
 }
+
 \details{
 
 A frequency
 
 }
+
 \value{
 Returns a named numeric vector.
 }
+
 \references{
   \url{http://cwb.sourceforge.net/documentation.php}
 }
+
 \author{
 	Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
 	Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
+}
+
+\seealso{
+\code{\link{ftable}}, 
+\code{\link{kwic}}, 
+\code{\link{subcorpus}}, 
+\code{\link{corpus}}.
 }
 
 \examples{

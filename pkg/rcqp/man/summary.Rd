@@ -7,7 +7,7 @@
 Print summary for CWB objects.
 }
 \description{
-Print summary for corpus, subcorpus, or frequency list.
+Print a summary for a corpus, a subcorpus, or a frequency list.
 }
 \usage{
 
@@ -20,7 +20,7 @@ Print summary for corpus, subcorpus, or frequency list.
 
 \arguments{
   \item{object}{
-An rcqp object, created with \code{\link{flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}.
+An \code{rcqp} object, created with \code{\link{flist}}, \code{\link{corpus}}, or \code{\link{subcorpus}}.
 }
   \item{...}{
 Ignored.
@@ -34,6 +34,13 @@ Ignored.
 \author{                                                                        
         Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
+}
+
+\seealso{
+\code{\link{corpus}}, 
+\code{\link{subcorpus}}, 
+\code{\link{write.cqp_corpus}}, 
+\code{\link{kwic}}.
 }
 
 \examples{
