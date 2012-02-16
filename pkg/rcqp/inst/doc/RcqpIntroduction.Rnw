@@ -506,7 +506,7 @@ region\index{region} of an alignment attribute\index{attribute!alignment} in an 
 \paragraph{cqi\_fdist1}
 \index{cqi\_fdist1}
 
-Get a frequency list of the strings of a given positional attribute\index{attribute!positional} in a 
+Get a frequency list\index{frequency!list} of the strings of a given positional attribute\index{attribute!positional} in a 
 subcorpus\index{subcorpus}.
 
 In the following example, get all part-of-speech tags :
@@ -592,7 +592,7 @@ hist(sentences);
 
 % ======================================================
 
-\subsubsection{Creating a subcorpus: the function \texttt{subcorpus}}
+\subsubsection{Creating a subcorpus}
 
 An \texttt{subcorpus} object
 is created with the function \texttt{subcorpus()}. In the CWB 
@@ -622,7 +622,8 @@ Print a KWIC (\emph{keyword in context}) form.
 
 Get a kwic summary of the size and content of the subcorpus\index{subcorpus}.
 
-\subsubsection{Creating frequency lists: the \texttt{flist} function}
+\subsubsection{Creating a frequency list}
+\index{frequency!list}
 
 A frequency list may be created either with a corpus\index{corpus} or with a subcorpus\index{subcorpus}.
 
@@ -668,9 +669,10 @@ fl[1:10]
 \paragraph{summary.cqp\_flist}
 \index{summary.cqp\_flist}
 
-Print information about the frequency list.
+Print information about the frequency list\index{frequency!list}.
 
-\subsubsection{Create a frequency table: the \texttt{ftable} function}
+\subsubsection{Create a frequency table}
+\index{frequency!table}
 
 The \texttt{ftable} function creates a frequency table: a cross-tabulated
 frequency count according to two attributes.
