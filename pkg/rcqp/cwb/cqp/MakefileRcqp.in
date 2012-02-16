@@ -1,7 +1,7 @@
 # ===========================================================================
 # File: "MakefileRcqp.in"
 #                        Created: 2012-01-14 14:18:07
-#              Last modification: 2012-01-28 12:29:29
+#              Last modification: 2012-02-16 17:32:08
 # Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 #          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 # This is part of the R package 'rcqp'.
@@ -92,5 +92,5 @@ clean:
 
 
 clean-all: clean
-	##rm -rf aidaLib.c Makefile config.h config.h.in
+	rm -rf Makefile
 

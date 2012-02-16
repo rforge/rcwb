@@ -76,15 +76,24 @@ cwb:
 clean:
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl clean
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp clean
-	rm -f *.o *.so *.mod
-	cd ../inst/doc/; rm -f *.tex *.aux *.log *.toc *.idx
+	rm -f *.o *.so
+	cd ../inst/doc/; \
+	rm -f *.tex *.aux *.log *.toc *.idx *.synctex.gz
+
+
+clean-all:
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl realclean
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp clean-all
+	rm -f *.o *.so
+	cd ../inst/doc/; \
+	rm -f *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.pdf *.synctex.gz
 
 
 vignette:
-	cd ../inst/doc; \
-	rm -f ${RCQP_VIGNETTE_TEX}; \
-	echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
-	pdflatex ${RCQP_VIGNETTE_TEX}
-	makeindex ${RCQP_VIGNETTE_IDX}
-	pdflatex ${RCQP_VIGNETTE_TEX}
+	@cd ../inst/doc; \
+	@rm -f ${RCQP_VIGNETTE_TEX}; \
+	@echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
+	@pdflatex ${RCQP_VIGNETTE_TEX}
+	@makeindex ${RCQP_VIGNETTE_IDX}
+	@pdflatex ${RCQP_VIGNETTE_TEX}
 
