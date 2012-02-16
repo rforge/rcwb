@@ -76,7 +76,7 @@ clean:
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl clean
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp clean
 	rm -f *.o *.so *.mod
-	cd ../inst/doc/; rm -f *.tex *.pdf *.aux *.log
+	cd ../inst/doc/; rm -f *.tex *.aux *.log *.toc *.idx
 
 
 vignette:
