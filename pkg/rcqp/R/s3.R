@@ -773,7 +773,7 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	left.boundary <- pmax(dump[,1] - left.context, 0);
 	dim(left.boundary) <- c(nrow(dump), 1);
 
-	corpus_size <- cqi_attribute_size(paste(parent.cqp_corpus.name, "word"));
+	corpus_size <- cqi_attribute_size(paste(parent.cqp_corpus.name, "word", sep="."));
 	max_id <- corpus_size - 1;
 	right.boundary <- pmin(dump[,2] + right.context, max_id);
 	dim(right.boundary) <- c(nrow(dump), 1);
