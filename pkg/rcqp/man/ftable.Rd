@@ -36,10 +36,7 @@ If \code{attribute1} is a structural attribute and has values (see \code{\link{c
 If attribute2 is a structural attribute and has values (see \code{\link{cqi_structural_attribute_has_values}}), switch between region ids (struc) and values (default).
 }
   \item{structural.attribute.unique.id}{
-If one of the attributes (at least) is a positional attribute, and if values
-rather than region ids are used, you can create various grouping and counting
-according to the point that unique combination with ids (before using values)
-are used or not. See details for more info.
+Count tokens or ids. See details for more info.
 }
   \item{subcorpus}{
 Not implemented yet.
@@ -75,7 +72,7 @@ Counts are made on token basis, i.e. each token of the corpus is an
 individual on which the two modalities (attributes) are considered. If you
 use two structural attributes as arguments in \code{ftable},
 and one of them does not have values, then the third column counts the number of
-tokens in the smallest region. In the following example, each line gives
+tokens. In the following example, each line gives
 the length (in number of tokens, third column) of each sentence (second column)
 in each novel represented by its title:
 

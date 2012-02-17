@@ -46,12 +46,6 @@ Ignored.
 }
 }
 
-\details{
-
-A frequency
-
-}
-
 \value{
 Returns a named numeric vector.
 }

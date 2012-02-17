@@ -26,10 +26,10 @@ The number of tokens to select on the right.
 The number of tokens to select on the left.
 }
   \item{sort.anchor}{
-The anchor (\emph{match, matchend, target, keyword}) to be used as keyword.
+The anchor (\emph{match, matchend, target, keyword}) to be used as sorting key.
 }
   \item{sort.anchor.attribute}{
-The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordancier.
+The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordance.
 }
   \item{sort.anchor.offset}{
 Sort on the selected anchor, or \emph{n} tokens before or after it.

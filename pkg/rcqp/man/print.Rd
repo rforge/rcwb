@@ -11,7 +11,7 @@ Print a CWB object
 Print a CWB object in an exhaustive way. An \code{flist} is printed just as an
 integer vector; a corpus is printed as a dataframe where rows represent tokens
 and columns represent attributes (positional as well as structural); a
-subcorpus is printed as a \code{kwic} list (or concordancier); a \code{kwic} object is
+subcorpus is printed as a \code{kwic} list (or concordance); a \code{kwic} object is
 printed... as expected.
 }
 \usage{
@@ -31,22 +31,22 @@ printed... as expected.
 An \code{rcqp} object, created with \code{\link{flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{kwic}}.
 }
   \item{from}{
-Select tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
+Select first tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
 }
   \item{to}{
-Select tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
+Select last tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
 }
   \item{positional.attribute}{
 Print each token of the subcorpus using the given positional attribute. 
 }
   \item{print_tokens}{
-A function allowing a fine access to the way tokens are displayed in a concordancier.
+A function allowing a fine access to the way tokens are displayed in a concordance.
 }
   \item{left.separator}{
-String inserted at the left of the keyword in a concordancier.
+String inserted at the left of the keyword in a concordance.
 }
   \item{right.separator}{
-String inserted at the right of the keyword in a concordancier.
+String inserted at the right of the keyword in a concordance.
 }
   \item{hit.char}{
 Size (in characters) of the column containing the keyword.

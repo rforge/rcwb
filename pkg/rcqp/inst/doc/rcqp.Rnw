@@ -522,11 +522,10 @@ fdist[,2]
 \paragraph{cqi\_fdist2}
 \index{cqi\_fdist2}
 
-Get a cross-tabulated table of the strings of a given positional 
-attribute in a subcorpus\index{subcorpus} * strings of a given.
+Get a cross-tabulated table of the string values of a given positional
+attribute in a subcorpus \index{subcorpus} against the string values of
+another positional attribute.
 
-% ----------------------------------------------------------------
-% ----------------------------------------------------------------
 
 \section{Integrating CQP into R S3 objects and quantitative structures}
 
