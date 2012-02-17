@@ -90,10 +90,10 @@ clean-all:
 
 
 vignette:
-	@cd ../inst/doc; \
-	@rm -f ${RCQP_VIGNETTE_TEX}; \
-	@echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
-	@pdflatex ${RCQP_VIGNETTE_TEX}
-	@makeindex ${RCQP_VIGNETTE_IDX}
-	@pdflatex ${RCQP_VIGNETTE_TEX}
+	cd ../inst/doc; \
+	rm -f ${RCQP_VIGNETTE_TEX}; \
+	echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
+	pdflatex ${RCQP_VIGNETTE_TEX} \
+	makeindex ${RCQP_VIGNETTE_IDX} \
+	pdflatex ${RCQP_VIGNETTE_TEX}
 
