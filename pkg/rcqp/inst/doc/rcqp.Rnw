@@ -607,8 +607,8 @@ sc
 print(sc, from=2, to=5);
 #
 # if you want more access on the kwic presentation
-# (sorting, printing), you can construct a kwic object):
-k <- kwic(sc, sort.anchor="target", sort.anchor.offset=0, sort.anchor.attribute="pos", right.context=10, left.context=10)
+# (sorting, printing), you can construct a cqp_kwic object):
+k <- cqp_kwic(sc, sort.anchor="target", sort.anchor.offset=0, sort.anchor.attribute="pos", right.context=10, left.context=10)
 print(k, from=5, to=10, left.char=25, right.char=25)
 @
 
@@ -620,7 +620,7 @@ Print a KWIC (\emph{keyword in context}) form.
 \paragraph{summary}
 \index{summary}
 
-Get a kwic summary of the size and content of the subcorpus\index{subcorpus}.
+Get a quick summary of the size and content of the subcorpus\index{subcorpus}.
 
 \subsubsection{Creating a frequency list}
 \index{frequency!list}
