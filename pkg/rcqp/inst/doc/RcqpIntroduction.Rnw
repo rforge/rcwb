@@ -1,6 +1,7 @@
 \documentclass{article}
 \SweaveOpts{engine=R,eps=FALSE,pdf=TRUE,width=5,height=3,strip.white=true,keep.source=TRUE}
 %\VignetteIndexEntry{Introduction to rcqp}
+%\VignetteDepends{reshape}
 \usepackage{lmodern}
 \usepackage{makeidx}
 
@@ -685,11 +686,28 @@ It produces a dataframe.
 corpus\index{corpus} object. The cross-tabulated fields may be positional or  
 structural attributes\index{attribute!structural}.
 
-<<ftable_session1, fig=TRUE, echo=TRUE>>=
+<<ftable_session1a, fig=FALSE, echo=TRUE, eval=FALSE>>=
 library(reshape);
 c <- corpus("DICKENS");
 f <- ftable(c, "novel_title", "pos");
 f[1:10,]
+@
+
+\begin{verbatim}
+         novel_title    pp_h freq
+1  A Christmas Carol       '  615
+2  A Christmas Carol       , 2759
+3  A Christmas Carol       :  514
+4  A Christmas Carol       `  259
+5  A Christmas Carol       (   17
+6  A Christmas Carol       )   17
+7  A Christmas Carol      CC 1333
+8  A Christmas Carol      CD  189
+9  A Christmas Carol      DT 2885
+10 A Christmas Carol      EX   91
+\end{verbatim}
+
+<<ftable_session1b, fig=FALSE, echo=TRUE, eval=FALSE>>=
 #
 # create a contingency table
 t <- cast(f, novel_title ~ pos, value="freq", fun.aggregate=sum )
@@ -715,10 +733,24 @@ tokens in the smallest region. In the following example, each line
 gives the length (in number of tokens, third column) of each sentence (second column)
 in each novel, represented by its title:
 
-<<ftable_session2, echo=TRUE>>=
+<<ftable_session2, echo=TRUE, eval=FALSE>>=
 f <- ftable(c, "novel_title", "s")
 f[1:10,]
 @
+
+\begin{verbatim}
+         novel_title s freq
+1  A Christmas Carol 0    3
+2  A Christmas Carol 1    3
+3  A Christmas Carol 2   41
+4  A Christmas Carol 3   15
+5  A Christmas Carol 4   12
+6  A Christmas Carol 5    6
+7  A Christmas Carol 6    8
+8  A Christmas Carol 7    8
+9  A Christmas Carol 8   22
+10 A Christmas Carol 9    4
+\end{verbatim}
 
 If both structural attributes\index{attribute!structural} have values, you may want to count the 
 number of 
@@ -727,18 +759,44 @@ tokens included in these cooccurrences. For that purpose, you can use the
 \texttt{structural.attribute.unique.id=TRUE} option. In the following 
 example, we count the number of times each head appears in each novel :
 
-<<ftable_session3, echo=TRUE>>=
+<<ftable_session3, echo=TRUE, eval=FALSE>>=
 f <- ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
 f[1:10,]
 @
+\begin{verbatim}
+         novel_title    pp_h freq
+1  A Christmas Carol            1
+2  A Christmas Carol   about   21
+3  A Christmas Carol   above    2
+4  A Christmas Carol  across    3
+5  A Christmas Carol   after   12
+6  A Christmas Carol against    6
+7  A Christmas Carol   along    2
+8  A Christmas Carol amongst    7
+9  A Christmas Carol      as   15
+10 A Christmas Carol      at   83
+\end{verbatim}
 
 Here on the contrary, we count the total number of tokens in each 
 prepositional phrase having a given head :
 
-<<ftable_session4, echo=TRUE>>=
+<<ftable_session4, echo=TRUE, eval=FALSE>>=
 f <- ftable(c, "novel_title", "pp_h")
 f[1:10,]
 @
+\begin{verbatim}
+         novel_title    pp_h  freq
+1  A Christmas Carol         29265
+2  A Christmas Carol   about    83
+3  A Christmas Carol   above    12
+4  A Christmas Carol  across     9
+5  A Christmas Carol   after    58
+6  A Christmas Carol against    18
+7  A Christmas Carol   along    20
+8  A Christmas Carol amongst    24
+9  A Christmas Carol      as    42
+10 A Christmas Carol      at   287
+\end{verbatim}
 
 \paragraph{ftable with subcorpus}
 
