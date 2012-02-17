@@ -37,18 +37,18 @@ export(
 	"summary.cqp_subcorpus",
 	"print.cqp_subcorpus",
 
-	"flist",
-  	"flist.cqp_corpus",
-  	"flist.cqp_subcorpus",
+	"cqp_flist",
+  	"cqp_flist.cqp_corpus",
+  	"cqp_flist.cqp_subcorpus",
 	"summary.cqp_flist",
 
-	"ftable",
- 	"ftable.cqp_subcorpus",
- 	"ftable.cqp_corpus",
+	"cqp_ftable",
+ 	"cqp_ftable.cqp_subcorpus",
+ 	"cqp_ftable.cqp_corpus",
 
-	"kwic",
-	"kwic.cqp_subcorpus",
-	"print.kwic",
+	"cqp_kwic",
+	"cqp_kwic.cqp_subcorpus",
+	"print.cqp_kwic",
 
 	"region_sizes"
 )
