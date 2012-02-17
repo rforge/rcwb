@@ -8,7 +8,7 @@
 # All rights reserved.
 # ===========================================================================
 
-# merger des flist
+# merger des cqp_flist
 # contingency table à partir des structures
 # format d'entrée de UCS : pour un mot, avoir les quatre paramètres facilement
 
@@ -364,7 +364,7 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 		stop(paste("Max line:", max.line, "; max lines requested:", to));
 	}
 	
-	k <- kwic(x);
+	k <- cqp_kwic(x);
 	print(k, from=from, to=to);
 }
 
@@ -399,7 +399,7 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 
 
 
-flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
+cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 	if (class(x) != "cqp_corpus") {
 		stop("x: not a corpus object");
 	}
@@ -451,14 +451,14 @@ flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 ## 
  # ------------------------------------------------------------------------
  # 
- # "flist(corpus, attribute, field, left.context, right.context)" --
+ # "cqp_flist(corpus, attribute, field, left.context, right.context)" --
  #
  # Create an S3 object holding a frequency list
  #
- # A flist is a named numeric vector.
+ # A cqp_flist is a named numeric vector.
  # 
  # Example:
- #              flist(my_sub_corpus, "lemma", "match", 4, 4)
+ #              cqp_flist(my_sub_corpus, "lemma", "match", 4, 4)
  #
  # "left.context" and "right.context" define a span around the target word.
  #
@@ -466,7 +466,7 @@ flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
  # with all the word contained between match and matchend.
  # ------------------------------------------------------------------------
  ##
-flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0, ...) {
+cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0, ...) {
 
 	if (class(x) != "cqp_subcorpus") {
 		stop("x is not an S3 object of class cqp_subcorpus");
@@ -540,9 +540,9 @@ flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.cont
 ## 
  # ------------------------------------------------------------------------
  # 
- # "summary(flist)" --
+ # "summary(cqp_flist)" --
  #
- # Applying generic method "summary" to flist object: print basic information.
+ # Applying generic method "summary" to cqp_flist object: print basic information.
  # 
  # Example:
  # TODO
@@ -559,21 +559,21 @@ summary.cqp_flist <- function(object, ...) {
 	cat(paste("  Number of tokens:", sum(object), "\n"));
 	cat(paste("  Number of types:", length(object), "\n"));
 
-	cqp_corpus.name <- attr(flist, "cqp_corpus.name");
+	cqp_corpus.name <- attr(object, "cqp_corpus.name");
 	# a cqp_flist made with a corpus
 	if (!is.null(cqp_corpus.name)) {
-		attribute <- attr(flist, "attribute");
+		attribute <- attr(object, "attribute");
 		cat(paste("  Corpus:", cqp_corpus.name, "\n"));
 		cat(paste("  Attribute:", attribute, "\n"));
 	# otherwise, with a subcorpus
 	} else {	
-		cqp_subcorpus.name     <- attr(flist, "cqp_subcorpus.name");   
-		parent.cqp_corpus.name <- attr(flist, "parent.cqp_corpus.name");
-		anchor                 <- attr(flist, "anchor");
-		left.context           <- attr(flist, "left.context");
-		right.context          <- attr(flist, "right.context");
-		attribute              <- attr(flist, "attribute");
-		offset                 <- attr(flist, "offset");
+		cqp_subcorpus.name     <- attr(object, "cqp_subcorpus.name");   
+		parent.cqp_corpus.name <- attr(object, "parent.cqp_corpus.name");
+		anchor                 <- attr(object, "anchor");
+		left.context           <- attr(object, "left.context");
+		right.context          <- attr(object, "right.context");
+		attribute              <- attr(object, "attribute");
+		offset                 <- attr(object, "offset");
 		cat(paste("  Subcorpus:", cqp_subcorpus.name, "\n"));
 		cat(paste("  Parent corpus:", parent.cqp_corpus.name, "\n"));
 		cat(paste("  anchor:", anchor, "\n"));
@@ -595,7 +595,7 @@ print.cqp_flist <- function(x, ...) {
 }
 
 
-flist <- function(x, ...) UseMethod("flist");
+cqp_flist <- function(x, ...) UseMethod("cqp_flist");
 
 ###########################################################################
 # S3 Object cqp_ftable
@@ -604,11 +604,11 @@ flist <- function(x, ...) UseMethod("flist");
 ## 
  # ------------------------------------------------------------------------
  # 
- # "ftable(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL)" --
+ # "cqp_ftable(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL)" --
  #
  # Create an S3 object holding a frequency table accordint to various parameters
  #
- # A ftable is a three-column data.frame : modality_A modality_1 frequency. See reshape package for easy conversion into matrix.
+ # A cqp_ftable is a three-column data.frame : modality_A modality_1 frequency. See reshape package for easy conversion into matrix.
  # 
  # Example:
  #              # case of fdist2
@@ -618,7 +618,7 @@ flist <- function(x, ...) UseMethod("flist");
  # 
  # ------------------------------------------------------------------------
  ##
-ftable.cqp_corpus <- function(x, attribute1, attribute2, 
+cqp_ftable.cqp_corpus <- function(x, attribute1, attribute2, 
 	attribute1.use.id=FALSE, attribute2.use.id=FALSE,
 	structural.attribute.unique.id=FALSE, subcorpus=NULL,
 	...
@@ -714,7 +714,7 @@ ftable.cqp_corpus <- function(x, attribute1, attribute2,
 }
 
 
-ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2, cutoff=0, ...) {
+cqp_ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2, cutoff=0, ...) {
 	parent.corpus <- attr(x, "parent.cqp_corpus.name");
 	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
 	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
@@ -733,15 +733,15 @@ ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2, cu
 	return(df);
 }
 
-ftable <- function(x, ...) UseMethod("ftable");
+cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
 
 
 ###########################################################################
-# S3 Object KWIC
+# S3 Object cqp_kwic
 ###########################################################################
 
 
-kwic.cqp_subcorpus <- function(x,
+cqp_kwic.cqp_subcorpus <- function(x,
 	right.context=5,
 	left.context=5,
 	sort.anchor="match",
@@ -750,6 +750,8 @@ kwic.cqp_subcorpus <- function(x,
 	...
 ) {
 	m <- .get.kwic.matrix(x, right.context, left.context);
+	#TODO : check if sort.anchor.offset is not outside of left/right.context.
+	# use min / max for avoiding 
 	
 	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
 	s <- .sort.kwic(parent.cqp_corpus.name, m, sort.anchor, sort.anchor.attribute, sort.anchor.offset);
@@ -757,20 +759,23 @@ kwic.cqp_subcorpus <- function(x,
 	attr(s, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
 	attr(s, "corpus") <- attr(subcorpus, "corpus");
 	attr(s, "subcorpus") <- subcorpus;
-	class(s) <- "kwic";
+	class(s) <- "cqp_kwic";
 	return(s);
 }
 
 .get.kwic.matrix <- function(subcorpus, right.context=5, left.context=5) {
+
 	parent.cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");
 	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
 	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
 
 	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
-	left.boundary <- dump[,1] - left.context;
+	left.boundary <- pmax(dump[,1] - left.context, 0);
 	dim(left.boundary) <- c(nrow(dump), 1);
 
-	right.boundary <- dump[,2] + right.context;
+	corpus_size <- cqi_attribute_size(paste(parent.cqp_corpus.name, "word"));
+	max_id <- corpus_size - 1;
+	right.boundary <- pmin(dump[,2] + right.context, max_id);
 	dim(right.boundary) <- c(nrow(dump), 1);
 
 	dump <- cbind(dump, left.boundary, right.boundary);
@@ -794,7 +799,7 @@ kwic.cqp_subcorpus <- function(x,
 	return(sorted);
 }
 
-print.kwic <- function(x,
+print.cqp_kwic <- function(x,
 	print_tokens=function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), cpos),
 	from=0,
 	to=20,
@@ -847,4 +852,4 @@ print.kwic <- function(x,
   return(line);
 }
 
-kwic <- function(x, ...) UseMethod("kwic");
+cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
