@@ -556,7 +556,7 @@ c
 The first step in any sequence of this set of functions is creating a 
 corpus\index{corpus} object. A \texttt{corpus} object is created with the function \texttt{corpus()}.
 This object may be used with the two functions below, as well as for creating 
-\texttt{subcorpus}\index{subcorpus}, \texttt{flist} and \texttt{ftable} objects (see below).
+\texttt{subcorpus}\index{subcorpus}, \texttt{cqp\_flist} and \texttt{cqp\_ftable} objects (see below).
 
 \paragraph{print}
 \index{print}
@@ -627,19 +627,19 @@ Get a kwic summary of the size and content of the subcorpus\index{subcorpus}.
 
 A frequency list may be created either with a corpus\index{corpus} or with a subcorpus\index{subcorpus}.
 
-<<flist_session, echo=TRUE>>=
+<<cqp_flist_session, echo=TRUE>>=
 
 c <- corpus("DICKENS");
-fl <- flist(c, "word");
+fl <- cqp_flist(c, "word");
 summary(fl);
 #
 # get only the 1% most frequent forms
-fl <- flist(c, "word", cutoff=0.01);
+fl <- cqp_flist(c, "word", cutoff=0.01);
 summary(fl);
 fl[1:30]
 #
 # get only the forms with freq > 100
-fl <- flist(c, "word", cutoff=100);
+fl <- cqp_flist(c, "word", cutoff=100);
 summary(fl);
 fl[1:30]
 @
@@ -649,19 +649,19 @@ frequency list with a particular anchor\index{anchor}, an offset for address tok
 before or after this anchor, and left and right contexts in order to 
 include tokens in a span.
 
-<<flist_session2, echo=TRUE>>=
+<<cqp_flist_session2, echo=TRUE>>=
 c <- corpus("DICKENS");
 sc <- subcorpus(c, '"interesting" "to" @ []');
 #
-# Create a flist with the target anchor
-fl <- flist(sc, "target", "word");
+# Create a cqp_flist with the target anchor
+fl <- cqp_flist(sc, "target", "word");
 summary(fl);
 #
-fl <- flist(sc, "target", "pos");
+fl <- cqp_flist(sc, "target", "pos");
 fl;
 #
 # or with the match..matchend span, extended to -5 .. +5 tokens :
-fl <- flist(sc, c("match", "matchend"), "word", left.context=5, right.context=5);
+fl <- cqp_flist(sc, c("match", "matchend"), "word", left.context=5, right.context=5);
 summary(fl);
 fl[1:10]
 @
@@ -674,21 +674,21 @@ Print information about the frequency list\index{frequency!list}.
 \subsubsection{Create a frequency table}
 \index{frequency!table}
 
-The \texttt{ftable} function creates a frequency table: a cross-tabulated
+The \texttt{cqp\_ftable} function creates a frequency table: a cross-tabulated
 frequency count according to two attributes.
-\texttt{ftable} may be applied either on a corpus\index{corpus}, or a subcorpus\index{subcorpus}.
+\texttt{cqp\_ftable} may be applied either on a corpus\index{corpus}, or a subcorpus\index{subcorpus}.
 It produces a dataframe.
 
-\paragraph{ftable with corpus}
+\paragraph{cqp\_ftable with corpus}
 
-\texttt{ftable} lets create frequency tables using a 
+\texttt{cqp\_ftable} lets create frequency tables using a 
 corpus\index{corpus} object. The cross-tabulated fields may be positional or  
 structural attributes\index{attribute!structural}.
 
-<<ftable_session1a, fig=FALSE, echo=TRUE, eval=FALSE>>=
+<<cqp_ftable_session1a, fig=FALSE, echo=TRUE, eval=FALSE>>=
 library(reshape);
 c <- corpus("DICKENS");
-f <- ftable(c, "novel_title", "pos");
+f <- cqp_ftable(c, "novel_title", "pos");
 f[1:10,]
 @
 
@@ -706,7 +706,7 @@ f[1:10,]
 10 A Christmas Carol      EX   91
 \end{verbatim}
 
-<<ftable_session1b, fig=FALSE, echo=TRUE, eval=FALSE>>=
+<<cqp_ftable_session1b, fig=FALSE, echo=TRUE, eval=FALSE>>=
 #
 # create a contingency table
 t <- cast(f, novel_title ~ pos, value="freq", fun.aggregate=sum )
@@ -726,14 +726,14 @@ You can force the use of ids rather than string values with the
 
 Counts are made on token basis, i.e. each corpus token is an 
 individual on which the two modalities (attributes) are considered. If you 
-use two structural attributes\index{attribute!structural} as arguments in \texttt{ftable},
+use two structural attributes\index{attribute!structural} as arguments in \texttt{cqp\_ftable},
 and one of them does not have values, then the third column counts the number of 
 tokens in the smallest region. In the following example, each line 
 gives the length (in number of tokens, third column) of each sentence (second column)
 in each novel, represented by its title:
 
-<<ftable_session2, echo=TRUE, eval=FALSE>>=
-f <- ftable(c, "novel_title", "s")
+<<cqp_ftable_session2, echo=TRUE, eval=FALSE>>=
+f <- cqp_ftable(c, "novel_title", "s")
 f[1:10,]
 @
 
@@ -758,8 +758,8 @@ tokens included in these cooccurrences. For that purpose, you can use the
 \texttt{structural.attribute.unique.id=TRUE} option. In the following 
 example, we count the number of times each head appears in each novel :
 
-<<ftable_session3, echo=TRUE, eval=FALSE>>=
-f <- ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
+<<cqp_ftable_session3, echo=TRUE, eval=FALSE>>=
+f <- cqp_ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
 f[1:10,]
 @
 \begin{verbatim}
@@ -779,8 +779,8 @@ f[1:10,]
 Here on the contrary, we count the total number of tokens in each 
 prepositional phrase having a given head :
 
-<<ftable_session4, echo=TRUE, eval=FALSE>>=
-f <- ftable(c, "novel_title", "pp_h")
+<<cqp_ftable_session4, echo=TRUE, eval=FALSE>>=
+f <- cqp_ftable(c, "novel_title", "pp_h")
 f[1:10,]
 @
 \begin{verbatim}
@@ -797,17 +797,17 @@ f[1:10,]
 10 A Christmas Carol      at   287
 \end{verbatim}
 
-\paragraph{ftable with subcorpus}
+\paragraph{cqp\_ftable with subcorpus}
 
-Applied on a subcorpus\index{subcorpus}, the \texttt{ftable} function is mainly a wrapper on the 
+Applied on a subcorpus\index{subcorpus}, the \texttt{cqp\_ftable} function is mainly a wrapper on the 
 \texttt{cqi\_fdist2}\index{cqi\_fdist2} function. However, it returns a three columns dataframe
 with <strings>, <string>, <freq> rather than a three columns matrix with 
 <ids>, <ids>, <freq> like \texttt{cqi\_fdist2}\index{cqi\_fdist2}.
 
-<<ftable_session5, echo=TRUE>>=
+<<cqp_ftable_session5, echo=TRUE>>=
 c <- corpus("DICKENS");
 sc <- subcorpus(c, '"from" @ [] "to" []')
-f <- ftable(sc, "target", "word", "matchend", "word");
+f <- cqp_ftable(sc, "target", "word", "matchend", "word");
 f[1:10,]
 @
 

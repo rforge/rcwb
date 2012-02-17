@@ -20,7 +20,7 @@ Print a summary for a corpus, a subcorpus, or a frequency list.
 
 \arguments{
   \item{object}{
-An \code{rcqp} object, created with \code{\link{flist}}, \code{\link{corpus}}, or \code{\link{subcorpus}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, or \code{\link{subcorpus}}.
 }
   \item{...}{
 Ignored.
@@ -40,7 +40,7 @@ Ignored.
 \code{\link{corpus}}, 
 \code{\link{subcorpus}}, 
 \code{\link{write.cqp_corpus}}, 
-\code{\link{kwic}}.
+\code{\link{cqp_kwic}}.
 }
 
 \examples{
@@ -51,10 +51,10 @@ c;
 sc <- subcorpus(c, '"interesting"');
 sc;
 
-k <- kwic(sc);
+k <- cqp_kwic(sc);
 k;
 
-fl <- flist(c, "word");
+fl <- cqp_flist(c, "word");
 fl;
 }
 }

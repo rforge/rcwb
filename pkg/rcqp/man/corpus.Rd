@@ -34,7 +34,7 @@ A corpus object.
 \code{\link{print.cqp_corpus}}, 
 \code{\link{summary.cqp_corpus}}, 
 \code{\link{write.cqp_corpus}}, 
-\code{\link{kwic}}.
+\code{\link{cqp_kwic}}.
 }
 
 \examples{

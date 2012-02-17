@@ -57,9 +57,9 @@ List of available help pages:\cr
 Object model:\cr
 \code{\link{corpus}}\cr
 \code{\link{subcorpus}}\cr
-\code{\link{flist}}\cr
-\code{\link{ftable}}\cr
-\code{\link{kwic}}\cr
+\code{\link{cqp_flist}}\cr
+\code{\link{cqp_ftable}}\cr
+\code{\link{cqp_kwic}}\cr
 
 }
 

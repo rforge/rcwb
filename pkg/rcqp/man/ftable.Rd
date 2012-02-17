@@ -1,7 +1,7 @@
-\name{ftable}
-\alias{ftable}
-\alias{ftable.cqp_corpus}
-\alias{ftable.cqp_subcorpus}
+\name{cqp_ftable}
+\alias{cqp_ftable}
+\alias{cqp_ftable.cqp_corpus}
+\alias{cqp_ftable.cqp_subcorpus}
 
 \title{
 Create a frequency table
@@ -12,11 +12,11 @@ Create a frequency table either with a corpus or with a subcorpus. With a corpus
 }
 
 \usage{
-ftable(x, ...)
+cqp_ftable(x, ...)
 
- \method{ftable}{cqp_corpus}(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL, ...)
+ \method{cqp_ftable}{cqp_corpus}(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, subcorpus = NULL, ...)
  
- \method{ftable}{cqp_subcorpus}(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
+ \method{cqp_ftable}{cqp_subcorpus}(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
 }
 
 \arguments{
@@ -70,7 +70,7 @@ value. You can force the use of ids rather than string values with the
 
 Counts are made on token basis, i.e. each token of the corpus is an
 individual on which the two modalities (attributes) are considered. If you
-use two structural attributes as arguments in \code{ftable},
+use two structural attributes as arguments in \code{cqp_ftable},
 and one of them does not have values, then the third column counts the number of
 tokens. In the following example, each line gives
 the length (in number of tokens, third column) of each sentence (second column)
@@ -78,7 +78,7 @@ in each novel represented by its title:
 
 \preformatted{
 c <- corpus("DICKENS");
-f <- ftable(c, "novel_title", "s")
+f <- cqp_ftable(c, "novel_title", "s")
 f[1:10,]
 }
 
@@ -89,7 +89,7 @@ tokens included in these cooccurrences. For that purpose, you can use the
 example, we count the number of time each head appears in each novel :
 
 \preformatted{
-f <- ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
+f <- cqp_ftable(c, "novel_title", "pp_h", structural.attribute.unique.id=TRUE)
 f[1:10,]
 }
 
@@ -97,7 +97,7 @@ Here on the contrary, we count the total number of tokens in each
 prepositional phrase having a given head :
 
 \preformatted{
-f <- ftable(c, "novel_title", "pp_h")
+f <- cqp_ftable(c, "novel_title", "pp_h")
 f[1:10,]
 }
 
@@ -120,8 +120,8 @@ column the observed frequency of the cooccurrence.
 }
 
 \seealso{
-\code{\link{flist}}, 
-\code{\link{kwic}}, 
+\code{\link{cqp_flist}}, 
+\code{\link{cqp_kwic}}, 
 \code{\link{subcorpus}}.
 }
 

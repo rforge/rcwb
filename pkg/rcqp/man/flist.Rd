@@ -1,7 +1,7 @@
-\name{flist}
-\alias{flist}
-\alias{flist.cqp_corpus}
-\alias{flist.cqp_subcorpus}
+\name{cqp_flist}
+\alias{cqp_flist}
+\alias{cqp_flist.cqp_corpus}
+\alias{cqp_flist.cqp_subcorpus}
 
 \title{
  Create a frequency list
@@ -12,11 +12,11 @@
 }
 
 \usage{
-flist(x, ...)
+cqp_flist(x, ...)
 
- \method{flist}{cqp_corpus}(x, attribute, cutoff = 0, ...)
+ \method{cqp_flist}{cqp_corpus}(x, attribute, cutoff = 0, ...)
  
- \method{flist}{cqp_subcorpus}(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
+ \method{cqp_flist}{cqp_subcorpus}(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -60,8 +60,8 @@ Returns a named numeric vector.
 }
 
 \seealso{
-\code{\link{ftable}}, 
-\code{\link{kwic}}, 
+\code{\link{cqp_ftable}}, 
+\code{\link{cqp_kwic}}, 
 \code{\link{subcorpus}}, 
 \code{\link{corpus}}.
 }
@@ -69,12 +69,12 @@ Returns a named numeric vector.
 \examples{
 \dontrun{
 c <- corpus("DICKENS");
-fl <- flist(c, "word");
+fl <- cqp_flist(c, "word");
 
 sc <- subcorpus(c, '"interesting" "to" @ []');
-fl <- flist(sc, "target", "word");
+fl <- cqp_flist(sc, "target", "word");
 
 sc <- subcorpus(c, '"interesting"');
-fl <- flist(sc, "target", "lemma", left.context = 10, right.context = 10, cutoff = 5)
+fl <- cqp_flist(sc, "target", "lemma", left.context = 10, right.context = 10, cutoff = 5)
 }
 }

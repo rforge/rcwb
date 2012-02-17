@@ -36,9 +36,9 @@ An integer vector.
 }
 
 \seealso{
-\code{\link{flist}}, 
-\code{\link{ftable}}, 
-\code{\link{kwic}}, 
+\code{\link{cqp_flist}}, 
+\code{\link{cqp_ftable}}, 
+\code{\link{cqp_kwic}}, 
 \code{\link{corpus}}.
 }
 

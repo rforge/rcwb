@@ -42,11 +42,11 @@ A subcorpus object.
 
 \seealso{
 \code{\link{corpus}}, 
-\code{\link{flist}}, 
+\code{\link{cqp_flist}}, 
 \code{\link{print.cqp_subcorpus}}, 
 \code{\link{summary.cqp_subcorpus}}, 
-\code{\link{ftable}}, 
-\code{\link{kwic}}.
+\code{\link{cqp_ftable}}, 
+\code{\link{cqp_kwic}}.
 }
 
 \examples{

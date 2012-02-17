@@ -2,16 +2,16 @@
 \alias{print.cqp_flist}
 \alias{print.cqp_subcorpus}
 \alias{print.cqp_corpus}
-\alias{print.kwic}
+\alias{print.cqp_kwic}
 
 \title{
 Print a CWB object
 }
 \description{
-Print a CWB object in an exhaustive way. An \code{flist} is printed just as an
+Print a CWB object in an exhaustive way. A \code{cqp_flist} object is printed just as an
 integer vector; a corpus is printed as a dataframe where rows represent tokens
 and columns represent attributes (positional as well as structural); a
-subcorpus is printed as a \code{kwic} list (or concordance); a \code{kwic} object is
+subcorpus is printed as a \code{cqp_kwic} list (or concordance); a \code{cqp_kwic} object is
 printed... as expected.
 }
 \usage{
@@ -22,19 +22,19 @@ printed... as expected.
 
  \method{print}{cqp_subcorpus}(x, positional.attribute = "word", from = 0, to = 10, ...)
 
- \method{print}{kwic}(x, print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), from = 0, to = 20, left.separator = " <<", right.separator = ">> ", hit.char = 15, left.char = 40, right.char = 40, ...)
+ \method{print}{cqp_kwic}(x, print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), from = 0, to = 20, left.separator = " <<", right.separator = ">> ", hit.char = 15, left.char = 40, right.char = 40, ...)
 
 }
 
 \arguments{
   \item{x}{
-An \code{rcqp} object, created with \code{\link{flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{kwic}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{cqp_kwic}}.
 }
   \item{from}{
-Select first tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
+Select first tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
 }
   \item{to}{
-Select last tokens (for a corpus object) or matches (for a subcorpus or kwic object) to be printed. As for all CWB data, this index is 0-based.
+Select last tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
 }
   \item{positional.attribute}{
 Print each token of the subcorpus using the given positional attribute. 
@@ -67,11 +67,11 @@ Ignored.
 
 The \code{print} command applied on a subcorpus object is a shortcut for :
 \preformatted{
-k <- kwic(subcorpus)
+k <- cqp_kwic(subcorpus)
 print(k)
 }
 
-Creating a \code{kwic} object gives more control on the printing options.
+Creating a \code{cqp_kwic} object gives more control on the printing options.
 }
 
 \references{                                                                    
@@ -85,9 +85,9 @@ Creating a \code{kwic} object gives more control on the printing options.
 \seealso{
 \code{\link{corpus}}, 
 \code{\link{subcorpus}}, 
-\code{\link{kwic}}, 
-\code{\link{flist}}, 
-\code{\link{ftable}}, 
+\code{\link{cqp_kwic}}, 
+\code{\link{cqp_flist}}, 
+\code{\link{cqp_ftable}}, 
 \code{\link{summary.cqp_flist}}, 
 \code{\link{summary.cqp_corpus}}, 
 \code{\link{summary.cqp_subcorpus}}.
@@ -101,10 +101,10 @@ c;
 sc <- subcorpus(c, '"interesting"');
 sc;
 
-k <- kwic(sc);
+k <- cqp_kwic(sc);
 k;
 
-fl <- flist(c, "word");
+fl <- cqp_flist(c, "word");
 fl;
 
 }
