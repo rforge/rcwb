@@ -25,7 +25,7 @@ RCQP_C_SRC := rcqpCommands.c rcqpUtils.c
 
 RCQP_C_OBJ := $(RCQP_C_SRC:.c=.o)
 
-RCQP_VIGNETTE_RNW := RcqpIntroduction.Rnw
+RCQP_VIGNETTE_RNW := rcqp.Rnw
 RCQP_VIGNETTE_TEX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
 RCQP_VIGNETTE_IDX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.idx)
 RCQP_VIGNETTE_PDF :=  $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
