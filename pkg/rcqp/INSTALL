@@ -1,0 +1,62 @@
+
+
+This document explains how to compile the rcqp extension for R on a Unix like 
+system, including Mac OS X.
+
+
+
+Prerequisites
+=============
+
+Building tools necessary:
+ - GCC 3.3 or newer recommended (other ANSI C compilers might also work)
+ - the ar and ranlib code archive utilities
+ - GNU make or a compatible program
+ - GNU bison & flex to generate the parsers
+ - the pkg-config program
+
+Obviously R must be installed on your system since rcqp is designed to be 
+an R extension and the compiling process needs to read the R headers.
+
+Additionnally two external libraries are necessary to compile the CWB 
+source code:
+ - the PCRE library: at least version 7 is recommended.
+   It is available to download from this address:
+        http://www.pcre.org/
+
+ - the Glib library: at least version 2 is required.
+   It is available to download from this address:
+        http://www.gtk.org/download.html
+
+
+
+
+Configuration
+=============
+TODO
+
+
+
+Building
+========
+TODO
+
+
+
+Installing
+==========
+TODO
+
+
+
+
+
+Mac OS X notes
+==============
+
+Installing PCRE and Glib can be done using the MacPorts system. If 
+MacPorts is installed on your system, you just have to type the following 
+commands in a Terminal window in order to download, compile and install 
+the PCRE and the Glib libraries :
+	sudo port -v install pcre
+	sudo port -v install glib2
