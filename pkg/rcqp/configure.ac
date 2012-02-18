@@ -27,8 +27,8 @@ AC_PROG_YACC()
 LDFLAGS="$LDFLAGS -L/opt/local/lib"
 
 # Check for the required libraries
-AC_CHECK_LIB(pcre, pcre_free, [], AC_MSG_ERROR(the pcre library is required. Please install it.))
 AC_CHECK_LIB(glib-2.0, g_list_append, [], AC_MSG_ERROR(the glib-2.0 library is required. Please install it.))
+AC_CHECK_LIB(pcre, pcre_free, [], AC_MSG_ERROR(the pcre library is required. Please install it.))
 
 # Check for pkg-config
 AC_PATH_PROGS(PKGCONFIG, pkg-config) 
