@@ -13,22 +13,22 @@ Sort a kwic list with respect to an anchor and a positional attribute.
 
 \arguments{
   \item{x}{
-A cqp_kwic object.
+A \code{cqp_kwic} object.
 }
   \item{decreasing}{
-reverse order.
+Reverse order.
 }
   \item{sort.anchor}{
 The anchor (\emph{match, matchend, target, keyword}) to be used as sorting key.
 }
   \item{sort.attribute}{
-The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordance.
+The attribute (such as \emph{word}, \emph{lemma}\dots according to the available attributes in a given corpus) for sorting the lines of the concordance.
 }
   \item{sort.offset}{
 Sort on the selected anchor, or \emph{n} tokens before or after it.
 }
   \item{\dots}{
-Ignored
+Ignored.
 }
 }
 
@@ -38,6 +38,12 @@ Ignored
 \author{                                                                        
         Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
+}
+
+
+\seealso{ 
+\code{\link{cqp_kwic}}, 
+\code{\link{print.cqp_kwic}}.
 }
 
 \examples{

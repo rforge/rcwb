@@ -20,7 +20,7 @@ cqp_kwic(x, ...)
 An object created with \code{\link{subcorpus}}.
 }
   \item{right.context}{
-The number of character on the right.
+The number of characters on the right.
 }
   \item{left.context}{
 The number of characters on the left.

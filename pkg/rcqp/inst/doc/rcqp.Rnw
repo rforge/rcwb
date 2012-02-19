@@ -660,7 +660,7 @@ sc <- subcorpus(c, '"interesting" "to" @ []');
 fl <- cqp_flist(sc, "target", "word");
 summary(fl);
 #
-# Same anchor, but count part of speech
+# Same anchor, but count parts of speech
 fl <- cqp_flist(sc, "target", "pos");
 fl;
 #
