@@ -484,17 +484,12 @@ cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.
 	flist <- 0;
 	
 	if (length(anchor) == 1 & left.context == 0 & right.context == 0) {
- 		print(qualified.subcorpus.name);
- 		print(anchor);
- 		print(attribute);
- 		print(cutoff);
- 		print(offset);
-		print(qualified.subcorpus.name);
-		flist <- cqi_fdist1(qualified.subcorpus.name, anchor, attribute, cutoff=cutoff, offset=offset);
-		
+		fdist <- cqi_fdist1(qualified.subcorpus.name, anchor, attribute, cutoff=cutoff, offset=offset);
+		id <- fdist[,1];
+		flist <- fdist[,2];
 		names(flist) <- cqi_cpos2str(
 			paste(parent.cqp_corpus.name, attribute, sep="."),
-			flist[,1]
+			id
 		);
 	} else {
 		dump <- cqi_dump_subcorpus(paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":"));
@@ -591,7 +586,9 @@ summary.cqp_flist <- function(object, ...) {
  # ------------------------------------------------------------------------
  ##
 print.cqp_flist <- function(x, ...) {
-	print(c(x));
+	df <- data.frame(names(x), as.numeric(x));
+	colnames(df) <- c("type", "frequency");
+	print(df, row.names=FALSE);
 }
 
 
@@ -742,33 +739,64 @@ cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
 
 
 cqp_kwic.cqp_subcorpus <- function(x,
-	right.context=5,
-	left.context=5,
-	sort.anchor="match",
-	sort.anchor.attribute="word",
-	sort.anchor.offset=1,
+	right.context=20,
+	left.context=20,
 	...
 ) {
-	m <- .get.kwic.matrix(x, right.context, left.context);
-	#TODO : check if sort.anchor.offset is not outside of left/right.context.
-	# use min / max for avoiding 
-	
 	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
-	s <- .sort.kwic(parent.cqp_corpus.name, m, sort.anchor, sort.anchor.attribute, sort.anchor.offset);
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+
+	m <- .get.kwic.matrix(qualified_subcorpus_name, right.context, left.context);	
 
 	attr(s, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
-	attr(s, "corpus") <- attr(subcorpus, "corpus");
-	attr(s, "subcorpus") <- subcorpus;
+	attr(s, "cqp_subcorpus.name") <- attr(x, "cqp_subcorpus.name");
+	attr(s, "right.context") <- right.context;
+	attr(s, "left.context") <- left.context;
 	class(s) <- "cqp_kwic";
 	return(s);
 }
 
-.get.kwic.matrix <- function(subcorpus, right.context=5, left.context=5) {
+cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
 
-	parent.cqp_corpus.name <- attr(subcorpus, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(subcorpus, "cqp_subcorpus.name");
-	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+sort.cqp_kwic <- function(x, sort.anchor="match", sort.attribute="word", sort.offset=0, ...) {
+	if (!class(x) == "cqp_kwic") {
+		stop("x must be a cqp_kwic object");
+	}
+	
+	if (! sort.anchor %in%  c("match", "matchend", "target", "keyword")) {
+		stop('sort.anchor must be in c("match", "matchend", "target", "keyword")');
+	}
+	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	qualified_attribute <- paste(corpus.name, sort.anchor.attribute, sep=".");
 
+	cpos <- x[, sort.anchor];
+	if (sort.anchor.offset != 0) {
+		cpos <- cpos + sort.anchor.offset;
+
+		unreachable.small <- cpos < 0;
+		cpos[unreachable.small] <- 0;
+		
+		size <- cqi_attribute_size(qualified_attribute);
+		max.id <- size - 1;
+		unreachable.big <- cpos > max.id;
+		cpos[unreachable.big] <- max.id;		
+	} else {
+		unreachable.small <- logicial(length(cpos));
+		unreachable.big <- logicial(length(cpos));
+	}
+	
+	str <- cqi_cpos2str(qualified_attribute, cpos);
+	str[unreachable.small] <- "";
+	str[unreachable.big] <- "";
+	i <- order(str);
+	
+	sorted <- m[i,];
+	return(sorted);
+}
+
+.get.kwic.matrix <- function(qualified_subcorpus_name, right.context=5, left.context=5) {
 	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
 	left.boundary <- pmax(dump[,1] - left.context, 0);
 	dim(left.boundary) <- c(nrow(dump), 1);
@@ -779,24 +807,8 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	dim(right.boundary) <- c(nrow(dump), 1);
 
 	dump <- cbind(dump, left.boundary, right.boundary);
-	# TODO : anchor?
 	colnames(dump) <- c("match", "matchend", "target", "keyword", "left", "right");
 	return(dump);
-}
-
-.sort.kwic <- function(corpus.name, m, sort.anchor, sort.anchor.attribute, sort.anchor.offset) {
-	# attention au -1
-	cpos <- m[, sort.anchor];
-	if (sort.anchor.offset != 0) {
-		cpos + sort.anchor.offset;
-	}
-
-	qualified_attribute <- paste(corpus.name, sort.anchor.attribute, sep=".");
-	str <- cqi_cpos2str(qualified_attribute, cpos);
-	i <- order(str);
-	
-	sorted <- m[i,];
-	return(sorted);
 }
 
 print.cqp_kwic <- function(x,
@@ -852,4 +864,3 @@ print.cqp_kwic <- function(x,
   return(line);
 }
 
-cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
