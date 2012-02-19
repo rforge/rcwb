@@ -601,15 +601,18 @@ terminology, a subcorpus\index{subcorpus} is the set of sequences matched by a q
 <<subcorpus_session, echo=TRUE>>=
 c <- corpus("DICKENS");
 sc <- subcorpus(c, '"interesting" "to" @ []');
-sc
+# sc
 #
-# if you want to change the lines printed (0-based):
+# if you want to change the lines printed (0-based);
+# use from/to options:
 print(sc, from=2, to=5);
 #
 # if you want more access on the kwic presentation
-# (sorting, printing), you can construct a cqp_kwic object):
-k <- cqp_kwic(sc, sort.anchor="target", sort.anchor.offset=0, sort.anchor.attribute="pos", right.context=10, left.context=10)
-print(k, from=5, to=10, left.char=25, right.char=25)
+# (sorting, printing), you can construct a cqp_kwic object:
+k <- cqp_kwic(sc, right.context=10, left.context=10)
+print(k, from=5, to=10)
+k <- sort(k, sort.anchor="target", sort.offset=0, sort.attribute="word")
+print(k, from=5, to=10)
 @
 
 \paragraph{print}
@@ -657,13 +660,22 @@ sc <- subcorpus(c, '"interesting" "to" @ []');
 fl <- cqp_flist(sc, "target", "word");
 summary(fl);
 #
+# Same anchor, but count part of speech
 fl <- cqp_flist(sc, "target", "pos");
 fl;
 #
-# or with the match..matchend span, extended to -5 .. +5 tokens :
-fl <- cqp_flist(sc, c("match", "matchend"), "word", left.context=5, right.context=5);
-summary(fl);
-fl[1:10]
+# You can extend the span around the anchor with `left.context' and 
+# `right.context'
+fl <- cqp_flist(sc, "match", "pos", left.context=5, right.context=5);
+fl;
+#
+# or with a match..matchend span :
+fl <- cqp_flist(sc, c("match", "matchend"), "pos");
+fl;
+#
+# The two can be used together:
+fl <- cqp_flist(sc, c("match", "matchend"), "pos", left.context=5, right.context=5);
+fl;
 @
 
 \paragraph{summary.cqp\_flist}
@@ -671,7 +683,7 @@ fl[1:10]
 
 Print information about the frequency list\index{frequency!list}.
 
-\subsubsection{Create a frequency table}
+\subsubsection{Creating a frequency table}
 \index{frequency!table}
 
 The \texttt{cqp\_ftable} function creates a frequency table: a cross-tabulated

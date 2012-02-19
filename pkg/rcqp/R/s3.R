@@ -747,7 +747,12 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
 	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
 
-	m <- .get.kwic.matrix(qualified_subcorpus_name, right.context, left.context);	
+	size <- cqi_subcorpus_size(qualified_subcorpus_name);
+	if (size == 0) {
+		stop("empty subcorpus");
+	}
+	
+	s <- .get.kwic.matrix(x, right.context, left.context);	
 
 	attr(s, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
 	attr(s, "cqp_subcorpus.name") <- attr(x, "cqp_subcorpus.name");
@@ -759,7 +764,7 @@ cqp_kwic.cqp_subcorpus <- function(x,
 
 cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
 
-sort.cqp_kwic <- function(x, sort.anchor="match", sort.attribute="word", sort.offset=0, ...) {
+sort.cqp_kwic <- function(x, decreasing=FALSE, sort.anchor="match", sort.attribute="word", sort.offset=0, ...) {
 	if (!class(x) == "cqp_kwic") {
 		stop("x must be a cqp_kwic object");
 	}
@@ -769,11 +774,11 @@ sort.cqp_kwic <- function(x, sort.anchor="match", sort.attribute="word", sort.of
 	}
 	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
 	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-	qualified_attribute <- paste(corpus.name, sort.anchor.attribute, sep=".");
+	qualified_attribute <- paste(parent.cqp_corpus.name, sort.attribute, sep=".");
 
 	cpos <- x[, sort.anchor];
-	if (sort.anchor.offset != 0) {
-		cpos <- cpos + sort.anchor.offset;
+	if (sort.offset != 0) {
+		cpos <- cpos + sort.offset;
 
 		unreachable.small <- cpos < 0;
 		cpos[unreachable.small] <- 0;
@@ -783,20 +788,25 @@ sort.cqp_kwic <- function(x, sort.anchor="match", sort.attribute="word", sort.of
 		unreachable.big <- cpos > max.id;
 		cpos[unreachable.big] <- max.id;		
 	} else {
-		unreachable.small <- logicial(length(cpos));
-		unreachable.big <- logicial(length(cpos));
+		unreachable.small <- logical(length(cpos));
+		unreachable.big <- logical(length(cpos));
 	}
 	
 	str <- cqi_cpos2str(qualified_attribute, cpos);
 	str[unreachable.small] <- "";
 	str[unreachable.big] <- "";
-	i <- order(str);
-	
-	sorted <- m[i,];
+	i <- order(str, decreasing=decreasing);
+
+	sorted <- x[i,];
+	attributes(sorted) <- attributes(x);
 	return(sorted);
 }
 
-.get.kwic.matrix <- function(qualified_subcorpus_name, right.context=5, left.context=5) {
+.get.kwic.matrix <- function(x, right.context, left.context) {
+	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+
 	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
 	left.boundary <- pmax(dump[,1] - left.context, 0);
 	dim(left.boundary) <- c(nrow(dump), 1);
@@ -812,55 +822,83 @@ sort.cqp_kwic <- function(x, sort.anchor="match", sort.attribute="word", sort.of
 }
 
 print.cqp_kwic <- function(x,
-	print_tokens=function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), cpos),
 	from=0,
 	to=20,
+	print_tokens=function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), cpos),
 	left.separator=" <<",
 	right.separator=">> ",
-	hit.char=15,
-	left.char=40,
-	right.char=40,
 	...
 )
 {
 	
-	if (from < 0 || to-from < 0 || to >= nrow(x)) {
-		stop("0 <= from < to < nrow(x)");
+	if (from < 0) {
+		stop("'from' must be greater than 0");
+	}
+	if (from > to) {
+		stop("'to' must be greater than from");
+	}
+	if (to >= nrow(x)) {
+		stop("'to' must be lesser than the size of the subcorpus");
+	}
+
+	requested.left.char= attr(x, "left.context")
+	requested.right.char= attr(x, "right.context")
+
+	nbr.lines <- to-from+1;
+	lines <- character(nbr.lines);
+	matrix.lines <- matrix("", nrow=nbr.lines, ncol=3);
+	
+	for (i in 0:(nbr.lines - 1)) {
+		matrix.lines[i, 1] <- paste(
+			print_tokens(x, x[from + i, "left"]:(x[from + i, "match"]-1)),
+			collapse=" "
+		);
+
+		c1 <- print_tokens(x, x[from + i, "match"]:x[from + i, "matchend"]);
+		c2 <- c(left.separator, c1, right.separator);
+		matrix.lines[i, 2] <- paste(c2, collapse=" ");
+
+		matrix.lines[i, 3] <- paste(
+			print_tokens(x, (x[from + i, "matchend"]+1):x[from + i, "right"]),
+			collapse=" "
+		);
 	}
 	
-	lines <- character(to-from);
-	for (i in 1:(to-from)) {
-		# TODO : offset ?
-		lines[i] <- .do_kwic_line(x, x[from + i,], print_tokens, left.separator, right.separator, hit.char=hit.char, left.char=left.char, right.char=right.char);
-	}
+	left.nchar <- nchar(matrix.lines[,1]);
+	center.nchar <- nchar(matrix.lines[,2]);
+	right.nchar <- nchar(matrix.lines[,3]);
+	
+	left <- substr(matrix.lines[,1], left.nchar - requested.left.char, left.nchar);
+	requested.center.char <- max(center.nchar);
+	right <- substr(matrix.lines[,3], 1, right.nchar - (right.nchar - requested.right.char));
+
+	format <- paste("%10d %", requested.left.char, "s%", requested.center.char, "s%-", requested.right.char, "s", sep="");
+	lines <- sprintf(format, x[from:to, "match"], left, matrix.lines[,2], right);
 	
 	for(i in lines) {
 		cat(paste(i, "\n", sep=""));
 	}
 }
 
-.do_kwic_line <- function(x,
-	line,
-	print_tokens,
-	left.separator,
-	right.separator,
-	hit.char,
-	left.char,
-	right.char)
-{
-	
-  left = print_tokens(x, line["left"]:(line["match"]-1));
-  hit = print_tokens(x, line["match"]:line["matchend"]);
-  right = print_tokens(x, (line["matchend"]+1):line["right"]);
-
-  left <- paste(left, collapse=" ");
-  hit <- paste(hit, collapse=" ");
-  hit <- paste(left.separator, hit, right.separator, sep="");
-  right = paste(right, collapse=" ");
-  
-  # TODO : may be vectorized.
-  format <- paste("%10d %", left.char, "s%", hit.char, "s%-", left.char, "s", sep="");
-  line <- sprintf(format, line["match"], left, hit, right);
-  return(line);
-}
+# .do_kwic_line <- function(x,
+# 	line,
+# 	print_tokens,
+# 	left.separator,
+# 	right.separator,
+# 	hit.char,
+# 	left.char,
+# 	right.char)
+# {
+# 	
+#   right = print_tokens(x, (line["matchend"]+1):line["right"]);
+# 
+#   hit <- paste(hit, collapse=" ");
+#   hit <- paste(left.separator, hit, right.separator, sep="");
+#   right = paste(right, collapse=" ");
+#   
+#   # TODO : may be vectorized.
+#   format <- paste("%10d %", left.char, "s%", hit.char, "s%-", left.char, "s", sep="");
+#   line <- sprintf(format, line["match"], left, hit, right);
+#   return(line);
+# }
 

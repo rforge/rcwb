@@ -41,6 +41,7 @@ export(
   	"cqp_flist.cqp_corpus",
   	"cqp_flist.cqp_subcorpus",
 	"summary.cqp_flist",
+	"print.cqp_flist",
 
 	"cqp_ftable",
  	"cqp_ftable.cqp_subcorpus",
@@ -48,6 +49,7 @@ export(
 
 	"cqp_kwic",
 	"cqp_kwic.cqp_subcorpus",
+	"sort.cqp_kwic",
 	"print.cqp_kwic",
 
 	"region_sizes"

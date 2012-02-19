@@ -12,7 +12,7 @@ arranging and filtering items. The list can then be printed chunk by chunk.
 \usage{
 cqp_kwic(x, ...)
 
- \method{cqp_kwic}{cqp_subcorpus}(x, right.context = 5, left.context = 5, sort.anchor = "match", sort.anchor.attribute = "word", sort.anchor.offset = 1, ...)
+ \method{cqp_kwic}{cqp_subcorpus}(x, right.context = 20, left.context = 20, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,19 +20,10 @@ cqp_kwic(x, ...)
 An object created with \code{\link{subcorpus}}.
 }
   \item{right.context}{
-The number of tokens to select on the right.
+The number of character on the right.
 }
   \item{left.context}{
-The number of tokens to select on the left.
-}
-  \item{sort.anchor}{
-The anchor (\emph{match, matchend, target, keyword}) to be used as sorting key.
-}
-  \item{sort.anchor.attribute}{
-The attribute (such as \emph{word}, \emph{lemma}\dots according to available attribute in a given corpus) for sorting the lines of the concordance.
-}
-  \item{sort.anchor.offset}{
-Sort on the selected anchor, or \emph{n} tokens before or after it.
+The number of characters on the left.
 }
   \item{...}{
 Ignored.

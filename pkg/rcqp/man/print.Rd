@@ -22,7 +22,7 @@ printed... as expected.
 
  \method{print}{cqp_subcorpus}(x, positional.attribute = "word", from = 0, to = 10, ...)
 
- \method{print}{cqp_kwic}(x, print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), from = 0, to = 20, left.separator = " <<", right.separator = ">> ", hit.char = 15, left.char = 40, right.char = 40, ...)
+ \method{print}{cqp_kwic}(x, from = 0, to = 20, print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), left.separator = " <<", right.separator = ">> ", ...)
 
 }
 
@@ -47,15 +47,6 @@ String inserted at the left of the keyword in a concordance.
 }
   \item{right.separator}{
 String inserted at the right of the keyword in a concordance.
-}
-  \item{hit.char}{
-Size (in characters) of the column containing the keyword.
-}
-  \item{left.char}{
-Size (in characters) of the column containing the left context.
-}
-  \item{right.char}{
-Size (in characters) of the column containing the right context.
 }
   \item{...}{
 Ignored.

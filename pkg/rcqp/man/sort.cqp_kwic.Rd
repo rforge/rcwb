@@ -8,12 +8,15 @@ Sort a kwic list
 Sort a kwic list with respect to an anchor and a positional attribute.
 }
 \usage{
- \method{sort}{cqp_kwic}(x, sort.anchor = "match", sort.attribute = "word", sort.offset = 0, ...)
+ \method{sort}{cqp_kwic}(x, decreasing = FALSE, sort.anchor = "match", sort.attribute = "word", sort.offset = 0, ...)
 }
 
 \arguments{
   \item{x}{
 A cqp_kwic object.
+}
+  \item{decreasing}{
+reverse order.
 }
   \item{sort.anchor}{
 The anchor (\emph{match, matchend, target, keyword}) to be used as sorting key.
