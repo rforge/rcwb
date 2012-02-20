@@ -1,9 +1,9 @@
 
 
-The rcqp package is an extension for the open source statistical software R.
-It is an implementation in R of the Corpus Query Protocol which lets you
-query and perform statistical tasks over large text corpora with linguistic
-annotations.
+The rcqp package is an extension for the open source statistical software
+R. It is an implementation in R of the Corpus Query Protocol which lets you
+execute queries and perform statistical tasks over large text corpora with
+linguistic annotations.
 
 Using this extension, you can search for occurrences of patterns in a text
 corpus in a very flexible manner, based on several types of data (words,
@@ -13,9 +13,9 @@ lists or contingency tables, etc.
 
 This implementation is based on the CWB library developed by the IMS Open
 Corpus Workbench (http://cwb.sourceforge.net/). You do not need though to
-implement the CWB software : the extension is self-contained.
+implement the CWB software: the extension is self-contained.
 
-Instructions explaining how to compile rcqp on Mac OS X or on a Unix 
+Instructions explaining how to compile rcqp on Mac OS X or on a Unix-like 
 system are found in the file INSTALL.
 
 
