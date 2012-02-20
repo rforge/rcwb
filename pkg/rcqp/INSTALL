@@ -1,4 +1,4 @@
-
+Instructions to compile the rcqp package
 
 This document explains how to compile the rcqp extension for R on a Unix like 
 system, including Mac OS X.
@@ -9,11 +9,11 @@ Prerequisites
 =============
 
 Building tools necessary:
- - GCC 3.3 or newer recommended (other ANSI C compilers might also work)
+ - GCC 3.3 or newer recommended
  - the ar and ranlib code archive utilities
- - GNU make or a compatible program
+ - GNU make
  - GNU bison & flex to generate the parsers
- - the pkg-config program
+ - the pkg-config program to find the required dependencies
 
 Obviously R must be installed on your system since rcqp is designed to be 
 an R extension and the compiling process needs to read the R headers.
@@ -28,39 +28,75 @@ source code:
    It is available to download from this address:
         http://www.gtk.org/download.html
 
+Follow the instructions coming with these two libraries to compile and 
+install them on your machine if they are not already present.
+On Mac OS X, installing PCRE and Glib can be done using the MacPorts
+system. If MacPorts is installed on your system, you just have to type the
+following commands in a Terminal window in order to download, compile and
+install the PCRE and the Glib libraries :
+	sudo port -v install pcre
+	sudo port -v install glib2
+
+
 
 Download
 ========
-TODO
+
+The source code of the rcqp package is placed in a Subversion repository at
+RForge. In order to retrieve the source files, you need a Subversion
+client. If the command line client is installed on your machine, just type
+the following instruction from a Terminal window :
+    svn checkout svn://scm.r-forge.r-project.org/svnroot/rcwb/pkg/rcqp
 
 
 
 Configuration
 =============
-TODO
+
+Once the code has been downloaded, edit the file rcqp/cwb/config.mk and
+select appropriately the platform-specific and the site-specific settings.
+Currently, the file is set for a Darwin Core2 system (Mac OS X) with
+standard settings, like this:
+	include $(TOP)/config/platform/darwin-core2
+	include $(TOP)/config/site/standard
+
+See the other possible values in the comments found in this file.
 
 
 
-Building
-========
-TODO
+Building and installing with R
+==============================
+
+From the directory containing the source code, i-e the directory containing
+the rcqp/ directory, execute the following command :
+	R CMD install rcqp
+
+R will automatically find the configure script, run it, execute the make 
+command and finally install the package in the appropriate location.
+
+If everything went as expected, your rcqp extension should now be 
+available. From the R console, type the following instruction to load it:
+	> library(rcqp)
+
+To get a detailed tutorial about how to use the functions it defines, read
+the vignette coming with the package. For this, you just have to type the
+following from the R console:
+	> vignette("rcqp")
+
+Help is also available through the usual mechanism. For instance, start with:
+	> ?rcqp
 
 
 
-Installing
-==========
-TODO
+Troubleshooting
+===============
+
+In case of problem, please contact one of the authors of the rcqp project.
+
+Compiling rcqp for the Windows platform should be possible, following the 
+Unix-like example, but the authors do not have the expertise for this. If 
+someone is willing to undertake this task, he will deserve our eternal 
+gratitude.
 
 
 
-
-
-Mac OS X notes
-==============
-
-Installing PCRE and Glib can be done using the MacPorts system. If 
-MacPorts is installed on your system, you just have to type the following 
-commands in a Terminal window in order to download, compile and install 
-the PCRE and the Glib libraries :
-	sudo port -v install pcre
-	sudo port -v install glib2
