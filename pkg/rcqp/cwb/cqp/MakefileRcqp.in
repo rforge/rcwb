@@ -42,8 +42,6 @@ CWB_BISON_OBJ := $(CWB_BISON_OUT:.c=.o)
 # Substitutable variables
 # -----------------------
 
-CC=@CC@
-CFLAGS=@CFLAGS@
 FLEX_PRG=@LEX@
 BISON_PRG=@YACC@
 # FLEX_FLAGS=--debug
