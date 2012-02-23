@@ -327,7 +327,7 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 	size <- size(x);
 	max.line <- size - 1.
 	if (to > max.line) {
-		stop(paste("Max line available:", max.line, "; max lines requested:", to));
+		stop(paste("Max line:", max.line, "; max lines requested:", to));
 	}
 	
 	k <- cqp_kwic(x);
@@ -394,7 +394,7 @@ size <- function (x) UseMethod("size");
 
 cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 
-	cqp_corpus.name <- .cqp_name.cqp_corpus(x);
+	cqp_corpus.name <- .cqp_name(x);
 	
 	positional <- cqi_attributes(cqp_corpus.name, "p");
 	structural <- cqi_attributes(cqp_corpus.name, "s");
@@ -407,7 +407,7 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 		flist <- cqi_id2freq(qualified.attribute.name, ids);
 		str <- cqi_id2str(qualified.attribute.name, ids);
 		names(flist) <- str;
-	} else {
+	} else if (attribute %in% structural) {
 		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
 			ids <- 0:(cqi_attribute_size(qualified.attribute.name)-1);
 			values <- cqi_struc2str(qualified.attribute.name, ids);
@@ -417,6 +417,8 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 		} else {
 			stop("no values on this structural attribute");
 		}
+	} else {
+		stop("Unknown cqp attribute");
 	}
 
 	if (cutoff > 0) {
