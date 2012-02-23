@@ -850,21 +850,20 @@ print.cqp_kwic <- function(x,
 	nbr.lines <- to-from+1;
 	lines <- character(nbr.lines);
 	matrix.lines <- matrix("", nrow=nbr.lines, ncol=3);
-	
-	for (i in 0:(nbr.lines - 1)) {
-		l <- x[from + i,];
 		
+	for (i in 1:nbr.lines) {
+		l <- x[from + i,];
 		matrix.lines[i, 1] <- paste(
-			print_tokens(x, x[from + i, "left"]:(x[from + i, "match"]-1)),
+			print_tokens(x, l["left"]:(l["match"]-1)),
 			collapse=" "
 		);
 
-		c1 <- print_tokens(x, x[from + i, "match"]:x[from + i, "matchend"]);
+		c1 <- print_tokens(x, l["match"]:l["matchend"]);
 		c2 <- c(left.separator, c1, right.separator);
 		matrix.lines[i, 2] <- paste(c2, collapse=" ");
 
 		matrix.lines[i, 3] <- paste(
-			print_tokens(x, (x[from + i, "matchend"]+1):x[from + i, "right"]),
+			print_tokens(x, (l["matchend"]+1):l["right"]),
 			collapse=" "
 		);
 	}
@@ -878,7 +877,7 @@ print.cqp_kwic <- function(x,
 	right <- substr(matrix.lines[,3], 1, right.nchar - (right.nchar - requested.right.char));
 
 	format <- paste("%10d %", requested.left.char, "s%", requested.center.char, "s%-", requested.right.char, "s", sep="");
-	lines <- sprintf(format, x[from:to, "match"], left, matrix.lines[,2], right);
+	lines <- sprintf(format, x[(from:to)+1, "match"], left, matrix.lines[,2], right);
 	
 	for(i in lines) {
 		cat(paste(i, "\n", sep=""));
