@@ -1,5 +1,7 @@
 \name{size}
 \alias{size}
+\alias{size.cqp_corpus}
+\alias{size.cqp_subcorpus}
 \title{
 Size of a corpus or subcorpus
 }
