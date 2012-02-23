@@ -6,7 +6,7 @@
 Size of a corpus or subcorpus
 }
 \description{
-Size of a corpus (number of token) or size of a subcorpus (number of match).
+Size of a corpus (number of tokens) or size of a subcorpus (number of matches).
 }
 \usage{
 size(x)
@@ -18,14 +18,14 @@ size(x)
 }
 \arguments{
   \item{x}{
- A cqp_corpus object (created with the function \code{\link{corpus}})
- or a cqp_subcorpus object (created with the function \code{\link{subcorpus}})
+ A \code{cqp_corpus} object (created with the function \code{\link{corpus}})
+ or a \code{cqp_subcorpus} object (created with the function \code{\link{subcorpus}})
  
 }
 }
 \value{
-An integer vector of length 1: the number of tokens for a corpus
-and the number of match for a subcorpus.
+An integer vector of length 1: the number of tokens if \code{x} is a corpus
+or the number of matches if it is a subcorpus.
 }
 \references{                                                                    
   \url{http://cwb.sourceforge.net/documentation.php}                            
@@ -33,6 +33,13 @@ and the number of match for a subcorpus.
 \author{                                                                        
         Bernard Desgraupes - \email{bernard.desgraupes@u-paris10.fr} - University Paris-10.\cr
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
+}
+
+\seealso{
+\code{\link{corpus}}, 
+\code{\link{subcorpus}}, 
+\code{\link{summary.cqp_corpus}}, 
+\code{\link{summary.cqp_subcorpus}}.
 }
 
 \examples{

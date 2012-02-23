@@ -80,6 +80,8 @@ Creating a \code{cqp_kwic} object gives more control on the printing options.
 \code{\link{cqp_flist}}, 
 \code{\link{cqp_ftable}}, 
 \code{\link{summary.cqp_flist}}, 
+\code{\link{size.cqp_corpus}}, 
+\code{\link{size.cqp_subcorpus}}, 
 \code{\link{summary.cqp_corpus}}, 
 \code{\link{summary.cqp_subcorpus}}.
 }

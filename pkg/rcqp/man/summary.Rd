@@ -40,6 +40,8 @@ Ignored.
 \code{\link{corpus}}, 
 \code{\link{subcorpus}}, 
 \code{\link{write.cqp_corpus}}, 
+\code{\link{size.cqp_corpus}}, 
+\code{\link{size.cqp_subcorpus}}, 
 \code{\link{cqp_kwic}}.
 }
 
