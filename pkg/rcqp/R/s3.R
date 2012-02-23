@@ -877,7 +877,8 @@ print.cqp_kwic <- function(x,
 	right <- substr(matrix.lines[,3], 1, right.nchar - (right.nchar - requested.right.char));
 
 	format <- paste("%10d %", requested.left.char, "s%", requested.center.char, "s%-", requested.right.char, "s", sep="");
-	lines <- sprintf(format, x[(from:to)+1, "match"], left, matrix.lines[,2], right);
+	r_from_to <- (from:to) + 1;
+	lines <- sprintf(format, x[r_from_to, "match"], left, matrix.lines[,2], right);
 	
 	for(i in lines) {
 		cat(paste(i, "\n", sep=""));
