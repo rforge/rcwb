@@ -1,3 +1,16 @@
+proposition de mail à la liste cwb avec :
+- présentation
+- vignette
+- demande d'aide pour compiler sous windows
+
+
+=> à faire : print ftable.
+et
+summary.ftable
+
+cutoff pour table de fréquence : implémenté ?
+
+
 syntaxe particulière pour générer la coquille des fonctions gnéériques : S3 method for class "subcorpus"...
 
 sample session : moins de sortie et plus de commandes
