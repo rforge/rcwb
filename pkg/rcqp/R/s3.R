@@ -51,6 +51,16 @@ corpus <- function(corpus.name) {
 
 
 
+.is_cqp_corpus <- function(x) {
+	if (class(x) == "cqp_corpus") {
+		return(TRUE);
+	} else {
+		return(FALSE);
+	}
+}
+
+
+
 ## 
  # ------------------------------------------------------------------------
  # 
