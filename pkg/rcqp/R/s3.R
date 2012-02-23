@@ -13,8 +13,7 @@
 # format d'entrée de UCS : pour un mot, avoir les quatre paramètres facilement
 
 # fonctions utilitaires comme "frequency(corpus, attribute, c("et", "oui", "non"))"
-
-# section vocabulary.
+# passe par cqp_flist()["oui"]
 
 ###########################################################################
 # S3 Object cqp_corpus
@@ -57,21 +56,21 @@ corpus <- function(corpus.name) {
  # ------------------------------------------------------------------------
  ##
 summary.cqp_corpus <- function(object, ...) {
-	cqp_corpus.name <- attr(object, "cqp_corpus.name");
+	cqp_corpus.name <- .cqp_name(object);
 	cat(paste(cqp_corpus.name, "\n"));
 		
 	p_attributes <- sort(cqi_attributes(cqp_corpus.name, "p"));
 	s_attributes <- sort(cqi_attributes(cqp_corpus.name, "s"));
 	a_attributes <- sort(cqi_attributes(cqp_corpus.name, "a"));
 	
-	tokens <- cqi_attribute_size(paste(cqp_corpus.name, p_attributes[1], sep="."));
+	tokens <- size(corpus);
 	cat(paste("Number or tokens:", tokens, "\n"));
 
 	cat(paste("Positionnal attributes (", length(p_attributes), ")\n", sep=""));
-	for (a in p_attributes) {
-		qualified_name <- paste(cqp_corpus.name, a, sep=".");
+	for (p in p_attributes) {
+		qualified_name <- .cqp_name(corpus, p);
 		number_of_types <- cqi_lexicon_size(qualified_name);
-	    cat(paste("\t", a, " (", number_of_types, " types)\n", sep=""));
+	    cat(paste("\t", p, " (", number_of_types, " types)\n", sep=""));
 		
 		default_max <- 9;
 		max <- ifelse(number_of_types + 1 < default_max, number_of_types - 1, default_max);
@@ -88,7 +87,7 @@ summary.cqp_corpus <- function(object, ...) {
 
 	cat(paste("Structural attributes (", length(s_attributes), ")\n", sep=""));
 	for (s in s_attributes) {
-		qualified_name <- paste(cqp_corpus.name, s, sep=".");
+		qualified_name <- .cqp_name(corpus, s);
 		number_of_tokens <- cqi_attribute_size(qualified_name);
 	    cat(paste("\t", s, " (", number_of_tokens, " tokens", sep=""));
 		if (cqi_structural_attribute_has_values(qualified_name)) {
@@ -113,7 +112,7 @@ summary.cqp_corpus <- function(object, ...) {
 
 	cat(paste("Alignement attributes (", length(a_attributes), ")\n", sep=""));
 	for (a in a_attributes) {
-		qualified_name <- paste(cqp_corpus.name, a, sep=".");
+		qualified_name <- .cqp_name(corpus, a);
 		number_of_tokens <- cqi_attribute_size(qualified_name);
 	    cat(paste("\t", a, " (", number_of_tokens, " tokens).\n", sep=""));
 	}
@@ -137,7 +136,7 @@ summary.cqp_corpus <- function(object, ...) {
  # ------------------------------------------------------------------------
  ##
 print.cqp_corpus <- function(x, from=0, to=20, ...) {
-	max <- cqi_attribute_size(paste(attr(x, "cqp_corpus.name"), "word", sep="."));
+	max <- size(x);
 	if (any(c(from, to) >= max)) {
 		stop("Token ids cannot be greater than corpus size");
 	}
@@ -183,9 +182,8 @@ print.cqp_corpus <- function(x, from=0, to=20, ...) {
  # ------------------------------------------------------------------------
  ##
 write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
-	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
-	size <- cqi_attribute_size(paste(cqp_corpus.name, "word", sep="."));
-	# TODO
+	cqp_corpus.name <- .cqp_name(corpus);
+	size <- size(corpus);
 	mat <- .cqp_corpus2matrix(corpus, 0, size);
 	write.table(mat, file=filename, ...);
 }
@@ -193,8 +191,8 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 
 .cqp_corpus2matrix <- function(x, from, to) {	
 	
-	cqp_corpus.name <- attr(x, "cqp_corpus.name");
-	max <- cqi_attribute_size(paste(cqp_corpus.name, "word", sep=".")) - 1;
+	cqp_corpus.name <- .cqp_name(x);
+	max <- size(x) - 1;
 
 	token_id=from:to;
 	nbr_token <- length(token_id);
@@ -210,20 +208,19 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	colnames(printed) <- c(structural, positional);
 
 	for (i in 1:nbr_structural) {
-		qualified_structural_attribute <- paste(cqp_corpus.name, structural[i], sep=".");
+		qualified_structural_attribute <- .cqp_name(x, structural[i]);
 		ids <- cqi_cpos2struc(qualified_structural_attribute, token_id);
 		printed[,i] <- ids
 	}
 	
 	for (i in 1:nbr_positional) {
-		qualified_positional_attribute <- paste(cqp_corpus.name, positional[i], sep=".");
+		qualified_positional_attribute <- .cqp_name(x, positional[i]);
 		ids <- cqi_cpos2str(qualified_positional_attribute, token_id);
 		printed[,i+nbr_structural] <- ids
 	}
 
 	return(printed);
 }
-
 
 ## 
  # ------------------------------------------------------------------------
@@ -247,21 +244,20 @@ region_sizes <- function(corpus, structural_attribute) {
 		stop("corpus: not a corpus object");
 	}
 	
-	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
+	cqp_corpus.name <- .cqp_name(corpus);
 
 	atts <- cqi_attributes(cqp_corpus.name, "s");
 	if (! structural_attribute %in% atts) {
 		stop("structural_attribute is not a structural attribute on this corpus");
 	}
 
-	qualified_attribute <- paste(cqp_corpus.name, structural_attribute, sep=".");
+	qualified_attribute <- .cqp_name(corpus, structural_attribute);
 	att_size <- cqi_attribute_size(qualified_attribute);
 	return(
 		sapply(
 			0:(att_size-1),
 			function(x) {
 				bound <- cqi_struc2cpos(qualified_attribute, x);
-				#print(bound);
 				return(bound[2] - bound[1]);
 			}
 		)
@@ -290,16 +286,16 @@ subcorpus <- function(corpus, query) {
 	if (class(corpus) != "cqp_corpus" ) {
 		stop("corpus: not a corpus object");
 	}
-	cqp_corpus.name <- attr(corpus, "cqp_corpus.name");
+	parent.cqp_corpus.name <- .cqp_name(corpus);
 	
-    cqp_subcorpus.name <- .generate.cqp_subcorpus.name(cqp_corpus.name);
-    cqi_query(cqp_corpus.name, cqp_subcorpus.name, query);
+    cqp_subcorpus.name <- .generate.cqp_subcorpus.name(parent.cqp_corpus.name);
+    cqi_query(parent.cqp_corpus.name, cqp_subcorpus.name, query);
 	
 	x <- 0;
     class(x) <- c("cqp_subcorpus");
 
     attr(x, "cqp_subcorpus.name") <- cqp_subcorpus.name;
-    attr(x, "parent.cqp_corpus.name") <- cqp_corpus.name;
+    attr(x, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
     attr(x, "query") <- query;
 	return(x);
 }
@@ -323,13 +319,13 @@ summary.cqp_subcorpus <- function(object, ...) {
 	if (class(object) != "cqp_subcorpus") {
 		stop("object must be cqp_subcorpus object");
 	}
-	parent.corpus <- attr(object, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(object, "cqp_subcorpus.name");
+
+	parent_corpus.name <- attr(object, "parent.cqp_corpus.name");
+	qualified_name <- .cqp_name(object);
+	size <- cqi_subcorpus_size(qualified_name);
 	query <- attr(object, "query");
 	
-	size <- cqi_subcorpus_size(paste(parent.corpus, cqp_subcorpus.name, sep=":"));
-	
-	cat(paste("Parent corpus name:", parent.corpus, "\n"));
+	cat(paste("Parent corpus name:", parent_corpus.name, "\n"));
 	cat(paste("Number of matches:", size, "\n"));
 	cat(paste("Query:", query, "\n"));
 	# TODO : some samples of the first lines
@@ -350,15 +346,7 @@ summary.cqp_subcorpus <- function(object, ...) {
  # ------------------------------------------------------------------------
  ##
 print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, ...) {
-	if (class(x) != "cqp_subcorpus") {
-		stop("x must be cqp_subcorpus object");
-	}
-
-	parent.corpus <- attr(x, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
-
-	size <- cqi_subcorpus_size(qualified.sub_corpus.name);
+	size <- size(x);
 	max.line <- size - 1.
 	if (to > max.line) {
 		stop(paste("Max line:", max.line, "; max lines requested:", to));
@@ -392,6 +380,51 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 }
 
 
+.cqp_name.cqp_corpus <- function(x, attribute=NULL) {
+	if (class(x) != "cqp_corpus") {
+		stop("x must be cqp_corpus object");
+	}
+	
+	corpus_name <- attr(x, "cqp_corpus.name");
+	if (is.null(attribute)) {
+		return(corpus_name);
+	} else {
+		return(paste(corpus_name, attribute, sep="."));
+	}
+}
+
+.cqp_name.cqp_subcorpus <- function(x) {
+	if (class(x) != "cqp_subcorpus") {
+		stop("x must be cqp_subcorpus object");
+	}
+
+	parent.corpus <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
+}
+
+.cqp_name <- function (x) UseMethod(".cqp_name");
+
+size.cqp_corpus <- function(x) {
+	if (!class(x) == "cqp_corpus") {
+		stop("not a cqp_corpus object");
+	}
+	
+	word.attribute <- .cqp_name(x, "word");
+	return(cqp_attribute_size(word.attribute));
+}
+
+size.cqp_subcorpus <- function(x) {
+	if (!class(x) == "cqp_subcorpus") {
+		stop("not a cqp_subcorpus object");
+	}
+	cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	qualified.name <- paste(cqp_corpus.name, cqp_subcorpus.name, sep=":");
+	return(cqp_subcorpus_size(qualified.name));
+}
+
+size <- function (x) UseMethod("size");
 
 ###########################################################################
 # S3 object cqp_flist
@@ -408,19 +441,18 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 	positional <- cqi_attributes(cqp_corpus.name, "p");
 	structural <- cqi_attributes(cqp_corpus.name, "s");
 	
-	qualified.attribute.name <- paste(cqp_corpus.name, attribute, sep=".");
+	qualified.attribute.name <- .cqp_name(x, attribute);
 
 	if (attribute %in% positional) {
-		# TODO : 0-based ou 1-based
-		max.id <- cqi_lexicon_size(qualified.attribute.name) - 1;
+		max.id <- size(x) - 1;
 		ids <- 0:max.id;
 		flist <- cqi_id2freq(qualified.attribute.name, ids);
 		str <- cqi_id2str(qualified.attribute.name, ids);
 		names(flist) <- str;
 	} else {
 		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
-			# TODO : zero-based ?
-			values <- cqi_struc2str(qualified.attribute.name, 0:(cqi_attribute_size(qualified.attribute.name)-1));
+			ids <- 0:(cqi_attribute_size(qualified.attribute.name)-1);
+			values <- cqi_struc2str(qualified.attribute.name, ids);
 			t <- table(values);
 			flist <- as.numeric(t);
 			names(flist) <- names(t);
@@ -478,7 +510,7 @@ cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.
 	
 	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
 	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
-	qualified.subcorpus.name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+	qualified.subcorpus.name <- .cqp_name(x);
 	qualified.attribute <- paste(parent.cqp_corpus.name, attribute, sep=".");
 
 	flist <- 0;
@@ -620,11 +652,12 @@ cqp_ftable.cqp_corpus <- function(x, attribute1, attribute2,
 	structural.attribute.unique.id=FALSE, subcorpus=NULL,
 	...
 ) {
-	cqp_corpus.name <- attr(x, "cqp_corpus.name");
-	qualified.attribute1 <- paste(cqp_corpus.name, attribute1, sep=".");
-	qualified.attribute2 <- paste(cqp_corpus.name, attribute2, sep=".");
+	cqp_corpus.name <- .cqp_name(x);
+	qualified.attribute1 <- .cqp_name(x, attribute1);
+	qualified.attribute2 <- .cqp_name(x, attribute2);
 	
-	corpus_size <- cqi_attribute_size(paste(cqp_corpus.name, "word", sep="."));
+	corpus_size <- size(x);
+	max_id <- corpus_size - 1;
 	
 	s_atts <- cqi_attributes(cqp_corpus.name, "s");
 	p_atts <- cqi_attributes(cqp_corpus.name, "p");
@@ -635,11 +668,10 @@ cqp_ftable.cqp_corpus <- function(x, attribute1, attribute2,
 	
 	att1 <- 0;
 	if (attribute1 %in% s_atts) {
-		# TODO array base
-		att1 <- cqi_cpos2struc(qualified.attribute1, 0:(corpus_size-1));
+		att1 <- cqi_cpos2struc(qualified.attribute1, 0:max_id);
 	} else if (attribute1 %in% p_atts) {
 		# TODO array base
-		att1 <- cqi_cpos2id(qualified.attribute1, 0:(corpus_size-1));
+		att1 <- cqi_cpos2id(qualified.attribute1, 0:max_id);
 	} else {
 		stop(paste("Unknown attribute:", attribute1));
 	}
@@ -647,10 +679,10 @@ cqp_ftable.cqp_corpus <- function(x, attribute1, attribute2,
 	att2 <- 0;
 	if (attribute2 %in% s_atts) {
 		# TODO array base
-		att2 <- cqi_cpos2struc(qualified.attribute2, 0:(corpus_size-1));
+		att2 <- cqi_cpos2struc(qualified.attribute2, 0:max_id);
 	} else if (attribute2 %in% p_atts) {
 		# TODO array base
-		att2 <- cqi_cpos2id(qualified.attribute2, 0:(corpus_size-1));
+		att2 <- cqi_cpos2id(qualified.attribute2, 0:max_id);
 	} else {
 		stop(paste("Unknown attribute:", attribute2));
 	}
@@ -713,8 +745,7 @@ cqp_ftable.cqp_corpus <- function(x, attribute1, attribute2,
 
 cqp_ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2, cutoff=0, ...) {
 	parent.corpus <- attr(x, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
+	qualified.sub_corpus.name <- .cqp_name(x);
 	
 	m <- cqi_fdist2(qualified.sub_corpus.name, anchor1, attribute1, anchor2, attribute2, cutoff=cutoff);
 
@@ -722,7 +753,6 @@ cqp_ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2
   	attribute2.str <- cqi_id2str(paste(parent.corpus, attribute2, sep="."), m[,2]);
  
 	df <- data.frame(attribute1.str, attribute2.str, m[,3]);
-#  	df <- data.frame(m[,1], m[,2], m[,3]);
 	colnames(df) <- c(
 		paste(anchor1, attribute1, sep="."),
 		paste(anchor2, attribute2, sep="."),
@@ -743,9 +773,7 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	left.context=20,
 	...
 ) {
-	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+	qualified_subcorpus_name <- .cqp_name(x);
 
 	size <- cqi_subcorpus_size(qualified_subcorpus_name);
 	if (size == 0) {
@@ -754,7 +782,7 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	
 	s <- .get.kwic.matrix(x, right.context, left.context);	
 
-	attr(s, "parent.cqp_corpus.name") <- parent.cqp_corpus.name;
+	attr(s, "parent.cqp_corpus.name") <- attr(x, "parent.cqp_corpus.name");
 	attr(s, "cqp_subcorpus.name") <- attr(x, "cqp_subcorpus.name");
 	attr(s, "right.context") <- right.context;
 	attr(s, "left.context") <- left.context;
@@ -811,7 +839,8 @@ sort.cqp_kwic <- function(x, decreasing=FALSE, sort.anchor="match", sort.attribu
 	left.boundary <- pmax(dump[,1] - left.context, 0);
 	dim(left.boundary) <- c(nrow(dump), 1);
 
-	corpus_size <- cqi_attribute_size(paste(parent.cqp_corpus.name, "word", sep="."));
+	corpus_size <- size(x);
+	
 	max_id <- corpus_size - 1;
 	right.boundary <- pmin(dump[,2] + right.context, max_id);
 	dim(right.boundary) <- c(nrow(dump), 1);
@@ -879,26 +908,3 @@ print.cqp_kwic <- function(x,
 		cat(paste(i, "\n", sep=""));
 	}
 }
-
-# .do_kwic_line <- function(x,
-# 	line,
-# 	print_tokens,
-# 	left.separator,
-# 	right.separator,
-# 	hit.char,
-# 	left.char,
-# 	right.char)
-# {
-# 	
-#   right = print_tokens(x, (line["matchend"]+1):line["right"]);
-# 
-#   hit <- paste(hit, collapse=" ");
-#   hit <- paste(left.separator, hit, right.separator, sep="");
-#   right = paste(right, collapse=" ");
-#   
-#   # TODO : may be vectorized.
-#   format <- paste("%10d %", left.char, "s%", hit.char, "s%-", left.char, "s", sep="");
-#   line <- sprintf(format, line["match"], left, hit, right);
-#   return(line);
-# }
-
