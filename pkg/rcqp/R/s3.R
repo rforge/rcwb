@@ -845,7 +845,7 @@ sort.cqp_kwic <- function(x, decreasing=FALSE, sort.anchor="match", sort.attribu
 
 print.cqp_kwic <- function(x,
 	from=0,
-	to=20,
+	to=min(20, size(x)-1),
 	print_tokens=function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), cpos),
 	left.separator=" <<",
 	right.separator=">> ",
