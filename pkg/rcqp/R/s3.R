@@ -59,7 +59,7 @@ summary.cqp_corpus <- function(object, ...) {
 	tokens <- size(object);
 	cat(paste("Number or tokens:", tokens, "\n"));
 
-	cat(paste("Positionnal attributes (", length(p_attributes), ")\n", sep=""));
+	cat(paste("Positional attributes (", length(p_attributes), ")\n", sep=""));
 	for (p in p_attributes) {
 		qualified_name <- .cqp_name(object, p);
 		number_of_types <- cqi_lexicon_size(qualified_name);
