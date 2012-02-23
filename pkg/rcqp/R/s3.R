@@ -8,13 +8,6 @@
 # All rights reserved.
 # ===========================================================================
 
-# merger des cqp_flist
-# contingency table à partir des structures
-# format d'entrée de UCS : pour un mot, avoir les quatre paramètres facilement
-
-# fonctions utilitaires comme "frequency(corpus, attribute, c("et", "oui", "non"))"
-# passe par cqp_flist()["oui"]
-
 ###########################################################################
 # S3 Object cqp_corpus
 ###########################################################################
@@ -403,7 +396,7 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 	qualified.sub_corpus.name <- paste(parent.corpus, cqp_subcorpus.name, sep=":");
 }
 
-.cqp_name <- function (x) UseMethod(".cqp_name");
+.cqp_name <- function (x, ...) UseMethod(".cqp_name");
 
 size.cqp_corpus <- function(x) {
 	if (!class(x) == "cqp_corpus") {
@@ -411,7 +404,7 @@ size.cqp_corpus <- function(x) {
 	}
 	
 	word.attribute <- .cqp_name(x, "word");
-	return(cqp_attribute_size(word.attribute));
+	return(cqi_attribute_size(word.attribute));
 }
 
 size.cqp_subcorpus <- function(x) {
@@ -421,7 +414,7 @@ size.cqp_subcorpus <- function(x) {
 	cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
 	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
 	qualified.name <- paste(cqp_corpus.name, cqp_subcorpus.name, sep=":");
-	return(cqp_subcorpus_size(qualified.name));
+	return(cqi_subcorpus_size(qualified.name));
 }
 
 size <- function (x) UseMethod("size");
