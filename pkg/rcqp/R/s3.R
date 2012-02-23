@@ -833,7 +833,6 @@ print.cqp_kwic <- function(x,
 	...
 )
 {
-	
 	if (from < 0) {
 		stop("'from' must be greater than 0");
 	}
@@ -848,7 +847,6 @@ print.cqp_kwic <- function(x,
 	requested.right.char= attr(x, "right.context")
 
 	nbr.lines <- to-from+1;
-	lines <- character(nbr.lines);
 	matrix.lines <- matrix("", nrow=nbr.lines, ncol=3);
 		
 	for (i in 1:nbr.lines) {
