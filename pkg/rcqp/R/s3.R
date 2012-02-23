@@ -8,6 +8,21 @@
 # All rights reserved.
 # ===========================================================================
 
+
+###########################################################################
+# S3 generic methods
+###########################################################################
+
+
+
+size <- function (x) UseMethod("size");
+cqp_flist <- function(x, ...) UseMethod("cqp_flist");
+cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
+cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
+.cqp_name <- function (x, ...) UseMethod(".cqp_name");
+
+
+
 ###########################################################################
 # S3 Object cqp_corpus
 ###########################################################################
@@ -318,7 +333,7 @@ summary.cqp_subcorpus <- function(object, ...) {
  # Applying generic method "print" to corpus object: print first kwic lines of the corpus
  # 
  # Example:
- #              sc <- subcorpus("DICKENS", "\"interesting\"")
+ #              sc <- subcorpus("DICKENS", '"interesting"')
  #              print(sc)
  #
  # ------------------------------------------------------------------------
@@ -369,14 +384,14 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 	}
 }
 
-.cqp_name <- function (x, ...) UseMethod(".cqp_name");
+
 
 size.cqp_subcorpus <- function(x) {
 	qualified.name <- .cqp_name(x);
 	return(cqi_subcorpus_size(qualified.name));
 }
 
-size <- function (x) UseMethod("size");
+
 
 .is_cqp_subcorpus <- function(x) {
 	if (class(x) == "cqp_subcorpus") {
@@ -392,6 +407,21 @@ size <- function (x) UseMethod("size");
 ###########################################################################
 
 
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "cqp_flist(corpus, attribute, cutoff)" --
+ #
+ # Create an S3 object holding a frequency list
+ #
+ # A cqp_flist is a named numeric vector.
+ # 
+ # Example:
+ #              corpus("DICKENS")
+ #              cqp_flist(sc, "lemma")
+ #
+ # ------------------------------------------------------------------------
+ ##
 cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 
 	cqp_corpus.name <- .cqp_name(x);
@@ -443,19 +473,21 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 ## 
  # ------------------------------------------------------------------------
  # 
- # "cqp_flist(corpus, attribute, field, left.context, right.context)" --
+ # "cqp_flist(subcorpus, anchor, attribute, left.context, right.context)" --
  #
  # Create an S3 object holding a frequency list
  #
  # A cqp_flist is a named numeric vector.
  # 
  # Example:
- #              cqp_flist(my_sub_corpus, "lemma", "match", 4, 4)
+ #              corpus("DICKENS")
+ #              sc <- subcorpus("DICKENS", '"interesting"')
+ #              cqp_flist(sc, "match", "lemma", 4, 4)
  #
- # "left.context" and "right.context" define a span around the target word.
+ # "left.context" and "right.context" extend the span of the counted tokens around the anchor.
  #
  # if "target" is a character vector of length 2, such as c("match", "matchend"), the frequency list is computed
- # with all the word contained between match and matchend.
+ # with all the tokens contained between match and matchend.
  # ------------------------------------------------------------------------
  ##
 cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0, ...) {
@@ -519,7 +551,6 @@ cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.
 
 
 
-
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -527,9 +558,6 @@ cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.
  #
  # Applying generic method "summary" to cqp_flist object: print basic information.
  # 
- # Example:
- # TODO
- #
  # ------------------------------------------------------------------------
  ##
 summary.cqp_flist <- function(object, ...) {
@@ -544,24 +572,18 @@ summary.cqp_flist <- function(object, ...) {
 		attribute <- attr(object, "attribute");
 		cat(paste("  Corpus:", cqp_corpus.name, "\n"));
 		cat(paste("  Attribute:", attribute, "\n"));
-	# otherwise, with a subcorpus
-	} else {	
-		cqp_subcorpus.name     <- attr(object, "cqp_subcorpus.name");   
-		parent.cqp_corpus.name <- attr(object, "parent.cqp_corpus.name");
-		anchor                 <- attr(object, "anchor");
-		left.context           <- attr(object, "left.context");
-		right.context          <- attr(object, "right.context");
-		attribute              <- attr(object, "attribute");
-		offset                 <- attr(object, "offset");
-		cat(paste("  Subcorpus:", cqp_subcorpus.name, "\n"));
-		cat(paste("  Parent corpus:", parent.cqp_corpus.name, "\n"));
-		cat(paste("  anchor:", anchor, "\n"));
-		cat(paste("  left.context:", left.context, "\n"));
-		cat(paste("  right.context:", right.context, "\n"));
-		cat(paste("  attribute:", attribute, "\n"));
-		cat(paste("  offset:", offset, "\n"));
+	} else {
+		cat(paste("  Subcorpus:", attr(object, "cqp_subcorpus.name"), "\n"));
+		cat(paste("  Parent corpus:", attr(object, "parent.cqp_corpus.name"), "\n"));
+		cat(paste("  anchor:", attr(object, "anchor"), "\n"));
+		cat(paste("  left.context:", attr(object, "left.context"), "\n"));
+		cat(paste("  right.context:", attr(object, "right.context"), "\n"));
+		cat(paste("  attribute:", attr(object, "attribute"), "\n"));
+		cat(paste("  offset:", attr(object, "offset"), "\n"));
 	}
 }
+
+
 
 ## 
  # ------------------------------------------------------------------------
@@ -575,7 +597,7 @@ print.cqp_flist <- function(x, ...) {
 	print(df, row.names=FALSE);
 }
 
-cqp_flist <- function(x, ...) UseMethod("cqp_flist");
+
 
 ###########################################################################
 # S3 Object cqp_ftable
@@ -583,18 +605,8 @@ cqp_flist <- function(x, ...) UseMethod("cqp_flist");
 
 ## 
  # ------------------------------------------------------------------------
- # 
- # "cqp_ftable(corpus, structure, attribute, use.value=F, cutoff=0, subcorpus=NULL)" --
  #
  # Create an S3 object holding a frequency table accordint to various parameters
- #
- # A cqp_ftable is a three-column data.frame : modality_A modality_1 frequency. See reshape package for easy conversion into matrix.
- # 
- # Example:
- #              # case of fdist2
- #              # case of frequency by a structural attribute (each row is a text, a p, a chapter...)
- #              # case of frequency by value of a structural attribute with value
- #              # etc.
  # 
  # ------------------------------------------------------------------------
  ##
@@ -694,6 +706,7 @@ cqp_ftable.cqp_corpus <- function(x, attribute1, attribute2,
 }
 
 
+
 cqp_ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2, cutoff=0, ...) {
 	parent.corpus <- attr(x, "parent.cqp_corpus.name");
 	qualified.sub_corpus.name <- .cqp_name(x);
@@ -711,7 +724,6 @@ cqp_ftable.cqp_subcorpus <- function(x, anchor1, attribute1, anchor2, attribute2
 	return(df);
 }
 
-cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
 
 
 ###########################################################################
@@ -741,7 +753,7 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	return(s);
 }
 
-cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
+
 
 sort.cqp_kwic <- function(x, decreasing=FALSE, sort.anchor="match", sort.attribute="word", sort.offset=0, ...) {
 	if (!class(x) == "cqp_kwic") {
