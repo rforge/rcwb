@@ -56,12 +56,12 @@ summary.cqp_corpus <- function(object, ...) {
 	s_attributes <- sort(cqi_attributes(cqp_corpus.name, "s"));
 	a_attributes <- sort(cqi_attributes(cqp_corpus.name, "a"));
 	
-	tokens <- size(corpus);
+	tokens <- size(object);
 	cat(paste("Number or tokens:", tokens, "\n"));
 
 	cat(paste("Positionnal attributes (", length(p_attributes), ")\n", sep=""));
 	for (p in p_attributes) {
-		qualified_name <- .cqp_name(corpus, p);
+		qualified_name <- .cqp_name(object, p);
 		number_of_types <- cqi_lexicon_size(qualified_name);
 	    cat(paste("\t", p, " (", number_of_types, " types)\n", sep=""));
 		
@@ -80,7 +80,7 @@ summary.cqp_corpus <- function(object, ...) {
 
 	cat(paste("Structural attributes (", length(s_attributes), ")\n", sep=""));
 	for (s in s_attributes) {
-		qualified_name <- .cqp_name(corpus, s);
+		qualified_name <- .cqp_name(object, s);
 		number_of_tokens <- cqi_attribute_size(qualified_name);
 	    cat(paste("\t", s, " (", number_of_tokens, " tokens", sep=""));
 		if (cqi_structural_attribute_has_values(qualified_name)) {
@@ -105,7 +105,7 @@ summary.cqp_corpus <- function(object, ...) {
 
 	cat(paste("Alignement attributes (", length(a_attributes), ")\n", sep=""));
 	for (a in a_attributes) {
-		qualified_name <- .cqp_name(corpus, a);
+		qualified_name <- .cqp_name(object, a);
 		number_of_tokens <- cqi_attribute_size(qualified_name);
 	    cat(paste("\t", a, " (", number_of_tokens, " tokens).\n", sep=""));
 	}
