@@ -52,6 +52,10 @@ export(
 	"sort.cqp_kwic",
 	"print.cqp_kwic",
 
+	"size",
+	"size.cqp_corpus",
+	"size.cqp_subcorpus",
+
 	"region_sizes"
 )
 
