@@ -118,7 +118,7 @@ summary.cqp_corpus <- function(object, ...) {
 
 .print_sample_types <- function(type_function, attribute, number_of_types, default=10) {
 	max <- min(default, number_of_types) - 1;
-	examples <- type_function(qualified_name, 0:max);
+	examples <- type_function(attribute, 0:max);
 	while (sum(nchar(examples)) >= 50 & length(examples) > 2) {
 		examples <- examples[-length(examples)];
 	}
