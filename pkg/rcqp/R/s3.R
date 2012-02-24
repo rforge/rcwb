@@ -176,7 +176,6 @@ print.cqp_corpus <- function(x, from=0, to=20, ...) {
  # ------------------------------------------------------------------------
  ##
 write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
-	cqp_corpus.name <- .cqp_name(corpus);
 	size <- size(corpus);
 	mat <- .cqp_corpus2matrix(corpus, 0, size);
 	write.table(mat, file=filename, ...);
@@ -351,7 +350,7 @@ summary.cqp_subcorpus <- function(object, ...) {
  ##
 print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, ...) {
 	size <- size(x);
-	max.line <- size - 1.
+	max.line <- size - 1;
 	if (to > max.line) {
 		stop(paste("Max line:", max.line, "; max lines requested:", to));
 	}
@@ -363,8 +362,8 @@ print.cqp_subcorpus <- function(x, positional.attribute="word", from=0, to=10, .
 
 
 .generate.cqp_subcorpus.name <- function(corpus) {
-  subcorpora.name <- cqi_list_subcorpora(corpus)
-  name <- .generate.name()
+  subcorpora.name <- cqi_list_subcorpora(corpus);
+  name <- .generate.name();
   if (length(subcorpora.name) == 0) {
 	  return(name);
   }
@@ -747,9 +746,7 @@ cqp_kwic.cqp_subcorpus <- function(x,
 	left.context=20,
 	...
 ) {
-	qualified_subcorpus_name <- .cqp_name(x);
-
-	size <- cqi_subcorpus_size(qualified_subcorpus_name);
+	size <- size(x);
 	if (size == 0) {
 		stop("empty subcorpus");
 	}
@@ -774,8 +771,11 @@ sort.cqp_kwic <- function(x, decreasing=FALSE, sort.anchor="match", sort.attribu
 	if (! sort.anchor %in%  c("match", "matchend", "target", "keyword")) {
 		stop('sort.anchor must be in c("match", "matchend", "target", "keyword")');
 	}
+
 	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	if (! sort.attribute %in%  cqi_attributes(parent.cqp_corpus.name, "p")) {
+		stop('sort.attribute must be an existing positional attribute');
+	}	
 	qualified_attribute <- paste(parent.cqp_corpus.name, sort.attribute, sep=".");
 
 	cpos <- x[, sort.anchor];
