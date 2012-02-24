@@ -805,15 +805,14 @@ sort.cqp_kwic <- function(x, decreasing=FALSE, sort.anchor="match", sort.attribu
 }
 
 .get.kwic.matrix <- function(x, right.context, left.context) {
-	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
-	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-	qualified_subcorpus_name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=":");
+	qualified_subcorpus_name <- .cqp_name(x);
 
 	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
 	left.boundary <- pmax(dump[,1] - left.context, 0);
 	dim(left.boundary) <- c(nrow(dump), 1);
 
-	corpus_size <- size(x);
+	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
+	corpus_size <- cqi_attribute_size(paste(parent.cqp_corpus.name, "word", sep="."));
 	
 	max_id <- corpus_size - 1;
 	right.boundary <- pmin(dump[,2] + right.context, max_id);
@@ -848,7 +847,6 @@ print.cqp_kwic <- function(x,
 
 	nbr.lines <- to-from+1;
 	matrix.lines <- matrix("", nrow=nbr.lines, ncol=3);
-		
 	for (i in 1:nbr.lines) {
 		l <- x[from + i,];
 		matrix.lines[i, 1] <- paste(
@@ -859,13 +857,13 @@ print.cqp_kwic <- function(x,
 		c1 <- print_tokens(x, l["match"]:l["matchend"]);
 		c2 <- c(left.separator, c1, right.separator);
 		matrix.lines[i, 2] <- paste(c2, collapse=" ");
-
+		
 		matrix.lines[i, 3] <- paste(
 			print_tokens(x, (l["matchend"]+1):l["right"]),
 			collapse=" "
 		);
 	}
-	
+
 	left.nchar <- nchar(matrix.lines[,1]);
 	center.nchar <- nchar(matrix.lines[,2]);
 	right.nchar <- nchar(matrix.lines[,3]);
