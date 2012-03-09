@@ -1,0 +1,76 @@
+# ===========================================================================
+# File: "MakefileRcqp.in"
+#                        Created: 2012-01-14 14:18:07
+#              Last modification: 2012-02-16 17:32:08
+# Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+#          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+# This is part of the R package 'rcqp'.
+# ===========================================================================
+
+
+## Read configuration settings and standard definitions
+TOP = $(shell pwd)/..
+include $(TOP)/configRcqp.mk
+
+
+# Source files
+# ------------
+
+RCQP_CWB_OBJ = cqp/ascii-print.o cqp/attlist.o cqp/builtins.o cqp/concordance.o \
+cqp/context_descriptor.o cqp/corpmanag.o cqp/cqp.o cqp/eval.o cqp/groups.o cqp/hash.o \
+cqp/html-print.o cqp/latex-print.o cqp/macro.o cqp/matchlist.o cqp/options.o cqp/output.o \
+cqp/parse_actions.o cqp/print-modes.o cqp/print_align.o cqp/ranges.o cqp/regex2dfa.o \
+cqp/sgml-print.o cqp/symtab.o cqp/table.o cqp/targets.o cqp/tree.o cqp/variables.o \
+CQi/server.o CQi/auth.o cqp/parser.tab.o cqp/parser.yy.o \
+cl/globals.o cl/macros.o \
+   cl/list.o cl/lexhash.o \
+   cl/bitfields.o cl/storage.o cl/fileutils.o \
+   cl/special-chars.o cl/regopt.o \
+   cl/corpus.o cl/attributes.o \
+   cl/registry.tab.o cl/lex.creg.o \
+   cl/makecomps.o \
+   cl/cdaccess.o \
+   cl/bitio.o \
+   cl/endian.o \
+   cl/compression.o \
+   cl/binsert.o \
+   cl/class-mapping.o
+
+
+# Substitutable variables
+# -----------------------
+
+FLEX_PRG=@LEX@
+BISON_PRG=@YACC@
+# FLEX_FLAGS=--debug
+## The --verbose option is synonym of --report=state.
+# BISON_FLAGS=--debug --report=all --report-file=${BISON_REPORT}
+FLEX_FLAGS=
+BISON_FLAGS=
+
+
+
+# Targets
+# -------
+
+all: libclcqp.a
+
+
+libclcqp.a: 
+	$(RM) $@
+	$(AR) $@ ${RCQP_CWB_OBJ} 
+	$(RANLIB) $@
+
+
+
+.PHONY: all clean clean-all
+
+
+clean:
+	-$(RM) -rf ${CWB_C_OBJ} ${CWB_FLEX_OUT} ${CWB_FLEX_H} \
+	       ${CWB_BISON_OUT} ${CWB_BISON_H} libcqp.a
+
+
+clean-all: clean
+	rm -rf Makefile
+
