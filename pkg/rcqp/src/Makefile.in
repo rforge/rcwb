@@ -102,7 +102,7 @@ rcqp: ${RCQP_C_SRC} cwb
 cwb:
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cqp
-
+	$(MAKE) --makefile=MakefileRcqp -C ../cwb
 
 .PHONY: clean
 
