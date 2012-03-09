@@ -59,8 +59,6 @@ corpus <- function(corpus.name) {
 	}
 }
 
-
-
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -214,6 +212,73 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 
 	return(printed);
 }
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "types(corpus, attribute)" --
+ #
+ # Get the number of types or the actual list of types for a positional attribute
+ # or a structural attribute "with values".
+ # 
+ # Example:
+ #              c <- corpus("DICKENS")
+ #              types(c, "pos");
+ #              ntype(c, "word");
+ #
+ # ------------------------------------------------------------------------
+ ##
+
+
+types.cqp_corpus <- function(corpus, attribute) {
+	cqp_corpus.name <- .cqp_name(corpus);
+	
+	positional <- cqi_attributes(cqp_corpus.name, "p");
+	structural <- cqi_attributes(cqp_corpus.name, "s");
+	
+	qualified.attribute.name <- .cqp_name(corpus, attribute);
+
+	if (attribute %in% positional) {
+		max.id <- ntype(corpus, x) - 1;
+		str <- cqi_id2str(qualified.attribute.name, ids);
+	} else if (attribute %in% structural) {
+		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
+			ids <- 0:(cqi_attribute_size(qualified.attribute.name)-1);
+			values <- cqi_struc2str(qualified.attribute.name, ids);
+			str <- unique(values);
+		} else {
+			stop("no values on this structural attribute");
+		}
+	} else {
+		stop("Unknown cqp attribute");
+	}	
+	return(str);
+}
+
+
+ntype.cqp_corpus(corpus, attribute) {
+	cqp_corpus.name <- .cqp_name(corpus);
+	
+	positional <- cqi_attributes(cqp_corpus.name, "p");
+	structural <- cqi_attributes(cqp_corpus.name, "s");
+	
+	qualified.attribute.name <- .cqp_name(corpus, attribute);
+
+	if (attribute %in% positional) {
+		n <- cqi_lexicon_size(qualified.attribute.name);
+	} else if (attribute %in% structural) {
+		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
+			n <- length(types(corpus, attribute));
+		} else {
+			stop("no values on this structural attribute");
+		}
+	} else {
+		stop("Unknown cqp attribute");
+	}
+	return(n);
+}
+
 
 ## 
  # ------------------------------------------------------------------------
@@ -442,7 +507,7 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 	qualified.attribute.name <- .cqp_name(x, attribute);
 
 	if (attribute %in% positional) {
-		max.id <- size(x) - 1;
+		max.id <- ntype(x, attribute) - 1;
 		ids <- 0:max.id;
 		flist <- cqi_id2freq(qualified.attribute.name, ids);
 		str <- cqi_id2str(qualified.attribute.name, ids);
