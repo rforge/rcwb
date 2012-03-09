@@ -35,6 +35,25 @@ RCQP_VIGNETTE_TEX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
 RCQP_VIGNETTE_IDX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.idx)
 RCQP_VIGNETTE_PDF :=  $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
 
+RCQP_CWB_OBJ = ../cwb/cqp/ascii-print.o ../cwb/cqp/attlist.o ../cwb/cqp/builtins.o ../cwb/cqp/concordance.o \
+../cwb/cqp/context_descriptor.o ../cwb/cqp/corpmanag.o ../cwb/cqp/cqp.o ../cwb/cqp/eval.o ../cwb/cqp/groups.o ../cwb/cqp/hash.o \
+../cwb/cqp/html-print.o ../cwb/cqp/latex-print.o ../cwb/cqp/macro.o ../cwb/cqp/matchlist.o ../cwb/cqp/options.o ../cwb/cqp/output.o \
+../cwb/cqp/parse_actions.o ../cwb/cqp/print-modes.o ../cwb/cqp/print_align.o ../cwb/cqp/ranges.o ../cwb/cqp/regex2dfa.o \
+../cwb/cqp/sgml-print.o ../cwb/cqp/symtab.o ../cwb/cqp/table.o ../cwb/cqp/targets.o ../cwb/cqp/tree.o ../cwb/cqp/variables.o \
+../cwb/CQi/server.o ../cwb/CQi/auth.o ../cwb/cqp/parser.tab.o ../cwb/cqp/parser.yy.o \
+../cwb/cl/globals.o ../cwb/cl/macros.o \
+   ../cwb/cl/list.o ../cwb/cl/lexhash.o \
+   ../cwb/cl/bitfields.o ../cwb/cl/storage.o ../cwb/cl/fileutils.o \
+   ../cwb/cl/special-chars.o ../cwb/cl/regopt.o \
+   ../cwb/cl/corpus.o ../cwb/cl/attributes.o \
+   ../cwb/cl/registry.tab.o ../cwb/cl/lex.creg.o \
+   ../cwb/cl/makecomps.o \
+   ../cwb/cl/cdaccess.o \
+   ../cwb/cl/bitio.o \
+   ../cwb/cl/endian.o \
+   ../cwb/cl/compression.o \
+   ../cwb/cl/binsert.o \
+   ../cwb/cl/class-mapping.o
 
 # Substitutable variables
 # -----------------------
@@ -71,10 +90,14 @@ rcqp: ${RCQP_C_SRC} cwb
 	#
 	# Link the library
 	${CC} -o $@.so $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \
-		${RCQP_STATLIB_CL} ${RCQP_STATLIB_CQP} \
+		${RCQP_CWB_OBJ} \
 	    $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
 		${LIBR}
 
+# # 	${CC} -o $@.so $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \
+# # 		${RCQP_STATLIB_CL} ${RCQP_STATLIB_CQP} \
+# # 	    $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
+# # 		${LIBR}
 
 cwb:
 	$(MAKE) --makefile=MakefileRcqp -C ../cwb/cl
