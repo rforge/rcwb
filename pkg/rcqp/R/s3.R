@@ -257,7 +257,7 @@ types.cqp_corpus <- function(corpus, attribute) {
 }
 
 
-ntype.cqp_corpus(corpus, attribute) {
+ntype.cqp_corpus <- function(corpus, attribute) {
 	cqp_corpus.name <- .cqp_name(corpus);
 	
 	positional <- cqi_attributes(cqp_corpus.name, "p");
@@ -296,7 +296,7 @@ ntype.cqp_corpus(corpus, attribute) {
  ##
 
 ## TODO il y aurait encore plus simple : table() sur tous les struc.
-
+## TODO : faire une gŽnŽrique .cqp_corpus
 region_sizes <- function(corpus, structural_attribute) {
 	if (!.is_cqp_corpus(corpus)) {
 		stop("corpus: not a corpus object");
