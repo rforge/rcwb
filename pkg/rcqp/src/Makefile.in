@@ -90,7 +90,7 @@ rcqp: ${RCQP_C_SRC} cwb
 	#
 	# Link the library
 	${CC} -o $@.so $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \
-		${RCQP_CWB_OBJ} \
+		../cwb/libclcqp.a \
 	    $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
 		${LIBR}
 
