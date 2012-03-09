@@ -241,7 +241,7 @@ types.cqp_corpus <- function(corpus, attribute) {
 	qualified.attribute.name <- .cqp_name(corpus, attribute);
 
 	if (attribute %in% positional) {
-		max.id <- ntype(corpus, x) - 1;
+		max.id <- ntype(corpus, attribute) - 1;
 		str <- cqi_id2str(qualified.attribute.name, ids);
 	} else if (attribute %in% structural) {
 		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
