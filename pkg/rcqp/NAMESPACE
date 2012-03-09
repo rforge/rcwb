@@ -33,6 +33,11 @@ export(
 	"print.cqp_corpus",
 	"write.cqp_corpus",
 
+	"ntype",
+	"ntype.cqp_corpus",
+	"types",
+	"types.cqp_corpus",
+
 	"subcorpus",
 	"summary.cqp_subcorpus",
 	"print.cqp_subcorpus",

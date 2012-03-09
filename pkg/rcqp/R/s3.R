@@ -21,7 +21,8 @@ cqp_flist <- function(x, ...) UseMethod("cqp_flist");
 cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
 cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
 .cqp_name <- function (x, ...) UseMethod(".cqp_name");
-
+ntype <- function (x) UseMethod("ntype");
+types <- function (x) UseMethod("types");
 
 
 ###########################################################################
