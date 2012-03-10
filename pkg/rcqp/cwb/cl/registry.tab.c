@@ -75,7 +75,7 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 189 of yacc.c  */
-#line 17 "registry.y"
+#line 17 "cl/registry.y"
 
 
 #include <ctype.h>
@@ -129,11 +129,11 @@ void cregerror_cleanup(char *message)
 
 
 /* Line 189 of yacc.c  */
-#line 133 "registry.tab.c"
+#line 133 "cl/registry.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 
 /* Enabling verbose error messages.  */
@@ -186,6 +186,36 @@ void cregerror_cleanup(char *message)
      NUMBER = 285
    };
 #endif
+/* Tokens.  */
+#define NAME_SYM 258
+#define ID_SYM 259
+#define INFO_SYM 260
+#define HOME_SYM 261
+#define ATTRIBUTE_SYM 262
+#define DIR_SYM 263
+#define CORPUS_SYM 264
+#define REVCORP_SYM 265
+#define REVCIDX_SYM 266
+#define FREQS_SYM 267
+#define LEXICON_SYM 268
+#define LEXIDX_SYM 269
+#define LEXSRT_SYM 270
+#define STRUCTURE_SYM 271
+#define ALIGNED_SYM 272
+#define DYNAMIC_SYM 273
+#define DOTS_SYM 274
+#define IGNORE_SYM 275
+#define ADMIN_SYM 276
+#define ACCESS_SYM 277
+#define USER_SYM 278
+#define GROUP_SYM 279
+#define ASSERT_SYM 280
+#define HOST_SYM 281
+#define PROPERTY_SYM 282
+#define IDENTIFIER 283
+#define STRING 284
+#define NUMBER 285
+
 
 
 
@@ -194,7 +224,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 69 "registry.y"
+#line 69 "cl/registry.y"
 
   char    *strval;
   int      ival;
@@ -211,7 +241,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 215 "registry.tab.c"
+#line 245 "cl/registry.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -223,7 +253,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 227 "registry.tab.c"
+#line 257 "cl/registry.tab.c"
 
 #ifdef short
 # undef short
@@ -1521,7 +1551,7 @@ yyreduce:
         case 2:
 
 /* Line 1464 of yacc.c  */
-#line 140 "registry.y"
+#line 140 "cl/registry.y"
     { cregcorpus = new(Corpus); 
                                       cregcorpus->attributes = NULL;
                                       cregcorpus->name = NULL;
@@ -1538,173 +1568,173 @@ yyreduce:
                                       cregcorpus->registry_name = NULL;
                                       cregcorpus->nr_of_loads = 1;
                                       cregcorpus->next = NULL;
-                                    ;}
+                                    }
     break;
 
   case 3:
 
 /* Line 1464 of yacc.c  */
-#line 158 "registry.y"
+#line 158 "cl/registry.y"
     { if (cregcorpus->attributes == NULL) {
                                         cregerror("Illegal corpus declaration -- no attributes defined"); 
                                       }
-                                    ;}
+                                    }
     break;
 
   case 4:
 
 /* Line 1464 of yacc.c  */
-#line 162 "registry.y"
-    { cregerror_cleanup("Parse Error."); YYABORT; ;}
+#line 162 "cl/registry.y"
+    { cregerror_cleanup("Parse Error."); YYABORT; }
     break;
 
   case 5:
 
 /* Line 1464 of yacc.c  */
-#line 165 "registry.y"
-    { /* nop */ ;}
+#line 165 "cl/registry.y"
+    { /* nop */ }
     break;
 
   case 6:
 
 /* Line 1464 of yacc.c  */
-#line 171 "registry.y"
+#line 171 "cl/registry.y"
     { cregcorpus->name      = (yyvsp[(1) - (4)].strval);
                                       cregcorpus->id        = (yyvsp[(2) - (4)].strval);
                                       cregcorpus->path      = (yyvsp[(3) - (4)].strval);
                                       cregcorpus->info_file = (yyvsp[(4) - (4)].strval);
-                                    ;}
+                                    }
     break;
 
   case 8:
 
 /* Line 1464 of yacc.c  */
-#line 183 "registry.y"
-    { (yyval.strval) = (yyvsp[(2) - (2)].strval); ;}
+#line 183 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(2) - (2)].strval); }
     break;
 
   case 9:
 
 /* Line 1464 of yacc.c  */
-#line 184 "registry.y"
-    { (yyval.strval) = NULL; ;}
+#line 184 "cl/registry.y"
+    { (yyval.strval) = NULL; }
     break;
 
   case 10:
 
 /* Line 1464 of yacc.c  */
-#line 187 "registry.y"
-    { (yyval.strval) = (yyvsp[(2) - (2)].strval); ;}
+#line 187 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(2) - (2)].strval); }
     break;
 
   case 11:
 
 /* Line 1464 of yacc.c  */
-#line 188 "registry.y"
-    { (yyval.strval) = NULL; ;}
+#line 188 "cl/registry.y"
+    { (yyval.strval) = NULL; }
     break;
 
   case 12:
 
 /* Line 1464 of yacc.c  */
-#line 191 "registry.y"
-    { cregcorpus->admin = (yyvsp[(2) - (2)].strval); ;}
+#line 191 "cl/registry.y"
+    { cregcorpus->admin = (yyvsp[(2) - (2)].strval); }
     break;
 
   case 13:
 
 /* Line 1464 of yacc.c  */
-#line 192 "registry.y"
-    { cregcorpus->admin = NULL; ;}
+#line 192 "cl/registry.y"
+    { cregcorpus->admin = NULL; }
     break;
 
   case 14:
 
 /* Line 1464 of yacc.c  */
-#line 196 "registry.y"
-    { cregcorpus->userAccessList = (yyvsp[(3) - (4)].idlist); ;}
+#line 196 "cl/registry.y"
+    { cregcorpus->userAccessList = (yyvsp[(3) - (4)].idlist); }
     break;
 
   case 15:
 
 /* Line 1464 of yacc.c  */
-#line 197 "registry.y"
-    { cregcorpus->userAccessList = NULL; ;}
+#line 197 "cl/registry.y"
+    { cregcorpus->userAccessList = NULL; }
     break;
 
   case 16:
 
 /* Line 1464 of yacc.c  */
-#line 201 "registry.y"
-    { cregcorpus->groupAccessList = (yyvsp[(3) - (4)].idlist); ;}
+#line 201 "cl/registry.y"
+    { cregcorpus->groupAccessList = (yyvsp[(3) - (4)].idlist); }
     break;
 
   case 17:
 
 /* Line 1464 of yacc.c  */
-#line 202 "registry.y"
-    { cregcorpus->groupAccessList = NULL; ;}
+#line 202 "cl/registry.y"
+    { cregcorpus->groupAccessList = NULL; }
     break;
 
   case 18:
 
 /* Line 1464 of yacc.c  */
-#line 206 "registry.y"
-    { cregcorpus->hostAccessList = (yyvsp[(3) - (4)].idlist); ;}
+#line 206 "cl/registry.y"
+    { cregcorpus->hostAccessList = (yyvsp[(3) - (4)].idlist); }
     break;
 
   case 19:
 
 /* Line 1464 of yacc.c  */
-#line 207 "registry.y"
-    { cregcorpus->hostAccessList = NULL; ;}
+#line 207 "cl/registry.y"
+    { cregcorpus->hostAccessList = NULL; }
     break;
 
   case 20:
 
 /* Line 1464 of yacc.c  */
-#line 210 "registry.y"
-    { (yyval.strval) = (yyvsp[(2) - (2)].strval); ;}
+#line 210 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(2) - (2)].strval); }
     break;
 
   case 21:
 
 /* Line 1464 of yacc.c  */
-#line 213 "registry.y"
-    { (yyval.strval) = (yyvsp[(2) - (2)].strval); ;}
+#line 213 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(2) - (2)].strval); }
     break;
 
   case 22:
 
 /* Line 1464 of yacc.c  */
-#line 214 "registry.y"
-    { (yyval.strval) = NULL; ;}
+#line 214 "cl/registry.y"
+    { (yyval.strval) = NULL; }
     break;
 
   case 23:
 
 /* Line 1464 of yacc.c  */
-#line 217 "registry.y"
+#line 217 "cl/registry.y"
     { 
                                       /* declare components which are not yet declared for local attrs. */
                                       if ((((Attribute *)(yyvsp[(1) - (1)].attr))->any.path == NULL) &&
                                           (cregcorpus->path != NULL))
                                         ((Attribute *)(yyvsp[(1) - (1)].attr))->any.path = cl_strdup(cregcorpus->path);
                                       declare_default_components((Attribute *)(yyvsp[(1) - (1)].attr));
-                                    ;}
+                                    }
     break;
 
   case 25:
 
 /* Line 1464 of yacc.c  */
-#line 225 "registry.y"
-    {;}
+#line 225 "cl/registry.y"
+    {}
     break;
 
   case 28:
 
 /* Line 1464 of yacc.c  */
-#line 232 "registry.y"
+#line 232 "cl/registry.y"
     { 
                                       if ((cregattrib = setup_attribute(cregcorpus, (yyvsp[(2) - (2)].strval), ATT_POS, NULL)) == NULL) {
                                         sprintf(cregestring, 
@@ -1713,20 +1743,20 @@ yyreduce:
                                         cl_free((yyvsp[(2) - (2)].strval));
                                         cregerror(cregestring);
                                       }
-                                    ;}
+                                    }
     break;
 
   case 29:
 
 /* Line 1464 of yacc.c  */
-#line 241 "registry.y"
-    { (yyval.attr) = cregattrib; cregattrib = NULL; ;}
+#line 241 "cl/registry.y"
+    { (yyval.attr) = cregattrib; cregattrib = NULL; }
     break;
 
   case 30:
 
 /* Line 1464 of yacc.c  */
-#line 244 "registry.y"
+#line 244 "cl/registry.y"
     { if (((yyval.attr) = setup_attribute(cregcorpus, (yyvsp[(2) - (3)].strval), ATT_ALIGN, NULL)) == NULL) {
                                         sprintf(cregestring, "Alignment attribute %s declared twice -- "
                                                 "semantic error", (yyvsp[(2) - (3)].strval));
@@ -1736,13 +1766,13 @@ yyreduce:
                                       }
 
                                       ((Attribute *)(yyval.attr))->align.path = (yyvsp[(3) - (3)].storage).path;
-                                    ;}
+                                    }
     break;
 
   case 31:
 
 /* Line 1464 of yacc.c  */
-#line 255 "registry.y"
+#line 255 "cl/registry.y"
     { if (((yyval.attr) = setup_attribute(cregcorpus, (yyvsp[(2) - (3)].strval), ATT_STRUC, NULL)) == NULL) {
                                         sprintf(cregestring, "Structure attribute %s declared twice -- "
                                                 "semantic error", (yyvsp[(2) - (3)].strval));
@@ -1752,13 +1782,13 @@ yyreduce:
                                       }
 
                                       ((Attribute *)(yyval.attr))->struc.path = (yyvsp[(3) - (3)].storage).path;
-                                    ;}
+                                    }
     break;
 
   case 32:
 
 /* Line 1464 of yacc.c  */
-#line 268 "registry.y"
+#line 268 "cl/registry.y"
     { if (((yyval.attr) = setup_attribute(cregcorpus, (yyvsp[(2) - (8)].strval), ATT_DYN, NULL)) == NULL) {
 
                                         DynArg *a;
@@ -1784,56 +1814,56 @@ yyreduce:
                                       ((Attribute *)(yyval.attr))->dyn.call = (yyvsp[(8) - (8)].strval);
 
                                       ((Attribute *)(yyval.attr))->dyn.path = NULL;
-                                    ;}
+                                    }
     break;
 
   case 33:
 
 /* Line 1464 of yacc.c  */
-#line 296 "registry.y"
+#line 296 "cl/registry.y"
     { (yyval.storage).path = (yyvsp[(1) - (1)].strval); 
-                                    ;}
+                                    }
     break;
 
   case 34:
 
 /* Line 1464 of yacc.c  */
-#line 298 "registry.y"
+#line 298 "cl/registry.y"
     { (yyval.storage).path = NULL;
-                                    ;}
+                                    }
     break;
 
   case 35:
 
 /* Line 1464 of yacc.c  */
-#line 302 "registry.y"
+#line 302 "cl/registry.y"
     { assert(cregattrib != NULL);
                                       if ((cregattrib->any.path == NULL) &&
                                           (cregcorpus->path != NULL))
                                         cregattrib->any.path = cl_strdup(cregcorpus->path);
-                                    ;}
+                                    }
     break;
 
   case 36:
 
 /* Line 1464 of yacc.c  */
-#line 307 "registry.y"
+#line 307 "cl/registry.y"
     { assert(cregattrib != NULL);
                                       cregattrib->any.path = (yyvsp[(1) - (1)].strval); 
-                                    ;}
+                                    }
     break;
 
   case 37:
 
 /* Line 1464 of yacc.c  */
-#line 312 "registry.y"
-    { (yyval.args) = (yyvsp[(1) - (1)].args); ;}
+#line 312 "cl/registry.y"
+    { (yyval.args) = (yyvsp[(1) - (1)].args); }
     break;
 
   case 38:
 
 /* Line 1464 of yacc.c  */
-#line 314 "registry.y"
+#line 314 "cl/registry.y"
     { 
                                       DynArg *last;
                                       assert((yyvsp[(1) - (3)].args) != NULL);
@@ -1842,169 +1872,169 @@ yyreduce:
                                       
                                       last->next = (yyvsp[(3) - (3)].args); 
                                       (yyval.args) = (yyvsp[(1) - (3)].args); 
-                                    ;}
+                                    }
     break;
 
   case 39:
 
 /* Line 1464 of yacc.c  */
-#line 325 "registry.y"
+#line 325 "cl/registry.y"
     { (yyval.args) = (DynArg *)makearg((yyvsp[(1) - (1)].strval)); 
                                       if ((yyval.args) == NULL) {
                                         sprintf(cregestring, "Illegal argument type %s or "
                                                 "not enough memory -- FATAL ERROR", (yyvsp[(1) - (1)].strval));
                                         cregerror(cregestring);
                                       }
-                                    ;}
+                                    }
     break;
 
   case 40:
 
 /* Line 1464 of yacc.c  */
-#line 332 "registry.y"
+#line 332 "cl/registry.y"
     { (yyval.args) = (DynArg *)makearg("VARARG"); 
                                       if ((yyval.args) == NULL)
                                         cregerror("Internal error while parsing variable "
                                                   "argument list -- FATAL ERROR");
-                                    ;}
+                                    }
     break;
 
   case 45:
 
 /* Line 1464 of yacc.c  */
-#line 347 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompDirectory,    (yyvsp[(2) - (2)].strval)); ;}
+#line 347 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompDirectory,    (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 46:
 
 /* Line 1464 of yacc.c  */
-#line 348 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompCorpus,       (yyvsp[(2) - (2)].strval)); ;}
+#line 348 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompCorpus,       (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 47:
 
 /* Line 1464 of yacc.c  */
-#line 349 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompRevCorpus,    (yyvsp[(2) - (2)].strval)); ;}
+#line 349 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompRevCorpus,    (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 48:
 
 /* Line 1464 of yacc.c  */
-#line 350 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompRevCorpusIdx, (yyvsp[(2) - (2)].strval)); ;}
+#line 350 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompRevCorpusIdx, (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 49:
 
 /* Line 1464 of yacc.c  */
-#line 351 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompCorpusFreqs,  (yyvsp[(2) - (2)].strval)); ;}
+#line 351 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompCorpusFreqs,  (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 50:
 
 /* Line 1464 of yacc.c  */
-#line 352 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompLexicon,      (yyvsp[(2) - (2)].strval)); ;}
+#line 352 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompLexicon,      (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 51:
 
 /* Line 1464 of yacc.c  */
-#line 353 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompLexiconIdx,   (yyvsp[(2) - (2)].strval)); ;}
+#line 353 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompLexiconIdx,   (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 52:
 
 /* Line 1464 of yacc.c  */
-#line 354 "registry.y"
-    { cregSetAttrComponentPath(cregattrib, CompLexiconSrt,   (yyvsp[(2) - (2)].strval)); ;}
+#line 354 "cl/registry.y"
+    { cregSetAttrComponentPath(cregattrib, CompLexiconSrt,   (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 53:
 
 /* Line 1464 of yacc.c  */
-#line 357 "registry.y"
-    { (yyval.strval) = (yyvsp[(1) - (1)].strval); ;}
+#line 357 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 54:
 
 /* Line 1464 of yacc.c  */
-#line 358 "registry.y"
-    { (yyval.strval) = (yyvsp[(1) - (1)].strval); ;}
+#line 358 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 55:
 
 /* Line 1464 of yacc.c  */
-#line 361 "registry.y"
-    { (yyval.strval) = (yyvsp[(1) - (1)].strval); ;}
+#line 361 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 56:
 
 /* Line 1464 of yacc.c  */
-#line 362 "registry.y"
+#line 362 "cl/registry.y"
     { char *nr;
                                       nr = (char *)cl_malloc(16);
                                       sprintf(nr, "%d", (yyvsp[(1) - (1)].ival));
                                       (yyval.strval) = nr;
-                                    ;}
+                                    }
     break;
 
   case 57:
 
 /* Line 1464 of yacc.c  */
-#line 369 "registry.y"
+#line 369 "cl/registry.y"
     { IDList n;
                                       n = (IDList)cl_malloc(sizeof(IDBuf));
                                       n->next = (yyvsp[(1) - (2)].idlist);
                                       n->string = (yyvsp[(2) - (2)].strval);
                                       (yyval.idlist) = n;
-                                    ;}
+                                    }
     break;
 
   case 58:
 
 /* Line 1464 of yacc.c  */
-#line 375 "registry.y"
-    { (yyval.idlist) = NULL; ;}
+#line 375 "cl/registry.y"
+    { (yyval.idlist) = NULL; }
     break;
 
   case 59:
 
 /* Line 1464 of yacc.c  */
-#line 378 "registry.y"
-    { (yyval.strval) = (yyvsp[(1) - (1)].strval); ;}
+#line 378 "cl/registry.y"
+    { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 62:
 
 /* Line 1464 of yacc.c  */
-#line 386 "registry.y"
+#line 386 "cl/registry.y"
     {
                                           add_corpus_property(cregcorpus, (yyvsp[(2) - (4)].strval), (yyvsp[(4) - (4)].strval));
-                                        ;}
+                                        }
     break;
 
   case 63:
 
 /* Line 1464 of yacc.c  */
-#line 390 "registry.y"
+#line 390 "cl/registry.y"
     { /* allow IDs and numbers without quotes */
                                           add_corpus_property(cregcorpus, (yyvsp[(2) - (4)].strval), (yyvsp[(4) - (4)].strval));
-                                        ;}
+                                        }
     break;
 
 
 
 /* Line 1464 of yacc.c  */
-#line 2008 "registry.tab.c"
+#line 2038 "cl/registry.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2216,7 +2246,7 @@ yyreturn:
 
 
 /* Line 1684 of yacc.c  */
-#line 397 "registry.y"
+#line 397 "cl/registry.y"
 
 
 

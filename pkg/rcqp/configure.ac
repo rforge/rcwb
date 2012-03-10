@@ -39,8 +39,6 @@ AC_PATH_PROGS(PKGCONFIG, pkg-config)
 AC_CONFIG_FILES(
 [ src/Makefile
 cwb/MakefileRcqp
-cwb/cl/MakefileRcqp
-cwb/cqp/MakefileRcqp
 ])
 
 AC_OUTPUT

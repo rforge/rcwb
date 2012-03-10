@@ -68,6 +68,36 @@
      NUMBER = 285
    };
 #endif
+/* Tokens.  */
+#define NAME_SYM 258
+#define ID_SYM 259
+#define INFO_SYM 260
+#define HOME_SYM 261
+#define ATTRIBUTE_SYM 262
+#define DIR_SYM 263
+#define CORPUS_SYM 264
+#define REVCORP_SYM 265
+#define REVCIDX_SYM 266
+#define FREQS_SYM 267
+#define LEXICON_SYM 268
+#define LEXIDX_SYM 269
+#define LEXSRT_SYM 270
+#define STRUCTURE_SYM 271
+#define ALIGNED_SYM 272
+#define DYNAMIC_SYM 273
+#define DOTS_SYM 274
+#define IGNORE_SYM 275
+#define ADMIN_SYM 276
+#define ACCESS_SYM 277
+#define USER_SYM 278
+#define GROUP_SYM 279
+#define ASSERT_SYM 280
+#define HOST_SYM 281
+#define PROPERTY_SYM 282
+#define IDENTIFIER 283
+#define STRING 284
+#define NUMBER 285
+
 
 
 
@@ -76,7 +106,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1685 of yacc.c  */
-#line 69 "registry.y"
+#line 69 "cl/registry.y"
 
   char    *strval;
   int      ival;
@@ -93,7 +123,7 @@ typedef union YYSTYPE
 
 
 /* Line 1685 of yacc.c  */
-#line 97 "registry.tab.h"
+#line 127 "cl/registry.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

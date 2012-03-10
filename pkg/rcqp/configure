@@ -2911,7 +2911,7 @@ done
 
 # Process the .in files
 # ---------------------
-ac_config_files="$ac_config_files src/Makefile cwb/MakefileRcqp cwb/cl/MakefileRcqp cwb/cqp/MakefileRcqp"
+ac_config_files="$ac_config_files src/Makefile cwb/MakefileRcqp"
 
 
 cat >confcache <<\_ACEOF
@@ -3633,8 +3633,6 @@ do
   case $ac_config_target in
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "cwb/MakefileRcqp") CONFIG_FILES="$CONFIG_FILES cwb/MakefileRcqp" ;;
-    "cwb/cl/MakefileRcqp") CONFIG_FILES="$CONFIG_FILES cwb/cl/MakefileRcqp" ;;
-    "cwb/cqp/MakefileRcqp") CONFIG_FILES="$CONFIG_FILES cwb/cqp/MakefileRcqp" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
