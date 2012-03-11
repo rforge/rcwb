@@ -8,7 +8,7 @@
 # All rights reserved.
 # ===========================================================================
 
-
+#TODO documenter types et ntype
 
 ###########################################################################
 # S3 generic methods
@@ -23,6 +23,166 @@ cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
 .cqp_name <- function (x, ...) UseMethod(".cqp_name");
 ntype <- function (x, ...) UseMethod("ntype");
 types <- function (x, ...) UseMethod("types");
+
+
+
+###########################################################################
+# Matrix-like interface for accessing cqp object
+###########################################################################
+
+###########################################################################
+# S3 Object cqp_attr
+###########################################################################
+
+`$.cqp_corpus` <- function(x, name) {
+	corpus <- x;
+	attribute <- name;
+
+	qualified.attribute.name <- .cqp_name(corpus, attribute);
+	cqp_corpus.name <- .cqp_name(corpus);
+	
+	cqp_attr <- 0;
+	class(cqp_attr) <- "cqp_attr";
+	attr(cqp_attr, "parent.cqp_corpus") <- corpus;
+	attr(cqp_attr, "parent.cqp_corpus.name") <- cqp_corpus.name;
+	attr(cqp_attr, "name") <- attribute;
+	attr(cqp_attr, "qualified.attribute.name") <- qualified.attribute.name;
+		
+	positional <- cqi_attributes(cqp_corpus.name, "p");
+	structural <- cqi_attributes(cqp_corpus.name, "s");	
+	if (attribute %in% positional) {
+		attr(cqp_attr, "attr_type") <- "positional";
+	} else if (attribute %in% structural) {
+		attr(cqp_attr, "attr_type") <- "positional";
+		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
+			attr(cqp_attr, "as_value") <- TRUE;
+		} else {
+			attr(cqp_attr, "as_value") <- FALSE;
+		}
+	} else {
+		stop("Unknown attribute");
+	}		
+	
+	return(cqp_attr);
+}
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "types(corpus, attribute)" --
+ #
+ # Get the number of types or the actual list of types for a positional attribute
+ # or a structural attribute "with values".
+ # 
+ # Example:
+ #              c <- corpus("DICKENS")
+ #              types( c$pos );
+ #
+ # ------------------------------------------------------------------------
+ ##
+
+
+types.cqp_attr <- function(attribute) {
+	type <- attr(attribute, "type");
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+
+	if (type == "positional") {
+		max.id <- ntype(attribute) - 1;
+		ids <- 0:max.id;
+		str <- cqi_id2str(qualified.attribute.name, ids);
+	} else {
+		has_value <- attr(attribute, "has_value");
+		if (has_value) {
+			ids <- 0:(cqi_attribute_size(qualified.attribute.name)-1);
+			values <- cqi_struc2str(qualified.attribute.name, ids);
+			str <- unique(values);
+		} else {
+			stop("no values on this structural attribute");
+		}
+	}
+	return(str);
+}
+
+
+ntype.cqp_attr <- function(attribute) {
+	type <- attr(attribute, "type");
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+
+	if (type == "positional") {
+		n <- cqi_lexicon_size(qualified.attribute.name);
+	} else {
+		has_value <- attr(attribute, "has_value");
+		if (has_value) {
+			n <- length(types(attribute));
+		} else {
+			stop("no values on this structural attribute");
+		}
+	}
+	return(n);
+}
+
+
+ntoken.cqp_attr <- function(attribute) {
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+	n <- cqi_attribute_size(qualified.attribute.name);
+	return(n);
+}
+
+
+summary.cqp_attr <- function(object, ...) {
+	type <- attr(attribute, "type");
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+	
+	cat(paste(type, ":"));
+	
+	if (type == "positional") {
+		number_of_types <- ntype(object);
+		cat(paste(
+				qualified.attribute.name, 
+				" (",
+				number_of_types, " types; ",
+				ntoken(object), " tokens",
+				")\n",
+				sep=""));
+		.print_sample_types(cqi_id2str, qualified_name, number_of_types);
+	} else {
+		has_value <- attr(attribute, "has_value");
+		if (has_value) {
+			number_of_types <- ntype(object);
+			cat(paste(
+				qualified.attribute.name, 
+				" (",
+				number_of_types, " types; ",
+				ntoken(object), " regions",
+				")\n",
+				sep=""));
+			.print_sample_types(cqi_struc2str, qualified_name, number_of_types);
+		} else {
+			cat(paste(
+				qualified.attribute.name, 
+				" (",
+				ntoken(object), " regions",
+				")\n",
+				sep=""));
+		}
+	}
+}
+
+
+.print_sample_types <- function(type_function, attribute, number_of_types, default=10) {
+	max <- min(default, number_of_types) - 1;
+	examples <- type_function(attribute, 0:max);
+	while (sum(nchar(examples)) >= 50 & length(examples) > 2) {
+		examples <- examples[-length(examples)];
+	}
+	ponct <- ifelse(length(examples) == number_of_types, ".", ", ...");
+	examples <- paste("\"", examples, "\"", sep="");
+	examples <- paste(examples, collapse=", ");
+	examples <- paste(examples, ponct, sep="");
+	cat(paste("\t\t", examples, "\n"));
+}
+
 
 
 ###########################################################################
@@ -82,50 +242,24 @@ summary.cqp_corpus <- function(object, ...) {
 	a_attributes <- sort(cqi_attributes(cqp_corpus.name, "a"));
 	
 	tokens <- size(object);
-	cat(paste("Number or tokens:", tokens, "\n"));
+	cat(paste("Number or tokens in the corpus:", tokens, "\n"));
 
 	cat(paste("Positional attributes (", length(p_attributes), ")\n", sep=""));
 	for (p in p_attributes) {
-		qualified_name <- .cqp_name(object, p);
-		number_of_types <- cqi_lexicon_size(qualified_name);
-	    cat(paste("\t", p, " (", number_of_types, " types)\n", sep=""));
-		.print_sample_types(cqi_id2str, qualified_name, number_of_types);
+		summary(object$p);
 	}
 
 	cat(paste("Structural attributes (", length(s_attributes), ")\n", sep=""));
 	for (s in s_attributes) {
-		qualified_name <- .cqp_name(object, s);
-		number_of_tokens <- cqi_attribute_size(qualified_name);
-	    cat(paste("\t", s, " (", number_of_tokens, " tokens", sep=""));
-		if (cqi_structural_attribute_has_values(qualified_name)) {
-			number_of_types <- length(unique(cqi_struc2str(qualified_name, 0:number_of_tokens)));
-			cat(paste(" and ", number_of_types, " types)\n", sep=""));
-			.print_sample_types(cqi_struc2str, qualified_name, number_of_types);
-		} else {
-			cat(")\n");
-		}
+		if (tolower(s) != s) next;
+		summary(object$s);
 	}
 
 	cat(paste("Alignement attributes (", length(a_attributes), ")\n", sep=""));
 	for (a in a_attributes) {
-		qualified_name <- .cqp_name(object, a);
-		number_of_tokens <- cqi_attribute_size(qualified_name);
-	    cat(paste("\t", a, " (", number_of_tokens, " tokens).\n", sep=""));
+		summary(object$a);
 	}
 		
-}
-
-.print_sample_types <- function(type_function, attribute, number_of_types, default=10) {
-	max <- min(default, number_of_types) - 1;
-	examples <- type_function(attribute, 0:max);
-	while (sum(nchar(examples)) >= 50 & length(examples) > 2) {
-		examples <- examples[-length(examples)];
-	}
-	ponct <- ifelse(length(examples) == number_of_types, ".", ", ...");
-	examples <- paste("\"", examples, "\"", sep="");
-	examples <- paste(examples, collapse=", ");
-	examples <- paste(examples, ponct, sep="");
-	cat(paste("\t\t", examples, "\n"));
 }
 
 
@@ -193,6 +327,8 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	nbr_positional <- length(positional);
 
 	structural <- cqi_attributes(cqp_corpus.name, "s");
+	# FIXME : upper case name produces "Syntax error" with cqi_cpos2struc ?
+	structural <- structural[grep("[a-z]+", structural)]
 	nbr_structural <- length(structural);
 
 	printed <- data.frame(matrix("", nrow=nbr_token, ncol=nbr_positional+nbr_structural));
@@ -212,72 +348,6 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	}
 
 	return(printed);
-}
-
-
-## 
- # ------------------------------------------------------------------------
- # 
- # "types(corpus, attribute)" --
- #
- # Get the number of types or the actual list of types for a positional attribute
- # or a structural attribute "with values".
- # 
- # Example:
- #              c <- corpus("DICKENS")
- #              types(c, "pos");
- #              ntype(c, "word");
- #
- # ------------------------------------------------------------------------
- ##
-
-
-types.cqp_corpus <- function(corpus, attribute) {
-	cqp_corpus.name <- .cqp_name(corpus);
-	
-	positional <- cqi_attributes(cqp_corpus.name, "p");
-	structural <- cqi_attributes(cqp_corpus.name, "s");
-	
-	qualified.attribute.name <- .cqp_name(corpus, attribute);
-
-	if (attribute %in% positional) {
-		max.id <- ntype(corpus, attribute) - 1;
-		str <- cqi_id2str(qualified.attribute.name, ids);
-	} else if (attribute %in% structural) {
-		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
-			ids <- 0:(cqi_attribute_size(qualified.attribute.name)-1);
-			values <- cqi_struc2str(qualified.attribute.name, ids);
-			str <- unique(values);
-		} else {
-			stop("no values on this structural attribute");
-		}
-	} else {
-		stop("Unknown cqp attribute");
-	}	
-	return(str);
-}
-
-
-ntype.cqp_corpus <- function(corpus, attribute) {
-	cqp_corpus.name <- .cqp_name(corpus);
-	
-	positional <- cqi_attributes(cqp_corpus.name, "p");
-	structural <- cqi_attributes(cqp_corpus.name, "s");
-	
-	qualified.attribute.name <- .cqp_name(corpus, attribute);
-
-	if (attribute %in% positional) {
-		n <- cqi_lexicon_size(qualified.attribute.name);
-	} else if (attribute %in% structural) {
-		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
-			n <- length(types(corpus, attribute));
-		} else {
-			stop("no values on this structural attribute");
-		}
-	} else {
-		stop("Unknown cqp attribute");
-	}
-	return(n);
 }
 
 
@@ -524,7 +594,7 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 			stop("no values on this structural attribute");
 		}
 	} else {
-		stop("Unknown cqp attribute");
+		stop("Unknown attribute");
 	}
 
 	if (cutoff > 0) {
