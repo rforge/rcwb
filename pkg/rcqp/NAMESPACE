@@ -33,10 +33,24 @@ export(
 	"print.cqp_corpus",
 	"write.cqp_corpus",
 
+	`[[.cqp_corpus`,
+	`$.cqp_corpus`,
+
+
 	"ntype",
-	"ntype.cqp_corpus",
+	"ntype.cqp_attr",
 	"types",
-	"types.cqp_corpus",
+	"types.cqp_attr",
+
+	"ntoken",
+	"ntoken.cqp_attr",
+	"tokens",
+
+	"nregion.",
+	"nregion.cqp_attr",
+	"regions",
+
+	"region_sizes",
 
 	"subcorpus",
 	"summary.cqp_subcorpus",
@@ -59,9 +73,9 @@ export(
 
 	"size",
 	"size.cqp_corpus",
-	"size.cqp_subcorpus",
+	"size.cqp_subcorpus"
 
-	"region_sizes"
+
 )
 
 # 	"cqi_charset",
