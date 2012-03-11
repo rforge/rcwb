@@ -52,6 +52,9 @@ export(
 
 	"region_sizes",
 
+	"summary.cqp_attr",
+	"print.cqp_attr",
+
 	"subcorpus",
 	"summary.cqp_subcorpus",
 	"print.cqp_subcorpus",
