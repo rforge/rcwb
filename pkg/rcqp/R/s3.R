@@ -8,7 +8,9 @@
 # All rights reserved.
 # ===========================================================================
 
-#TODO documenter types et ntype
+#TODO documenter types et ntype...
+# TODO : faire cqp_flist.cqp_attr
+# TODO : tokens => as.vector.cqp_attr ?
 
 ###########################################################################
 # S3 generic methods
@@ -30,6 +32,14 @@ nregion <- function (x, ...) UseMethod("nregion");
 ###########################################################################
 # Matrix-like interface for accessing cqp object
 ###########################################################################
+
+# crŽation d'un sous-corpus
+`[.cqp_corpus` <- function(i, j, k, ...) {
+#	.create_cqp_attr(i, j);
+#	.cqp_corpus2matrix <- function(x, from, to, use_value=use_value) {	
+
+}
+
 
 ###########################################################################
 # S3 Object cqp_attr
@@ -149,18 +159,19 @@ nregion.cqp_attr <- function(attribute) {
 	return(n);
 }
 
-# TODO : ou as.vector.cqp_attr ?
 tokens <- function(cqp_attr) {
 	if (class(cqp_attr) != "cqp_attr") stop("An object of class cqp_attr is requested");
 	attribute <- cqp_attr;
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	max <- ntoken(attribute) - 1;
 	type <- attr(attribute, "type");
 
 	if (type == "positional") {
+		max <- ntoken(attribute) - 1;
 		x <- cqi_cpos2id(qualified.attribute.name, 0:max);
 		has_value <- TRUE;
 	} else {
+		s <- size(attr(cqp_attr, "parent.cqp_corpus"));
+		max <- s - 1;
 		x <- cqi_cpos2struc(qualified.attribute.name, 0:max);
 		has_value <- attr(attribute, "has_value");
 	}
@@ -212,27 +223,22 @@ regions <- function(cqp_attr, use_value=TRUE) {
  ##
 
 ## TODO il y aurait encore plus simple : table() sur tous les struc.
-## TODO : faire une gŽnŽrique .cqp_corpus
-region_sizes <- function(corpus, structural_attribute) {
-	if (!.is_cqp_corpus(corpus)) {
-		stop("corpus: not a corpus object");
+region_sizes <- function(attribute) {
+	if (class(attribute) != "cqp_attr") stop("An object of class cqp_attr is requested");
+	type <- attr(attribute, "type");
+	if (type != "structural") {
+		stop("cannot list region on non-structural attribute");
 	}
 	
-	cqp_corpus.name <- .cqp_name(corpus);
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
 
-	atts <- cqi_attributes(cqp_corpus.name, "s");
-	if (! structural_attribute %in% atts) {
-		stop("structural_attribute is not a structural attribute on this corpus");
-	}
-
-	qualified_attribute <- .cqp_name(corpus, structural_attribute);
-	att_size <- cqi_attribute_size(qualified_attribute);
+	att_size <- cqi_attribute_size(qualified.attribute.name);
 	return(
 		sapply(
 			0:(att_size-1),
 			function(x) {
-				bound <- cqi_struc2cpos(qualified_attribute, x);
-				return(bound[2] - bound[1]);
+				bound <- cqi_struc2cpos(qualified.attribute.name, x);
+				return(bound[2] - bound[1] + 1);
 			}
 		)
 	);
