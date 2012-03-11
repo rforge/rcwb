@@ -23,7 +23,8 @@ cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
 .cqp_name <- function (x, ...) UseMethod(".cqp_name");
 ntype <- function (x, ...) UseMethod("ntype");
 types <- function (x, ...) UseMethod("types");
-
+ntoken <- function (x, ...) UseMethod("ntoken");
+nregion <- function (x, ...) UseMethod("nregion");
 
 
 ###########################################################################
@@ -34,10 +35,15 @@ types <- function (x, ...) UseMethod("types");
 # S3 Object cqp_attr
 ###########################################################################
 
-`$.cqp_corpus` <- function(x, name) {
-	corpus <- x;
-	attribute <- name;
+`[[.cqp_corpus` <- function(i, j, ...) {
+	.create_cqp_attr(i, j);
+}
 
+`$.cqp_corpus` <- function(x, name) {
+	.create_cqp_attr(x, name);
+}
+
+.create_cqp_attr <- function(corpus, attribute) {
 	qualified.attribute.name <- .cqp_name(corpus, attribute);
 	cqp_corpus.name <- .cqp_name(corpus);
 	
@@ -51,13 +57,13 @@ types <- function (x, ...) UseMethod("types");
 	positional <- cqi_attributes(cqp_corpus.name, "p");
 	structural <- cqi_attributes(cqp_corpus.name, "s");	
 	if (attribute %in% positional) {
-		attr(cqp_attr, "attr_type") <- "positional";
+		attr(cqp_attr, "type") <- "positional";
 	} else if (attribute %in% structural) {
-		attr(cqp_attr, "attr_type") <- "positional";
+		attr(cqp_attr, "type") <- "structural";
 		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
-			attr(cqp_attr, "as_value") <- TRUE;
+			attr(cqp_attr, "has_value") <- TRUE;
 		} else {
-			attr(cqp_attr, "as_value") <- FALSE;
+			attr(cqp_attr, "has_value") <- FALSE;
 		}
 	} else {
 		stop("Unknown attribute");
@@ -94,8 +100,7 @@ types.cqp_attr <- function(attribute) {
 	} else {
 		has_value <- attr(attribute, "has_value");
 		if (has_value) {
-			ids <- 0:(cqi_attribute_size(qualified.attribute.name)-1);
-			values <- cqi_struc2str(qualified.attribute.name, ids);
+			values <- regions(attribute);
 			str <- unique(values);
 		} else {
 			stop("no values on this structural attribute");
@@ -122,19 +127,124 @@ ntype.cqp_attr <- function(attribute) {
 	return(n);
 }
 
-
+## == size(corpus)
 ntoken.cqp_attr <- function(attribute) {
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+	type <- attr(attribute, "type");
+
+	if (type != "positional") {
+		stop("cannot count token on non-positional attribute");
+	}
+	n <- cqi_attribute_size(qualified.attribute.name);
+	return(n);
+}
+
+nregion.cqp_attr <- function(attribute) {
+	type <- attr(attribute, "type");
+	if (type != "structural") {
+		stop("cannot count region on non-structural attribute");
+	}
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
 	n <- cqi_attribute_size(qualified.attribute.name);
 	return(n);
 }
 
+# TODO : ou as.vector.cqp_attr ?
+tokens <- function(cqp_attr) {
+	if (class(cqp_attr) != "cqp_attr") stop("An object of class cqp_attr is requested");
+	attribute <- cqp_attr;
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+	max <- ntoken(attribute) - 1;
+	type <- attr(attribute, "type");
+
+	if (type == "positional") {
+		x <- cqi_cpos2id(qualified.attribute.name, 0:max);
+		has_value <- TRUE;
+	} else {
+		x <- cqi_cpos2struc(qualified.attribute.name, 0:max);
+		has_value <- attr(attribute, "has_value");
+	}
+
+	if (has_value) {
+		str <- types(attribute);
+		x <- str[x];
+	}
+
+	return(x);
+}
+
+
+regions <- function(cqp_attr, use_value=TRUE) {
+	attribute <- cqp_attr;
+
+	if (class(attribute) != "cqp_attr") stop("An object of class cqp_attr is requested");
+	type <- attr(attribute, "type");
+	if (type != "structural") {
+		stop("cannot list region on non-structural attribute");
+	}
+	has_value <- attr(attribute, "has_value");
+	if (!has_value) {
+		stop("cannot list region on structural without value");
+	}
+
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+	max <- nregion(attribute) - 1;
+	x <- cqi_struc2str(qualified.attribute.name, 0:max);
+
+	return(x);
+}
+
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "region_sizes.cqp_corpus(corpus, structural_attribute)" --
+ #
+ # Create a vector containing the size (in number of tokens) of the regions of
+ # the given structural attribute.
+ # 
+ # Example:
+ #              c <- corpus("DICKENS");
+ #              region_sizes.cqp_corpus(c, "np")
+ # 
+ # ------------------------------------------------------------------------
+ ##
+
+## TODO il y aurait encore plus simple : table() sur tous les struc.
+## TODO : faire une gŽnŽrique .cqp_corpus
+region_sizes <- function(corpus, structural_attribute) {
+	if (!.is_cqp_corpus(corpus)) {
+		stop("corpus: not a corpus object");
+	}
+	
+	cqp_corpus.name <- .cqp_name(corpus);
+
+	atts <- cqi_attributes(cqp_corpus.name, "s");
+	if (! structural_attribute %in% atts) {
+		stop("structural_attribute is not a structural attribute on this corpus");
+	}
+
+	qualified_attribute <- .cqp_name(corpus, structural_attribute);
+	att_size <- cqi_attribute_size(qualified_attribute);
+	return(
+		sapply(
+			0:(att_size-1),
+			function(x) {
+				bound <- cqi_struc2cpos(qualified_attribute, x);
+				return(bound[2] - bound[1]);
+			}
+		)
+	);
+}
+
 
 summary.cqp_attr <- function(object, ...) {
+	attribute <- object;
 	type <- attr(attribute, "type");
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
 	
-	cat(paste(type, ":"));
+	cat(paste(type, ": "));
 	
 	if (type == "positional") {
 		number_of_types <- ntype(object);
@@ -145,7 +255,7 @@ summary.cqp_attr <- function(object, ...) {
 				ntoken(object), " tokens",
 				")\n",
 				sep=""));
-		.print_sample_types(cqi_id2str, qualified_name, number_of_types);
+		.print_sample_types(cqi_id2str, qualified.attribute.name, number_of_types);
 	} else {
 		has_value <- attr(attribute, "has_value");
 		if (has_value) {
@@ -154,15 +264,15 @@ summary.cqp_attr <- function(object, ...) {
 				qualified.attribute.name, 
 				" (",
 				number_of_types, " types; ",
-				ntoken(object), " regions",
+				nregion(object), " regions",
 				")\n",
 				sep=""));
-			.print_sample_types(cqi_struc2str, qualified_name, number_of_types);
+			.print_sample_types(cqi_struc2str, qualified.attribute.name, number_of_types);
 		} else {
 			cat(paste(
 				qualified.attribute.name, 
 				" (",
-				ntoken(object), " regions",
+				nregion(object), " regions",
 				")\n",
 				sep=""));
 		}
@@ -183,6 +293,9 @@ summary.cqp_attr <- function(object, ...) {
 	cat(paste("\t\t", examples, "\n"));
 }
 
+print.cqp_attr <- function(object, ...) {
+	print(tokens(object));
+}
 
 
 ###########################################################################
@@ -246,18 +359,19 @@ summary.cqp_corpus <- function(object, ...) {
 
 	cat(paste("Positional attributes (", length(p_attributes), ")\n", sep=""));
 	for (p in p_attributes) {
-		summary(object$p);
+		#FIXME BUG
+		summary(object[[ p ]]);
 	}
 
 	cat(paste("Structural attributes (", length(s_attributes), ")\n", sep=""));
 	for (s in s_attributes) {
 		if (tolower(s) != s) next;
-		summary(object$s);
+		summary(object[[ s ]]);
 	}
 
 	cat(paste("Alignement attributes (", length(a_attributes), ")\n", sep=""));
 	for (a in a_attributes) {
-		summary(object$a);
+		summary(object[[ a ]]);
 	}
 		
 }
@@ -277,7 +391,7 @@ summary.cqp_corpus <- function(object, ...) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_corpus <- function(x, from=0, to=20, ...) {
+print.cqp_corpus <- function(x, from=0, to=20, use_value=TRUE, ...) {
 	max <- size(x);
 	if (any(c(from, to) >= max)) {
 		stop("Token ids cannot be greater than corpus size");
@@ -289,7 +403,7 @@ print.cqp_corpus <- function(x, from=0, to=20, ...) {
 		stop("Token ids cannot be < 0");
 	}
 
-	printed <- .cqp_corpus2matrix(x, from, to);
+	printed <- .cqp_corpus2matrix(x, from, to, use_value=use_value);
 
 	print(printed);
 }
@@ -315,7 +429,7 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 }
 
 
-.cqp_corpus2matrix <- function(x, from, to) {	
+.cqp_corpus2matrix <- function(x, from, to, use_value=use_value) {	
 	
 	cqp_corpus.name <- .cqp_name(x);
 	max <- size(x) - 1;
@@ -348,49 +462,6 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	}
 
 	return(printed);
-}
-
-
-## 
- # ------------------------------------------------------------------------
- # 
- # "region_sizes.cqp_corpus(corpus, structural_attribute)" --
- #
- # Create a vector containing the size (in number of tokens) of the regions of
- # the given structural attribute.
- # 
- # Example:
- #              c <- corpus("DICKENS");
- #              region_sizes.cqp_corpus(c, "np")
- # 
- # ------------------------------------------------------------------------
- ##
-
-## TODO il y aurait encore plus simple : table() sur tous les struc.
-## TODO : faire une gŽnŽrique .cqp_corpus
-region_sizes <- function(corpus, structural_attribute) {
-	if (!.is_cqp_corpus(corpus)) {
-		stop("corpus: not a corpus object");
-	}
-	
-	cqp_corpus.name <- .cqp_name(corpus);
-
-	atts <- cqi_attributes(cqp_corpus.name, "s");
-	if (! structural_attribute %in% atts) {
-		stop("structural_attribute is not a structural attribute on this corpus");
-	}
-
-	qualified_attribute <- .cqp_name(corpus, structural_attribute);
-	att_size <- cqi_attribute_size(qualified_attribute);
-	return(
-		sapply(
-			0:(att_size-1),
-			function(x) {
-				bound <- cqi_struc2cpos(qualified_attribute, x);
-				return(bound[2] - bound[1]);
-			}
-		)
-	);
 }
 
 
