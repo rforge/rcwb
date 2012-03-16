@@ -12,6 +12,20 @@
 # TODO : faire cqp_flist.cqp_attr
 # TODO : tokens => as.vector.cqp_attr ?
 
+# table.cqp_attr
+
+# c[ 1, ] # le premier token
+# c[ text_date == "1997", ] # les rŽgions "textes_date" avec la valeur 1997
+# c[ text_date == "1997", word ] # pourrait tre une expression pratique pour avoir une liste de vecteurs (un par rŽgion sŽlectionnŽe) contenant les formes flŽchies.
+# c[ query(' [lemma="interesting"] [] "in" ' ) , ] # pour utiliser la requte cqp
+
+# Indexer les sous-corpus diffŽremment ; pouvoir s'interroger sur les rŽgions dans un sous-corpus...
+# sc[ "pos" ] # => liste de vecteurs ?
+
+# Ou bien distinguer l'indexation du corpus => liste de vecteur ; la fonction query => un objet cqp_subcorpus ?
+
+
+
 ###########################################################################
 # S3 generic methods
 ###########################################################################
@@ -29,9 +43,12 @@ ntoken <- function (x, ...) UseMethod("ntoken");
 nregion <- function (x, ...) UseMethod("nregion");
 
 
+
 ###########################################################################
 # Matrix-like interface for accessing cqp object
 ###########################################################################
+
+
 
 # crŽation d'un sous-corpus
 `[.cqp_corpus` <- function(i, j, k, ...) {
