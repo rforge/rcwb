@@ -64,7 +64,7 @@ endif
 
 rcqp: ${RCQP_C_SRC} cwb
 	# Compile the C files
-	${CC} -c ${RCQP_C_SRC} ${RCQP_R_CPPFLAGS}
+	${CC} ${CFLAGS} -c ${RCQP_C_SRC} ${RCQP_R_CPPFLAGS}
 	#
 	# Link the library
 	${CC} -o $@.so $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \

@@ -200,6 +200,7 @@ rcqp_get_attr_type(SEXP inType)
 	} else {
 		error("invalid attribute type. Must be 'a', 'p', or 's'.");
 	} 
+	return 0;
 }
 
 

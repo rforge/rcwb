@@ -22,7 +22,7 @@
  */
 SEXP rcqpCmd_list_corpora()
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	CorpusList *	cl;
 	int				i = 0, n = 0;
 	
@@ -59,7 +59,7 @@ SEXP rcqpCmd_list_corpora()
  */
 SEXP rcqpCmd_full_name(SEXP inCorpus)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			c;
 	CorpusList *	cl;
 	
@@ -96,9 +96,7 @@ SEXP rcqpCmd_full_name(SEXP inCorpus)
  */
 SEXP rcqpCmd_charset(SEXP inCorpus)
 {
-	SEXP			result;
-	char *			c;
-	CorpusList *	cl;
+	SEXP			result = R_NilValue;
 	
 	if (!isString(inCorpus) || length(inCorpus) != 1) error("invalid corpus name");
 
@@ -124,6 +122,7 @@ SEXP rcqpCmd_charset(SEXP inCorpus)
 SEXP rcqpCmd_properties(SEXP inCorpus)
 {
 	error("feature not yet implemented in CQP");
+	return R_NilValue;
 }
 
 	
@@ -139,7 +138,7 @@ SEXP rcqpCmd_properties(SEXP inCorpus)
  */
 SEXP rcqpCmd_attributes(SEXP inCorpus, SEXP inType)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char 			*c;
 	CorpusList		*cl;
 	Attribute *		a;
@@ -190,7 +189,7 @@ SEXP rcqpCmd_attributes(SEXP inCorpus, SEXP inType)
  */
 SEXP rcqpCmd_attribute_size(SEXP inAttribute)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			a;
 	Attribute *		attribute;
 	int				size;
@@ -260,7 +259,7 @@ SEXP rcqpCmd_attribute_size(SEXP inAttribute)
  */
 SEXP rcqpCmd_structural_attribute_has_values(SEXP inAttribute)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			a;
 	Attribute *		attribute;
 	
@@ -331,7 +330,7 @@ SEXP rcqpCmd_corpus_info(SEXP inCorpus)
  */
 SEXP rcqpCmd_lexicon_size(SEXP inAttribute)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			a;
 	Attribute *		attribute;
 	int 			size;
@@ -375,7 +374,7 @@ SEXP rcqpCmd_lexicon_size(SEXP inAttribute)
  */
 SEXP rcqpCmd_str2id(SEXP inAttribute, SEXP inStrs)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				idx;
 	int				len, i;
 	char 			*a, *str;
@@ -424,7 +423,7 @@ SEXP rcqpCmd_str2id(SEXP inAttribute, SEXP inStrs)
  */
 SEXP rcqpCmd_id2str(SEXP inAttribute, SEXP inIds)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				idx;
 	int				len, i;
 	char 			*a, *str;
@@ -473,7 +472,7 @@ SEXP rcqpCmd_id2str(SEXP inAttribute, SEXP inIds)
  */
 SEXP rcqpCmd_id2freq(SEXP inAttribute, SEXP inIds)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				idx;
 	int				len, i, f;
 	char 			*a;
@@ -521,7 +520,7 @@ SEXP rcqpCmd_id2freq(SEXP inAttribute, SEXP inIds)
  */
 SEXP rcqpCmd_id2cpos(SEXP inAttribute, SEXP inId)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				idx;
 	int				len, i;
 	int *			cposlist;
@@ -573,7 +572,7 @@ SEXP rcqpCmd_id2cpos(SEXP inAttribute, SEXP inId)
  */
 SEXP rcqpCmd_cpos2id(SEXP inAttribute, SEXP inCpos)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				cpos;
 	int				len, i, id;
 	char *			a;
@@ -621,7 +620,7 @@ SEXP rcqpCmd_cpos2id(SEXP inAttribute, SEXP inCpos)
  */
 SEXP rcqpCmd_cpos2str(SEXP inAttribute, SEXP inCpos)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				cpos;
 	int				len, i;
 	char 			*a, *str;
@@ -670,7 +669,7 @@ SEXP rcqpCmd_cpos2str(SEXP inAttribute, SEXP inCpos)
  */
 SEXP rcqpCmd_cpos2struc(SEXP inAttribute, SEXP inCpos)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				cpos;
 	int				len, i, struc;
 	char *			a;
@@ -718,7 +717,7 @@ SEXP rcqpCmd_cpos2struc(SEXP inAttribute, SEXP inCpos)
  */
 SEXP rcqpCmd_cpos2lbound(SEXP inAttribute, SEXP inCpos)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				cpos;
 	int				len, i, struc, lb, rb;
 	char *			a;
@@ -774,7 +773,7 @@ SEXP rcqpCmd_cpos2lbound(SEXP inAttribute, SEXP inCpos)
  */
 SEXP rcqpCmd_cpos2rbound(SEXP inAttribute, SEXP inCpos)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				cpos;
 	int				len, i, struc, lb, rb;
 	char *			a;
@@ -830,8 +829,8 @@ SEXP rcqpCmd_cpos2rbound(SEXP inAttribute, SEXP inCpos)
  */
 SEXP rcqpCmd_alg2cpos(SEXP inAttribute, SEXP inAlg)
 {
-	SEXP			result;
-	int				len, i, alg, cpos, s1, s2, t1, t2;
+	SEXP			result = R_NilValue;
+	int				alg, s1, s2, t1, t2;
 	char *			a;
 	Attribute *		attribute;
 	
@@ -882,7 +881,7 @@ SEXP rcqpCmd_alg2cpos(SEXP inAttribute, SEXP inAlg)
  */
 SEXP rcqpCmd_cpos2alg(SEXP inAttribute, SEXP inCpos)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				cpos;
 	int				len, i, alg;
 	char *			a;
@@ -930,7 +929,7 @@ SEXP rcqpCmd_cpos2alg(SEXP inAttribute, SEXP inCpos)
  */
 SEXP rcqpCmd_struc2cpos(SEXP inAttribute, SEXP inStruc)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				struc, start, end;
 	char *			a;
 	Attribute *		attribute;
@@ -976,7 +975,7 @@ SEXP rcqpCmd_struc2cpos(SEXP inAttribute, SEXP inStruc)
  */
 SEXP rcqpCmd_struc2str(SEXP inAttribute, SEXP inIds)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int				idx;
 	int				len, i;
 	char 			*a, *str;
@@ -1025,7 +1024,7 @@ SEXP rcqpCmd_struc2str(SEXP inAttribute, SEXP inIds)
  */
 SEXP rcqpCmd_idlist2cpos(SEXP inAttribute, SEXP inIds)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	
 	return result;
 }
@@ -1043,7 +1042,7 @@ SEXP rcqpCmd_idlist2cpos(SEXP inAttribute, SEXP inIds)
  */
 SEXP rcqpCmd_regex2id(SEXP inAttribute, SEXP inRegex)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	int *			idlist;
 	int				len, i;
 	char 			*a, *r;
@@ -1169,7 +1168,7 @@ SEXP rcqpCmd_query(SEXP inMother, SEXP inChild, SEXP inQuery)
  */
 SEXP rcqpCmd_list_subcorpora(SEXP inCorpus)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			corpus;
 	CorpusList		*cl, *mother;
 	int				i = 0, n = 0;
@@ -1217,7 +1216,7 @@ SEXP rcqpCmd_list_subcorpora(SEXP inCorpus)
  */
 SEXP rcqpCmd_subcorpus_size(SEXP inSubcorpus)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			subcorpus;
 	CorpusList *	cl;
 	
@@ -1251,7 +1250,7 @@ SEXP rcqpCmd_subcorpus_size(SEXP inSubcorpus)
  */
 SEXP rcqpCmd_dump_subcorpus(SEXP inSubcorpus, SEXP inFirst, SEXP inLast)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char *			subcorpus;
 	CorpusList *	cl;
 	int				i, first, last, nrows;
@@ -1378,7 +1377,7 @@ SEXP rcqpCmd_drop_subcorpus(SEXP inSubcorpus)
  */
 SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inCutoff, SEXP inOffset)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char 			*subcorpus, *att;
 	CorpusList *	cl;
 	int				i, cutoff, offset, size;
@@ -1454,10 +1453,10 @@ SEXP rcqpCmd_fdist1(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inCutoff,
  */
 SEXP rcqpCmd_fdist2(SEXP inSubcorpus, SEXP inField1, SEXP inKey1, SEXP inField2, SEXP inKey2, SEXP inCutoff)
 {
-	SEXP			result;
+	SEXP			result = R_NilValue;
 	char 			*subcorpus, *att1, *att2;
 	CorpusList *	cl;
-	int				i, cutoff, offset, size;
+	int				i, cutoff, size;
 	Group *			table;
 	FieldType		fieldtype1 = NoField;
 	FieldType		fieldtype2 = NoField;
