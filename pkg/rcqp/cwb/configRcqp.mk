@@ -39,7 +39,7 @@
 #       cygwin        Win32 build using Cygwin emulation layer (experimental)
 #       mingw         Cross-compile for Win32 from a *nix system with MinGW installed (experimental)
 #
-include $(TOP)/config/platform/unix
+include $(TOP)/config/platform/mingw
 
 #
 # SITE-SPECIFIC CONFIGURATION (installation path and other local settings)
@@ -163,7 +163,10 @@ READLINE_LIBS =
 ## Path to the directory containing libglib-2.0-0.dll
 # LIBGLIB_DLL_PATH =
 ## If they are in the same place, just define this variable (overrides the preceding two)
-# LIB_DLL_PATH =
+ifdef __MINGW__ 
+LIB_DLL_PATH = ${prefix}/lib
+endif
+
 
 
 

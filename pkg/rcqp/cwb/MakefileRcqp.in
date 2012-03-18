@@ -12,6 +12,7 @@
 TOP = $(shell pwd)
 include $(TOP)/configRcqp.mk
 
+CFLAGS:=${CFLAGS} -I/home/sloiseau/workspace/rcwb_win/pcre_installe/include
 
 # Source files
 # ============
@@ -51,10 +52,16 @@ CQI_C_OBJ := $(CQI_C_SRC:.c=.o)
 
 # cl directory
 # ------------
+ifdef __MINGW__
+MMAPS = cl/windows-mmap.c
+else
+MMAPS =
+endif
 CL_C_SRC = cl/globals.c cl/macros.c cl/list.c cl/lexhash.c cl/bitfields.c \
 	cl/storage.c cl/fileutils.c cl/special-chars.c cl/regopt.c cl/corpus.c \
 	cl/attributes.c cl/makecomps.c cl/cdaccess.c cl/bitio.c cl/endian.c \
-	cl/compression.c cl/binsert.c cl/class-mapping.c
+	cl/compression.c cl/binsert.c cl/class-mapping.c ${MMAPS}
+
 CL_C_H := $(CL_C_SRC:.c=.h)
 CL_C_OBJ := $(CL_C_SRC:.c=.o)
 
