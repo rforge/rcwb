@@ -74,29 +74,29 @@ rcqp: ${RCQP_C_SRC} cwb
 
 
 cwb:
-	$(MAKE) --makefile=MakefileRcqp -C ../cwb
+	${MAKE} --makefile=MakefileRcqp -C ../cwb
 
 
 .PHONY: clean
 
 
 clean:
-	$(MAKE) --makefile=MakefileRcqp -C ../cwb clean
-	rm -f *.o *.so
+	${MAKE} --makefile=MakefileRcqp -C ../cwb clean
+	${RM} *.o *.so
 	cd ../inst/doc/; \
-	rm -f *.tex *.aux *.log *.toc *.idx *.synctex.gz
+	${RM} *.tex *.aux *.log *.toc *.idx *.synctex.gz
 
 
 clean-all:
-	$(MAKE) --makefile=MakefileRcqp -C ../cwb clean-all
-	rm -f *.o *.so Makefile
+	${MAKE} --makefile=MakefileRcqp -C ../cwb clean-all
+	${RM} *.o *.so Makefile
 	cd ../inst/doc/; \
-	rm -f *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.pdf *.synctex.gz
+	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.pdf *.synctex.gz
 
 
 vignette:
 	cd ../inst/doc; \
-	rm -f ${RCQP_VIGNETTE_TEX}; \
+	${RM} ${RCQP_VIGNETTE_TEX}; \
 	echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
 	pdflatex ${RCQP_VIGNETTE_TEX}; \
 	makeindex ${RCQP_VIGNETTE_IDX}; \

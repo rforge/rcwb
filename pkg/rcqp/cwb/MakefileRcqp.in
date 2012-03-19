@@ -12,7 +12,7 @@
 TOP = $(shell pwd)
 include $(TOP)/configRcqp.mk
 
-CFLAGS:=${CFLAGS} -I/home/sloiseau/workspace/rcwb_win/pcre_installe/include
+##CFLAGS:=${CFLAGS} -I/home/sloiseau/workspace/rcwb_win/pcre_installe/include
 
 # Source files
 # ============
@@ -98,9 +98,9 @@ BISON_PRG=@YACC@
 # The order of the prerequisites is important: bison, then flex, 
 # then the C source files
 libclcqp.a: ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
-	$(RM) $@
-	$(AR) $@ ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} 
-	$(RANLIB) $@
+	${RM} $@
+	${AR} $@ ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} 
+	${RANLIB} $@
 
 
 ${CQP_FLEX_C}: ${CQP_FLEX_SRC}
@@ -142,12 +142,12 @@ all: libclcqp.a
 
 
 clean:
-	-$(RM) -f ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
+	-${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
 	    libclcqp.a
 
 
 clean-all: clean
-	-$(RM) -f ${CQP_FLEX_C} ${CQP_FLEX_H} \
+	-${RM} ${CQP_FLEX_C} ${CQP_FLEX_H} \
 	    ${CQP_BISON_C} ${CQP_BISON_H} \
 	    ${CL_FLEX_C} ${CL_FLEX_H} \
 	    ${CL_BISON_C} ${CL_BISON_H} \

@@ -39,7 +39,7 @@
 #       cygwin        Win32 build using Cygwin emulation layer (experimental)
 #       mingw         Cross-compile for Win32 from a *nix system with MinGW installed (experimental)
 #
-include $(TOP)/config/platform/mingw
+include $(TOP)/config/platform/unix
 
 #
 # SITE-SPECIFIC CONFIGURATION (installation path and other local settings)
