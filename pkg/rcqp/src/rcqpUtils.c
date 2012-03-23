@@ -14,7 +14,7 @@
 #define RCQP_ATT_HASH_SIZE 16384
 
 // Needed for cross-compilation (mingw)
-extern int yydebug = 0;
+int yydebug = 0;
 
 /* 
  * ------------------------------------------------------------------------
