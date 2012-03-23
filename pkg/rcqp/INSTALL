@@ -86,14 +86,46 @@ following from the R console:
 Help is also available through the usual mechanism. For instance, start with:
 	> ?rcqp
 
-Cross-compilation with mingw
-===============
 
-A directory x must contain:
-  - pcre, glib2 bin and include for Windows (see general cwb cross-compilation directives)
-  - R.dll
-The directory x is declared in ./configure as a command-line argument:
-  ./configure CROSS_COMPILATION_DIR=x
+
+Cross-compilation for Windows
+=============================
+
+The rcqp dynamic library can be compiled for Windows via cross-compilation
+on a Unix-like system. To do this, you need a cross-compiler. For instance,
+in order to cross-compile on a Mac OS X machine, you can use the
+i386-mingw32-gcc compiler which can be installed using MacPorts 
+(http://www.macports.org/).
+
+Edit the file cwb/config/platform/mingw in the rcqp source directory and
+make sure the variables defined therein reflect the name of the
+cross-compiler you use. For instance, using the cross-compiler above:
+	CC = i386-mingw32-gcc
+	LD = i386-mingw32-ld
+	RC = i386-mingw32-windres
+	AR = i386-mingw32-ar cq
+	RANLIB = i386-mingw32-ranlib
+
+You must also compile the pcre and glib-2.0 libraries using this cross- 
+compiler. Finally you also need to get the R.dll library for Windows used 
+by R. Alternatively you can find prebuilt binaires on the internet, like
+http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.28/glib-dev_2.28.8-1_win32.zip
+
+These external libraries should be located in some directory on your 
+machine. This directory contains the usual bin, include, lib 
+subdirectories.
+
+You specify the path to this directory in a variable named CROSS_COMPILATION_DIR
+which you can pass on the command line when you run the configure script. 
+For instance:
+
+  CC=i386-mingw32-gcc CC_FOR_BUILD=gcc ./configure \
+    CROSS_COMPILATION_DIR=/path/to/external/libs \
+    --host=i386-mingw32
+
+where you replace /path/to/external/libs by the appropriate path.
+
+
 
 Troubleshooting
 ===============
