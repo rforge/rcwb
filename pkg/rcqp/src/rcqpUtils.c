@@ -13,6 +13,8 @@
 
 #define RCQP_ATT_HASH_SIZE 16384
 
+// Needed for cross-compilation (mingw)
+extern int yydebug = 0;
 
 /* 
  * ------------------------------------------------------------------------
@@ -48,8 +50,8 @@ R_init_rcqp(DllInfo * info)
 	autoshow = 0;
 	auto_save = 0;
 	server_log = 0;
-	enable_macros = 0; 
-	
+	enable_macros = 0;
+
 	initialize_cqp(ac, av);
 	make_attribute_hash(RCQP_ATT_HASH_SIZE);
 }

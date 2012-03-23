@@ -86,7 +86,14 @@ following from the R console:
 Help is also available through the usual mechanism. For instance, start with:
 	> ?rcqp
 
+Cross-compilation with mingw
+===============
 
+A directory x must contain:
+  - pcre, glib2 bin and include for Windows (see general cwb cross-compilation directives)
+  - R.dll
+The directory x is declared in ./configure as a command-line argument:
+  ./configure CROSS_COMPILATION_DIR=x
 
 Troubleshooting
 ===============

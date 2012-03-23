@@ -43,4 +43,8 @@ cwb/MakefileRcqp
 
 AC_OUTPUT
 
+# Cross-compilation with mingw: lib and include for pcre, lib for glib2 and R
+CROSS_COMPILATION_DIR=
+AC_SUBST(CROSS_COMPILATION_DIR)
+
 

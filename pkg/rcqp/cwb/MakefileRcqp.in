@@ -12,7 +12,12 @@
 TOP = $(shell pwd)
 include $(TOP)/configRcqp.mk
 
-##CFLAGS:=${CFLAGS} -I/home/sloiseau/workspace/rcwb_win/pcre_installe/include
+## Cross-compilation with mingw
+ifdef __MINGW__ 
+CROSS_COMPILATION_DIR = @CROSS_COMPILATION_DIR@
+CFLAGS:=${CFLAGS} -I${CROSS_COMPILATION_DIR}/include
+endif
+
 
 # Source files
 # ============

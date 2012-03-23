@@ -22,6 +22,14 @@ else
 RCQP_SHAREDLIB_FLAG=-shared
 endif
 
+# Cross-compilation with mingw
+ifdef __MINGW__ 
+CROSS_COMPILATION_DIR = @CROSS_COMPILATION_DIR@
+RCQP_LIB_SUFFIX=.dll
+else
+RCQP_LIB_SUFFIX=.so
+endif
+
 # Source files
 # ============
 
@@ -67,9 +75,9 @@ rcqp: ${RCQP_C_SRC} cwb
 	${CC} ${CFLAGS} -c ${RCQP_C_SRC} ${RCQP_R_CPPFLAGS}
 	#
 	# Link the library
-	${CC} -o $@.so $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \
+	${CC} -o $@$(RCQP_LIB_SUFFIX) $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \
 		${RCQP_STATLIB} \
-	    $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
+	    -L${CROSS_COMPILATION_DIR}/lib $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
 		${LIBR}
 
 
