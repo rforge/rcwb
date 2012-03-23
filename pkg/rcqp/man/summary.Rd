@@ -2,6 +2,7 @@
 \alias{summary.cqp_flist}
 \alias{summary.cqp_corpus}
 \alias{summary.cqp_subcorpus}
+\alias{summary.cqp_attr}
 
 \title{
 Print summary for CWB objects.
@@ -16,11 +17,13 @@ Print a summary for a corpus, a subcorpus, or a frequency list.
  \method{summary}{cqp_corpus}(object, ...)
 
  \method{summary}{cqp_subcorpus}(object, ...)
+
+ \method{summary}{cqp_attr}(object, ...)
 }
 
 \arguments{
   \item{object}{
-An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, or \code{\link{subcorpus}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}, or \code{\link{$.cqp_corpus}}.
 }
   \item{...}{
 Ignored.

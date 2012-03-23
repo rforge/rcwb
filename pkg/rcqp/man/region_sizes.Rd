@@ -2,7 +2,7 @@
 \alias{region_sizes}
 
 \title{
-Size of regions
+Size of regions of a structural attribute.
 }
 
 \description{
@@ -10,15 +10,12 @@ Compute the size (in number of tokens) of the regions of a structural attribute.
 }
 
 \usage{
-region_sizes(corpus, structural_attribute)
+region_sizes(attribute)
 }
 
 \arguments{
   \item{corpus}{
-A object created with \code{\link{corpus}}.
-}
-  \item{structural_attribute}{
-A structural attribute existing in this corpus.
+A cqp_attr (type: structural attribute) (created for instance with \code{\link{$.cqp_corpus}}).
 }
 }
 

@@ -3,6 +3,7 @@
 \alias{print.cqp_subcorpus}
 \alias{print.cqp_corpus}
 \alias{print.cqp_kwic}
+\alias{print.cqp_attr}
 
 \title{
 Print a CWB object
@@ -18,23 +19,28 @@ printed... as expected.
 
  \method{print}{cqp_flist}(x, ...)
 
- \method{print}{cqp_corpus}(x, from = 0, to = 20, ...)
+ \method{print}{cqp_corpus}(x, from = 0, to = 20, use_value = TRUE, ...)
 
  \method{print}{cqp_subcorpus}(x, positional.attribute = "word", from = 0, to = 10, ...)
 
  \method{print}{cqp_kwic}(x, from = 0, to = min(20, nrow(x)-1), print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), left.separator = " <<", right.separator = ">> ", ...)
 
+ \method{print}{cqp_attr}(x, ...)
+
 }
 
 \arguments{
   \item{x}{
-An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{cqp_kwic}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{cqp_kwic}} \code{\link{$.cqp_corpus}}.
 }
   \item{from}{
 Select first tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
 }
   \item{to}{
 Select last tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
+}
+  \item{use_value}{
+use value or id for structural attribute with values.
 }
   \item{positional.attribute}{
 Print each token of the subcorpus using the given positional attribute. 
