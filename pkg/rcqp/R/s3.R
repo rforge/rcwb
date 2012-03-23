@@ -24,7 +24,7 @@
 
 # Ou bien distinguer l'indexation du corpus => liste de vecteur ; la fonction query => un objet cqp_subcorpus ?
 
-
+# as.list, as.data.frame (avec les structural att comme facteur) sur n'importe quel objet (c ou sc).
 
 ###########################################################################
 # S3 generic methods
@@ -37,11 +37,12 @@ cqp_flist <- function(x, ...) UseMethod("cqp_flist");
 cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
 cqp_kwic <- function(x, ...) UseMethod("cqp_kwic");
 .cqp_name <- function (x, ...) UseMethod(".cqp_name");
-ntype <- function (x, ...) UseMethod("ntype");
-types <- function (x, ...) UseMethod("types");
-ntoken <- function (x, ...) UseMethod("ntoken");
-nregion <- function (x, ...) UseMethod("nregion");
-
+ntype <- function (attribute, ...) UseMethod("ntype");
+ntoken <- function (attribute, ...) UseMethod("ntoken");
+nregion <- function (attribute, ...) UseMethod("nregion");
+types <- function (attribute, ...) UseMethod("types");
+regions <- function (attribute, ...) UseMethod("regions");
+tokens <- function (attribute, ...) UseMethod("tokens");
 
 
 ###########################################################################
@@ -116,59 +117,37 @@ nregion <- function (x, ...) UseMethod("nregion");
  ##
 
 
-types.cqp_attr <- function(attribute) {
-	type <- attr(attribute, "type");
+ntype.cqp_attr <- function(attribute, ...) {
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
 
-	if (type == "positional") {
-		max.id <- ntype(attribute) - 1;
-		ids <- 0:max.id;
-		str <- cqi_id2str(qualified.attribute.name, ids);
-	} else {
-		has_value <- attr(attribute, "has_value");
-		if (has_value) {
-			values <- regions(attribute);
-			str <- unique(values);
-		} else {
-			stop("no values on this structural attribute");
-		}
-	}
-	return(str);
-}
-
-
-ntype.cqp_attr <- function(attribute) {
-	type <- attr(attribute, "type");
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-
-	if (type == "positional") {
+	if (.is.positional(attribute)) {
 		n <- cqi_lexicon_size(qualified.attribute.name);
-	} else {
-		has_value <- attr(attribute, "has_value");
-		if (has_value) {
+	} else if (.is.structural(attribute)) {
+		if (.has_value(attribute)) {
 			n <- length(types(attribute));
 		} else {
 			stop("no values on this structural attribute");
 		}
+	} else {
+		stop("attribute type unknown");
 	}
+
 	return(n);
 }
 
 ## == size(corpus)
-ntoken.cqp_attr <- function(attribute) {
+ntoken.cqp_attr <- function(attribute, ...) {
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	type <- attr(attribute, "type");
 
-	if (type != "positional") {
+	if (!.is.positional(attribute)) {
 		stop("cannot count token on non-positional attribute");
 	}
 	n <- cqi_attribute_size(qualified.attribute.name);
 	return(n);
 }
 
-nregion.cqp_attr <- function(attribute) {
-	type <- attr(attribute, "type");
-	if (type != "structural") {
+nregion.cqp_attr <- function(attribute, ...) {
+	if (!.is.structural(attribute)) {
 		stop("cannot count region on non-structural attribute");
 	}
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
@@ -176,21 +155,20 @@ nregion.cqp_attr <- function(attribute) {
 	return(n);
 }
 
-tokens <- function(cqp_attr) {
-	if (class(cqp_attr) != "cqp_attr") stop("An object of class cqp_attr is requested");
-	attribute <- cqp_attr;
+tokens.cqp_attr <- function(attribute, ...) {
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	type <- attr(attribute, "type");
 
-	if (type == "positional") {
+	if (.is.positional(attribute)) {
 		max <- ntoken(attribute) - 1;
 		x <- cqi_cpos2id(qualified.attribute.name, 0:max);
 		has_value <- TRUE;
-	} else {
-		s <- size(attr(cqp_attr, "parent.cqp_corpus"));
+	} else if (.is.structural(attribute)) {
+		s <- size(attr(attribute, "parent.cqp_corpus"));
 		max <- s - 1;
 		x <- cqi_cpos2struc(qualified.attribute.name, 0:max);
 		has_value <- attr(attribute, "has_value");
+	} else {
+		stop("unknown type");
 	}
 
 	if (has_value) {
@@ -201,19 +179,27 @@ tokens <- function(cqp_attr) {
 	return(x);
 }
 
-
-regions <- function(cqp_attr, use_value=TRUE) {
-	attribute <- cqp_attr;
-
-	if (class(attribute) != "cqp_attr") stop("An object of class cqp_attr is requested");
-	type <- attr(attribute, "type");
-	if (type != "structural") {
-		stop("cannot list region on non-structural attribute");
+types.cqp_attr <- function(attribute, ...) {
+	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+	if (.is.positional(attribute)) {
+		max.id <- ntype(attribute) - 1;
+		ids <- 0:max.id;
+		str <- cqi_id2str(qualified.attribute.name, ids);
+	} else if (.is.structural(attribute)) {
+		values <- regions(attribute);
+		str <- unique(values);
 	}
-	has_value <- attr(attribute, "has_value");
-	if (!has_value) {
-		stop("cannot list region on structural without value");
-	}
+	return(str);
+}
+
+# = tokens
+regions.cqp_attr <- function(attribute, ...) {
+
+	if (! .is.structural(attribute))
+	stop("cannot list region on non-structural attribute");
+		
+	if (!.has_value(attribute))
+	stop("cannot list region on structural without value");
 
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
 	max <- nregion(attribute) - 1;
@@ -222,6 +208,43 @@ regions <- function(cqp_attr, use_value=TRUE) {
 	return(x);
 }
 
+.is.positional <- function (attribute) {
+	if(class(attribute != "cqp_attr")) {
+		stop("attr must be a cqp_attr object");
+	}
+	type <- attr(attribute, "type");
+	if (type=="positional") {
+		return(TRUE);
+	} else if (type=="structural") {
+		return(FALSE);
+	} else {
+		stop("type of attribute is unknown");
+	}
+}
+
+.is.structural <- function (attribute) {
+	if(class(attribute != "cqp_attr")) {
+		stop("attr must be a cqp_attr object");
+	}
+	type <- attr(attribute, "type");
+	if (type=="positional") {
+		return(FALSE);
+	} else if (type=="structural") {
+		return(TRUE);
+	} else {
+		stop("type of attribute is unknown");
+	}
+}
+
+.has_value <- function (attribute) {
+	if (!.is.structural(attribute)) stop("Not a structural attribute");
+	has_value <- attr(attribute, "has_value");
+	if (has_value) {
+		return(TRUE);
+	} else {
+		return(FALSE);
+	}
+}
 
 
 ## 
@@ -241,9 +264,10 @@ regions <- function(cqp_attr, use_value=TRUE) {
 
 ## TODO il y aurait encore plus simple : table() sur tous les struc.
 region_sizes <- function(attribute) {
-	if (class(attribute) != "cqp_attr") stop("An object of class cqp_attr is requested");
-	type <- attr(attribute, "type");
-	if (type != "structural") {
+	if (class(attribute) != "cqp_attr") {
+		stop("An object of class cqp_attr is requested");
+	}
+	if (!.is.structural(attribute)) {
 		stop("cannot list region on non-structural attribute");
 	}
 	
@@ -316,7 +340,7 @@ summary.cqp_attr <- function(object, ...) {
 	cat(paste("\t\t", examples, "\n"));
 }
 
-print.cqp_attr <- function(object, ...) {
+print.cqp_attr <- function(x, ...) {
 	print(tokens(object));
 }
 
