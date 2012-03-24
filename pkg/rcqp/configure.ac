@@ -17,7 +17,7 @@ AC_PREREQ(2.60)
 AC_INIT([rcqp],[1.0])
 
 # Cross-compilation with mingw
-CROSS_COMPILATION_DIR=
+test ${CROSS_COMPILATION_DIR:=}
 AC_SUBST(CROSS_COMPILATION_DIR)
 
 # Platform-specific configuration (see configRcqp.mk)
@@ -30,12 +30,46 @@ test ${RCQP_SITE:=standard}
 echo "RCQP_SITE: ${RCQP_SITE}"
 AC_SUBST(RCQP_SITE)
 
-if test "${RCQP_PLATFORM}" = "mingw"; then
+
+if test "${RCQP_PLATFORM}" = "mingw" -o "${RCQP_PLATFORM}" = "mingwRcqp" ; then
+	RCQP_PLATFORM="mingwRcqp"
 	RCQP_CROSS_COMPILING=1
-	echo "rcqp cross compiling"
 else
 	RCQP_CROSS_COMPILING=0
 fi
+
+
+if test "${RCQP_CROSS_COMPILING}" = 1; then
+	echo "rcqp cross compiling"
+	echo "checking for config file 'rcqpcrossrc' ..."
+	
+	olddir=`pwd`
+	cd $(dirname $0)
+	if [[ -e `pwd`/rcqpcrossrc ]] ; then
+		source `pwd`/rcqpcrossrc
+	else
+		echo "... not found"
+	fi
+	cd $olddir
+	
+	test ${RCQP_CROSS_CC:=i386-mingw32-gcc}
+	echo "RCQP_CROSS_CC: '${RCQP_CROSS_CC}'"
+	AC_SUBST(RCQP_CROSS_CC)
+
+	if [[ -z $RCQP_CROSS_HOST ]] ; then
+		RCQP_CROSS_HOST=${RCQP_CROSS_CC%-*}
+		echo "RCQP_CROSS_HOST: '$RCQP_CROSS_HOST'."
+	fi
+	AC_SUBST(RCQP_CROSS_HOST)
+
+	if [[ -z $RCQP_CROSS_ARCH ]] ; then
+		RCQP_CROSS_ARCH=${RCQP_CROSS_CC%%-*}
+		echo "RCQP_CROSS_ARCH : '$RCQP_CROSS_ARCH'."
+	fi
+	AC_SUBST(RCQP_CROSS_ARCH)
+	
+fi
+
 
 # C support
 # ---------
@@ -62,9 +96,9 @@ AC_PATH_PROGS(PKGCONFIG, pkg-config)
 AC_CONFIG_FILES(
 [ src/Makefile
 cwb/configRcqp.mk
+cwb/config/platform/mingwRcqp
 cwb/MakefileRcqp
 ])
 
 AC_OUTPUT
-
 

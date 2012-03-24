@@ -10,26 +10,33 @@
 # missing "atom for N_GSYM stabs".
 # 
 # ARCHIS := -arch i386 -arch ppc -arch x86_64 -arch ppc64
+# 
+# % pkg-config --libs libpcre
+# -L/opt/local/lib -lpcre  
+# % pkg-config --libs glib-2.0
+# -L/opt/local/lib -lglib-2.0 -lintl  
 
 
 ## Read configuration settings for cwb
 TOP = $(shell pwd)/../cwb
 include $(TOP)/configRcqp.mk
 
-ifeq ($(shell uname),Darwin)
-RCQP_SHAREDLIB_FLAG=-dynamiclib
-else
-RCQP_SHAREDLIB_FLAG=-shared
-endif
 
 # Cross-compilation with mingw
 ifdef __MINGW__ 
-CROSS_COMPILATION_LFLAGS = -L@CROSS_COMPILATION_DIR@/lib
-RCQP_LIB_SUFFIX=.dll
+	CROSS_COMPILATION_LFLAGS = -L@CROSS_COMPILATION_DIR@/lib
+	RCQP_LIB_SUFFIX=.dll
+	RCQP_SHAREDLIB_FLAG=-shared
 else
-CROSS_COMPILATION_LFLAGS = 
-RCQP_LIB_SUFFIX=.so
+	CROSS_COMPILATION_LFLAGS = 
+	RCQP_LIB_SUFFIX=.so
+	ifeq ($(shell uname),Darwin)
+	RCQP_SHAREDLIB_FLAG=-dynamiclib
+	else
+	RCQP_SHAREDLIB_FLAG=-shared
+	endif
 endif
+
 
 # Source files
 # ============
@@ -57,14 +64,12 @@ RCQP_R_CPPFLAGS=`R CMD config --cppflags`
 
 # TEMPORARY to build directly from Makefile in src/
 ifndef LIBR
-$(info LIBR defined using 'R CMD config --ldflags')
-LIBR=`R CMD config --ldflags`
+	ifdef __MINGW__ 
+		LIBR=-lR
+	else
+		LIBR=`R CMD config --ldflags`
+	endif
 endif
-
-# % pkg-config --libs libpcre
-# -L/opt/local/lib -lpcre  
-# % pkg-config --libs glib-2.0
-# -L/opt/local/lib -lglib-2.0 -lintl  
 
 
 

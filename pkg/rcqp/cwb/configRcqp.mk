@@ -1,3 +1,15 @@
+### ===========================================================================
+### File: "configRcqp.mk.in"
+###                        Created: 2010-06-24 08:46:27
+###              Last modification: 2012-01-28 12:49:10
+### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+### This is part of the R package 'rcqp'.
+### ===========================================================================
+# 
+# Adapted from config.mk
+# Original file header:
+# 
 ##   -*-Makefile-*-
 ## 
 ##  IMS Open Corpus Workbench (CWB)
@@ -20,6 +32,9 @@
 # *  Edit this file to configure the CWB for your system  *
 # *********************************************************
 
+RCQP_PLATFORM=linux
+RCQP_SITE=standard
+
 # 
 # PLATFORM-SPECIFIC CONFIGURATION (OS and CPU type)
 #
@@ -39,8 +54,7 @@
 #       cygwin        Win32 build using Cygwin emulation layer (experimental)
 #       mingw         Cross-compile for Win32 from a *nix system with MinGW installed (experimental)
 #
-include $(TOP)/config/platform/mingw
-
+include $(TOP)/config/platform/${RCQP_PLATFORM}
 #
 # SITE-SPECIFIC CONFIGURATION (installation path and other local settings)
 #
@@ -57,7 +71,7 @@ include $(TOP)/config/platform/mingw
 #         windows-release ... for Windows binaries cross-compiled with MinGW; use with "mingw" platform
 #       cygwin          Win32 / Cygwin configuration (experimental)
 #       
-include $(TOP)/config/site/standard
+include $(TOP)/config/site/${RCQP_SITE}
 
 
 #
