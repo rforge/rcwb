@@ -1,0 +1,91 @@
+#! /bin/bash
+
+# Last modification: 2012-03-24 14:02:23
+
+cd $(dirname $0)
+
+RCQP_CODE_DIR=`pwd`/../../../Current
+RCQP_CROSS_TGT=all
+
+if [ -e `pwd`/rcqpcrossrc ] ; then
+	source `pwd`/rcqpcrossrc
+else
+	echo "no file `pwd`/rcqpcrossrc"
+	RCQP_CROSS_CC=i386-mingw32-gcc
+	RCQP_CROSS_HOST=${RCQP_CROSS_CC%-gcc}
+	RCQP_CROSS_BASEDIR=`pwd`/../../../CrossCompilation
+fi
+
+if [ -z $RCQP_CROSS_CC ] ; then
+	echo "RCQP_CROSS_CC variable is not defined."
+	exit 1
+fi
+
+if [ -z $RCQP_CROSS_HOST ] ; then
+	RCQP_CROSS_HOST=${RCQP_CROSS_CC%-gcc}
+	echo "RCQP_CROSS_HOST variable not defined. Using '$RCQP_CROSS_HOST'."
+fi
+
+if [ -z $RCQP_CROSS_BASEDIR ] ; then
+	RCQP_CROSS_BASEDIR=`pwd`/../../../CrossCompilation
+	echo "RCQP_CROSS_BASEDIR variable not defined. Using '$RCQP_CROSS_BASEDIR'."
+fi
+
+RCQP_CROSS_OUTDIR=${RCQP_CROSS_BASEDIR}/Output
+
+if ! [ -e $RCQP_CROSS_OUTDIR ] ; then
+	mkdir -p $RCQP_CROSS_OUTDIR
+fi
+
+echo "RCQP_CODE_DIR: $RCQP_CODE_DIR"
+echo "RCQP_CROSS_BASEDIR: $RCQP_CROSS_BASEDIR"
+
+
+if [ $# == 1 ] ; then
+	RCQP_CROSS_TGT=$1
+fi
+
+
+# Compile the Pcre component
+if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "pcre" ] ; then
+	echo "Cross-compilation of 'pcre' library"
+	cd ${RCQP_CROSS_BASEDIR}/pcre-8.30
+	CC=${RCQP_CROSS_CC} CC_FOR_BUILD=gcc ./configure               \
+		--host=${RCQP_CROSS_HOST} --disable-static                       \
+		--enable-utf8 --enable-unicode-properties                  \
+		--enable-newline-is-any --disable-cpp --enable-static      \
+		--prefix=${RCQP_CROSS_OUTDIR}
+	if [ $? != 0 ] ; then
+		echo "Pcre configuration failed."
+		exit 1
+	fi
+	make clean
+	make
+	sudo make install
+fi
+
+
+# Compile the Glib component
+if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "glib" ] ; then
+	echo "Glib cross-compilation not supported yet"
+fi
+
+
+# Compile the rcqp component
+if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "rcqp" ] ; then
+	echo "Cross-compilation of 'rcqp' library"
+	cd ${RCQP_CODE_DIR}
+	CC=${RCQP_CROSS_CC} CC_FOR_BUILD=gcc ./configure \
+	  --host=${RCQP_CROSS_HOST} \
+	  --prefix=${RCQP_CROSS_OUTDIR} \
+	  RCQP_PLATFORM=mingw \
+	  CROSS_COMPILATION_DIR=${RCQP_CROSS_OUTDIR}
+	if [ $? != 0 ] ; then
+		echo "Rcqp configuration failed."
+		exit 1
+	fi
+	cd src/
+	make clean
+	make
+fi
+
