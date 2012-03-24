@@ -53,22 +53,23 @@ the following instruction from a Terminal window :
 Configuration
 =============
 
-Once the code has been downloaded, edit the file rcqp/cwb/config.mk and
-select appropriately the platform-specific and the site-specific settings.
-Currently, the file is set for a Darwin Core2 system (Mac OS X) with
-standard settings, like this:
-	include $(TOP)/config/platform/darwin-core2
-	include $(TOP)/config/site/standard
+You can specify platform-specific and site-specific settings on the
+./configure command line using the RCQP_PLATFORM and RCQP_SITE variables.
+Their default values are 'linux' and 'standard' respectively. The possible
+values are the names mentionned in the commentys at the top of the the file
+cwb/configRcqp.mk.
 
-See the other possible values in the comments found in this file.
+For cross-compilation for Windows, you should use mingw
+	./configure RCQP_PLATFORM=mingw
+More details on cross-compilation below.
 
 
 
-Building and installing with R
-==============================
+Building and installing with R on a Unix-like system
+====================================================
 
 From the directory containing the source code, i-e the directory containing
-the rcqp/ directory, execute the following command :
+the rcqp/ directory, execute the following command:
 	R CMD install rcqp
 
 R will automatically find the configure script, run it, execute the make 
@@ -95,16 +96,22 @@ The rcqp dynamic library can be compiled for Windows via cross-compilation
 on a Unix-like system. To do this, you need a cross-compiler. For instance,
 in order to cross-compile on a Mac OS X machine, you can use the
 i386-mingw32-gcc compiler which can be installed using MacPorts 
-(http://www.macports.org/).
+(http://www.macports.org/). If MacPorts is installed on your machine, the 
+instruction is:
+	sudo port -v install i386-mingw32-gcc
 
-Edit the file cwb/config/platform/mingw in the rcqp source directory and
-make sure the variables defined therein reflect the name of the
-cross-compiler you use. For instance, using the cross-compiler above:
-	CC = i386-mingw32-gcc
-	LD = i386-mingw32-ld
-	RC = i386-mingw32-windres
-	AR = i386-mingw32-ar cq
-	RANLIB = i386-mingw32-ranlib
+The configuration script needs to know about the following variables:
+	RCQP_CROSS_CC
+	RCQP_CROSS_HOST
+	RCQP_CROSS_ARCH
+
+The easiest way to define them is to create a configuration file named
+'rcqpcrossrc' in the same directory as the script itself. This file should
+contain definitions for the variables above. For instance
+	RCQP_CROSS_CC=i386-mingw32-gcc
+	RCQP_CROSS_HOST=i386-mingw32
+	RCQP_CROSS_ARCH=i386
+There is an example file in Extras/Scripts/Shell.
 
 You must also compile the pcre and glib-2.0 libraries using this cross- 
 compiler. Finally you also need to get the R.dll library for Windows used 
@@ -117,25 +124,37 @@ subdirectories.
 
 You specify the path to this directory in a variable named CROSS_COMPILATION_DIR
 which you can pass on the command line when you run the configure script. 
-For instance:
 
-  CC=i386-mingw32-gcc CC_FOR_BUILD=gcc ./configure \
+You must also specify the RCQP_PLATFORM variable and set its value to 
+'mingw' as explained in the 'Configuration' section above..
+
+So a typical configuration command for cross-compilation for Windows is for
+instance:
+
+  ./configure RCQP_PLATFORM=mingw \
     CROSS_COMPILATION_DIR=/path/to/external/libs \
     --host=i386-mingw32
 
 where you replace /path/to/external/libs by the appropriate path.
+
+After successively running the configure script, change directory to the 
+src/ subdirectory and execute the following instructions
+	make clean
+	make
+
+If everything goes right you should have at the end a rcqp.dll library in
+the src/wind323 subdirectory. Now go to the directory containing the source
+code, i-e the directory containing the rcqp/ directory, execute the
+following command:
+	R CMD install rcqp
+
 
 
 
 Troubleshooting
 ===============
 
-In case of problem, please contact one of the authors of the rcqp project.
-
-Compiling rcqp for the Windows platform should be possible, following the 
-Unix-like example, but the authors do not have the expertise for this. If 
-someone is willing to undertake this task, he will deserve our eternal 
-gratitude.
+In case of problems, please contact one of the authors of the rcqp project.
 
 
 
