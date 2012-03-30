@@ -587,7 +587,7 @@ attribute.
 
 <<region_size_session, fig=TRUE, echo=TRUE>>=
 c <- corpus("DICKENS");
-sentences <- region_sizes(c, "s");
+sentences <- region_sizes(c$s);
 hist(sentences);
 @
 
@@ -634,16 +634,16 @@ A frequency list may be created either with a corpus\index{corpus} or with a sub
 <<cqp_flist_session, echo=TRUE>>=
 
 c <- corpus("DICKENS");
-fl <- cqp_flist(c, "word");
+fl <- cqp_flist(c$lemma);
 summary(fl);
 #
 # get only the 1% most frequent forms
-fl <- cqp_flist(c, "word", cutoff=0.01);
+fl <- cqp_flist(c$lemma, cutoff=0.01);
 summary(fl);
 fl[1:30]
 #
 # get only the forms with freq > 100
-fl <- cqp_flist(c, "word", cutoff=100);
+fl <- cqp_flist(c$lemma, cutoff=100);
 summary(fl);
 fl[1:30]
 @
