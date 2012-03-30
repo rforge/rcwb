@@ -45,12 +45,15 @@ export(
 	"ntoken",
 	"ntoken.cqp_attr",
 	"tokens",
+	"tokens.cqp_attr",
 
 	"nregion",
 	"nregion.cqp_attr",
 	"regions",
+	"regions.cqp_attr",
 
 	"region_sizes",
+	"region_sizes.cqp_attr",
 
 	"summary.cqp_attr",
 	"print.cqp_attr",
@@ -60,6 +63,7 @@ export(
 	"print.cqp_subcorpus",
 
 	"cqp_flist",
+	"cqp_flist.cqp_attr",
   	"cqp_flist.cqp_corpus",
   	"cqp_flist.cqp_subcorpus",
 	"summary.cqp_flist",
