@@ -8,10 +8,7 @@
 # All rights reserved.
 # ===========================================================================
 
-#TODO documenter types et ntype...
-# TODO : faire cqp_flist.cqp_attr
 # TODO : tokens => as.vector.cqp_attr ?
-
 # table.cqp_attr
 
 # c[ 1, ] # le premier token
@@ -43,7 +40,7 @@ nregion <- function (attribute, ...) UseMethod("nregion");
 types <- function (attribute, ...) UseMethod("types");
 regions <- function (attribute, ...) UseMethod("regions");
 tokens <- function (attribute, ...) UseMethod("tokens");
-
+region_sizes <- function (attribute) UseMethod("tokens");
 
 ###########################################################################
 # Matrix-like interface for accessing cqp object
@@ -161,19 +158,14 @@ tokens.cqp_attr <- function(attribute, ...) {
 	if (.is.positional(attribute)) {
 		max <- ntoken(attribute) - 1;
 		x <- cqi_cpos2id(qualified.attribute.name, 0:max);
-		has_value <- TRUE;
+		str <- types(attribute);
+		x <- str[x];
 	} else if (.is.structural(attribute)) {
 		s <- size(attr(attribute, "parent.cqp_corpus"));
 		max <- s - 1;
 		x <- cqi_cpos2struc(qualified.attribute.name, 0:max);
-		has_value <- attr(attribute, "has_value");
 	} else {
 		stop("unknown type");
-	}
-
-	if (has_value) {
-		str <- types(attribute);
-		x <- str[x];
 	}
 
 	return(x);
@@ -181,26 +173,22 @@ tokens.cqp_attr <- function(attribute, ...) {
 
 types.cqp_attr <- function(attribute, ...) {
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	if (.is.positional(attribute)) {
-		max.id <- ntype(attribute) - 1;
-		ids <- 0:max.id;
-		str <- cqi_id2str(qualified.attribute.name, ids);
-	} else if (.is.structural(attribute)) {
-		values <- regions(attribute);
-		str <- unique(values);
-	}
+	if (!.is.positional(attribute)) {
+		stop("attribute must be positional");
+	}	
+	max.id <- ntype(attribute) - 1;
+	ids <- 0:max.id;
+	str <- cqi_id2str(qualified.attribute.name, ids);
 	return(str);
 }
 
-# = tokens
 regions.cqp_attr <- function(attribute, ...) {
-
-	if (! .is.structural(attribute))
-	stop("cannot list region on non-structural attribute");
-		
-	if (!.has_value(attribute))
-	stop("cannot list region on structural without value");
-
+	if (! .is.structural(attribute)) {
+		stop("cannot list region on non-structural attribute");
+	}
+	if (!.has_value(attribute)) {
+		stop("cannot list region on structural without value");
+	}
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
 	max <- nregion(attribute) - 1;
 	x <- cqi_struc2str(qualified.attribute.name, 0:max);
@@ -250,23 +238,20 @@ regions.cqp_attr <- function(attribute, ...) {
 ## 
  # ------------------------------------------------------------------------
  # 
- # "region_sizes.cqp_corpus(corpus, structural_attribute)" --
+ # "region_sizes.cqp_attr(attribute)" --
  #
  # Create a vector containing the size (in number of tokens) of the regions of
  # the given structural attribute.
  # 
  # Example:
  #              c <- corpus("DICKENS");
- #              region_sizes.cqp_corpus(c, "np")
+ #              region_sizes.cqp_corpus(c$np)
  # 
  # ------------------------------------------------------------------------
  ##
 
 ## TODO il y aurait encore plus simple : table() sur tous les struc.
-region_sizes <- function(attribute) {
-	if (class(attribute) != "cqp_attr") {
-		stop("An object of class cqp_attr is requested");
-	}
+region_sizes.cqp_attr <- function(attribute) {
 	if (!.is.structural(attribute)) {
 		stop("cannot list region on non-structural attribute");
 	}
@@ -674,6 +659,28 @@ size.cqp_subcorpus <- function(x) {
 ## 
  # ------------------------------------------------------------------------
  # 
+ # "cqp_flist(cqp_attribute, cutoff)" --
+ #
+ # Create an S3 object holding a frequency list
+ #
+ # A cqp_flist is a named numeric vector.
+ # 
+ # Example:
+ #              c <- corpus("DICKENS")
+ #              cqp_flist(sc, "lemma")
+ #
+ # ------------------------------------------------------------------------
+ ##
+cqp_flist.cqp_attr <- function(x, cutoff=0, ...) {
+	c <- attr(x, "parent.cqp_corpus");
+	attribute <- attr(x, "name");
+	cqp_flist(c, attribute, cutoff);
+}
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
  # "cqp_flist(corpus, attribute, cutoff)" --
  #
  # Create an S3 object holding a frequency list
@@ -681,8 +688,8 @@ size.cqp_subcorpus <- function(x) {
  # A cqp_flist is a named numeric vector.
  # 
  # Example:
- #              corpus("DICKENS")
- #              cqp_flist(sc, "lemma")
+ #              c <- corpus("DICKENS")
+ #              cqp_flist(c, "lemma")
  #
  # ------------------------------------------------------------------------
  ##
@@ -744,8 +751,8 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
  # A cqp_flist is a named numeric vector.
  # 
  # Example:
- #              corpus("DICKENS")
- #              sc <- subcorpus("DICKENS", '"interesting"')
+ #              c <- corpus("DICKENS")
+ #              sc <- subcorpus(c, '"interesting"')
  #              cqp_flist(sc, "match", "lemma", 4, 4)
  #
  # "left.context" and "right.context" extend the span of the counted tokens around the anchor.

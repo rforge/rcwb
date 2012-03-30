@@ -1,9 +1,11 @@
-\name{ntype.cqp_attr}
+\name{Type and token}
+\alias{ntype}
 \alias{types}
 \alias{nregion}
 \alias{regions}
 \alias{ntoken}
 \alias{tokens}
+\alias{ntype.cqp_attr}
 \alias{types.cqp_attr}
 \alias{nregion.cqp_attr}
 \alias{regions.cqp_attr}
@@ -20,7 +22,7 @@ Get vector of tokens or types for cqp attribute.
 
 ntype(attribute, ...)
 
-type(attribute, ...)
+types(attribute, ...)
 
 nregion(attribute, ...)
 
@@ -51,20 +53,16 @@ tokens(attribute, ...)
 \value{                                                                    
   For positional attributes :
   \itemize{
-  \item ntoken is the number of tokens (== size(corpus))
-  \item tokens is a character vector with the actual list of tokens
-  \item ntype is the number of different values
-  \item tokens is a character vector with the actual different values.
+    \item ntoken is the number of tokens (== size(corpus))
+    \item tokens is a character vector with the actual list of tokens
+    \item ntype is the number of different values
+    \item types is a character vector with the actual different values.
   }
   For structural attributes :
   \itemize{
-  \item nregion is the actual number of regions
-  }
-  For structural attributes with values :
-  \itemize{
-    \item regions is the values founded on each region (a character vector)
-	\item ntype is the number of different values found on each region
-	\item types is the actual list of diffent values (a character vector)
+    \item nregion is the actual number of regions (a numeric vector of length 1)
+    \item tokens the region id ("struc") of each tokens (a numeric vector)
+	\item regions (only if the structural "has values") : the values founded on each region (a character vector)
   }
 } 
 
@@ -86,5 +84,6 @@ tokens(attribute, ...)
 c <- corpus("DICKENS");
 pos <- c$pos
 types(pos);
+ntokens(types(pos));
 }
 }

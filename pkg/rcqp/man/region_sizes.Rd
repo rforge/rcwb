@@ -1,5 +1,6 @@
 \name{region_sizes}
 \alias{region_sizes}
+\alias{region_sizes.cqp_attr}
 
 \title{
 Size of regions of a structural attribute.
@@ -10,7 +11,8 @@ Compute the size (in number of tokens) of the regions of a structural attribute.
 }
 
 \usage{
-region_sizes(attribute)
+ region_sizes(attribute)
+ \method{region_sizes}{cqp_attr}(attribute)
 }
 
 \arguments{
@@ -20,7 +22,7 @@ A cqp_attr (type: structural attribute) (created for instance with \code{\link{$
 }
 
 \value{
-An integer vector.
+An integer vector: for each region of this attribute, the number of tokens belonging to that region.
 }
 
 \references{                                                                    
@@ -42,6 +44,6 @@ An integer vector.
 \examples{
 \dontrun{
 c <- corpus("DICKENS");
-s <- region_sizes(c, "chapter");
+s <- region_sizes(c$pos);
 }
 }

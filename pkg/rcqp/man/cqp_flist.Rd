@@ -1,5 +1,6 @@
 \name{cqp_flist}
 \alias{cqp_flist}
+\alias{cqp_flist.cqp_attr}
 \alias{cqp_flist.cqp_corpus}
 \alias{cqp_flist.cqp_subcorpus}
 
@@ -14,6 +15,8 @@
 \usage{
 cqp_flist(x, ...)
 
+ \method{cqp_flist}{cqp_attr}(x, cutoff = 0, ...)
+ 
  \method{cqp_flist}{cqp_corpus}(x, attribute, cutoff = 0, ...)
  
  \method{cqp_flist}{cqp_subcorpus}(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
@@ -21,7 +24,7 @@ cqp_flist(x, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{
-A corpus or a subcorpus object, created with the function \code{\link{corpus}} or \code{\link{subcorpus}}.
+An attribute, a corpus or a subcorpus object, created with the function \code{\link{corpus}} or \code{\link{subcorpus}}.
 }
   \item{attribute}{
 The attribute giving the modality to be counted. May be a structural attribute if \code{x} is a corpus.
