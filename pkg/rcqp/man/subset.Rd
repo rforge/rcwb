@@ -9,8 +9,8 @@ Extracting/addressing an attribute from a corpus.
 Create a 'cqp_attr' S3 object, holding a cqp attribute (structural or positional).
 }
 \usage{
-\method{`[[`}{cqp_corpus}(i, j, ...)
-\method{`$`}{cqp_corpus}(x, name, ...)
+\method{[[}{cqp_corpus}(i, j, ...)
+\method{$}{cqp_corpus}(x, name)
 }
 
 \arguments{
@@ -18,8 +18,7 @@ Create a 'cqp_attr' S3 object, holding a cqp attribute (structural or positional
   \item{j}{ Ignored }
   \item{x}{ an rcq_corpus object }
   \item{name}{ an attribute name }
-  \item{...}{ Ignored. }
-
+  \item{...}{ Ignored }
 }
 
 \references{                                                                    
@@ -30,6 +29,4 @@ Create a 'cqp_attr' S3 object, holding a cqp attribute (structural or positional
         Sylvain Loiseau - \email{sylvain.loiseau@univ-paris13.fr} - University Paris-13.\cr
 }
 
-\examples{
-}
 \keyword{cqp_attr}
