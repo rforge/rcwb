@@ -16,7 +16,7 @@ Compute the size (in number of tokens) of the regions of a structural attribute.
 }
 
 \arguments{
-  \item{corpus}{
+  \item{attribute}{
 A cqp_attr (type: structural attribute) (created for instance with \code{\link{$.cqp_corpus}}).
 }
 }
