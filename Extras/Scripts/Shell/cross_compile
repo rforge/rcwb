@@ -1,19 +1,35 @@
 #! /bin/bash
 
-# Last modification: 2012-03-24 14:02:23
+### ===========================================================================
+### File: "cross_compile"
+###                        Created: 2012-03-24 18:38:17
+###              Last modification: 2012-03-30 21:05:58
+### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+### This is part of the R package 'rcqp'.
+### ===========================================================================
 
 cd $(dirname $0)
+RCQP_SCRIPTS_DIR=`pwd`
+RCQP_CROSS_COMMON=cross_common.inc
 
-RCQP_CODE_DIR=`pwd`/../../../Current
+echo "*** Sourcing ${RCQP_CROSS_COMMON} ..."
+if [ -e ${RCQP_CROSS_COMMON} ] ; then
+	source ${RCQP_CROSS_COMMON}
+else
+	echo "can't find ${RCQP_CROSS_COMMON}"
+	exit 1
+fi
+
+RCQP_CODE_DIR=${RCQP_SCRIPTS_DIR}/../../../Current
 RCQP_CROSS_TGT=all
 
-if [ -e `pwd`/rcqpcrossrc ] ; then
-	source `pwd`/rcqpcrossrc
+if [ -e ${RCQP_SCRIPTS_DIR}/rcqpcrossrc ] ; then
+	echo "*** Sourcing '${RCQP_SCRIPTS_DIR}/rcqpcrossrc' ..."
+	source ${RCQP_SCRIPTS_DIR}/rcqpcrossrc
 else
-	echo "no file `pwd`/rcqpcrossrc"
+	echo "no file '${RCQP_SCRIPTS_DIR}/rcqpcrossrc'."
 	RCQP_CROSS_CC=i386-mingw32-gcc
-	RCQP_CROSS_HOST=${RCQP_CROSS_CC%-gcc}
-	RCQP_CROSS_BASEDIR=`pwd`/../../../CrossCompilation
 fi
 
 if [ -z $RCQP_CROSS_CC ] ; then
@@ -22,12 +38,17 @@ if [ -z $RCQP_CROSS_CC ] ; then
 fi
 
 if [ -z $RCQP_CROSS_HOST ] ; then
-	RCQP_CROSS_HOST=${RCQP_CROSS_CC%-gcc}
+	RCQP_CROSS_HOST=${RCQP_CROSS_CC%-*}
 	echo "RCQP_CROSS_HOST variable not defined. Using '$RCQP_CROSS_HOST'."
 fi
 
+if [ -z $RCQP_CROSS_ARCH ] ; then
+	RCQP_CROSS_ARCH=${RCQP_CROSS_CC%%-*}
+	echo "RCQP_CROSS_ARCH variable not defined. Using '$RCQP_CROSS_ARCH'."
+fi
+
 if [ -z $RCQP_CROSS_BASEDIR ] ; then
-	RCQP_CROSS_BASEDIR=`pwd`/../../../CrossCompilation
+	RCQP_CROSS_BASEDIR=${RCQP_SCRIPTS_DIR}/../../../CrossCompilation
 	echo "RCQP_CROSS_BASEDIR variable not defined. Using '$RCQP_CROSS_BASEDIR'."
 fi
 
@@ -37,48 +58,62 @@ if ! [ -e $RCQP_CROSS_OUTDIR ] ; then
 	mkdir -p $RCQP_CROSS_OUTDIR
 fi
 
-echo "RCQP_CODE_DIR: $RCQP_CODE_DIR"
-echo "RCQP_CROSS_BASEDIR: $RCQP_CROSS_BASEDIR"
-
-
 if [ $# == 1 ] ; then
 	RCQP_CROSS_TGT=$1
 fi
 
 
 # Compile the Pcre component
+# --------------------------
 if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "pcre" ] ; then
-	echo "Cross-compilation of 'pcre' library"
-	cd ${RCQP_CROSS_BASEDIR}/pcre-8.30
-	CC=${RCQP_CROSS_CC} CC_FOR_BUILD=gcc ./configure               \
-		--host=${RCQP_CROSS_HOST} --disable-static                       \
-		--enable-utf8 --enable-unicode-properties                  \
-		--enable-newline-is-any --disable-cpp --enable-static      \
+	echo "*** Cross-compilation of 'pcre' library ..."
+	RCQP_PCRE_TARGZ=${RCQP_PCRE_URL##*/}
+	RCQP_PCRE_DIRNAME=${RCQP_PCRE_TARGZ%%.tar.gz}
+
+	cd ${RCQP_CROSS_BASEDIR}
+	echo "*** Fetching ${RCQP_PCRE_URL} ..."
+	curl -kLO $RCQP_PCRE_URL
+
+	echo "*** Extracting Pcre sources ..."
+	tar xvf ${RCQP_PCRE_TARGZ}
+
+	echo "*** Building Pcre library ..."
+	cd ${RCQP_PCRE_DIRNAME}
+	CC=${RCQP_CROSS_CC} ./configure \
+		--host=${RCQP_CROSS_HOST} --disable-static \
+		--enable-utf8 --enable-unicode-properties \
+		--enable-newline-is-any --disable-cpp --enable-static \
 		--prefix=${RCQP_CROSS_OUTDIR}
 	if [ $? != 0 ] ; then
-		echo "Pcre configuration failed."
+		echo "*** Pcre configuration failed."
 		exit 1
 	fi
 	make clean
 	make
+	if [ $? != 0 ] ; then
+		echo "*** make failed."
+		exit 1
+	fi
 	sudo make install
 fi
 
 
 # Compile the Glib component
+# --------------------------
 if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "glib" ] ; then
-	echo "Glib cross-compilation not supported yet"
+	echo "*** Glib cross-compilation not supported yet!"
 fi
 
 
-# Compile the rcqp component
+# Compile the Rcqp component
+# --------------------------
 if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "rcqp" ] ; then
-	echo "Cross-compilation of 'rcqp' library"
+	echo "*** Cross-compilation of 'rcqp' library ..."
 	cd ${RCQP_CODE_DIR}
-	CC=${RCQP_CROSS_CC} CC_FOR_BUILD=gcc ./configure \
+	./configure \
 	  --host=${RCQP_CROSS_HOST} \
 	  --prefix=${RCQP_CROSS_OUTDIR} \
-	  RCQP_PLATFORM=mingw \
+	  RCQP_PLATFORM=mingwRcqp \
 	  CROSS_COMPILATION_DIR=${RCQP_CROSS_OUTDIR}
 	if [ $? != 0 ] ; then
 		echo "Rcqp configuration failed."
@@ -89,3 +124,4 @@ if [ $RCQP_CROSS_TGT == "all" -o $RCQP_CROSS_TGT == "rcqp" ] ; then
 	make
 fi
 
+echo "*** All done." 
