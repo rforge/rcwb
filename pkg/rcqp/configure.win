@@ -3,24 +3,24 @@
 echo "  checking rcqp library for Windows"
 allok=yes
 
-if [ ! -e src/win64/rcqp.dll ]; then
+if [ ! -e src/win32/rcqp.dll ]; then
     if [ ! -e src/rcqp-current-win.tar.gz ]; then
 	echo "  cannot find current rcqp library for Windows"
 	echo "  attempting to download it"
-	echo 'download.file("http://www-ales.univ-paris13.fr/sloiseau/pub/rcqp/rcqp-current-win.tar.gz","src/rcqp-current-win.tar.gz",mode="wb")'|${R_HOME}/bin/R --vanilla --slave
+	echo 'download.file("http://www-ales.univ-paris13.fr/sloiseau/pub/rcqp/rcqp-current-win.tar.gz","rcqp-current-win.tar.gz",mode="wb")'|${R_HOME}/bin/R --vanilla --slave
     fi
     if [ ! -e src/rcqp-current-win.tar.gz ]; then
 	allok=no
     else
 	echo "  unpacking current rcqp library for Windows"
 	tar fxz src/rcqp-current-win.tar.gz
-	if [ ! -e src/win64/rcqp.dll ]; then
+	if [ ! -e src/win32/rcqp.dll ]; then
 	    allok=no
 	fi
     fi
 fi
 
-if [ ! -e src/win64/rcqp.dll ]; then
+if [ ! -e src/win32/rcqp.dll ]; then
     allok=no
 fi
 
@@ -28,7 +28,7 @@ if [ ${allok} != yes ]; then
     echo ""
     echo " *** ERROR: unable to find rcqp library for Windows"
     echo ""
-    echo " It must be either in src/win32 and src/win64 or in a tar-ball"
+    echo " It must be either in src/win32 and src/win32 or in a tar-ball"
     echo "     src/rcqp-current-win.tar.gz"
     echo ""
     echo " You can get the latest binary ball for Windows from"
