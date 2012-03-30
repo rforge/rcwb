@@ -31,7 +31,7 @@ printed... as expected.
 
 \arguments{
   \item{x}{
-An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}} or \code{\link{cqp_kwic}} \code{\link{$.cqp_corpus}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}, \code{\link{cqp_kwic}}, or \code{\link{$.cqp_corpus}}.
 }
   \item{from}{
 Select first tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
@@ -40,7 +40,7 @@ Select first tokens (for a corpus object) or matches (for a subcorpus or cqp_kwi
 Select last tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
 }
   \item{use_value}{
-use value or id for structural attribute with values.
+use value or id for a structural attribute with values.
 }
   \item{positional.attribute}{
 Print each token of the subcorpus using the given positional attribute. 

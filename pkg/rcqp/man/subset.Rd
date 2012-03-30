@@ -3,10 +3,10 @@
 \alias{[[.cqp_corpus}
 \docType{data}
 \title{
-Extracting/adressing attribute from a corpus
+Extracting/addressing an attribute from a corpus.
 }
 \description{
-Create a 'cqp_attr' S3 object, holding a cqp attribute (structural or positional)
+Create a 'cqp_attr' S3 object, holding a cqp attribute (structural or positional).
 }
 \usage{
 \method{`\\\\[\\\\[`}{cqp_corpus}(i, j, ...)
@@ -16,7 +16,7 @@ Create a 'cqp_attr' S3 object, holding a cqp attribute (structural or positional
 \arguments{
   \item{i}{ The name of an attribute }
   \item{j}{ Ignored }
-  \item{x}{ a rcq_corpus object }
+  \item{x}{ an rcq_corpus object }
   \item{name}{ an attribute name }
   \item{...}{ Ignored. }
 

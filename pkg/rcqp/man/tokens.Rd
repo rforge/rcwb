@@ -16,7 +16,7 @@
 Print values of cqp attribute
 }
 \description{
-Get vector of tokens or types for cqp attribute.
+Get vectors of tokens or types for a cqp attribute.
 }
 \usage{
 
@@ -43,7 +43,7 @@ tokens(attribute, ...)
 
 \arguments{
   \item{attribute}{
-    An \code{cqp_attr} object, created with \code{\link{$.cqp_corpus}}.
+    A \code{cqp_attr} object, created with \code{\link{$.cqp_corpus}}.
   }
   \item{...}{
     Ignored.
@@ -56,13 +56,13 @@ tokens(attribute, ...)
     \item ntoken is the number of tokens (== size(corpus))
     \item tokens is a character vector with the actual list of tokens
     \item ntype is the number of different values
-    \item types is a character vector with the actual different values.
+    \item types is a character vector with the actual different values
   }
   For structural attributes :
   \itemize{
     \item nregion is the actual number of regions (a numeric vector of length 1)
-    \item tokens the region id ("struc") of each tokens (a numeric vector)
-	\item regions (only if the structural "has values") : the values founded on each region (a character vector)
+    \item tokens the region id ("struc") of each token (a numeric vector)
+	\item regions (only if the structural attribute "has values") : the values found on each region (a character vector)
   }
 } 
 
