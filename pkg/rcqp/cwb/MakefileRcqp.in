@@ -57,15 +57,16 @@ CQI_C_OBJ := $(CQI_C_SRC:.c=.o)
 
 # cl directory
 # ------------
-ifdef __MINGW__
-MMAPS = cl/windows-mmap.c
-else
-MMAPS =
+MMAPS_SRC = cl/windows-mmap.c
+MMAPS_OBJ := $(MMAPS_SRC:.c=.o)
+ifndef __MINGW__
+MMAPS_SRC =
 endif
+
 CL_C_SRC = cl/globals.c cl/macros.c cl/list.c cl/lexhash.c cl/bitfields.c \
 	cl/storage.c cl/fileutils.c cl/special-chars.c cl/regopt.c cl/corpus.c \
 	cl/attributes.c cl/makecomps.c cl/cdaccess.c cl/bitio.c cl/endian.c \
-	cl/compression.c cl/binsert.c cl/class-mapping.c ${MMAPS}
+	cl/compression.c cl/binsert.c cl/class-mapping.c ${MMAPS_SRC}
 
 CL_C_H := $(CL_C_SRC:.c=.h)
 CL_C_OBJ := $(CL_C_SRC:.c=.o)
@@ -148,7 +149,7 @@ all: libclcqp.a
 
 clean:
 	-${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
-	    libclcqp.a
+	    libclcqp.a ${MMAPS_OBJ}
 
 
 clean-all: clean
