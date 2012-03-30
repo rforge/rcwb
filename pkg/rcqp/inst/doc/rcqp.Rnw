@@ -4,6 +4,7 @@
 %\VignetteDepends{reshape}
 \usepackage{lmodern}
 \usepackage{makeidx}
+\usepackage{hyperref}
 
 \makeindex 
 
@@ -152,40 +153,39 @@ information named \textbf{target}\index{target} and \textbf{keyword}\index{keywo
 \textbf{fields}\index{field}: see cqi\_fdist1 et cqi\_fdist2) 
 available on each hit.
 
-All indices are 0-based in CWB: the cpos of the first token is 0, the first 
+All indices are 0-based: the cpos of the first token is 0, the first 
 id for a positional attribute\index{attribute!positional} or the first struc for a structural attribute\index{attribute!structural} is 0, etc.
 
 
 \subsection{A sample session}
 
 <<cqi_session, echo=TRUE>>=
-corpora <- cqi_list_corpora()
-corpora[1:5]
+sort(cqi_list_corpora())[1:6]
 
-# create the subcorpus "Interesting" (create the subcorpus internaliy
+# create the subcorpus "Interesting" (it creates the subcorpus internaliy
 # with the given name but does not return any result).
-cqi_query("DICKENS", "Interesting", '"interesting"');
+cqi_query("DICKENS", "Interesting", '"interest.*"');
 
 # in the CQi API, the qualified name of subcorpus is corpus:subcorpus:
 nbr_hit <- cqi_subcorpus_size("DICKENS:Interesting");
 nbr_hit
 
-### TODO : zero-based?
-# A matrix: one line by hit, four columns: match, matchend, target, keyword.
-dump <- cqi_dump_subcorpus("DICKENS:Interesting",1,20)
-dump[1:10,]
+# The subcorpus as a matrix: one line by hit, 
+# four columns: match, matchend, target, keyword.
+dump <- cqi_dump_subcorpus("DICKENS:Interesting",0,10)
+dump
 
 # get the lemma of the "match" slot of each hit:
 # Word's attributes (such as "lemma", "word", "pos") are always accessed 
 # through qualified name : "corpus.attribute"
 lemma <- cqi_cpos2str("DICKENS.lemma", dump[,1])
-lemma[1:10]
+lemma
 
 # You can acheave the same result in one more steps, using id as an 
 # intermediate step: 
 ids <- cqi_cpos2id("DICKENS.lemma", dump[,1]);
 lemma <- cqi_id2str("DICKENS.lemma", ids);
-lemma[1:10]
+lemma
 
 # cqi_fdist1 create a frequency list according to one field (match, 
 # matchend...) in a query; cqi_fdist2 a cross tabulated 
@@ -554,10 +554,11 @@ c
 
 \subsubsection{Creating a corpus}
 
-The first step in any sequence of this set of functions is creating a 
-corpus\index{corpus} object. A \texttt{corpus} object is created with the function \texttt{corpus()}.
-This object may be used with the two functions below, as well as for creating 
-\texttt{subcorpus}\index{subcorpus}, \texttt{cqp\_flist} and \texttt{cqp\_ftable} objects (see below).
+The first step is creating a corpus\index{corpus} object.  A
+\texttt{corpus} object is created with the function \texttt{corpus()}.
+This object may be used with the two functions below, as well as for
+creating \texttt{subcorpus}\index{subcorpus}, \texttt{cqp\_flist} and
+\texttt{cqp\_ftable} objects (see below).
 
 \paragraph{print}
 \index{print}
@@ -589,6 +590,73 @@ attribute.
 c <- corpus("DICKENS");
 sentences <- region_sizes(c$s);
 hist(sentences);
+@
+
+% ======================================================
+
+\subsubsection{Accessing attribute}
+
+Attribute\index{attribute} can be accessed very easily by the "\$" and "[[" 
+operator.\index{\$.cqp\_corpus}\index{[[.cqp\_corpus}. The former suppose 
+to type the exact name, the latter allows for using a variable. Here are 
+three identical way of accessing the \texttt{word} attribute.
+
+<<attr_intro, echo=TRUE>>=
+c <- corpus("DICKENS");
+x <- c$word
+x <- c[["word"]]
+attr <- "word"
+x <- c[[ attr ]]
+@
+
+Once created, several functions are available.
+
+\index{attribute!positional}Positional attribute have the functions
+\texttt{ntype}, \texttt{types}, \texttt{ntoken} and \texttt{tokens}.
+\index{ntype}\index{types}\index{ntoken}\index{tokens}
+
+<<attr_positional, echo=TRUE>>=
+c <- corpus("DICKENS");
+a <- c$pos
+ntoken(a)
+tokens(a)[1:5]
+
+ntype(a)
+types(a)
+
+w <- c$word
+ntoken(w)
+tokens(w)[1:5]
+
+ntype(w)
+types(w)[1:10]
+@
+
+\index{attribute!structural}Structural attribute have the functions
+\texttt{nregions}, i.e. the number of regions, \texttt{tokens} : the 
+region id (\texttt{struc}) of each token of the corpus. Moreover, 
+for structural attribute with value, the function \texttt{regions} allows 
+for retreiving the value of each region.
+\index{nregion}\index{tokens}\index{regions}
+
+<<attr_structural, echo=TRUE>>=
+c <- corpus("DICKENS");
+s <- c$s
+nregion(s)
+
+np <- c$np_h
+nregion(np)
+regions(np)[1:10]
+@
+
+A function \texttt{summary}\index{summary.cqp\_attr} print information 
+about an attribute:
+
+<<attr_summary, echo=TRUE>>=
+c <- corpus("DICKENS");
+summary(c$lemma)
+summary(c$s)
+summary(c$np_h);
 @
 
 % ======================================================
