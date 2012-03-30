@@ -197,7 +197,7 @@ regions.cqp_attr <- function(attribute, ...) {
 }
 
 .is.positional <- function (attribute) {
-	if(class(attribute != "cqp_attr")) {
+	if(class(attribute) != "cqp_attr") {
 		stop("attr must be a cqp_attr object");
 	}
 	type <- attr(attribute, "type");
@@ -211,7 +211,7 @@ regions.cqp_attr <- function(attribute, ...) {
 }
 
 .is.structural <- function (attribute) {
-	if(class(attribute != "cqp_attr")) {
+	if(class(attribute) != "cqp_attr") {
 		stop("attr must be a cqp_attr object");
 	}
 	type <- attr(attribute, "type");
@@ -291,7 +291,9 @@ summary.cqp_attr <- function(object, ...) {
 	} else {
 		has_value <- attr(attribute, "has_value");
 		if (has_value) {
-			number_of_types <- ntype(object);
+			re <- regions(object);
+			t <- unique(re);
+			number_of_types <- length(t);
 			cat(paste(
 				qualified.attribute.name, 
 				" (",
@@ -326,7 +328,7 @@ summary.cqp_attr <- function(object, ...) {
 }
 
 print.cqp_attr <- function(x, ...) {
-	print(tokens(object));
+	print(tokens(x));
 }
 
 
@@ -703,7 +705,7 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 	qualified.attribute.name <- .cqp_name(x, attribute);
 
 	if (attribute %in% positional) {
-		max.id <- ntype(x, attribute) - 1;
+		max.id <- cqi_lexicon_size(qualified.attribute.name) - 1;
 		ids <- 0:max.id;
 		flist <- cqi_id2freq(qualified.attribute.name, ids);
 		str <- cqi_id2str(qualified.attribute.name, ids);
