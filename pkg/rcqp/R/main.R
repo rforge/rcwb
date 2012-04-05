@@ -36,6 +36,9 @@ cqi_query <- function(mother, child, query) {
 	if (nchar(child) == 0) {
 		child <- "Last"
 	}
+	if (! grepl("[A-Z].+", child)) {
+		stop("child argument but start with upper case letter");
+	}
 	.Call("rcqpCmd_query", mother, child, query, PACKAGE="rcqp")
     return(invisible())
 }
