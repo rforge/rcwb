@@ -7,7 +7,7 @@ if [ ! -e src/win32/rcqp.dll ]; then
     if [ ! -e src/rcqp-current-win.tar.gz ]; then
 	echo "  cannot find current rcqp library for Windows"
 	echo "  attempting to download it"
-	echo 'download.file("http://www-ales.univ-paris13.fr/sloiseau/pub/rcqp/rcqp-current-win.tar.gz","rcqp-current-win.tar.gz",mode="wb")'|${R_HOME}/bin/R --vanilla --slave
+	echo 'download.file("http://www-ales.univ-paris13.fr/sloiseau/pub/rcqp/rcqp-current-win.tar.gz","src/rcqp-current-win.tar.gz",mode="wb")'|${R_HOME}/bin/R --vanilla --slave
     fi
     if [ ! -e src/rcqp-current-win.tar.gz ]; then
 	allok=no
