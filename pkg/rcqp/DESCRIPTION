@@ -13,3 +13,4 @@ Lazyload: yes
 URL: http://www.r-project.org
 Collate: main.R zzz.R s3.R
 Encoding: latin1
+SystemRequirements: GNU make

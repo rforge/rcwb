@@ -16,10 +16,6 @@ AC_PREREQ(2.60)
 
 AC_INIT([rcqp],[1.0])
 
-# Cross-compilation with mingw
-test ${CROSS_COMPILATION_DIR:=}
-AC_SUBST(CROSS_COMPILATION_DIR)
-
 # Platform-specific configuration (see configRcqp.mk)
 test ${RCQP_PLATFORM:=linux}
 echo "RCQP_PLATFORM: ${RCQP_PLATFORM}"
@@ -31,13 +27,32 @@ echo "RCQP_SITE: ${RCQP_SITE}"
 AC_SUBST(RCQP_SITE)
 
 
+: ${R_HOME=`R RHOME`}
+if test -z "${R_HOME}"; then
+	echo "could not determine R_HOME"
+	exit 1
+fi
+
+CC=`"${R_HOME}/bin/R" CMD config CC`
+
+RCQP_R_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
+RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
+RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
+
+AC_SUBST(RCQP_R_CFLAGS)
+AC_SUBST(RCQP_R_LIBR)
+AC_SUBST(RCQP_R_CPPFLAGS)
+
+# Cross-compilation with mingw
+test ${CROSS_COMPILATION_DIR:=}
+AC_SUBST(CROSS_COMPILATION_DIR)
+
 if test "${RCQP_PLATFORM}" = "mingw" -o "${RCQP_PLATFORM}" = "mingwRcqp" ; then
 	RCQP_PLATFORM="mingwRcqp"
 	RCQP_CROSS_COMPILING=1
 else
 	RCQP_CROSS_COMPILING=0
 fi
-
 
 if test "${RCQP_CROSS_COMPILING}" = 1; then
 	echo "rcqp cross compiling"

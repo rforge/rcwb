@@ -106,8 +106,8 @@ The configuration script needs to know about the following variables:
 	RCQP_CROSS_ARCH
 
 The easiest way to define them is to create a configuration file named
-'rcqpcrossrc' in the same directory as the script itself. This file should
-contain definitions for the variables above. For instance
+'rcqpcrossrc' in the same directory as the configure script itself. This
+file should contain definitions for the variables above. For instance
 	RCQP_CROSS_CC=i386-mingw32-gcc
 	RCQP_CROSS_HOST=i386-mingw32
 	RCQP_CROSS_ARCH=i386

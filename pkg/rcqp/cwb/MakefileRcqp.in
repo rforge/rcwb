@@ -12,6 +12,8 @@
 TOP = $(shell pwd)
 include $(TOP)/configRcqp.mk
 
+CFLAGS:=${CFLAGS} @RCQP_R_CFLAGS@
+
 ## Cross-compilation with mingw
 ifdef __MINGW__ 
 CROSS_COMPILATION_DIR = @CROSS_COMPILATION_DIR@
