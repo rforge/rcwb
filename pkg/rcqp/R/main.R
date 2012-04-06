@@ -36,8 +36,11 @@ cqi_query <- function(mother, child, query) {
 	if (nchar(child) == 0) {
 		child <- "Last"
 	}
-	if (! grepl("[A-Z].+", child)) {
-		stop("child argument but start with upper case letter");
+	if (! grepl("[A-Z][[:alnum:]_-]+", child)) {
+		stop(paste(
+			"The name of a subcorpus must start with an uppercase",
+			"letter and can contain both uppercase and lowercase",
+			"letters, underscores, dashes and digits."));
 	}
 	.Call("rcqpCmd_query", mother, child, query, PACKAGE="rcqp")
     return(invisible())
