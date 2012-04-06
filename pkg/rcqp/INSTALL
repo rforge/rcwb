@@ -133,7 +133,7 @@ instance:
 
   ./configure RCQP_PLATFORM=mingwRcqp \
     CROSS_COMPILATION_DIR=/path/to/external/libs \
-    --host=i386-mingw32
+    --host=$RCQP_CROSS_HOST
 
 where you replace /path/to/external/libs by the appropriate path.
 
