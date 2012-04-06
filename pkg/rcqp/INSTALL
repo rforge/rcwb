@@ -142,14 +142,8 @@ src/ subdirectory and execute the following instructions
 	make clean
 	make
 
-If everything goes right you should have at the end a rcqp.dll library in
-the src/wind323 subdirectory. Now go to the directory containing the source
-code, i-e the directory containing the rcqp/ directory, execute the
-following command:
-	R CMD install rcqp
-
-
-
+If everything goes right you should have at the end a rcqp.dll library in the
+CROSS_COMPILATION_DIR subdirectory.
 
 Troubleshooting
 ===============
