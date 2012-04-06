@@ -131,7 +131,7 @@ You must also specify the RCQP_PLATFORM variable and set its value to
 So a typical configuration command for cross-compilation for Windows is for
 instance:
 
-  ./configure RCQP_PLATFORM=mingw \
+  ./configure RCQP_PLATFORM=mingwRcqp \
     CROSS_COMPILATION_DIR=/path/to/external/libs \
     --host=i386-mingw32
 
