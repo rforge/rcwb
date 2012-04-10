@@ -1,7 +1,7 @@
 ### ===========================================================================
 ### File: "configure.ac"
 ###                        Created: 2010-06-24 08:46:27
-###              Last modification: 2012-01-28 12:49:10
+###              Last modification: 2012-04-10 22:13:11
 ### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 ###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 ### This is part of the R package 'rcqp'.
@@ -9,8 +9,6 @@
 ###
 ### Process this file with autoconf to produce a configure script.
 ###
-
-
 
 AC_PREREQ(2.60)
 
@@ -36,8 +34,10 @@ fi
 CC=`"${R_HOME}/bin/R" CMD config CC`
 
 RCQP_R_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
-RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
-RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
+# RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
+# RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
+RCQP_R_CPPFLAGS="-I${R_HOME}/include"
+RCQP_R_LIBR="-L${R_HOME}/lib -lR"
 
 AC_SUBST(RCQP_R_CFLAGS)
 AC_SUBST(RCQP_R_LIBR)

@@ -96,15 +96,16 @@ cwb:
 clean:
 	${MAKE} --makefile=MakefileRcqp -C ../cwb clean
 	${RM} *.o *.so
+	${RM} -rdf ../config.log ../config.status ../autom4te.cache
 	cd ../inst/doc/; \
-	${RM} *.tex *.aux *.log *.toc *.idx *.synctex.gz
+	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
 
 
 clean-all:
 	${MAKE} --makefile=MakefileRcqp -C ../cwb clean-all
 	${RM} *.o *.so Makefile
 	cd ../inst/doc/; \
-	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.pdf *.synctex.gz
+	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out *.pdf *.synctex.gz
 
 
 vignette:
