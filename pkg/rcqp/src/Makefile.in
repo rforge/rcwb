@@ -200,12 +200,10 @@ ${CL_BISON_OBJ}: ${CL_BISON_C}
 all: libclcqp.a
 
 
-.PHONY: clean
-
-
 clean:
 	${RM} *.o *.so
-	${RM} -rdf ../config.log ../config.status ../autom4te.cache
+	${RM} -rf ../config.log ../config.status ../autom4te.cache/*
+	rmdir ../autom4te.cache
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
 	${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
