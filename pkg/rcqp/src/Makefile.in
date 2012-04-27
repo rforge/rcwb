@@ -204,7 +204,6 @@ all: libclcqp.a
 
 
 clean:
-	${MAKE} --makefile=MakefileRcqp -C ../cwb clean
 	${RM} *.o *.so
 	${RM} -rdf ../config.log ../config.status ../autom4te.cache
 	cd ../inst/doc/; \
@@ -214,7 +213,6 @@ clean:
 
 
 clean-all:
-	${MAKE} --makefile=MakefileRcqp -C ../cwb clean-all
 	${RM} *.o *.so Makefile
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out *.pdf *.synctex.gz
@@ -222,6 +220,7 @@ clean-all:
 	    ${CQP_BISON_C} ${CQP_BISON_H} \
 	    ${CL_FLEX_C} ${CL_FLEX_H} \
 	    ${CL_BISON_C} ${CL_BISON_H}
+
 
 vignette:
 	cd ../inst/doc; \
