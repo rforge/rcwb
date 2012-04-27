@@ -14,15 +14,16 @@ AC_PREREQ(2.60)
 
 AC_INIT([rcqp],[1.0])
 
-# Platform-specific configuration (see configRcqp.mk)
-test ${RCQP_PLATFORM:=linux}
-echo "RCQP_PLATFORM: ${RCQP_PLATFORM}"
-AC_SUBST(RCQP_PLATFORM)
 
-# Site-specific configuration (see configRcqp.mk)
-test ${RCQP_SITE:=standard}
-echo "RCQP_SITE: ${RCQP_SITE}"
-AC_SUBST(RCQP_SITE)
+RCQP_PCRE_CFLAGS=`pkg-config --cflags libpcre`
+RCQP_PCRE_LFLAGS=`pkg-config --libs libpcre`
+AC_SUBST(RCQP_PCRE_CFLAGS)
+AC_SUBST(RCQP_PCRE_LFLAGS)
+
+RCQP_GLIB_CFLAGS=`pkg-config --cflags glib-2.0`
+RCQP_GLIB_LFLAGS=`pkg-config --libs glib-2.0`
+AC_SUBST(RCQP_GLIB_CFLAGS)
+AC_SUBST(RCQP_GLIB_LFLAGS)
 
 
 : ${R_HOME=`R RHOME`}
@@ -34,10 +35,8 @@ fi
 CC=`"${R_HOME}/bin/R" CMD config CC`
 
 RCQP_R_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
-# RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
-# RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
-RCQP_R_CPPFLAGS="-I${R_HOME}/include"
-RCQP_R_LIBR="-L${R_HOME}/lib -lR"
+RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
+RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
 
 AC_SUBST(RCQP_R_CFLAGS)
 AC_SUBST(RCQP_R_LIBR)
@@ -110,9 +109,7 @@ AC_PATH_PROGS(PKGCONFIG, pkg-config)
 # ---------------------
 AC_CONFIG_FILES(
 [ src/Makefile
-cwb/configRcqp.mk
 cwb/config/platform/mingwRcqp
-cwb/MakefileRcqp
 ])
 
 AC_OUTPUT

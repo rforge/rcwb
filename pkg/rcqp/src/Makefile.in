@@ -17,27 +17,18 @@
 # -L/opt/local/lib -lglib-2.0 -lintl  
 
 
-## Read configuration settings for cwb
-TOP = $(shell pwd)/../cwb
-include $(TOP)/configRcqp.mk
-
-CFLAGS:=${CFLAGS} @RCQP_R_CFLAGS@
+ifdef __MINGW__ 
+	CROSS_COMPILATION_DIR = @CROSS_COMPILATION_DIR@
+	CFLAGS:=${CFLAGS} -I${CROSS_COMPILATION_DIR}/include
+endif
 
 # Cross-compilation with mingw
 ifdef __MINGW__ 
 	CROSS_COMPILATION_LFLAGS = -L@CROSS_COMPILATION_DIR@/lib
-	RCQP_LIB_SUFFIX=.dll
-	RCQP_SHAREDLIB_FLAG=-shared
 	RCQP_OUTDIR=@CROSS_COMPILATION_DIR@/lib/
 else
 	CROSS_COMPILATION_LFLAGS = 
-	RCQP_LIB_SUFFIX=.so
 	RCQP_OUTDIR=
-	ifeq ($(shell uname),Darwin)
-	RCQP_SHAREDLIB_FLAG=-dynamiclib
-	else
-	RCQP_SHAREDLIB_FLAG=-shared
-	endif
 endif
 
 
@@ -45,22 +36,88 @@ endif
 # ============
 
 # C files
-RCQP_C_SRC := rcqpCommands.c rcqpUtils.c
+RCQP_C_SRC = rcqpCommands.c rcqpUtils.c
 
-RCQP_C_OBJ := $(RCQP_C_SRC:.c=.o)
+RCQP_C_OBJ = $(RCQP_C_SRC:.c=.o)
 
-RCQP_VIGNETTE_RNW := rcqp.Rnw
-RCQP_VIGNETTE_TEX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
-RCQP_VIGNETTE_IDX :=  $(RCQP_VIGNETTE_RNW:.Rnw=.idx)
-RCQP_VIGNETTE_PDF :=  $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
+RCQP_VIGNETTE_RNW = rcqp.Rnw
+RCQP_VIGNETTE_TEX = $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
+RCQP_VIGNETTE_IDX = $(RCQP_VIGNETTE_RNW:.Rnw=.idx)
+RCQP_VIGNETTE_PDF = $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
 
+
+# cqp directory
+# -------------
+CQP_C_SRC = ../cwb/cqp/ascii-print.c ../cwb/cqp/attlist.c ../cwb/cqp/builtins.c ../cwb/cqp/concordance.c \
+	../cwb/cqp/context_descriptor.c ../cwb/cqp/corpmanag.c ../cwb/cqp/cqp.c ../cwb/cqp/eval.c \
+	../cwb/cqp/groups.c ../cwb/cqp/hash.c ../cwb/cqp/html-print.c ../cwb/cqp/latex-print.c ../cwb/cqp/macro.c \
+	../cwb/cqp/matchlist.c ../cwb/cqp/options.c ../cwb/cqp/output.c ../cwb/cqp/parse_actions.c \
+	../cwb/cqp/print-modes.c ../cwb/cqp/print_align.c ../cwb/cqp/ranges.c ../cwb/cqp/regex2dfa.c \
+	../cwb/cqp/sgml-print.c ../cwb/cqp/symtab.c ../cwb/cqp/table.c ../cwb/cqp/targets.c ../cwb/cqp/tree.c \
+	../cwb/cqp/variables.c
+CQP_C_H = $(CQP_C_SRC:.c=.h)
+CQP_C_OBJ = $(CQP_C_SRC:.c=.o)
+
+CQP_FLEX_SRC = ../cwb/cqp/parser.l
+CQP_FLEX_C = $(CQP_FLEX_SRC:.l=.yy.c)
+CQP_FLEX_H = $(CQP_FLEX_SRC:.l=.yy.h)
+CQP_FLEX_OBJ = $(CQP_FLEX_C:.c=.o)
+
+CQP_BISON_SRC = ../cwb/cqp/parser.y
+CQP_BISON_C = $(CQP_BISON_SRC:.y=.tab.c)
+CQP_BISON_H = $(CQP_BISON_SRC:.y=.tab.h)
+CQP_BISON_OBJ = $(CQP_BISON_C:.c=.o)
+
+CQP_FLEX_FLAGS=
+CQP_BISON_FLAGS=
+
+
+# CQi directory
+# -------------
+CQI_C_SRC = ../cwb/CQi/server.c ../cwb/CQi/auth.c 
+CQI_C_H = $(CQI_C_SRC:.c=.h) ../cwb/CQi/cqi.h
+CQI_C_OBJ = $(CQI_C_SRC:.c=.o)
+
+
+# cl directory
+# ------------
+MMAPS_SRC = ../cwb/cl/windows-mmap.c
+MMAPS_OBJ = $(MMAPS_SRC:.c=.o)
+ifndef __MINGW__
+MMAPS_SRC =
+endif
+
+CL_C_SRC = ../cwb/cl/globals.c ../cwb/cl/macros.c ../cwb/cl/list.c ../cwb/cl/lexhash.c ../cwb/cl/bitfields.c \
+	../cwb/cl/storage.c ../cwb/cl/fileutils.c ../cwb/cl/special-chars.c ../cwb/cl/regopt.c ../cwb/cl/corpus.c \
+	../cwb/cl/attributes.c ../cwb/cl/makecomps.c ../cwb/cl/cdaccess.c ../cwb/cl/bitio.c ../cwb/cl/endian.c \
+	../cwb/cl/compression.c ../cwb/cl/binsert.c ../cwb/cl/class-mapping.c ${MMAPS_SRC}
+
+CL_C_H = $(CL_C_SRC:.c=.h)
+CL_C_OBJ = $(CL_C_SRC:.c=.o)
+
+CL_FLEX_SRC = ../cwb/cl/registry.l
+CL_FLEX_C = $(CL_FLEX_SRC:.l=.yy.c)
+CL_FLEX_H = $(CL_FLEX_SRC:.l=.yy.h)
+CL_FLEX_OBJ = $(CL_FLEX_C:.c=.o)
+
+CL_BISON_SRC = ../cwb/cl/registry.y
+CL_BISON_C = $(CL_BISON_SRC:.y=.tab.c)
+CL_BISON_H = $(CL_BISON_SRC:.y=.tab.h)
+CL_BISON_OBJ = $(CL_BISON_C:.c=.o)
+
+CL_FLEX_FLAGS=-Pcreg
+CL_BISON_FLAGS=-p creg -v
+
+
+CWB_C_OBJ = ${CQP_C_OBJ} ${CQI_C_OBJ} ${CL_C_OBJ}
+CWB_FLEX_OBJ = ${CQP_FLEX_OBJ} ${CL_FLEX_OBJ}
+CWB_BISON_OBJ = ${CQP_BISON_OBJ} ${CL_BISON_OBJ}
+ 
 
 # Substitutable variables
 # =======================
 
-RCQP_STATLIB_CL=../cwb/cl/libcl.a
-RCQP_STATLIB_CQP=../cwb/cqp/libcqp.a
-RCQP_STATLIB=../cwb/libclcqp.a
+RCQP_STATLIB=libclcqp.a
 
 RCQP_R_CPPFLAGS=@RCQP_R_CPPFLAGS@
 
@@ -70,24 +127,77 @@ else
 	RCQP_R_LIBR=@RCQP_R_LIBR@
 endif
 
+FLEX_PRG=@LEX@
+BISON_PRG=@YACC@
+
+RCQP_PCRE_CFLAGS=@RCQP_PCRE_CFLAGS@
+RCQP_PCRE_LFLAGS=@RCQP_PCRE_LFLAGS@
+
+RCQP_GLIB_CFLAGS=@RCQP_GLIB_CFLAGS@
+RCQP_GLIB_LFLAGS=@RCQP_GLIB_LFLAGS@
+
+CFLAGS := ${CFLAGS} @RCQP_R_CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@
+
 
 
 # Targets
 # =======
 
-rcqp: ${RCQP_C_SRC} cwb
+rcqp: ${RCQP_C_SRC} libclcqp.a
 	# Compile the C files
 	${CC} ${CFLAGS} -c ${RCQP_C_SRC} ${RCQP_R_CPPFLAGS}
 	#
 	# Link the library
-	${CC} -o ${RCQP_OUTDIR}$@$(RCQP_LIB_SUFFIX) $(RCQP_SHAREDLIB_FLAG) ${RCQP_C_OBJ} \
+	${CC} -o ${RCQP_OUTDIR}$@$(SHLIB_EXT) $(DYLIB_LDFLAGS) ${RCQP_C_OBJ} \
 		${RCQP_STATLIB} \
-	    $(CROSS_COMPILATION_LFLAGS) $(LDFLAGS_ALL) $(LDFLAGS_CQP) \
+	    $(CROSS_COMPILATION_LFLAGS) $(LDFLAGS_ALL) $(RCQP_PCRE_LFLAGS) $(RCQP_GLIB_LFLAGS) \
 		${RCQP_R_LIBR}
 
 
-cwb:
-	${MAKE} --makefile=MakefileRcqp -C ../cwb
+# The order of the prerequisites is important: bison, then flex, 
+# then the C source files
+libclcqp.a: ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
+	rm -f $@
+	${AR} cq $@ ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} 
+	${RANLIB} $@
+
+
+${CQP_FLEX_C}: ${CQP_FLEX_SRC}
+	${FLEX_PRG} ${CQP_FLEX_FLAGS} --header-file=${CQP_FLEX_H} -o ${CQP_FLEX_C} ${CQP_FLEX_SRC}
+
+
+${CQP_BISON_C}: ${CQP_BISON_SRC}
+	${BISON_PRG} ${CQP_BISON_FLAGS} --defines=${CQP_BISON_H} -o ${CQP_BISON_C} ${CQP_BISON_SRC}
+
+
+${CQP_FLEX_OBJ}: ${CQP_FLEX_C}
+	${CC} -c ${CFLAGS} -o ${CQP_FLEX_OBJ} ${CQP_FLEX_C}
+
+
+${CQP_BISON_OBJ}: ${CQP_BISON_C}
+	${CC} -c ${CFLAGS} -o ${CQP_BISON_OBJ} ${CQP_BISON_C}
+
+
+${CL_FLEX_C}: ${CL_FLEX_SRC}
+	${FLEX_PRG} ${CL_FLEX_FLAGS} --header-file=${CL_FLEX_H} -o ${CL_FLEX_C} ${CL_FLEX_SRC}
+
+
+${CL_BISON_C}: ${CL_BISON_SRC}
+	${BISON_PRG} ${CL_BISON_FLAGS} --defines=${CL_BISON_H} -o ${CL_BISON_C} ${CL_BISON_SRC}
+
+
+${CL_FLEX_OBJ}: ${CL_FLEX_C}
+	${CC} -c ${CFLAGS} -o ${CL_FLEX_OBJ} ${CL_FLEX_C}
+
+
+${CL_BISON_OBJ}: ${CL_BISON_C}
+	${CC} -c ${CFLAGS} -o ${CL_BISON_OBJ} ${CL_BISON_C}
+
+
+
+.PHONY: all clean clean-all
+
+all: libclcqp.a
 
 
 .PHONY: clean
@@ -99,6 +209,8 @@ clean:
 	${RM} -rdf ../config.log ../config.status ../autom4te.cache
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
+	${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
+	    ../cwb/libclcqp.a ${MMAPS_OBJ}
 
 
 clean-all:
@@ -106,7 +218,10 @@ clean-all:
 	${RM} *.o *.so Makefile
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out *.pdf *.synctex.gz
-
+	${RM} ${CQP_FLEX_C} ${CQP_FLEX_H} \
+	    ${CQP_BISON_C} ${CQP_BISON_H} \
+	    ${CL_FLEX_C} ${CL_FLEX_H} \
+	    ${CL_BISON_C} ${CL_BISON_H}
 
 vignette:
 	cd ../inst/doc; \

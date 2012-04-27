@@ -9,8 +9,8 @@
 
 
 ## Read configuration settings and standard definitions
-TOP = $(shell pwd)
-include $(TOP)/configRcqp.mk
+
+$(info >>>>>>>>>  cc: ${CC})
 
 CFLAGS:=${CFLAGS} @RCQP_R_CFLAGS@
 
@@ -106,7 +106,7 @@ BISON_PRG=@YACC@
 # The order of the prerequisites is important: bison, then flex, 
 # then the C source files
 libclcqp.a: ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
-	${RM} $@
+	rm $@
 	${AR} $@ ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} 
 	${RANLIB} $@
 

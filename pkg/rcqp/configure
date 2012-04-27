@@ -583,8 +583,10 @@ CROSS_COMPILATION_DIR
 RCQP_R_CPPFLAGS
 RCQP_R_LIBR
 RCQP_R_CFLAGS
-RCQP_SITE
-RCQP_PLATFORM
+RCQP_GLIB_LFLAGS
+RCQP_GLIB_CFLAGS
+RCQP_PCRE_LFLAGS
+RCQP_PCRE_CFLAGS
 target_alias
 host_alias
 build_alias
@@ -1775,14 +1777,15 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
-# Platform-specific configuration (see configRcqp.mk)
-test ${RCQP_PLATFORM:=linux}
-echo "RCQP_PLATFORM: ${RCQP_PLATFORM}"
+
+RCQP_PCRE_CFLAGS=`pkg-config --cflags libpcre`
+RCQP_PCRE_LFLAGS=`pkg-config --libs libpcre`
 
 
-# Site-specific configuration (see configRcqp.mk)
-test ${RCQP_SITE:=standard}
-echo "RCQP_SITE: ${RCQP_SITE}"
+
+RCQP_GLIB_CFLAGS=`pkg-config --cflags glib-2.0`
+RCQP_GLIB_LFLAGS=`pkg-config --libs glib-2.0`
+
 
 
 
@@ -1795,10 +1798,8 @@ fi
 CC=`"${R_HOME}/bin/R" CMD config CC`
 
 RCQP_R_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
-# RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
-# RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
-RCQP_R_LIBR="-L${R_HOME}/lib -lR"
-RCQP_R_CPPFLAGS="-I${R_HOME}/include"
+RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
+RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
 
 
 
@@ -2994,7 +2995,7 @@ done
 
 # Process the .in files
 # ---------------------
-ac_config_files="$ac_config_files src/Makefile cwb/configRcqp.mk cwb/config/platform/mingwRcqp cwb/MakefileRcqp"
+ac_config_files="$ac_config_files src/Makefile cwb/config/platform/mingwRcqp"
 
 
 cat >confcache <<\_ACEOF
@@ -3715,9 +3716,7 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
-    "cwb/configRcqp.mk") CONFIG_FILES="$CONFIG_FILES cwb/configRcqp.mk" ;;
     "cwb/config/platform/mingwRcqp") CONFIG_FILES="$CONFIG_FILES cwb/config/platform/mingwRcqp" ;;
-    "cwb/MakefileRcqp") CONFIG_FILES="$CONFIG_FILES cwb/MakefileRcqp" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
