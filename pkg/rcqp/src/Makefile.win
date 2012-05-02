@@ -1,2 +1,2 @@
 all:
-	echo "Nothing to do. Compiled libraries are downloaded by configure.win"
+	@echo "Nothing to do. Compiled libraries are downloaded by configure.win."

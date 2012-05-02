@@ -203,7 +203,9 @@ all: libclcqp.a
 clean:
 	${RM} *.o *.so
 	${RM} -rf ../config.log ../config.status ../autom4te.cache/*
-	rmdir ../autom4te.cache
+	if test -e ../autom4te.cache; then \
+		rmdir ../autom4te.cache; \
+	fi
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
 	${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
