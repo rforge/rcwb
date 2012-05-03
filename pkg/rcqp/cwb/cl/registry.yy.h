@@ -1,10 +1,10 @@
-#ifndef yyHEADER_H
-#define yyHEADER_H 1
-#define yyIN_HEADER 1
+#ifndef cregHEADER_H
+#define cregHEADER_H 1
+#define cregIN_HEADER 1
 
-#line 6 "../cwb/cqp/parser.yy.h"
+#line 6 "../cwb/cl/registry.yy.h"
 
-#line 8 "../cwb/cqp/parser.yy.h"
+#line 8 "../cwb/cl/registry.yy.h"
 
 #define  YY_INT_ALIGNED short int
 
@@ -122,9 +122,9 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int yyleng;
+extern int cregleng;
 
-extern FILE *yyin, *yyout;
+extern FILE *cregin, *cregout;
 
 #ifndef YY_TYPEDEF_YY_SIZE_T
 #define YY_TYPEDEF_YY_SIZE_T
@@ -182,31 +182,31 @@ struct yy_buffer_state
 	};
 #endif /* !YY_STRUCT_YY_BUFFER_STATE */
 
-void yyrestart (FILE *input_file  );
-void yy_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE yy_create_buffer (FILE *file,int size  );
-void yy_delete_buffer (YY_BUFFER_STATE b  );
-void yy_flush_buffer (YY_BUFFER_STATE b  );
-void yypush_buffer_state (YY_BUFFER_STATE new_buffer  );
-void yypop_buffer_state (void );
+void cregrestart (FILE *input_file  );
+void creg_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
+YY_BUFFER_STATE creg_create_buffer (FILE *file,int size  );
+void creg_delete_buffer (YY_BUFFER_STATE b  );
+void creg_flush_buffer (YY_BUFFER_STATE b  );
+void cregpush_buffer_state (YY_BUFFER_STATE new_buffer  );
+void cregpop_buffer_state (void );
 
-YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size  );
-YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE creg_scan_buffer (char *base,yy_size_t size  );
+YY_BUFFER_STATE creg_scan_string (yyconst char *yy_str  );
+YY_BUFFER_STATE creg_scan_bytes (yyconst char *bytes,int len  );
 
-void *yyalloc (yy_size_t  );
-void *yyrealloc (void *,yy_size_t  );
-void yyfree (void *  );
+void *cregalloc (yy_size_t  );
+void *cregrealloc (void *,yy_size_t  );
+void cregfree (void *  );
 
 /* Begin user sect3 */
 
-#define yywrap(n) 1
+#define cregwrap(n) 1
 #define YY_SKIP_YYWRAP
 
-extern int yylineno;
+extern int creglineno;
 
-extern char *yytext;
-#define yytext_ptr yytext
+extern char *cregtext;
+#define yytext_ptr cregtext
 
 #ifdef YY_HEADER_EXPORT_START_CONDITIONS
 #define INITIAL 0
@@ -228,31 +228,31 @@ extern char *yytext;
 /* Accessor methods to globals.
    These are made visible to non-reentrant scanners for convenience. */
 
-int yylex_destroy (void );
+int creglex_destroy (void );
 
-int yyget_debug (void );
+int cregget_debug (void );
 
-void yyset_debug (int debug_flag  );
+void cregset_debug (int debug_flag  );
 
-YY_EXTRA_TYPE yyget_extra (void );
+YY_EXTRA_TYPE cregget_extra (void );
 
-void yyset_extra (YY_EXTRA_TYPE user_defined  );
+void cregset_extra (YY_EXTRA_TYPE user_defined  );
 
-FILE *yyget_in (void );
+FILE *cregget_in (void );
 
-void yyset_in  (FILE * in_str  );
+void cregset_in  (FILE * in_str  );
 
-FILE *yyget_out (void );
+FILE *cregget_out (void );
 
-void yyset_out  (FILE * out_str  );
+void cregset_out  (FILE * out_str  );
 
-int yyget_leng (void );
+int cregget_leng (void );
 
-char *yyget_text (void );
+char *cregget_text (void );
 
-int yyget_lineno (void );
+int cregget_lineno (void );
 
-void yyset_lineno (int line_number  );
+void cregset_lineno (int line_number  );
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -260,9 +260,9 @@ void yyset_lineno (int line_number  );
 
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
-extern "C" int yywrap (void );
+extern "C" int cregwrap (void );
 #else
-extern int yywrap (void );
+extern int cregwrap (void );
 #endif
 #endif
 
@@ -294,9 +294,9 @@ static int yy_flex_strlen (yyconst char * );
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
 
-extern int yylex (void);
+extern int creglex (void);
 
-#define YY_DECL int yylex (void)
+#define YY_DECL int creglex (void)
 #endif /* !YY_DECL */
 
 /* yy_get_previous_state - get the state just before the EOB char was reached */
@@ -313,9 +313,9 @@ extern int yylex (void);
 #undef YY_DECL
 #endif
 
-#line 326 "../cwb/cqp/parser.l"
+#line 123 "../cwb/cl/registry.l"
 
 
-#line 320 "../cwb/cqp/parser.yy.h"
-#undef yyIN_HEADER
-#endif /* yyHEADER_H */
+#line 320 "../cwb/cl/registry.yy.h"
+#undef cregIN_HEADER
+#endif /* cregHEADER_H */

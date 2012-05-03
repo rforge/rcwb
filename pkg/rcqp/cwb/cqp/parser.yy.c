@@ -1,6 +1,6 @@
-#line 2 "cqp/parser.yy.c"
+#line 2 "../cwb/cqp/parser.yy.c"
 
-#line 4 "cqp/parser.yy.c"
+#line 4 "../cwb/cqp/parser.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -1195,8 +1195,8 @@ goto find_rule; \
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "cqp/parser.l"
-#line 2 "cqp/parser.l"
+#line 1 "../cwb/cqp/parser.l"
+#line 2 "../cwb/cqp/parser.l"
 /* 
  *  IMS Open Corpus Workbench (CWB)
  *  Copyright (C) 1993-2006 by IMS, University of Stuttgart
@@ -1292,7 +1292,7 @@ id              {letter}{xletter}*(:{xletter}+)?(^{xletter}+)?
 /* accents         \\\"|\\,|\\\'|\\`|\\\^ */
 /* -- strings are enclosed in single or double quotes, which can be escaped inside by doubling (automatically removed) */
 /* -- a backslash escapes any following character (except newline), but is passed through together with the character */
-#line 1296 "cqp/parser.yy.c"
+#line 1296 "../cwb/cqp/parser.yy.c"
 
 #define INITIAL 0
 
@@ -1474,9 +1474,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 119 "cqp/parser.l"
+#line 119 "../cwb/cqp/parser.l"
 
-#line 1480 "cqp/parser.yy.c"
+#line 1480 "../cwb/cqp/parser.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -1569,437 +1569,437 @@ do_action:	/* This label is used only to access EOF actions. */
 		switch ( yy_act )
 	{ /* beginning of action switch */
 case YY_STATE_EOF(INITIAL):
-#line 120 "cqp/parser.l"
+#line 120 "../cwb/cqp/parser.l"
 { return(0); }
 	YY_BREAK
 case 1:
 YY_RULE_SETUP
-#line 121 "cqp/parser.l"
+#line 121 "../cwb/cqp/parser.l"
 { return(EXIT_SYM); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 122 "cqp/parser.l"
+#line 122 "../cwb/cqp/parser.l"
 { return(CAT_SYM); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 123 "cqp/parser.l"
+#line 123 "../cwb/cqp/parser.l"
 { return(DEFINE_SYM); }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 124 "cqp/parser.l"
+#line 124 "../cwb/cqp/parser.l"
 { return(DIFF_SYM); }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 125 "cqp/parser.l"
+#line 125 "../cwb/cqp/parser.l"
 { return(DISCARD_SYM); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 126 "cqp/parser.l"
+#line 126 "../cwb/cqp/parser.l"
 { return(INTER_SYM); }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 127 "cqp/parser.l"
+#line 127 "../cwb/cqp/parser.l"
 { return(JOIN_SYM); }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 128 "cqp/parser.l"
+#line 128 "../cwb/cqp/parser.l"
 { return(SUBSET_SYM); }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 129 "cqp/parser.l"
+#line 129 "../cwb/cqp/parser.l"
 { return(LEFT_SYM); }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 130 "cqp/parser.l"
+#line 130 "../cwb/cqp/parser.l"
 { return(RIGHT_SYM); }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 131 "cqp/parser.l"
+#line 131 "../cwb/cqp/parser.l"
 { return(SAVE_SYM); }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 132 "cqp/parser.l"
+#line 132 "../cwb/cqp/parser.l"
 { return(SHOW_SYM); }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 133 "cqp/parser.l"
+#line 133 "../cwb/cqp/parser.l"
 { return(CD_SYM); } /* show context descriptor */
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 134 "cqp/parser.l"
+#line 134 "../cwb/cqp/parser.l"
 { return(GROUP_SYM); }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 135 "cqp/parser.l"
+#line 135 "../cwb/cqp/parser.l"
 { return(WHERE_SYM); }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 137 "cqp/parser.l"
+#line 137 "../cwb/cqp/parser.l"
 { return(WITHIN_SYM); }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 138 "cqp/parser.l"
+#line 138 "../cwb/cqp/parser.l"
 { return(WITH_SYM); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 139 "cqp/parser.l"
+#line 139 "../cwb/cqp/parser.l"
 { return(WITHOUT_SYM); }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 140 "cqp/parser.l"
+#line 140 "../cwb/cqp/parser.l"
 { return(DELETE_SYM); }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 141 "cqp/parser.l"
+#line 141 "../cwb/cqp/parser.l"
 { return(EXPAND_SYM); }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 142 "cqp/parser.l"
+#line 142 "../cwb/cqp/parser.l"
 { return(TO_SYM); }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 143 "cqp/parser.l"
+#line 143 "../cwb/cqp/parser.l"
 { return(SET_SYM); }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 145 "cqp/parser.l"
+#line 145 "../cwb/cqp/parser.l"
 { return(EXEC_SYM); }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 146 "cqp/parser.l"
+#line 146 "../cwb/cqp/parser.l"
 { return(CUT_SYM); }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 148 "cqp/parser.l"
+#line 148 "../cwb/cqp/parser.l"
 { return(INFO_SYM); }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 150 "cqp/parser.l"
+#line 150 "../cwb/cqp/parser.l"
 { return(MEET_SYM); }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 151 "cqp/parser.l"
+#line 151 "../cwb/cqp/parser.l"
 { return(UNION_SYM); }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 152 "cqp/parser.l"
+#line 152 "../cwb/cqp/parser.l"
 { return(MU_SYM); }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 153 "cqp/parser.l"
+#line 153 "../cwb/cqp/parser.l"
 { return(TAB_SYM); }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 155 "cqp/parser.l"
+#line 155 "../cwb/cqp/parser.l"
 { return(SORT_SYM); }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 156 "cqp/parser.l"
+#line 156 "../cwb/cqp/parser.l"
 { return(COUNT_SYM); }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 157 "cqp/parser.l"
+#line 157 "../cwb/cqp/parser.l"
 { return(BY_SYM); }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 158 "cqp/parser.l"
+#line 158 "../cwb/cqp/parser.l"
 { return(FOREACH_SYM); }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 159 "cqp/parser.l"
+#line 159 "../cwb/cqp/parser.l"
 { return(ON_SYM); }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 160 "cqp/parser.l"
+#line 160 "../cwb/cqp/parser.l"
 { return(YES_SYM); }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 161 "cqp/parser.l"
+#line 161 "../cwb/cqp/parser.l"
 { return(OFF_SYM); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 162 "cqp/parser.l"
+#line 162 "../cwb/cqp/parser.l"
 { return(NO_SYM); }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 163 "cqp/parser.l"
+#line 163 "../cwb/cqp/parser.l"
 { return(ASC_SYM);  }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 164 "cqp/parser.l"
+#line 164 "../cwb/cqp/parser.l"
 { return(DESC_SYM); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 165 "cqp/parser.l"
+#line 165 "../cwb/cqp/parser.l"
 { return(REVERSE_SYM); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 166 "cqp/parser.l"
+#line 166 "../cwb/cqp/parser.l"
 { return(SLEEP_SYM); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 168 "cqp/parser.l"
+#line 168 "../cwb/cqp/parser.l"
 { return(REDUCE_SYM); }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 169 "cqp/parser.l"
+#line 169 "../cwb/cqp/parser.l"
 { return(MAXIMAL_SYM); }  /* "reduce to maximal" */
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 171 "cqp/parser.l"
+#line 171 "../cwb/cqp/parser.l"
 { return(SIZE_SYM); }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 172 "cqp/parser.l"
+#line 172 "../cwb/cqp/parser.l"
 { return(DUMP_SYM); }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 173 "cqp/parser.l"
+#line 173 "../cwb/cqp/parser.l"
 { return(UNDUMP_SYM); }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 174 "cqp/parser.l"
+#line 174 "../cwb/cqp/parser.l"
 { return(TABULATE_SYM); }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 176 "cqp/parser.l"
+#line 176 "../cwb/cqp/parser.l"
 { return(NOT_SYM); }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 177 "cqp/parser.l"
+#line 177 "../cwb/cqp/parser.l"
 { return(CONTAINS_SYM); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 178 "cqp/parser.l"
+#line 178 "../cwb/cqp/parser.l"
 { return(MATCHES_SYM); }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 180 "cqp/parser.l"
+#line 180 "../cwb/cqp/parser.l"
 { return(UNLOCK_SYM); }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 182 "cqp/parser.l"
+#line 182 "../cwb/cqp/parser.l"
 { return(USER_SYM); }     /* for CQPserver user authentication file */
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 183 "cqp/parser.l"
+#line 183 "../cwb/cqp/parser.l"
 { return(HOST_SYM); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 185 "cqp/parser.l"
+#line 185 "../cwb/cqp/parser.l"
 { return(MACRO_SYM); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 187 "cqp/parser.l"
+#line 187 "../cwb/cqp/parser.l"
 { return(RANDOMIZE_SYM); } 
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 189 "cqp/parser.l"
+#line 189 "../cwb/cqp/parser.l"
 { return(FROM_SYM); }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 191 "cqp/parser.l"
+#line 191 "../cwb/cqp/parser.l"
 { return(INCLUSIVE_SYM); }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 192 "cqp/parser.l"
+#line 192 "../cwb/cqp/parser.l"
 { return(EXCLUSIVE_SYM); }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 194 "cqp/parser.l"
+#line 194 "../cwb/cqp/parser.l"
 { return(NULL_SYM); }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 196 "cqp/parser.l"
+#line 196 "../cwb/cqp/parser.l"
 { yylval.field = MatchField; return(FIELD); }    /* the fields (or 'anchor points') of a subcorpus */
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 197 "cqp/parser.l"
+#line 197 "../cwb/cqp/parser.l"
 { yylval.field = MatchEndField; return(FIELD); }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 198 "cqp/parser.l"
+#line 198 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(FIELD); }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 199 "cqp/parser.l"
+#line 199 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(FIELD); }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 200 "cqp/parser.l"
+#line 200 "../cwb/cqp/parser.l"
 { yylval.field = KeywordField; return(FIELD); }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 202 "cqp/parser.l"
+#line 202 "../cwb/cqp/parser.l"
 { yylval.field = MatchField; return(FIELDLABEL); }    /* labels referring to fields (in "subset" command, probably in future as well in "sort", "fdist", ...) */
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 203 "cqp/parser.l"
+#line 203 "../cwb/cqp/parser.l"
 { yylval.field = MatchEndField; return(FIELDLABEL); }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 204 "cqp/parser.l"
+#line 204 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(FIELDLABEL); }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 205 "cqp/parser.l"
+#line 205 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(FIELDLABEL); }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 206 "cqp/parser.l"
+#line 206 "../cwb/cqp/parser.l"
 { yylval.field = KeywordField; return(FIELDLABEL); }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 208 "cqp/parser.l"
+#line 208 "../cwb/cqp/parser.l"
 { yylval.field = MatchField; return(ANCHORTAG); }    /* anchor point (start) tags for subqueries */
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 209 "cqp/parser.l"
+#line 209 "../cwb/cqp/parser.l"
 { yylval.field = MatchEndField; return(ANCHORTAG); }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 210 "cqp/parser.l"
+#line 210 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(ANCHORTAG); }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 211 "cqp/parser.l"
+#line 211 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(ANCHORTAG); }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 212 "cqp/parser.l"
+#line 212 "../cwb/cqp/parser.l"
 { yylval.field = KeywordField; return(ANCHORTAG); }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 214 "cqp/parser.l"
+#line 214 "../cwb/cqp/parser.l"
 { yylval.field = MatchEndField; return(ANCHORENDTAG); }   /* anchor point (end) tags for subqueries */
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 215 "cqp/parser.l"
+#line 215 "../cwb/cqp/parser.l"
 { yylval.field = MatchEndField; return(ANCHORENDTAG); } /* special feature: </match> marks end of entire match -> </match> == </matchend> */
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 216 "cqp/parser.l"
+#line 216 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(ANCHORENDTAG); }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 217 "cqp/parser.l"
+#line 217 "../cwb/cqp/parser.l"
 { yylval.field = TargetField; return(ANCHORENDTAG); }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 218 "cqp/parser.l"
+#line 218 "../cwb/cqp/parser.l"
 { yylval.field = KeywordField; return(ANCHORENDTAG); }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 220 "cqp/parser.l"
+#line 220 "../cwb/cqp/parser.l"
 { yylval.search_strategy = SearchLeftmost; return(SEARCH_STRATEGY); }  /* search strategy in "set <field> ..." command */
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 221 "cqp/parser.l"
+#line 221 "../cwb/cqp/parser.l"
 { yylval.search_strategy = SearchRightmost; return(SEARCH_STRATEGY); }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 222 "cqp/parser.l"
+#line 222 "../cwb/cqp/parser.l"
 { yylval.search_strategy = SearchNearest; return(SEARCH_STRATEGY); }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 223 "cqp/parser.l"
+#line 223 "../cwb/cqp/parser.l"
 { yylval.search_strategy = SearchFarthest; return(SEARCH_STRATEGY); }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 225 "cqp/parser.l"
+#line 225 "../cwb/cqp/parser.l"
 { return(RE_PAREN); }  /* for [lemma = RE($var)] */
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 227 "cqp/parser.l"
+#line 227 "../cwb/cqp/parser.l"
 { return(EOL_SYM); }   /* for child mode (prints special code on separate line) */
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 230 "cqp/parser.l"
+#line 230 "../cwb/cqp/parser.l"
 { 
                           yylval.ival = atoi(yytext); 
                           return(INTEGER); 
@@ -2007,7 +2007,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 234 "cqp/parser.l"
+#line 234 "../cwb/cqp/parser.l"
 {
                           yylval.strval = cl_strdup(yytext);
                           return(IPAddress);
@@ -2015,7 +2015,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 238 "cqp/parser.l"
+#line 238 "../cwb/cqp/parser.l"
 {
                           yylval.strval = cl_strdup(yytext);
                           yylval.strval[yyleng-1] = '\0';  /* cut off asterisk */
@@ -2024,7 +2024,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 243 "cqp/parser.l"
+#line 243 "../cwb/cqp/parser.l"
 { 
                           yylval.fval = atof(yytext);
                           return(DOUBLEFLOAT);
@@ -2032,7 +2032,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 247 "cqp/parser.l"
+#line 247 "../cwb/cqp/parser.l"
 { 
                           if (!enable_macros) { 
                             REJECT;   /* for absolute backward compatibility */
@@ -2052,7 +2052,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 263 "cqp/parser.l"
+#line 263 "../cwb/cqp/parser.l"
 { 
                           yylval.strval = cl_strdup(yytext);
                           return(QID);
@@ -2060,7 +2060,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 267 "cqp/parser.l"
+#line 267 "../cwb/cqp/parser.l"
 { 
                           yylval.strval = cl_strdup(yytext);
                           if (yylval.strval[yyleng-1] == ':')
@@ -2070,14 +2070,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 273 "cqp/parser.l"
+#line 273 "../cwb/cqp/parser.l"
 { /* allowing @: targets makes distinction between labels & target in macros unnecessary */
                           return('@');
                         }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 276 "cqp/parser.l"
+#line 276 "../cwb/cqp/parser.l"
 { 
                           yylval.strval = cl_strdup(yytext);
                           return(ID);
@@ -2085,7 +2085,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 280 "cqp/parser.l"
+#line 280 "../cwb/cqp/parser.l"
 { 
                           yylval.strval = cl_strdup(yytext + 1);
                           return(VARIABLE);
@@ -2093,7 +2093,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 284 "cqp/parser.l"
+#line 284 "../cwb/cqp/parser.l"
 { 
                           yylval.strval = cl_strdup(yytext + 1);
                           return(FLAG);
@@ -2102,17 +2102,17 @@ YY_RULE_SETUP
 case 97:
 /* rule 97 can match eol */
 YY_RULE_SETUP
-#line 288 "cqp/parser.l"
+#line 288 "../cwb/cqp/parser.l"
 ;
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 289 "cqp/parser.l"
+#line 289 "../cwb/cqp/parser.l"
 ; /* single line comment */
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 290 "cqp/parser.l"
+#line 290 "../cwb/cqp/parser.l"
 {                         
                           /* cut off the leading "/' and the trailing "/' */
                           yylval.strval = strip_quotes(yytext);
@@ -2121,14 +2121,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 295 "cqp/parser.l"
+#line 295 "../cwb/cqp/parser.l"
 { 
                           return(MATCHALL);
                         }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 298 "cqp/parser.l"
+#line 298 "../cwb/cqp/parser.l"
 { /* closing '>' not included to allow condition in the tag (nyi) */
                           
                           yylval.strval = cl_strdup(yytext+1);
@@ -2137,7 +2137,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 303 "cqp/parser.l"
+#line 303 "../cwb/cqp/parser.l"
 { 
                           
                           yylval.strval = cl_strdup(yytext+2);
@@ -2147,85 +2147,85 @@ YY_RULE_SETUP
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 310 "cqp/parser.l"
+#line 310 "../cwb/cqp/parser.l"
 { return(LCMATCHALL); }  /* lookahead matchall [::] */
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 311 "cqp/parser.l"
+#line 311 "../cwb/cqp/parser.l"
 { return(LCSTART); }     /* lookahead constraint pattern [: ... :] */
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 312 "cqp/parser.l"
+#line 312 "../cwb/cqp/parser.l"
 { return(LCEND); }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 313 "cqp/parser.l"
+#line 313 "../cwb/cqp/parser.l"
 { return(GCDEL); }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 314 "cqp/parser.l"
+#line 314 "../cwb/cqp/parser.l"
 { return(ELLIPSIS); }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 315 "cqp/parser.l"
+#line 315 "../cwb/cqp/parser.l"
 { return(ELLIPSIS); }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 316 "cqp/parser.l"
+#line 316 "../cwb/cqp/parser.l"
 { return(LET); }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 317 "cqp/parser.l"
+#line 317 "../cwb/cqp/parser.l"
 { return(GET); }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 318 "cqp/parser.l"
+#line 318 "../cwb/cqp/parser.l"
 { return(NEQ); }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 319 "cqp/parser.l"
+#line 319 "../cwb/cqp/parser.l"
 { return APPEND; }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 320 "cqp/parser.l"
+#line 320 "../cwb/cqp/parser.l"
 { return PLUSEQ; }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 321 "cqp/parser.l"
+#line 321 "../cwb/cqp/parser.l"
 { return MINUSEQ; }
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 322 "cqp/parser.l"
+#line 322 "../cwb/cqp/parser.l"
 { return IMPLIES; }
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 323 "cqp/parser.l"
+#line 323 "../cwb/cqp/parser.l"
 { return ESCAPE_SYM; }
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 324 "cqp/parser.l"
+#line 324 "../cwb/cqp/parser.l"
 { return yytext[0]; }
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 326 "cqp/parser.l"
+#line 326 "../cwb/cqp/parser.l"
 ECHO;
 	YY_BREAK
-#line 2229 "cqp/parser.yy.c"
+#line 2229 "../cwb/cqp/parser.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -3195,7 +3195,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 326 "cqp/parser.l"
+#line 326 "../cwb/cqp/parser.l"
 
 
 

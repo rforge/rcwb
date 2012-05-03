@@ -241,7 +241,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 120 "cqp/parser.y"
+#line 120 "../cwb/cqp/parser.y"
 
   Evaltree           evalt;
   Constrainttree     boolt;
@@ -316,7 +316,7 @@ typedef union YYSTYPE
 
 
 /* Line 2068 of yacc.c  */
-#line 320 "cqp/parser.tab.h"
+#line 320 "../cwb/cqp/parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

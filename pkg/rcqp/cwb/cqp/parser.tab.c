@@ -66,7 +66,7 @@
 /* Copy the first part of user declarations.  */
 
 /* Line 268 of yacc.c  */
-#line 1 "cqp/parser.y"
+#line 1 "../cwb/cqp/parser.y"
 
 /* 
  *  IMS Open Corpus Workbench (CWB)
@@ -187,7 +187,7 @@ synchronize(void)
 
 
 /* Line 268 of yacc.c  */
-#line 191 "cqp/parser.tab.c"
+#line 191 "../cwb/cqp/parser.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -418,7 +418,7 @@ typedef union YYSTYPE
 {
 
 /* Line 293 of yacc.c  */
-#line 120 "cqp/parser.y"
+#line 120 "../cwb/cqp/parser.y"
 
   Evaltree           evalt;
   Constrainttree     boolt;
@@ -493,7 +493,7 @@ typedef union YYSTYPE
 
 
 /* Line 293 of yacc.c  */
-#line 497 "cqp/parser.tab.c"
+#line 497 "../cwb/cqp/parser.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -505,7 +505,7 @@ typedef union YYSTYPE
 
 
 /* Line 343 of yacc.c  */
-#line 509 "cqp/parser.tab.c"
+#line 509 "../cwb/cqp/parser.tab.c"
 
 #ifdef short
 # undef short
@@ -2270,14 +2270,14 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 360 "cqp/parser.y"
+#line 360 "../cwb/cqp/parser.y"
     { prepare_parse(); }
     break;
 
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 361 "cqp/parser.y"
+#line 361 "../cwb/cqp/parser.y"
     { if (generate_code)
                                            addHistoryLine();
                                          resetQueryBuffer();
@@ -2287,35 +2287,35 @@ yyreduce:
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 365 "cqp/parser.y"
+#line 365 "../cwb/cqp/parser.y"
     { YYACCEPT; }
     break;
 
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 366 "cqp/parser.y"
+#line 366 "../cwb/cqp/parser.y"
     { YYACCEPT; }
     break;
 
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 369 "cqp/parser.y"
+#line 369 "../cwb/cqp/parser.y"
     { prepare_input(); }
     break;
 
   case 7:
 
 /* Line 1806 of yacc.c  */
-#line 370 "cqp/parser.y"
+#line 370 "../cwb/cqp/parser.y"
     { after_CorpusCommand((yyvsp[(2) - (3)].cl)); }
     break;
 
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 372 "cqp/parser.y"
+#line 372 "../cwb/cqp/parser.y"
     { 
                       if ((yyvsp[(2) - (2)].ival) == query_lock) {
                         query_lock = 0;
@@ -2331,35 +2331,35 @@ yyreduce:
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 383 "cqp/parser.y"
+#line 383 "../cwb/cqp/parser.y"
     {if (query_lock) {warn_query_lock_violation(); YYABORT;} }
     break;
 
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 384 "cqp/parser.y"
+#line 384 "../cwb/cqp/parser.y"
     { }
     break;
 
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 385 "cqp/parser.y"
+#line 385 "../cwb/cqp/parser.y"
     {if (query_lock) {warn_query_lock_violation(); YYABORT;} }
     break;
 
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 386 "cqp/parser.y"
+#line 386 "../cwb/cqp/parser.y"
     { exit_cqp++; }
     break;
 
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 387 "cqp/parser.y"
+#line 387 "../cwb/cqp/parser.y"
     { /* in case of syntax errors, don't save 
                                               history file */
                                            synchronize();
@@ -2372,77 +2372,77 @@ yyreduce:
   case 16:
 
 /* Line 1806 of yacc.c  */
-#line 396 "cqp/parser.y"
+#line 396 "../cwb/cqp/parser.y"
     { (yyval.cl) = (yyvsp[(1) - (1)].cl); }
     break;
 
   case 17:
 
 /* Line 1806 of yacc.c  */
-#line 398 "cqp/parser.y"
+#line 398 "../cwb/cqp/parser.y"
     { (yyval.cl) = in_CorpusCommand((yyvsp[(1) - (3)].strval), (yyvsp[(3) - (3)].cl)); }
     break;
 
   case 18:
 
 /* Line 1806 of yacc.c  */
-#line 402 "cqp/parser.y"
+#line 402 "../cwb/cqp/parser.y"
     { (yyval.cl) = in_UnnamedCorpusCommand((yyvsp[(1) - (2)].cl)); }
     break;
 
   case 19:
 
 /* Line 1806 of yacc.c  */
-#line 405 "cqp/parser.y"
+#line 405 "../cwb/cqp/parser.y"
     { if (query_lock) {warn_query_lock_violation(); YYABORT;} (yyval.cl) = ActivateCorpus((yyvsp[(1) - (1)].cl)); }
     break;
 
   case 20:
 
 /* Line 1806 of yacc.c  */
-#line 406 "cqp/parser.y"
+#line 406 "../cwb/cqp/parser.y"
     { (yyval.cl) = after_CorpusSetExpr((yyvsp[(1) - (1)].cl)); }
     break;
 
   case 21:
 
 /* Line 1806 of yacc.c  */
-#line 407 "cqp/parser.y"
+#line 407 "../cwb/cqp/parser.y"
     { prepare_Query(); }
     break;
 
   case 22:
 
 /* Line 1806 of yacc.c  */
-#line 408 "cqp/parser.y"
+#line 408 "../cwb/cqp/parser.y"
     { (yyval.cl) = after_Query((yyvsp[(2) - (2)].cl)); }
     break;
 
   case 46:
 
 /* Line 1806 of yacc.c  */
-#line 438 "cqp/parser.y"
+#line 438 "../cwb/cqp/parser.y"
     { printf("-::-EOL-::-\n"); fflush(stdout); }
     break;
 
   case 47:
 
 /* Line 1806 of yacc.c  */
-#line 442 "cqp/parser.y"
+#line 442 "../cwb/cqp/parser.y"
     { do_cat((yyvsp[(2) - (3)].cl), &((yyvsp[(3) - (3)].redir)), 0, -1); }
     break;
 
   case 48:
 
 /* Line 1806 of yacc.c  */
-#line 445 "cqp/parser.y"
+#line 445 "../cwb/cqp/parser.y"
     { do_cat((yyvsp[(2) - (7)].cl), &((yyvsp[(7) - (7)].redir)), (yyvsp[(4) - (7)].ival), (yyvsp[(6) - (7)].ival)); }
     break;
 
   case 49:
 
 /* Line 1806 of yacc.c  */
-#line 448 "cqp/parser.y"
+#line 448 "../cwb/cqp/parser.y"
     { if (generate_code) 
                               do_cat((yyvsp[(2) - (3)].cl), &((yyvsp[(3) - (3)].redir)), 0, -1);
                             drop_temp_corpora();
@@ -2452,14 +2452,14 @@ yyreduce:
   case 50:
 
 /* Line 1806 of yacc.c  */
-#line 455 "cqp/parser.y"
+#line 455 "../cwb/cqp/parser.y"
     { do_save((yyvsp[(2) - (3)].cl), &((yyvsp[(3) - (3)].redir))); cl_free((yyvsp[(3) - (3)].redir).name); }
     break;
 
   case 52:
 
 /* Line 1806 of yacc.c  */
-#line 459 "cqp/parser.y"
+#line 459 "../cwb/cqp/parser.y"
     { (yyval.redir).name = (char *)NULL;
                                           (yyval.redir).mode = (char *)NULL;
                                           (yyval.redir).stream = stdout;
@@ -2470,7 +2470,7 @@ yyreduce:
   case 53:
 
 /* Line 1806 of yacc.c  */
-#line 466 "cqp/parser.y"
+#line 466 "../cwb/cqp/parser.y"
     { (yyval.redir).name = (yyvsp[(2) - (2)].strval);
                                           (yyval.redir).mode = "w";
                                           (yyval.redir).stream = NULL;
@@ -2481,7 +2481,7 @@ yyreduce:
   case 54:
 
 /* Line 1806 of yacc.c  */
-#line 471 "cqp/parser.y"
+#line 471 "../cwb/cqp/parser.y"
     { (yyval.redir).name = (yyvsp[(2) - (2)].strval);
                                           (yyval.redir).mode = "a";
                                           (yyval.redir).stream = NULL;
@@ -2492,7 +2492,7 @@ yyreduce:
   case 56:
 
 /* Line 1806 of yacc.c  */
-#line 480 "cqp/parser.y"
+#line 480 "../cwb/cqp/parser.y"
     { (yyval.in_redir).name = (char *)NULL;
                                           (yyval.in_redir).stream = stdin;
                                           (yyval.in_redir).is_pipe = 0;
@@ -2502,7 +2502,7 @@ yyreduce:
   case 57:
 
 /* Line 1806 of yacc.c  */
-#line 486 "cqp/parser.y"
+#line 486 "../cwb/cqp/parser.y"
     { (yyval.in_redir).name = (yyvsp[(2) - (2)].strval);
                                           (yyval.in_redir).stream = NULL;
                                           (yyval.in_redir).is_pipe = 0;
@@ -2512,7 +2512,7 @@ yyreduce:
   case 58:
 
 /* Line 1806 of yacc.c  */
-#line 492 "cqp/parser.y"
+#line 492 "../cwb/cqp/parser.y"
     { 
                                           show_corpora_files(UNDEF);
                                         }
@@ -2521,7 +2521,7 @@ yyreduce:
   case 59:
 
 /* Line 1806 of yacc.c  */
-#line 495 "cqp/parser.y"
+#line 495 "../cwb/cqp/parser.y"
     { 
                                           if (strncasecmp((yyvsp[(2) - (2)].strval), "var", 3) == 0) {
                                             do_PrintAllVariables();
@@ -2541,63 +2541,63 @@ yyreduce:
   case 61:
 
 /* Line 1806 of yacc.c  */
-#line 512 "cqp/parser.y"
+#line 512 "../cwb/cqp/parser.y"
     { PrintContextDescriptor(&CD); }
     break;
 
   case 64:
 
 /* Line 1806 of yacc.c  */
-#line 522 "cqp/parser.y"
+#line 522 "../cwb/cqp/parser.y"
     { do_attribute_show((yyvsp[(2) - (2)].strval), 1); }
     break;
 
   case 65:
 
 /* Line 1806 of yacc.c  */
-#line 523 "cqp/parser.y"
+#line 523 "../cwb/cqp/parser.y"
     { do_attribute_show((yyvsp[(2) - (2)].strval), 0); }
     break;
 
   case 66:
 
 /* Line 1806 of yacc.c  */
-#line 526 "cqp/parser.y"
+#line 526 "../cwb/cqp/parser.y"
     { if (query_lock) {warn_query_lock_violation(); YYABORT;} (yyval.cl) = do_setop((yyvsp[(1) - (3)].rngsetop), (yyvsp[(2) - (3)].cl), (yyvsp[(3) - (3)].cl)); }
     break;
 
   case 68:
 
 /* Line 1806 of yacc.c  */
-#line 530 "cqp/parser.y"
+#line 530 "../cwb/cqp/parser.y"
     { (yyval.rngsetop) = RUnion; }
     break;
 
   case 69:
 
 /* Line 1806 of yacc.c  */
-#line 531 "cqp/parser.y"
+#line 531 "../cwb/cqp/parser.y"
     { (yyval.rngsetop) = RUnion; }
     break;
 
   case 70:
 
 /* Line 1806 of yacc.c  */
-#line 532 "cqp/parser.y"
+#line 532 "../cwb/cqp/parser.y"
     { (yyval.rngsetop) = RIntersection; }
     break;
 
   case 71:
 
 /* Line 1806 of yacc.c  */
-#line 533 "cqp/parser.y"
+#line 533 "../cwb/cqp/parser.y"
     { (yyval.rngsetop) = RDiff; }
     break;
 
   case 72:
 
 /* Line 1806 of yacc.c  */
-#line 539 "cqp/parser.y"
+#line 539 "../cwb/cqp/parser.y"
     { 
                                           do_start_timer();
                                           prepare_do_subset((yyvsp[(2) - (4)].cl), (yyvsp[(4) - (4)].field));  
@@ -2608,7 +2608,7 @@ yyreduce:
   case 73:
 
 /* Line 1806 of yacc.c  */
-#line 544 "cqp/parser.y"
+#line 544 "../cwb/cqp/parser.y"
     { 
                                           if (generate_code) {
                                             (yyval.cl) = do_subset((yyvsp[(4) - (6)].field), (yyvsp[(6) - (6)].boolt));
@@ -2622,14 +2622,14 @@ yyreduce:
   case 74:
 
 /* Line 1806 of yacc.c  */
-#line 555 "cqp/parser.y"
+#line 555 "../cwb/cqp/parser.y"
     {  }
     break;
 
   case 75:
 
 /* Line 1806 of yacc.c  */
-#line 558 "cqp/parser.y"
+#line 558 "../cwb/cqp/parser.y"
     { if ((yyvsp[(2) - (2)].cl))
                                             dropcorpus((yyvsp[(2) - (2)].cl));
                                         }
@@ -2638,7 +2638,7 @@ yyreduce:
   case 76:
 
 /* Line 1806 of yacc.c  */
-#line 561 "cqp/parser.y"
+#line 561 "../cwb/cqp/parser.y"
     { if ((yyvsp[(1) - (1)].cl))
                                             dropcorpus((yyvsp[(1) - (1)].cl));
                                         }
@@ -2647,7 +2647,7 @@ yyreduce:
   case 77:
 
 /* Line 1806 of yacc.c  */
-#line 566 "cqp/parser.y"
+#line 566 "../cwb/cqp/parser.y"
     { do_PrintVariableValue((yyvsp[(2) - (2)].strval)); 
                                     free((yyvsp[(2) - (2)].strval));
                                   }
@@ -2656,7 +2656,7 @@ yyreduce:
   case 78:
 
 /* Line 1806 of yacc.c  */
-#line 573 "cqp/parser.y"
+#line 573 "../cwb/cqp/parser.y"
     { do_SetVariableValue((yyvsp[(2) - (3)].strval), 
                                                         (yyvsp[(3) - (3)].varsetting).operator, 
                                                         (yyvsp[(3) - (3)].varsetting).variableValue); 
@@ -2668,7 +2668,7 @@ yyreduce:
   case 79:
 
 /* Line 1806 of yacc.c  */
-#line 580 "cqp/parser.y"
+#line 580 "../cwb/cqp/parser.y"
     {
                                     do_AddSubVariables((yyvsp[(2) - (4)].strval), /*add*/1, (yyvsp[(4) - (4)].strval));
                                     free((yyvsp[(2) - (4)].strval));
@@ -2679,7 +2679,7 @@ yyreduce:
   case 80:
 
 /* Line 1806 of yacc.c  */
-#line 586 "cqp/parser.y"
+#line 586 "../cwb/cqp/parser.y"
     {
                                     do_AddSubVariables((yyvsp[(2) - (4)].strval), /*sub*/0, (yyvsp[(4) - (4)].strval));
                                     free((yyvsp[(2) - (4)].strval));
@@ -2690,7 +2690,7 @@ yyreduce:
   case 81:
 
 /* Line 1806 of yacc.c  */
-#line 592 "cqp/parser.y"
+#line 592 "../cwb/cqp/parser.y"
     {
                                     char *temp = cl_strdup("");
                                     do_SetVariableValue((yyvsp[(2) - (4)].strval), '=', temp);         /* cheap trick, this is :o) */
@@ -2704,35 +2704,35 @@ yyreduce:
   case 82:
 
 /* Line 1806 of yacc.c  */
-#line 603 "cqp/parser.y"
+#line 603 "../cwb/cqp/parser.y"
     { (yyval.varsetting).variableValue = (yyvsp[(2) - (2)].strval); (yyval.varsetting).operator = '<'; }
     break;
 
   case 83:
 
 /* Line 1806 of yacc.c  */
-#line 604 "cqp/parser.y"
+#line 604 "../cwb/cqp/parser.y"
     { (yyval.varsetting).variableValue = (yyvsp[(2) - (2)].strval); (yyval.varsetting).operator = '='; }
     break;
 
   case 84:
 
 /* Line 1806 of yacc.c  */
-#line 605 "cqp/parser.y"
+#line 605 "../cwb/cqp/parser.y"
     { (yyval.varsetting).variableValue = (yyvsp[(2) - (2)].strval); (yyval.varsetting).operator = '+'; }
     break;
 
   case 85:
 
 /* Line 1806 of yacc.c  */
-#line 606 "cqp/parser.y"
+#line 606 "../cwb/cqp/parser.y"
     { (yyval.varsetting).variableValue = (yyvsp[(2) - (2)].strval); (yyval.varsetting).operator = '-'; }
     break;
 
   case 86:
 
 /* Line 1806 of yacc.c  */
-#line 609 "cqp/parser.y"
+#line 609 "../cwb/cqp/parser.y"
     { char *msg;
 
                                           if ((yyvsp[(3) - (3)].varval).cval != NULL && (yyvsp[(3) - (3)].varval).ival >= 0) {
@@ -2764,7 +2764,7 @@ yyreduce:
   case 87:
 
 /* Line 1806 of yacc.c  */
-#line 635 "cqp/parser.y"
+#line 635 "../cwb/cqp/parser.y"
     { int opt;
 
                                           if ((opt = find_option((yyvsp[(2) - (2)].strval))) >= 0)
@@ -2778,7 +2778,7 @@ yyreduce:
   case 88:
 
 /* Line 1806 of yacc.c  */
-#line 643 "cqp/parser.y"
+#line 643 "../cwb/cqp/parser.y"
     {
                                           print_option_values();
                                         }
@@ -2787,21 +2787,21 @@ yyreduce:
   case 89:
 
 /* Line 1806 of yacc.c  */
-#line 646 "cqp/parser.y"
+#line 646 "../cwb/cqp/parser.y"
     { do_set_target((yyvsp[(2) - (4)].cl), (yyvsp[(3) - (4)].field), (yyvsp[(4) - (4)].field)); }
     break;
 
   case 90:
 
 /* Line 1806 of yacc.c  */
-#line 647 "cqp/parser.y"
+#line 647 "../cwb/cqp/parser.y"
     { do_set_target((yyvsp[(2) - (4)].cl), (yyvsp[(3) - (4)].field), NoField); }
     break;
 
   case 91:
 
 /* Line 1806 of yacc.c  */
-#line 648 "cqp/parser.y"
+#line 648 "../cwb/cqp/parser.y"
     {
                                           if (generate_code) {
                                             old_query_corpus = query_corpus;
@@ -2815,7 +2815,7 @@ yyreduce:
   case 92:
 
 /* Line 1806 of yacc.c  */
-#line 658 "cqp/parser.y"
+#line 658 "../cwb/cqp/parser.y"
     {
                                           do_set_complex_target((yyvsp[(2) - (11)].cl), (yyvsp[(3) - (11)].field), (yyvsp[(4) - (11)].search_strategy), (yyvsp[(6) - (11)].boolt), (yyvsp[(8) - (11)].direction), (yyvsp[(9) - (11)].ival), (yyvsp[(10) - (11)].strval), (yyvsp[(11) - (11)].base).field, (yyvsp[(11) - (11)].base).inclusive);
                                           if (generate_code) 
@@ -2826,7 +2826,7 @@ yyreduce:
   case 93:
 
 /* Line 1806 of yacc.c  */
-#line 665 "cqp/parser.y"
+#line 665 "../cwb/cqp/parser.y"
     {
                                           /* from (match|keyword|target) [inclusive|exclusive] */
                                           (yyval.base).field = (yyvsp[(2) - (3)].field);
@@ -2837,7 +2837,7 @@ yyreduce:
   case 94:
 
 /* Line 1806 of yacc.c  */
-#line 670 "cqp/parser.y"
+#line 670 "../cwb/cqp/parser.y"
     { 
                                           (yyval.base).field = MatchField;
                                           (yyval.base).inclusive = 0;
@@ -2847,28 +2847,28 @@ yyreduce:
   case 95:
 
 /* Line 1806 of yacc.c  */
-#line 676 "cqp/parser.y"
+#line 676 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 96:
 
 /* Line 1806 of yacc.c  */
-#line 677 "cqp/parser.y"
+#line 677 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 97:
 
 /* Line 1806 of yacc.c  */
-#line 678 "cqp/parser.y"
+#line 678 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; /* default is exclusive */ }
     break;
 
   case 98:
 
 /* Line 1806 of yacc.c  */
-#line 681 "cqp/parser.y"
+#line 681 "../cwb/cqp/parser.y"
     { (yyval.varval).ival = (yyvsp[(1) - (1)].ival);
                                           (yyval.varval).cval = NULL;
                                           (yyval.varval).ok = 1;
@@ -2878,7 +2878,7 @@ yyreduce:
   case 99:
 
 /* Line 1806 of yacc.c  */
-#line 685 "cqp/parser.y"
+#line 685 "../cwb/cqp/parser.y"
     { (yyval.varval).ival = -1;
                                           (yyval.varval).cval = (yyvsp[(1) - (1)].strval);
                                           (yyval.varval).ok = 1;
@@ -2888,7 +2888,7 @@ yyreduce:
   case 100:
 
 /* Line 1806 of yacc.c  */
-#line 689 "cqp/parser.y"
+#line 689 "../cwb/cqp/parser.y"
     {
                                           (yyval.varval).ival = -1;
                                           (yyval.varval).cval = (yyvsp[(1) - (1)].strval);
@@ -2899,35 +2899,35 @@ yyreduce:
   case 101:
 
 /* Line 1806 of yacc.c  */
-#line 694 "cqp/parser.y"
+#line 694 "../cwb/cqp/parser.y"
     { (yyval.varval).ival = 1; (yyval.varval).cval = NULL; (yyval.varval).ok = 1; }
     break;
 
   case 102:
 
 /* Line 1806 of yacc.c  */
-#line 695 "cqp/parser.y"
+#line 695 "../cwb/cqp/parser.y"
     { (yyval.varval).ival = 1; (yyval.varval).cval = NULL; (yyval.varval).ok = 1; }
     break;
 
   case 103:
 
 /* Line 1806 of yacc.c  */
-#line 696 "cqp/parser.y"
+#line 696 "../cwb/cqp/parser.y"
     { (yyval.varval).ival = 0; (yyval.varval).cval = NULL; (yyval.varval).ok = 1; }
     break;
 
   case 104:
 
 /* Line 1806 of yacc.c  */
-#line 697 "cqp/parser.y"
+#line 697 "../cwb/cqp/parser.y"
     { (yyval.varval).ival = 0; (yyval.varval).cval = NULL; (yyval.varval).ok = 1; }
     break;
 
   case 105:
 
 /* Line 1806 of yacc.c  */
-#line 698 "cqp/parser.y"
+#line 698 "../cwb/cqp/parser.y"
     {
                                           (yyval.varval).ival = (yyvsp[(1) - (2)].ival);
                                           (yyval.varval).cval = (yyvsp[(2) - (2)].strval);
@@ -2938,28 +2938,28 @@ yyreduce:
   case 106:
 
 /* Line 1806 of yacc.c  */
-#line 705 "cqp/parser.y"
+#line 705 "../cwb/cqp/parser.y"
     { do_exec((yyvsp[(2) - (2)].strval)); }
     break;
 
   case 107:
 
 /* Line 1806 of yacc.c  */
-#line 708 "cqp/parser.y"
+#line 708 "../cwb/cqp/parser.y"
     { do_info((yyvsp[(2) - (2)].cl)); }
     break;
 
   case 108:
 
 /* Line 1806 of yacc.c  */
-#line 709 "cqp/parser.y"
+#line 709 "../cwb/cqp/parser.y"
     { do_info(current_corpus); }
     break;
 
   case 109:
 
 /* Line 1806 of yacc.c  */
-#line 714 "cqp/parser.y"
+#line 714 "../cwb/cqp/parser.y"
     { 
                                   do_group((yyvsp[(2) - (10)].cl), (yyvsp[(3) - (10)].Anchor).anchor, (yyvsp[(3) - (10)].Anchor).offset, (yyvsp[(4) - (10)].strval), (yyvsp[(6) - (10)].Anchor).anchor, (yyvsp[(6) - (10)].Anchor).offset, (yyvsp[(7) - (10)].strval), (yyvsp[(8) - (10)].ival), (yyvsp[(9) - (10)].ival), &((yyvsp[(10) - (10)].redir))); 
                                   cl_free((yyvsp[(10) - (10)].redir).name);
@@ -2969,7 +2969,7 @@ yyreduce:
   case 110:
 
 /* Line 1806 of yacc.c  */
-#line 720 "cqp/parser.y"
+#line 720 "../cwb/cqp/parser.y"
     { 
                                   do_group((yyvsp[(2) - (10)].cl), (yyvsp[(3) - (10)].Anchor).anchor, (yyvsp[(3) - (10)].Anchor).offset, (yyvsp[(4) - (10)].strval), (yyvsp[(6) - (10)].Anchor).anchor, (yyvsp[(6) - (10)].Anchor).offset, (yyvsp[(7) - (10)].strval), (yyvsp[(8) - (10)].ival), (yyvsp[(9) - (10)].ival), &((yyvsp[(10) - (10)].redir)));
                                   cl_free((yyvsp[(10) - (10)].redir).name);
@@ -2979,7 +2979,7 @@ yyreduce:
   case 111:
 
 /* Line 1806 of yacc.c  */
-#line 726 "cqp/parser.y"
+#line 726 "../cwb/cqp/parser.y"
     { 
                                   do_group2((yyvsp[(2) - (7)].cl), (yyvsp[(3) - (7)].Anchor).anchor, (yyvsp[(3) - (7)].Anchor).offset, (yyvsp[(4) - (7)].strval), (yyvsp[(5) - (7)].ival), (yyvsp[(6) - (7)].ival), &((yyvsp[(7) - (7)].redir)));
                                   cl_free((yyvsp[(7) - (7)].redir).name);
@@ -2989,63 +2989,63 @@ yyreduce:
   case 112:
 
 /* Line 1806 of yacc.c  */
-#line 733 "cqp/parser.y"
+#line 733 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 113:
 
 /* Line 1806 of yacc.c  */
-#line 734 "cqp/parser.y"
+#line 734 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 114:
 
 /* Line 1806 of yacc.c  */
-#line 740 "cqp/parser.y"
+#line 740 "../cwb/cqp/parser.y"
     { free_tabulation_list(); }
     break;
 
   case 115:
 
 /* Line 1806 of yacc.c  */
-#line 742 "cqp/parser.y"
+#line 742 "../cwb/cqp/parser.y"
     { print_tabulation((yyvsp[(2) - (5)].cl), 0, INT_MAX, &((yyvsp[(5) - (5)].redir))); cl_free((yyvsp[(5) - (5)].redir).name); }
     break;
 
   case 116:
 
 /* Line 1806 of yacc.c  */
-#line 744 "cqp/parser.y"
+#line 744 "../cwb/cqp/parser.y"
     { free_tabulation_list(); }
     break;
 
   case 117:
 
 /* Line 1806 of yacc.c  */
-#line 746 "cqp/parser.y"
+#line 746 "../cwb/cqp/parser.y"
     { print_tabulation((yyvsp[(2) - (9)].cl), (yyvsp[(5) - (9)].ival), (yyvsp[(7) - (9)].ival), &((yyvsp[(9) - (9)].redir))); cl_free((yyvsp[(9) - (9)].redir).name); }
     break;
 
   case 118:
 
 /* Line 1806 of yacc.c  */
-#line 750 "cqp/parser.y"
+#line 750 "../cwb/cqp/parser.y"
     { append_tabulation_item((yyvsp[(1) - (1)].tabulation_item)); }
     break;
 
   case 119:
 
 /* Line 1806 of yacc.c  */
-#line 752 "cqp/parser.y"
+#line 752 "../cwb/cqp/parser.y"
     { append_tabulation_item((yyvsp[(3) - (3)].tabulation_item)); }
     break;
 
   case 120:
 
 /* Line 1806 of yacc.c  */
-#line 756 "cqp/parser.y"
+#line 756 "../cwb/cqp/parser.y"
     {
                      (yyval.tabulation_item) = new_tabulation_item();
                      (yyval.tabulation_item)->attribute_name = (yyvsp[(2) - (2)].AttributeSpecification).name;
@@ -3060,14 +3060,14 @@ yyreduce:
   case 121:
 
 /* Line 1806 of yacc.c  */
-#line 768 "cqp/parser.y"
+#line 768 "../cwb/cqp/parser.y"
     { (yyval.AnchorPair).anchor1 = (yyval.AnchorPair).anchor2 = (yyvsp[(1) - (1)].Anchor).anchor; (yyval.AnchorPair).offset1 = (yyval.AnchorPair).offset2 = (yyvsp[(1) - (1)].Anchor).offset; }
     break;
 
   case 122:
 
 /* Line 1806 of yacc.c  */
-#line 770 "cqp/parser.y"
+#line 770 "../cwb/cqp/parser.y"
     { (yyval.AnchorPair).anchor1 = (yyvsp[(1) - (3)].Anchor).anchor; (yyval.AnchorPair).offset1 = (yyvsp[(1) - (3)].Anchor).offset;
                        (yyval.AnchorPair).anchor2 = (yyvsp[(3) - (3)].Anchor).anchor; (yyval.AnchorPair).offset2 = (yyvsp[(3) - (3)].Anchor).offset; }
     break;
@@ -3075,21 +3075,21 @@ yyreduce:
   case 123:
 
 /* Line 1806 of yacc.c  */
-#line 775 "cqp/parser.y"
+#line 775 "../cwb/cqp/parser.y"
     { (yyval.AttributeSpecification).name = (yyvsp[(1) - (2)].strval); (yyval.AttributeSpecification).flags = (yyvsp[(2) - (2)].ival); }
     break;
 
   case 124:
 
 /* Line 1806 of yacc.c  */
-#line 777 "cqp/parser.y"
+#line 777 "../cwb/cqp/parser.y"
     { (yyval.AttributeSpecification).name = NULL; (yyval.AttributeSpecification).flags = 0; }
     break;
 
   case 125:
 
 /* Line 1806 of yacc.c  */
-#line 787 "cqp/parser.y"
+#line 787 "../cwb/cqp/parser.y"
     { 
                   int ok;
                   if ((yyvsp[(2) - (3)].cl) && generate_code) {
@@ -3106,7 +3106,7 @@ yyreduce:
   case 126:
 
 /* Line 1806 of yacc.c  */
-#line 799 "cqp/parser.y"
+#line 799 "../cwb/cqp/parser.y"
     {
                   int ok;
                   if ((yyvsp[(2) - (4)].cl) && generate_code) {
@@ -3122,7 +3122,7 @@ yyreduce:
   case 127:
 
 /* Line 1806 of yacc.c  */
-#line 810 "cqp/parser.y"
+#line 810 "../cwb/cqp/parser.y"
     { 
                   int ok;
                   if ((yyvsp[(2) - (5)].cl) && generate_code) {
@@ -3136,21 +3136,21 @@ yyreduce:
   case 128:
 
 /* Line 1806 of yacc.c  */
-#line 821 "cqp/parser.y"
+#line 821 "../cwb/cqp/parser.y"
     { (yyval.sortclause) = (yyvsp[(1) - (1)].sortclause); }
     break;
 
   case 129:
 
 /* Line 1806 of yacc.c  */
-#line 822 "cqp/parser.y"
+#line 822 "../cwb/cqp/parser.y"
     { (yyval.sortclause) = NULL; }
     break;
 
   case 130:
 
 /* Line 1806 of yacc.c  */
-#line 826 "cqp/parser.y"
+#line 826 "../cwb/cqp/parser.y"
     {
                   if (generate_code) {
                     (yyval.sortclause) = cl_malloc(sizeof(SortClauseBuffer));
@@ -3171,14 +3171,14 @@ yyreduce:
   case 131:
 
 /* Line 1806 of yacc.c  */
-#line 843 "cqp/parser.y"
+#line 843 "../cwb/cqp/parser.y"
     { (yyval.AnchorPair).anchor1 = (yyval.AnchorPair).anchor2 = (yyvsp[(2) - (2)].Anchor).anchor; (yyval.AnchorPair).offset1 = (yyval.AnchorPair).offset2 = (yyvsp[(2) - (2)].Anchor).offset; }
     break;
 
   case 132:
 
 /* Line 1806 of yacc.c  */
-#line 845 "cqp/parser.y"
+#line 845 "../cwb/cqp/parser.y"
     { (yyval.AnchorPair).anchor1 = (yyvsp[(2) - (4)].Anchor).anchor; (yyval.AnchorPair).offset1 = (yyvsp[(2) - (4)].Anchor).offset;
                               (yyval.AnchorPair).anchor2 = (yyvsp[(4) - (4)].Anchor).anchor; (yyval.AnchorPair).offset2 = (yyvsp[(4) - (4)].Anchor).offset; }
     break;
@@ -3186,7 +3186,7 @@ yyreduce:
   case 133:
 
 /* Line 1806 of yacc.c  */
-#line 848 "cqp/parser.y"
+#line 848 "../cwb/cqp/parser.y"
     { (yyval.AnchorPair).anchor1 = MatchField;    (yyval.AnchorPair).offset1 = 0;
                               (yyval.AnchorPair).anchor2 = MatchEndField; (yyval.AnchorPair).offset2 = 0; }
     break;
@@ -3194,42 +3194,42 @@ yyreduce:
   case 134:
 
 /* Line 1806 of yacc.c  */
-#line 852 "cqp/parser.y"
+#line 852 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 135:
 
 /* Line 1806 of yacc.c  */
-#line 853 "cqp/parser.y"
+#line 853 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 136:
 
 /* Line 1806 of yacc.c  */
-#line 854 "cqp/parser.y"
+#line 854 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 137:
 
 /* Line 1806 of yacc.c  */
-#line 857 "cqp/parser.y"
+#line 857 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 138:
 
 /* Line 1806 of yacc.c  */
-#line 858 "cqp/parser.y"
+#line 858 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 139:
 
 /* Line 1806 of yacc.c  */
-#line 864 "cqp/parser.y"
+#line 864 "../cwb/cqp/parser.y"
     {
                                           do_reduce((yyvsp[(2) - (5)].cl), (yyvsp[(4) - (5)].ival), (yyvsp[(5) - (5)].ival));
                                         }
@@ -3238,7 +3238,7 @@ yyreduce:
   case 140:
 
 /* Line 1806 of yacc.c  */
-#line 868 "cqp/parser.y"
+#line 868 "../cwb/cqp/parser.y"
     {
                                           RangeSetop((yyvsp[(2) - (5)].cl), RMaximalMatches, NULL, NULL);
                                         }
@@ -3247,7 +3247,7 @@ yyreduce:
   case 141:
 
 /* Line 1806 of yacc.c  */
-#line 872 "cqp/parser.y"
+#line 872 "../cwb/cqp/parser.y"
     {
                                           do_cut((yyvsp[(2) - (3)].cl), 0, (yyvsp[(3) - (3)].ival)-1);
                                         }
@@ -3256,7 +3256,7 @@ yyreduce:
   case 142:
 
 /* Line 1806 of yacc.c  */
-#line 876 "cqp/parser.y"
+#line 876 "../cwb/cqp/parser.y"
     {
                                           do_cut((yyvsp[(2) - (4)].cl), (yyvsp[(3) - (4)].ival), (yyvsp[(4) - (4)].ival));
                                         }
@@ -3265,21 +3265,21 @@ yyreduce:
   case 143:
 
 /* Line 1806 of yacc.c  */
-#line 881 "cqp/parser.y"
+#line 881 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 144:
 
 /* Line 1806 of yacc.c  */
-#line 882 "cqp/parser.y"
+#line 882 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 145:
 
 /* Line 1806 of yacc.c  */
-#line 886 "cqp/parser.y"
+#line 886 "../cwb/cqp/parser.y"
     {
                                           if ((yyvsp[(2) - (4)].cl) && generate_code) {
                                             do_delete_lines((yyvsp[(2) - (4)].cl), (yyvsp[(4) - (4)].field), SELECTED_LINES); 
@@ -3290,7 +3290,7 @@ yyreduce:
   case 146:
 
 /* Line 1806 of yacc.c  */
-#line 892 "cqp/parser.y"
+#line 892 "../cwb/cqp/parser.y"
     { 
                                           if ((yyvsp[(2) - (4)].cl) && generate_code) {
                                             do_delete_lines((yyvsp[(2) - (4)].cl), (yyvsp[(4) - (4)].field), UNSELECTED_LINES); 
@@ -3301,7 +3301,7 @@ yyreduce:
   case 147:
 
 /* Line 1806 of yacc.c  */
-#line 898 "cqp/parser.y"
+#line 898 "../cwb/cqp/parser.y"
     { 
                                           if ((yyvsp[(2) - (3)].cl) && generate_code) {
                                              do_delete_lines_num((yyvsp[(2) - (3)].cl), (yyvsp[(3) - (3)].Distance).mindist, (yyvsp[(3) - (3)].Distance).maxdist);
@@ -3312,84 +3312,84 @@ yyreduce:
   case 148:
 
 /* Line 1806 of yacc.c  */
-#line 905 "cqp/parser.y"
+#line 905 "../cwb/cqp/parser.y"
     { (yyval.Distance).mindist = (yyvsp[(1) - (1)].ival); (yyval.Distance).maxdist = (yyvsp[(1) - (1)].ival); }
     break;
 
   case 149:
 
 /* Line 1806 of yacc.c  */
-#line 906 "cqp/parser.y"
+#line 906 "../cwb/cqp/parser.y"
     { (yyval.Distance).mindist = (yyvsp[(1) - (3)].ival); (yyval.Distance).maxdist = (yyvsp[(3) - (3)].ival); }
     break;
 
   case 150:
 
 /* Line 1806 of yacc.c  */
-#line 911 "cqp/parser.y"
+#line 911 "../cwb/cqp/parser.y"
     { do_sleep((yyvsp[(2) - (2)].ival)); }
     break;
 
   case 151:
 
 /* Line 1806 of yacc.c  */
-#line 915 "cqp/parser.y"
+#line 915 "../cwb/cqp/parser.y"
     { do_size((yyvsp[(2) - (3)].cl), (yyvsp[(3) - (3)].field)); }
     break;
 
   case 152:
 
 /* Line 1806 of yacc.c  */
-#line 916 "cqp/parser.y"
+#line 916 "../cwb/cqp/parser.y"
     { do_printVariableSize((yyvsp[(2) - (2)].strval)); free((yyvsp[(2) - (2)].strval)); }
     break;
 
   case 153:
 
 /* Line 1806 of yacc.c  */
-#line 921 "cqp/parser.y"
+#line 921 "../cwb/cqp/parser.y"
     { do_dump((yyvsp[(2) - (3)].cl), 0, INT_MAX, &((yyvsp[(3) - (3)].redir))); cl_free((yyvsp[(3) - (3)].redir).name); }
     break;
 
   case 154:
 
 /* Line 1806 of yacc.c  */
-#line 923 "cqp/parser.y"
+#line 923 "../cwb/cqp/parser.y"
     { do_dump((yyvsp[(2) - (7)].cl), (yyvsp[(4) - (7)].ival), (yyvsp[(6) - (7)].ival), &((yyvsp[(7) - (7)].redir))); cl_free((yyvsp[(7) - (7)].redir).name); }
     break;
 
   case 155:
 
 /* Line 1806 of yacc.c  */
-#line 927 "cqp/parser.y"
+#line 927 "../cwb/cqp/parser.y"
     { do_undump((yyvsp[(2) - (5)].strval), (yyvsp[(3) - (5)].ival), !(yyvsp[(4) - (5)].ival), &((yyvsp[(5) - (5)].in_redir))); cl_free((yyvsp[(5) - (5)].in_redir).name); }
     break;
 
   case 156:
 
 /* Line 1806 of yacc.c  */
-#line 930 "cqp/parser.y"
+#line 930 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 157:
 
 /* Line 1806 of yacc.c  */
-#line 931 "cqp/parser.y"
+#line 931 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 158:
 
 /* Line 1806 of yacc.c  */
-#line 935 "cqp/parser.y"
+#line 935 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 159:
 
 /* Line 1806 of yacc.c  */
-#line 937 "cqp/parser.y"
+#line 937 "../cwb/cqp/parser.y"
     { 
             if ((yyvsp[(2) - (2)].field) == TargetField) { (yyval.ival) = 1; }
             else { yyerror("Invalid extension anchor in undump command"); YYABORT; } 
@@ -3399,7 +3399,7 @@ yyreduce:
   case 160:
 
 /* Line 1806 of yacc.c  */
-#line 942 "cqp/parser.y"
+#line 942 "../cwb/cqp/parser.y"
     { 
             if ( (((yyvsp[(2) - (3)].field) == TargetField) && ((yyvsp[(3) - (3)].field) == KeywordField))
                  || (((yyvsp[(3) - (3)].field) == TargetField) && ((yyvsp[(2) - (3)].field) == KeywordField))
@@ -3411,7 +3411,7 @@ yyreduce:
   case 162:
 
 /* Line 1806 of yacc.c  */
-#line 954 "cqp/parser.y"
+#line 954 "../cwb/cqp/parser.y"
     {
                   if ((yyvsp[(1) - (3)].cl) && (yyvsp[(3) - (3)].sortclause) && (yyvsp[(1) - (3)].cl)->size > 0) {
                     SortSubcorpus((yyvsp[(1) - (3)].cl), (yyvsp[(3) - (3)].sortclause), 0, NULL);
@@ -3424,42 +3424,42 @@ yyreduce:
   case 166:
 
 /* Line 1806 of yacc.c  */
-#line 970 "cqp/parser.y"
+#line 970 "../cwb/cqp/parser.y"
     { (yyval.cl) = do_StandardQuery((yyvsp[(3) - (4)].ival), (yyvsp[(4) - (4)].ival)); }
     break;
 
   case 167:
 
 /* Line 1806 of yacc.c  */
-#line 974 "cqp/parser.y"
+#line 974 "../cwb/cqp/parser.y"
     { (yyval.cl) = do_MUQuery((yyvsp[(2) - (4)].evalt), (yyvsp[(3) - (4)].ival), (yyvsp[(4) - (4)].ival)); }
     break;
 
   case 168:
 
 /* Line 1806 of yacc.c  */
-#line 977 "cqp/parser.y"
+#line 977 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 169:
 
 /* Line 1806 of yacc.c  */
-#line 978 "cqp/parser.y"
+#line 978 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 170:
 
 /* Line 1806 of yacc.c  */
-#line 981 "cqp/parser.y"
+#line 981 "../cwb/cqp/parser.y"
     { if (generate_code) { CurEnv->match_label = labellookup(CurEnv->labels, "match", LAB_DEFINED, 1); } }
     break;
 
   case 171:
 
 /* Line 1806 of yacc.c  */
-#line 982 "cqp/parser.y"
+#line 982 "../cwb/cqp/parser.y"
     { within_gc = 1; 
                                           if (generate_code) { CurEnv->matchend_label = labellookup(CurEnv->labels, "matchend", LAB_DEFINED, 1); } }
     break;
@@ -3467,49 +3467,49 @@ yyreduce:
   case 172:
 
 /* Line 1806 of yacc.c  */
-#line 984 "cqp/parser.y"
+#line 984 "../cwb/cqp/parser.y"
     { within_gc = 0; }
     break;
 
   case 173:
 
 /* Line 1806 of yacc.c  */
-#line 985 "cqp/parser.y"
+#line 985 "../cwb/cqp/parser.y"
     { do_SearchPattern((yyvsp[(2) - (6)].evalt), (yyvsp[(4) - (6)].boolt)); }
     break;
 
   case 174:
 
 /* Line 1806 of yacc.c  */
-#line 989 "cqp/parser.y"
+#line 989 "../cwb/cqp/parser.y"
     { (yyval.evalt) = reg_disj((yyvsp[(1) - (3)].evalt), (yyvsp[(3) - (3)].evalt)); }
     break;
 
   case 175:
 
 /* Line 1806 of yacc.c  */
-#line 990 "cqp/parser.y"
+#line 990 "../cwb/cqp/parser.y"
     { (yyval.evalt) = (yyvsp[(1) - (1)].evalt); }
     break;
 
   case 176:
 
 /* Line 1806 of yacc.c  */
-#line 994 "cqp/parser.y"
+#line 994 "../cwb/cqp/parser.y"
     { (yyval.evalt) = reg_seq((yyvsp[(1) - (2)].evalt), (yyvsp[(2) - (2)].evalt)); }
     break;
 
   case 177:
 
 /* Line 1806 of yacc.c  */
-#line 995 "cqp/parser.y"
+#line 995 "../cwb/cqp/parser.y"
     { (yyval.evalt) = (yyvsp[(1) - (1)].evalt); }
     break;
 
   case 178:
 
 /* Line 1806 of yacc.c  */
-#line 998 "cqp/parser.y"
+#line 998 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                            (yyval.evalt) = (yyvsp[(2) - (2)].evalt);
                                            (yyval.evalt)->node.left = (yyvsp[(1) - (2)].evalt);
@@ -3523,7 +3523,7 @@ yyreduce:
   case 179:
 
 /* Line 1806 of yacc.c  */
-#line 1006 "cqp/parser.y"
+#line 1006 "../cwb/cqp/parser.y"
     { if (generate_code)
                                            NEW_EVALNODE((yyval.evalt), re_repeat, (yyvsp[(1) - (2)].evalt), NULL, 0, repeat_inf);
                                          else
@@ -3534,7 +3534,7 @@ yyreduce:
   case 180:
 
 /* Line 1806 of yacc.c  */
-#line 1011 "cqp/parser.y"
+#line 1011 "../cwb/cqp/parser.y"
     { if (generate_code)
                                            NEW_EVALNODE((yyval.evalt), re_repeat, (yyvsp[(1) - (2)].evalt), NULL, 1, repeat_inf);
                                          else
@@ -3545,7 +3545,7 @@ yyreduce:
   case 181:
 
 /* Line 1806 of yacc.c  */
-#line 1016 "cqp/parser.y"
+#line 1016 "../cwb/cqp/parser.y"
     { if (generate_code)
                                            NEW_EVALNODE((yyval.evalt), re_repeat, (yyvsp[(1) - (2)].evalt), NULL, 0, 1);
                                          else
@@ -3556,21 +3556,21 @@ yyreduce:
   case 182:
 
 /* Line 1806 of yacc.c  */
-#line 1021 "cqp/parser.y"
+#line 1021 "../cwb/cqp/parser.y"
     { (yyval.evalt) = (yyvsp[(1) - (1)].evalt); }
     break;
 
   case 183:
 
 /* Line 1806 of yacc.c  */
-#line 1024 "cqp/parser.y"
+#line 1024 "../cwb/cqp/parser.y"
     { (yyval.evalt) = (yyvsp[(2) - (3)].evalt); }
     break;
 
   case 184:
 
 /* Line 1806 of yacc.c  */
-#line 1025 "cqp/parser.y"
+#line 1025 "../cwb/cqp/parser.y"
     { if (generate_code)
                                             NEW_EVALLEAF((yyval.evalt), (yyvsp[(1) - (1)].index));
                                           else
@@ -3581,7 +3581,7 @@ yyreduce:
   case 185:
 
 /* Line 1806 of yacc.c  */
-#line 1030 "cqp/parser.y"
+#line 1030 "../cwb/cqp/parser.y"
     { if (generate_code)
                                             NEW_EVALLEAF((yyval.evalt), (yyvsp[(1) - (1)].index));
                                           else
@@ -3592,7 +3592,7 @@ yyreduce:
   case 186:
 
 /* Line 1806 of yacc.c  */
-#line 1035 "cqp/parser.y"
+#line 1035 "../cwb/cqp/parser.y"
     { if (generate_code)
                                             NEW_EVALLEAF((yyval.evalt), (yyvsp[(1) - (1)].index));
                                           else
@@ -3603,7 +3603,7 @@ yyreduce:
   case 187:
 
 /* Line 1806 of yacc.c  */
-#line 1042 "cqp/parser.y"
+#line 1042 "../cwb/cqp/parser.y"
     { if (generate_code)
                                             NEW_EVALNODE((yyval.evalt), re_repeat, NULL, NULL, (yyvsp[(2) - (3)].ival), (yyvsp[(2) - (3)].ival));
                                           else
@@ -3614,7 +3614,7 @@ yyreduce:
   case 188:
 
 /* Line 1806 of yacc.c  */
-#line 1048 "cqp/parser.y"
+#line 1048 "../cwb/cqp/parser.y"
     { if (generate_code)
                                             NEW_EVALNODE((yyval.evalt), re_repeat, NULL, NULL, (yyvsp[(2) - (5)].ival), (yyvsp[(4) - (5)].ival));
                                           else
@@ -3625,126 +3625,126 @@ yyreduce:
   case 189:
 
 /* Line 1806 of yacc.c  */
-#line 1056 "cqp/parser.y"
+#line 1056 "../cwb/cqp/parser.y"
     { (yyval.index) = do_AnchorPoint((yyvsp[(1) - (1)].field), 0); }
     break;
 
   case 190:
 
 /* Line 1806 of yacc.c  */
-#line 1057 "cqp/parser.y"
+#line 1057 "../cwb/cqp/parser.y"
     { (yyval.index) = do_AnchorPoint((yyvsp[(1) - (1)].field), 1); }
     break;
 
   case 191:
 
 /* Line 1806 of yacc.c  */
-#line 1060 "cqp/parser.y"
+#line 1060 "../cwb/cqp/parser.y"
     { (yyval.index) = do_XMLTag((yyvsp[(1) - (2)].strval), 0, 0, NULL, 0); }
     break;
 
   case 192:
 
 /* Line 1806 of yacc.c  */
-#line 1062 "cqp/parser.y"
+#line 1062 "../cwb/cqp/parser.y"
     { (yyval.index) = do_XMLTag((yyvsp[(1) - (5)].strval), 0, (yyvsp[(2) - (5)].ival), (yyvsp[(3) - (5)].strval), (yyvsp[(4) - (5)].ival)); }
     break;
 
   case 193:
 
 /* Line 1806 of yacc.c  */
-#line 1063 "cqp/parser.y"
+#line 1063 "../cwb/cqp/parser.y"
     { (yyval.index) = do_XMLTag((yyvsp[(1) - (1)].strval), 1, 0, NULL, 0); }
     break;
 
   case 194:
 
 /* Line 1806 of yacc.c  */
-#line 1066 "cqp/parser.y"
+#line 1066 "../cwb/cqp/parser.y"
     { (yyval.ival) = (yyvsp[(1) - (1)].ival); }
     break;
 
   case 195:
 
 /* Line 1806 of yacc.c  */
-#line 1067 "cqp/parser.y"
+#line 1067 "../cwb/cqp/parser.y"
     { (yyval.ival) = OP_EQUAL | OP_NOT; }
     break;
 
   case 196:
 
 /* Line 1806 of yacc.c  */
-#line 1068 "cqp/parser.y"
+#line 1068 "../cwb/cqp/parser.y"
     { (yyval.ival) = OP_EQUAL; }
     break;
 
   case 197:
 
 /* Line 1806 of yacc.c  */
-#line 1069 "cqp/parser.y"
+#line 1069 "../cwb/cqp/parser.y"
     { (yyval.ival) = OP_EQUAL; }
     break;
 
   case 198:
 
 /* Line 1806 of yacc.c  */
-#line 1074 "cqp/parser.y"
+#line 1074 "../cwb/cqp/parser.y"
     { (yyval.index) = do_NamedWfPattern((yyvsp[(1) - (3)].ival), (yyvsp[(2) - (3)].strval), (yyvsp[(3) - (3)].index)); }
     break;
 
   case 199:
 
 /* Line 1806 of yacc.c  */
-#line 1078 "cqp/parser.y"
+#line 1078 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 200:
 
 /* Line 1806 of yacc.c  */
-#line 1079 "cqp/parser.y"
+#line 1079 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 201:
 
 /* Line 1806 of yacc.c  */
-#line 1082 "cqp/parser.y"
+#line 1082 "../cwb/cqp/parser.y"
     { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 202:
 
 /* Line 1806 of yacc.c  */
-#line 1083 "cqp/parser.y"
+#line 1083 "../cwb/cqp/parser.y"
     { (yyval.strval) = NULL; }
     break;
 
   case 203:
 
 /* Line 1806 of yacc.c  */
-#line 1086 "cqp/parser.y"
+#line 1086 "../cwb/cqp/parser.y"
     { (yyval.index) = do_WordformPattern((yyvsp[(1) - (1)].boolt), 0); }
     break;
 
   case 204:
 
 /* Line 1806 of yacc.c  */
-#line 1087 "cqp/parser.y"
+#line 1087 "../cwb/cqp/parser.y"
     { (yyval.index) = do_WordformPattern((yyvsp[(1) - (1)].boolt), 1); }
     break;
 
   case 205:
 
 /* Line 1806 of yacc.c  */
-#line 1090 "cqp/parser.y"
+#line 1090 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_StringConstraint((yyvsp[(1) - (2)].strval), (yyvsp[(2) - (2)].ival)); }
     break;
 
   case 206:
 
 /* Line 1806 of yacc.c  */
-#line 1091 "cqp/parser.y"
+#line 1091 "../cwb/cqp/parser.y"
     { (yyval.boolt) = NULL;
                                         if (!FindVariable((yyvsp[(1) - (1)].strval))) {
                                           cqpmessage(Error, 
@@ -3762,14 +3762,14 @@ yyreduce:
   case 207:
 
 /* Line 1806 of yacc.c  */
-#line 1103 "cqp/parser.y"
+#line 1103 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(2) - (3)].boolt); }
     break;
 
   case 208:
 
 /* Line 1806 of yacc.c  */
-#line 1104 "cqp/parser.y"
+#line 1104 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                           NEW_BNODE((yyval.boolt));
                                           (yyval.boolt)->constnode.type = cnode;
@@ -3781,14 +3781,14 @@ yyreduce:
   case 209:
 
 /* Line 1806 of yacc.c  */
-#line 1112 "cqp/parser.y"
+#line 1112 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(2) - (3)].boolt); }
     break;
 
   case 210:
 
 /* Line 1806 of yacc.c  */
-#line 1113 "cqp/parser.y"
+#line 1113 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                           NEW_BNODE((yyval.boolt));
                                           (yyval.boolt)->constnode.type = cnode;
@@ -3800,7 +3800,7 @@ yyreduce:
   case 211:
 
 /* Line 1806 of yacc.c  */
-#line 1121 "cqp/parser.y"
+#line 1121 "../cwb/cqp/parser.y"
     { int flags, i;
                                           flags = 0;
 
@@ -3837,35 +3837,35 @@ yyreduce:
   case 212:
 
 /* Line 1806 of yacc.c  */
-#line 1152 "cqp/parser.y"
+#line 1152 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 213:
 
 /* Line 1806 of yacc.c  */
-#line 1155 "cqp/parser.y"
+#line 1155 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(2) - (2)].boolt); }
     break;
 
   case 214:
 
 /* Line 1806 of yacc.c  */
-#line 1156 "cqp/parser.y"
+#line 1156 "../cwb/cqp/parser.y"
     { (yyval.boolt) = NULL; }
     break;
 
   case 215:
 
 /* Line 1806 of yacc.c  */
-#line 1161 "cqp/parser.y"
+#line 1161 "../cwb/cqp/parser.y"
     { prepare_AlignmentConstraints((yyvsp[(3) - (3)].strval)); }
     break;
 
   case 216:
 
 /* Line 1806 of yacc.c  */
-#line 1163 "cqp/parser.y"
+#line 1163 "../cwb/cqp/parser.y"
     { if (generate_code)
                                            CurEnv->negated = (yyvsp[(5) - (6)].ival);
                                        }
@@ -3874,28 +3874,28 @@ yyreduce:
   case 217:
 
 /* Line 1806 of yacc.c  */
-#line 1166 "cqp/parser.y"
+#line 1166 "../cwb/cqp/parser.y"
     { }
     break;
 
   case 218:
 
 /* Line 1806 of yacc.c  */
-#line 1169 "cqp/parser.y"
+#line 1169 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 219:
 
 /* Line 1806 of yacc.c  */
-#line 1170 "cqp/parser.y"
+#line 1170 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 220:
 
 /* Line 1806 of yacc.c  */
-#line 1174 "cqp/parser.y"
+#line 1174 "../cwb/cqp/parser.y"
     { if (generate_code) {
                     CurEnv->search_context.direction = (yyvsp[(2) - (3)].direction);
                     CurEnv->search_context.type = (yyvsp[(3) - (3)].context).type;
@@ -3908,7 +3908,7 @@ yyreduce:
   case 221:
 
 /* Line 1806 of yacc.c  */
-#line 1181 "cqp/parser.y"
+#line 1181 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                             CurEnv->search_context.type  = word;
                                             CurEnv->search_context.size  = hard_boundary;
@@ -3920,63 +3920,63 @@ yyreduce:
   case 222:
 
 /* Line 1806 of yacc.c  */
-#line 1189 "cqp/parser.y"
+#line 1189 "../cwb/cqp/parser.y"
     { (yyval.ival) = abs((yyvsp[(2) - (2)].ival)); }
     break;
 
   case 223:
 
 /* Line 1806 of yacc.c  */
-#line 1190 "cqp/parser.y"
+#line 1190 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 224:
 
 /* Line 1806 of yacc.c  */
-#line 1193 "cqp/parser.y"
+#line 1193 "../cwb/cqp/parser.y"
     { (yyval.ival) = (yyvsp[(1) - (1)].ival); }
     break;
 
   case 225:
 
 /* Line 1806 of yacc.c  */
-#line 1194 "cqp/parser.y"
+#line 1194 "../cwb/cqp/parser.y"
     { (yyval.ival) = 1; }
     break;
 
   case 226:
 
 /* Line 1806 of yacc.c  */
-#line 1197 "cqp/parser.y"
+#line 1197 "../cwb/cqp/parser.y"
     { (yyval.ival) = (yyvsp[(1) - (1)].ival); }
     break;
 
   case 227:
 
 /* Line 1806 of yacc.c  */
-#line 1198 "cqp/parser.y"
+#line 1198 "../cwb/cqp/parser.y"
     { (yyval.ival) = 0; }
     break;
 
   case 228:
 
 /* Line 1806 of yacc.c  */
-#line 1201 "cqp/parser.y"
+#line 1201 "../cwb/cqp/parser.y"
     { (yyval.ival) = (yyvsp[(1) - (1)].ival); }
     break;
 
   case 229:
 
 /* Line 1806 of yacc.c  */
-#line 1202 "cqp/parser.y"
+#line 1202 "../cwb/cqp/parser.y"
     { (yyval.ival) = repeat_inf; }
     break;
 
   case 230:
 
 /* Line 1806 of yacc.c  */
-#line 1206 "cqp/parser.y"
+#line 1206 "../cwb/cqp/parser.y"
     { expansion.direction = (yyvsp[(2) - (4)].direction);
                                           expansion.type = (yyvsp[(4) - (4)].context).type;
                                           expansion.size = (yyvsp[(4) - (4)].context).size;
@@ -3987,7 +3987,7 @@ yyreduce:
   case 231:
 
 /* Line 1806 of yacc.c  */
-#line 1211 "cqp/parser.y"
+#line 1211 "../cwb/cqp/parser.y"
     { expansion.direction = leftright;
                                           expansion.type = word;
                                           expansion.size = 0;
@@ -3998,56 +3998,56 @@ yyreduce:
   case 232:
 
 /* Line 1806 of yacc.c  */
-#line 1218 "cqp/parser.y"
+#line 1218 "../cwb/cqp/parser.y"
     { (yyval.direction) = left; }
     break;
 
   case 233:
 
 /* Line 1806 of yacc.c  */
-#line 1219 "cqp/parser.y"
+#line 1219 "../cwb/cqp/parser.y"
     { (yyval.direction) = right; }
     break;
 
   case 234:
 
 /* Line 1806 of yacc.c  */
-#line 1220 "cqp/parser.y"
+#line 1220 "../cwb/cqp/parser.y"
     { (yyval.direction) = leftright; }
     break;
 
   case 235:
 
 /* Line 1806 of yacc.c  */
-#line 1223 "cqp/parser.y"
+#line 1223 "../cwb/cqp/parser.y"
     { do_Description(&((yyval.context)), (yyvsp[(1) - (2)].ival), (yyvsp[(2) - (2)].strval)); }
     break;
 
   case 236:
 
 /* Line 1806 of yacc.c  */
-#line 1224 "cqp/parser.y"
+#line 1224 "../cwb/cqp/parser.y"
     { do_Description(&((yyval.context)), (yyvsp[(1) - (1)].ival), NULL); }
     break;
 
   case 237:
 
 /* Line 1806 of yacc.c  */
-#line 1227 "cqp/parser.y"
+#line 1227 "../cwb/cqp/parser.y"
     { (yyval.cl) = (yyvsp[(1) - (1)].cl); }
     break;
 
   case 238:
 
 /* Line 1806 of yacc.c  */
-#line 1228 "cqp/parser.y"
+#line 1228 "../cwb/cqp/parser.y"
     { (yyval.cl) = findcorpus("Last", UNDEF, 0); }
     break;
 
   case 239:
 
 /* Line 1806 of yacc.c  */
-#line 1232 "cqp/parser.y"
+#line 1232 "../cwb/cqp/parser.y"
     { CorpusList *cl;
 
                                           cqpmessage(Message, "CID: %s", (yyvsp[(1) - (1)].strval));
@@ -4071,56 +4071,56 @@ yyreduce:
   case 240:
 
 /* Line 1806 of yacc.c  */
-#line 1252 "cqp/parser.y"
+#line 1252 "../cwb/cqp/parser.y"
     { (yyval.boolt) = bool_implies((yyvsp[(1) - (3)].boolt), (yyvsp[(3) - (3)].boolt)); }
     break;
 
   case 241:
 
 /* Line 1806 of yacc.c  */
-#line 1253 "cqp/parser.y"
+#line 1253 "../cwb/cqp/parser.y"
     { (yyval.boolt) = bool_or((yyvsp[(1) - (3)].boolt), (yyvsp[(3) - (3)].boolt)); }
     break;
 
   case 242:
 
 /* Line 1806 of yacc.c  */
-#line 1254 "cqp/parser.y"
+#line 1254 "../cwb/cqp/parser.y"
     { (yyval.boolt) = bool_and((yyvsp[(1) - (3)].boolt), (yyvsp[(3) - (3)].boolt)); }
     break;
 
   case 243:
 
 /* Line 1806 of yacc.c  */
-#line 1255 "cqp/parser.y"
+#line 1255 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(2) - (3)].boolt); }
     break;
 
   case 244:
 
 /* Line 1806 of yacc.c  */
-#line 1256 "cqp/parser.y"
+#line 1256 "../cwb/cqp/parser.y"
     { (yyval.boolt) = bool_not((yyvsp[(2) - (2)].boolt)); }
     break;
 
   case 245:
 
 /* Line 1806 of yacc.c  */
-#line 1257 "cqp/parser.y"
+#line 1257 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(1) - (1)].boolt); }
     break;
 
   case 246:
 
 /* Line 1806 of yacc.c  */
-#line 1260 "cqp/parser.y"
+#line 1260 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_RelExpr((yyvsp[(1) - (3)].boolt), (yyvsp[(2) - (3)].boolo), (yyvsp[(3) - (3)].boolt)); }
     break;
 
   case 247:
 
 /* Line 1806 of yacc.c  */
-#line 1262 "cqp/parser.y"
+#line 1262 "../cwb/cqp/parser.y"
     {
                  if ((yyvsp[(2) - (4)].ival) & OP_NOT) {
                    (yyval.boolt) = do_RelExpr((yyvsp[(1) - (4)].boolt), cmp_neq, do_mval_string((yyvsp[(3) - (4)].strval), (yyvsp[(2) - (4)].ival), (yyvsp[(4) - (4)].ival)));
@@ -4134,98 +4134,98 @@ yyreduce:
   case 248:
 
 /* Line 1806 of yacc.c  */
-#line 1270 "cqp/parser.y"
+#line 1270 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_RelExExpr((yyvsp[(1) - (1)].boolt)); }
     break;
 
   case 249:
 
 /* Line 1806 of yacc.c  */
-#line 1273 "cqp/parser.y"
+#line 1273 "../cwb/cqp/parser.y"
     {(yyval.ival) = OP_CONTAINS | (yyvsp[(1) - (2)].ival);}
     break;
 
   case 250:
 
 /* Line 1806 of yacc.c  */
-#line 1274 "cqp/parser.y"
+#line 1274 "../cwb/cqp/parser.y"
     {(yyval.ival) = OP_MATCHES  | (yyvsp[(1) - (2)].ival);}
     break;
 
   case 251:
 
 /* Line 1806 of yacc.c  */
-#line 1277 "cqp/parser.y"
+#line 1277 "../cwb/cqp/parser.y"
     {(yyval.ival) = OP_NOT;}
     break;
 
   case 252:
 
 /* Line 1806 of yacc.c  */
-#line 1278 "cqp/parser.y"
+#line 1278 "../cwb/cqp/parser.y"
     {(yyval.ival) = 0;}
     break;
 
   case 253:
 
 /* Line 1806 of yacc.c  */
-#line 1281 "cqp/parser.y"
+#line 1281 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_LabelReference((yyvsp[(1) - (1)].strval), 0); }
     break;
 
   case 254:
 
 /* Line 1806 of yacc.c  */
-#line 1282 "cqp/parser.y"
+#line 1282 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_LabelReference((yyvsp[(2) - (2)].strval), 1); }
     break;
 
   case 255:
 
 /* Line 1806 of yacc.c  */
-#line 1283 "cqp/parser.y"
+#line 1283 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_IDReference((yyvsp[(1) - (1)].strval), 0); }
     break;
 
   case 256:
 
 /* Line 1806 of yacc.c  */
-#line 1284 "cqp/parser.y"
+#line 1284 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_IDReference((yyvsp[(2) - (2)].strval), 1); }
     break;
 
   case 257:
 
 /* Line 1806 of yacc.c  */
-#line 1285 "cqp/parser.y"
+#line 1285 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_IDReference(cl_strdup(field_type_to_name((yyvsp[(1) - (1)].field))), 0); }
     break;
 
   case 258:
 
 /* Line 1806 of yacc.c  */
-#line 1286 "cqp/parser.y"
+#line 1286 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(1) - (1)].boolt); }
     break;
 
   case 259:
 
 /* Line 1806 of yacc.c  */
-#line 1289 "cqp/parser.y"
+#line 1289 "../cwb/cqp/parser.y"
     { (yyval.boolt) = (yyvsp[(1) - (1)].boolt); }
     break;
 
   case 260:
 
 /* Line 1806 of yacc.c  */
-#line 1290 "cqp/parser.y"
+#line 1290 "../cwb/cqp/parser.y"
     { (yyval.boolt) = do_flagged_string((yyvsp[(1) - (2)].strval), (yyvsp[(2) - (2)].ival)); }
     break;
 
   case 261:
 
 /* Line 1806 of yacc.c  */
-#line 1292 "cqp/parser.y"
+#line 1292 "../cwb/cqp/parser.y"
     { 
                                           (yyval.boolt) = do_flagged_re_variable((yyvsp[(2) - (4)].strval), (yyvsp[(4) - (4)].ival)); 
                                         }
@@ -4234,7 +4234,7 @@ yyreduce:
   case 262:
 
 /* Line 1806 of yacc.c  */
-#line 1295 "cqp/parser.y"
+#line 1295 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                             if (!FindVariable((yyvsp[(1) - (1)].strval))) {
                                               cqpmessage(Error, 
@@ -4257,7 +4257,7 @@ yyreduce:
   case 263:
 
 /* Line 1806 of yacc.c  */
-#line 1312 "cqp/parser.y"
+#line 1312 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                             NEW_BNODE((yyval.boolt));
                                             (yyval.boolt)->type = int_leaf;
@@ -4271,7 +4271,7 @@ yyreduce:
   case 264:
 
 /* Line 1806 of yacc.c  */
-#line 1320 "cqp/parser.y"
+#line 1320 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                             NEW_BNODE((yyval.boolt));
                                             (yyval.boolt)->type = float_leaf;
@@ -4285,56 +4285,56 @@ yyreduce:
   case 265:
 
 /* Line 1806 of yacc.c  */
-#line 1330 "cqp/parser.y"
+#line 1330 "../cwb/cqp/parser.y"
     { (yyval.boolo) = cmp_lt; }
     break;
 
   case 266:
 
 /* Line 1806 of yacc.c  */
-#line 1331 "cqp/parser.y"
+#line 1331 "../cwb/cqp/parser.y"
     { (yyval.boolo) = cmp_gt; }
     break;
 
   case 267:
 
 /* Line 1806 of yacc.c  */
-#line 1332 "cqp/parser.y"
+#line 1332 "../cwb/cqp/parser.y"
     { (yyval.boolo) = cmp_eq; }
     break;
 
   case 268:
 
 /* Line 1806 of yacc.c  */
-#line 1333 "cqp/parser.y"
+#line 1333 "../cwb/cqp/parser.y"
     { (yyval.boolo) = cmp_neq; }
     break;
 
   case 269:
 
 /* Line 1806 of yacc.c  */
-#line 1334 "cqp/parser.y"
+#line 1334 "../cwb/cqp/parser.y"
     { (yyval.boolo) = cmp_let; }
     break;
 
   case 270:
 
 /* Line 1806 of yacc.c  */
-#line 1335 "cqp/parser.y"
+#line 1335 "../cwb/cqp/parser.y"
     { (yyval.boolo) = cmp_get; }
     break;
 
   case 271:
 
 /* Line 1806 of yacc.c  */
-#line 1338 "cqp/parser.y"
+#line 1338 "../cwb/cqp/parser.y"
     { (yyval.boolt) = FunctionCall((yyvsp[(1) - (4)].strval), (yyvsp[(3) - (4)].apl)); }
     break;
 
   case 272:
 
 /* Line 1806 of yacc.c  */
-#line 1341 "cqp/parser.y"
+#line 1341 "../cwb/cqp/parser.y"
     { (yyval.apl) = (yyvsp[(1) - (1)].apl);
                                             }
     break;
@@ -4342,7 +4342,7 @@ yyreduce:
   case 273:
 
 /* Line 1806 of yacc.c  */
-#line 1344 "cqp/parser.y"
+#line 1344 "../cwb/cqp/parser.y"
     { ActualParamList *last;
 
                                               if (generate_code) {
@@ -4362,7 +4362,7 @@ yyreduce:
   case 274:
 
 /* Line 1806 of yacc.c  */
-#line 1360 "cqp/parser.y"
+#line 1360 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                              New((yyval.apl), ActualParamList);
 
@@ -4377,28 +4377,28 @@ yyreduce:
   case 275:
 
 /* Line 1806 of yacc.c  */
-#line 1371 "cqp/parser.y"
+#line 1371 "../cwb/cqp/parser.y"
     { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 276:
 
 /* Line 1806 of yacc.c  */
-#line 1374 "cqp/parser.y"
+#line 1374 "../cwb/cqp/parser.y"
     { (yyval.evalt) = (yyvsp[(1) - (1)].evalt); }
     break;
 
   case 277:
 
 /* Line 1806 of yacc.c  */
-#line 1375 "cqp/parser.y"
+#line 1375 "../cwb/cqp/parser.y"
     { (yyval.evalt) = (yyvsp[(1) - (1)].evalt); }
     break;
 
   case 278:
 
 /* Line 1806 of yacc.c  */
-#line 1376 "cqp/parser.y"
+#line 1376 "../cwb/cqp/parser.y"
     { if (generate_code) {
                                             NEW_EVALLEAF((yyval.evalt), (yyvsp[(1) - (1)].index));
                                           }
@@ -4410,14 +4410,14 @@ yyreduce:
   case 279:
 
 /* Line 1806 of yacc.c  */
-#line 1388 "cqp/parser.y"
+#line 1388 "../cwb/cqp/parser.y"
     { (yyval.evalt) = do_MeetStatement((yyvsp[(3) - (6)].evalt), (yyvsp[(4) - (6)].evalt), &((yyvsp[(5) - (6)].context))); }
     break;
 
   case 280:
 
 /* Line 1806 of yacc.c  */
-#line 1392 "cqp/parser.y"
+#line 1392 "../cwb/cqp/parser.y"
     { (yyval.context).type = word;
                                           (yyval.context).size = (yyvsp[(1) - (2)].ival);
                                           (yyval.context).size2 = (yyvsp[(2) - (2)].ival);
@@ -4428,14 +4428,14 @@ yyreduce:
   case 281:
 
 /* Line 1806 of yacc.c  */
-#line 1397 "cqp/parser.y"
+#line 1397 "../cwb/cqp/parser.y"
     { do_StructuralContext(&((yyval.context)), (yyvsp[(1) - (1)].strval)); }
     break;
 
   case 282:
 
 /* Line 1806 of yacc.c  */
-#line 1398 "cqp/parser.y"
+#line 1398 "../cwb/cqp/parser.y"
     { (yyval.context).type = word;
                                           (yyval.context).size = 1;
                                           (yyval.context).size2 = 1;
@@ -4446,105 +4446,105 @@ yyreduce:
   case 283:
 
 /* Line 1806 of yacc.c  */
-#line 1409 "cqp/parser.y"
+#line 1409 "../cwb/cqp/parser.y"
     { (yyval.evalt) = do_UnionStatement((yyvsp[(3) - (5)].evalt), (yyvsp[(4) - (5)].evalt)); }
     break;
 
   case 284:
 
 /* Line 1806 of yacc.c  */
-#line 1414 "cqp/parser.y"
+#line 1414 "../cwb/cqp/parser.y"
     { (yyval.cl) = do_TABQuery((yyvsp[(2) - (3)].evalt)); }
     break;
 
   case 285:
 
 /* Line 1806 of yacc.c  */
-#line 1419 "cqp/parser.y"
+#line 1419 "../cwb/cqp/parser.y"
     { (yyval.evalt) = make_first_tabular_pattern((yyvsp[(1) - (2)].index), (yyvsp[(2) - (2)].evalt)); }
     break;
 
   case 286:
 
 /* Line 1806 of yacc.c  */
-#line 1424 "cqp/parser.y"
+#line 1424 "../cwb/cqp/parser.y"
     { (yyval.evalt) = add_tabular_pattern((yyvsp[(1) - (3)].evalt), &((yyvsp[(2) - (3)].context)), (yyvsp[(3) - (3)].index)); }
     break;
 
   case 287:
 
 /* Line 1806 of yacc.c  */
-#line 1426 "cqp/parser.y"
+#line 1426 "../cwb/cqp/parser.y"
     { (yyval.evalt) = NULL; }
     break;
 
   case 288:
 
 /* Line 1806 of yacc.c  */
-#line 1429 "cqp/parser.y"
+#line 1429 "../cwb/cqp/parser.y"
     { do_OptDistance(&((yyval.context)), (yyvsp[(2) - (3)].ival), (yyvsp[(2) - (3)].ival)); }
     break;
 
   case 289:
 
 /* Line 1806 of yacc.c  */
-#line 1431 "cqp/parser.y"
+#line 1431 "../cwb/cqp/parser.y"
     { do_OptDistance(&((yyval.context)), (yyvsp[(2) - (5)].ival), (yyvsp[(4) - (5)].ival)); }
     break;
 
   case 290:
 
 /* Line 1806 of yacc.c  */
-#line 1432 "cqp/parser.y"
+#line 1432 "../cwb/cqp/parser.y"
     { do_OptDistance(&((yyval.context)), 0, (yyvsp[(3) - (4)].ival)); }
     break;
 
   case 291:
 
 /* Line 1806 of yacc.c  */
-#line 1433 "cqp/parser.y"
+#line 1433 "../cwb/cqp/parser.y"
     { do_OptDistance(&((yyval.context)), 0, 0); }
     break;
 
   case 292:
 
 /* Line 1806 of yacc.c  */
-#line 1438 "cqp/parser.y"
+#line 1438 "../cwb/cqp/parser.y"
     { add_user_to_list((yyvsp[(2) - (3)].strval), (yyvsp[(3) - (3)].strval)); }
     break;
 
   case 294:
 
 /* Line 1806 of yacc.c  */
-#line 1440 "cqp/parser.y"
+#line 1440 "../cwb/cqp/parser.y"
     { add_host_to_list((yyvsp[(2) - (2)].strval)); }
     break;
 
   case 295:
 
 /* Line 1806 of yacc.c  */
-#line 1441 "cqp/parser.y"
+#line 1441 "../cwb/cqp/parser.y"
     { add_hosts_in_subnet_to_list((yyvsp[(2) - (2)].strval)); }
     break;
 
   case 296:
 
 /* Line 1806 of yacc.c  */
-#line 1442 "cqp/parser.y"
+#line 1442 "../cwb/cqp/parser.y"
     { add_host_to_list(NULL); }
     break;
 
   case 299:
 
 /* Line 1806 of yacc.c  */
-#line 1451 "cqp/parser.y"
+#line 1451 "../cwb/cqp/parser.y"
     { add_grant_to_last_user((yyvsp[(2) - (2)].strval)); }
     break;
 
   case 301:
 
 /* Line 1806 of yacc.c  */
-#line 1457 "cqp/parser.y"
+#line 1457 "../cwb/cqp/parser.y"
     {
                                                 if (enable_macros) 
                                                   define_macro((yyvsp[(3) - (7)].strval), (yyvsp[(5) - (7)].ival), NULL, (yyvsp[(7) - (7)].strval));  /* <macro.c> */
@@ -4558,7 +4558,7 @@ yyreduce:
   case 302:
 
 /* Line 1806 of yacc.c  */
-#line 1466 "cqp/parser.y"
+#line 1466 "../cwb/cqp/parser.y"
     {
                                                 if (enable_macros) 
                                                   define_macro((yyvsp[(3) - (7)].strval), 0, (yyvsp[(5) - (7)].strval), (yyvsp[(7) - (7)].strval));  /* <macro.c> */
@@ -4573,7 +4573,7 @@ yyreduce:
   case 303:
 
 /* Line 1806 of yacc.c  */
-#line 1475 "cqp/parser.y"
+#line 1475 "../cwb/cqp/parser.y"
     {
                                                 load_macro_file((yyvsp[(4) - (4)].strval));
                                                 free((yyvsp[(4) - (4)].strval));  /* don't forget to free the allocated string */
@@ -4583,7 +4583,7 @@ yyreduce:
   case 306:
 
 /* Line 1806 of yacc.c  */
-#line 1486 "cqp/parser.y"
+#line 1486 "../cwb/cqp/parser.y"
     {
                                           list_macros(NULL);
                                         }
@@ -4592,7 +4592,7 @@ yyreduce:
   case 307:
 
 /* Line 1806 of yacc.c  */
-#line 1489 "cqp/parser.y"
+#line 1489 "../cwb/cqp/parser.y"
     {
                                           list_macros((yyvsp[(3) - (3)].strval));
                                           free((yyvsp[(3) - (3)].strval));
@@ -4602,7 +4602,7 @@ yyreduce:
   case 308:
 
 /* Line 1806 of yacc.c  */
-#line 1494 "cqp/parser.y"
+#line 1494 "../cwb/cqp/parser.y"
     {
                                           print_macro_definition((yyvsp[(3) - (6)].strval), (yyvsp[(5) - (6)].ival));
                                           free((yyvsp[(3) - (6)].strval));
@@ -4612,7 +4612,7 @@ yyreduce:
   case 309:
 
 /* Line 1806 of yacc.c  */
-#line 1502 "cqp/parser.y"
+#line 1502 "../cwb/cqp/parser.y"
     {
                                           int l1 = strlen((yyvsp[(1) - (2)].strval)), l2 = strlen((yyvsp[(2) - (2)].strval));
                                           char *s = (char *) cl_malloc(l1 + l2 + 2);
@@ -4628,56 +4628,56 @@ yyreduce:
   case 310:
 
 /* Line 1806 of yacc.c  */
-#line 1512 "cqp/parser.y"
+#line 1512 "../cwb/cqp/parser.y"
     { (yyval.strval) = (yyvsp[(1) - (1)].strval); }
     break;
 
   case 311:
 
 /* Line 1806 of yacc.c  */
-#line 1516 "cqp/parser.y"
+#line 1516 "../cwb/cqp/parser.y"
     { cl_randomize(); }
     break;
 
   case 312:
 
 /* Line 1806 of yacc.c  */
-#line 1517 "cqp/parser.y"
+#line 1517 "../cwb/cqp/parser.y"
     { cl_set_seed((yyvsp[(2) - (2)].ival)); }
     break;
 
   case 314:
 
 /* Line 1806 of yacc.c  */
-#line 1525 "cqp/parser.y"
+#line 1525 "../cwb/cqp/parser.y"
     { (yyval.field) = (yyvsp[(1) - (1)].field); }
     break;
 
   case 315:
 
 /* Line 1806 of yacc.c  */
-#line 1526 "cqp/parser.y"
+#line 1526 "../cwb/cqp/parser.y"
     { (yyval.field) = NoField; }
     break;
 
   case 324:
 
 /* Line 1806 of yacc.c  */
-#line 1542 "cqp/parser.y"
+#line 1542 "../cwb/cqp/parser.y"
     { (yyval.Anchor).anchor = (yyvsp[(1) - (1)].field); (yyval.Anchor).offset = 0; }
     break;
 
   case 325:
 
 /* Line 1806 of yacc.c  */
-#line 1543 "cqp/parser.y"
+#line 1543 "../cwb/cqp/parser.y"
     { (yyval.Anchor).anchor = (yyvsp[(1) - (4)].field); (yyval.Anchor).offset = (yyvsp[(3) - (4)].ival); }
     break;
 
 
 
 /* Line 1806 of yacc.c  */
-#line 4681 "cqp/parser.tab.c"
+#line 4681 "../cwb/cqp/parser.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -4754,7 +4754,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror ((char*)yymsgp);
+        yyerror (yymsgp);
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
@@ -4908,7 +4908,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 1546 "cqp/parser.y"
+#line 1546 "../cwb/cqp/parser.y"
 
 
 

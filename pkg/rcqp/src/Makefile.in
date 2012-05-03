@@ -6,16 +6,6 @@
 #          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 # This is part of the R package 'rcqp'.
 # ===========================================================================
-# NB: on Mac OSX 10.5, use -gdwarf-2 instead of -g to avoid warnings about
-# missing "atom for N_GSYM stabs".
-# 
-# ARCHIS := -arch i386 -arch ppc -arch x86_64 -arch ppc64
-# 
-# % pkg-config --libs libpcre
-# -L/opt/local/lib -lpcre  
-# % pkg-config --libs glib-2.0
-# -L/opt/local/lib -lglib-2.0 -lintl  
-
 
 ifdef __MINGW__ 
 	CROSS_COMPILATION_DIR = @CROSS_COMPILATION_DIR@
@@ -143,10 +133,7 @@ CFLAGS := ${CFLAGS} @RCQP_R_CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@
 # Targets
 # =======
 
-rcqp: ${RCQP_C_SRC} libclcqp.a
-	# Compile the C files
-	${CC} ${CFLAGS} -c ${RCQP_C_SRC} ${RCQP_R_CPPFLAGS}
-	#
+rcqp: ${RCQP_STATLIB} ${RCQP_C_OBJ}
 	# Link the library
 	${CC} -o ${RCQP_OUTDIR}$@$(SHLIB_EXT) $(DYLIB_LDFLAGS) ${RCQP_C_OBJ} \
 		${RCQP_STATLIB} \
@@ -156,7 +143,7 @@ rcqp: ${RCQP_C_SRC} libclcqp.a
 
 # The order of the prerequisites is important: bison, then flex, 
 # then the C source files
-libclcqp.a: ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
+${RCQP_STATLIB}: ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
 	rm -f $@
 	${AR} cq $@ ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} 
 	${RANLIB} $@
@@ -170,14 +157,6 @@ ${CQP_BISON_C}: ${CQP_BISON_SRC}
 	${BISON_PRG} ${CQP_BISON_FLAGS} --defines=${CQP_BISON_H} -o ${CQP_BISON_C} ${CQP_BISON_SRC}
 
 
-${CQP_FLEX_OBJ}: ${CQP_FLEX_C}
-	${CC} -c ${CFLAGS} -o ${CQP_FLEX_OBJ} ${CQP_FLEX_C}
-
-
-${CQP_BISON_OBJ}: ${CQP_BISON_C}
-	${CC} -c ${CFLAGS} -o ${CQP_BISON_OBJ} ${CQP_BISON_C}
-
-
 ${CL_FLEX_C}: ${CL_FLEX_SRC}
 	${FLEX_PRG} ${CL_FLEX_FLAGS} --header-file=${CL_FLEX_H} -o ${CL_FLEX_C} ${CL_FLEX_SRC}
 
@@ -186,18 +165,9 @@ ${CL_BISON_C}: ${CL_BISON_SRC}
 	${BISON_PRG} ${CL_BISON_FLAGS} --defines=${CL_BISON_H} -o ${CL_BISON_C} ${CL_BISON_SRC}
 
 
-${CL_FLEX_OBJ}: ${CL_FLEX_C}
-	${CC} -c ${CFLAGS} -o ${CL_FLEX_OBJ} ${CL_FLEX_C}
-
-
-${CL_BISON_OBJ}: ${CL_BISON_C}
-	${CC} -c ${CFLAGS} -o ${CL_BISON_OBJ} ${CL_BISON_C}
-
-
-
 .PHONY: all clean clean-all
 
-all: libclcqp.a
+all: ${RCQP_STATLIB}
 
 
 clean:
@@ -209,14 +179,12 @@ clean:
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
 	${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
-	    ../cwb/libclcqp.a ${MMAPS_OBJ}
+	    ${RCQP_STATLIB} ${MMAPS_OBJ}
 
 
 clean-all:
-	${RM} *.o *.so Makefile
-	cd ../inst/doc/; \
-	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out *.pdf *.synctex.gz
-	${RM} ${CQP_FLEX_C} ${CQP_FLEX_H} \
+	${MAKE} clean
+	${RM} Makefile ${CQP_FLEX_C} ${CQP_FLEX_H} \
 	    ${CQP_BISON_C} ${CQP_BISON_H} \
 	    ${CL_FLEX_C} ${CL_FLEX_H} \
 	    ${CL_BISON_C} ${CL_BISON_H}
