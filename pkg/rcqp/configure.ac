@@ -1,7 +1,7 @@
 ### ===========================================================================
 ### File: "configure.ac"
 ###                        Created: 2010-06-24 08:46:27
-###              Last modification: 2012-04-10 22:13:11
+###              Last modification: 2012-05-04 11:49:27
 ### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 ###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 ### This is part of the R package 'rcqp'.
@@ -25,22 +25,6 @@ RCQP_GLIB_LFLAGS=`pkg-config --libs glib-2.0`
 AC_SUBST(RCQP_GLIB_CFLAGS)
 AC_SUBST(RCQP_GLIB_LFLAGS)
 
-
-: ${R_HOME=`R RHOME`}
-if test -z "${R_HOME}"; then
-	echo "could not determine R_HOME"
-	exit 1
-fi
-
-CC=`"${R_HOME}/bin/R" CMD config CC`
-
-RCQP_R_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
-RCQP_R_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
-RCQP_R_LIBR=`"${R_HOME}/bin/R" CMD config --ldflags`
-
-AC_SUBST(RCQP_R_CFLAGS)
-AC_SUBST(RCQP_R_LIBR)
-AC_SUBST(RCQP_R_CPPFLAGS)
 
 # Cross-compilation with mingw
 test ${CROSS_COMPILATION_DIR:=}

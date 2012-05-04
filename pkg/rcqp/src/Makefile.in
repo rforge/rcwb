@@ -109,12 +109,10 @@ CWB_BISON_OBJ = ${CQP_BISON_OBJ} ${CL_BISON_OBJ}
 
 RCQP_STATLIB=libclcqp.a
 
-RCQP_R_CPPFLAGS=@RCQP_R_CPPFLAGS@
-
 ifdef __MINGW__ 
-	RCQP_R_LIBR=-lR
+	RCQP_REGISTRY_DEFAULT_PATH="-DREGISTRY_DEFAULT_PATH=\"C:\\CWB\\Registry\""
 else
-	RCQP_R_LIBR=@RCQP_R_LIBR@
+	RCQP_REGISTRY_DEFAULT_PATH="-DREGISTRY_DEFAULT_PATH=\"@prefix@/share/cwb/registry\""
 endif
 
 FLEX_PRG=@LEX@
@@ -126,7 +124,7 @@ RCQP_PCRE_LFLAGS=@RCQP_PCRE_LFLAGS@
 RCQP_GLIB_CFLAGS=@RCQP_GLIB_CFLAGS@
 RCQP_GLIB_LFLAGS=@RCQP_GLIB_LFLAGS@
 
-CFLAGS := ${CFLAGS} @RCQP_R_CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@
+CFLAGS := ${CFLAGS} @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@ ${RCQP_REGISTRY_DEFAULT_PATH}
 
 
 
@@ -138,7 +136,7 @@ rcqp: ${RCQP_STATLIB} ${RCQP_C_OBJ}
 	${CC} -o ${RCQP_OUTDIR}$@$(SHLIB_EXT) $(DYLIB_LDFLAGS) ${RCQP_C_OBJ} \
 		${RCQP_STATLIB} \
 	    $(CROSS_COMPILATION_LFLAGS) $(LDFLAGS_ALL) $(RCQP_PCRE_LFLAGS) $(RCQP_GLIB_LFLAGS) \
-		${RCQP_R_LIBR}
+		${LIBR}
 
 
 # The order of the prerequisites is important: bison, then flex, 
@@ -165,10 +163,12 @@ ${CL_BISON_C}: ${CL_BISON_SRC}
 	${BISON_PRG} ${CL_BISON_FLAGS} --defines=${CL_BISON_H} -o ${CL_BISON_C} ${CL_BISON_SRC}
 
 
+parsers: ${CQP_FLEX_C} ${CQP_BISON_C} ${CL_FLEX_C} ${CL_BISON_C}
+
+
 .PHONY: all clean clean-all
 
-all: ${RCQP_STATLIB}
-
+all: rcqp
 
 clean:
 	${RM} *.o *.so
@@ -183,9 +183,8 @@ clean:
 	    ${RCQP_STATLIB} ${MMAPS_OBJ}
 
 
-clean-all:
-	${MAKE} clean
-	${RM} Makefile ${CQP_FLEX_C} ${CQP_FLEX_H} \
+clean-parsers:
+	${RM} -f ${CQP_FLEX_C} ${CQP_FLEX_H} \
 	    ${CQP_BISON_C} ${CQP_BISON_H} \
 	    ${CL_FLEX_C} ${CL_FLEX_H} \
 	    ${CL_BISON_C} ${CL_BISON_H}
