@@ -172,8 +172,9 @@ all: ${RCQP_STATLIB}
 
 clean:
 	${RM} *.o *.so
-	${RM} -rf ../config.log ../config.status ../autom4te.cache/*
+	${RM} -rf ../config.log ../config.status
 	if test -e ../autom4te.cache; then \
+		${RM} -rf ../autom4te.cache/*; \
 		rmdir ../autom4te.cache; \
 	fi
 	cd ../inst/doc/; \
