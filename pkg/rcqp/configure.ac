@@ -14,59 +14,35 @@ AC_PREREQ(2.60)
 
 AC_INIT([rcqp],[1.0])
 
+# Check for pkg-config
+AC_PATH_PROGS(PKG_CONFIG, pkg-config) 
 
-RCQP_PCRE_CFLAGS=`pkg-config --cflags libpcre`
-RCQP_PCRE_LFLAGS=`pkg-config --libs libpcre`
+if test -n "${PKG_CONFIG}"; then
+	if (${PKG_CONFIG} --exists libpcre); then
+		RCQP_PCRE_CFLAGS=`pkg-config --cflags libpcre`
+		RCQP_PCRE_LFLAGS=`pkg-config --libs libpcre`
+    else
+         echo "ERROR: 'pcre' not found by pkg-config."
+         exit 1
+    fi
+	
+	if (${PKG_CONFIG} --exists glib-2.0); then
+		RCQP_GLIB_CFLAGS=`pkg-config --cflags glib-2.0`
+		RCQP_GLIB_LFLAGS=`pkg-config --libs glib-2.0`
+    else
+         echo "ERROR: 'glib-2.0' not found by pkg-config."
+         exit 1
+    fi	
+	
+else
+    echo "ERROR: Cannot find pkg-config."
+    exit 1
+fi
+
 AC_SUBST(RCQP_PCRE_CFLAGS)
 AC_SUBST(RCQP_PCRE_LFLAGS)
-
-RCQP_GLIB_CFLAGS=`pkg-config --cflags glib-2.0`
-RCQP_GLIB_LFLAGS=`pkg-config --libs glib-2.0`
 AC_SUBST(RCQP_GLIB_CFLAGS)
 AC_SUBST(RCQP_GLIB_LFLAGS)
-
-
-# Cross-compilation with mingw
-test ${CROSS_COMPILATION_DIR:=}
-AC_SUBST(CROSS_COMPILATION_DIR)
-
-if test "${RCQP_PLATFORM}" = "mingw" -o "${RCQP_PLATFORM}" = "mingwRcqp" ; then
-	RCQP_PLATFORM="mingwRcqp"
-	RCQP_CROSS_COMPILING=1
-else
-	RCQP_CROSS_COMPILING=0
-fi
-
-if test "${RCQP_CROSS_COMPILING}" = 1; then
-	echo "rcqp cross compiling"
-	echo "checking for config file 'rcqpcrossrc' ..."
-	
-	olddir=`pwd`
-	cd $(dirname $0)
-	if [[ -e `pwd`/rcqpcrossrc ]] ; then
-		source `pwd`/rcqpcrossrc
-	else
-		echo "... not found"
-	fi
-	cd $olddir
-	
-	test ${RCQP_CROSS_CC:=i386-mingw32-gcc}
-	echo "RCQP_CROSS_CC: '${RCQP_CROSS_CC}'"
-	AC_SUBST(RCQP_CROSS_CC)
-
-	if [[ -z $RCQP_CROSS_HOST ]] ; then
-		RCQP_CROSS_HOST=${RCQP_CROSS_CC%-*}
-		echo "RCQP_CROSS_HOST: '$RCQP_CROSS_HOST'."
-	fi
-	AC_SUBST(RCQP_CROSS_HOST)
-
-	if [[ -z $RCQP_CROSS_ARCH ]] ; then
-		RCQP_CROSS_ARCH=${RCQP_CROSS_CC%%-*}
-		echo "RCQP_CROSS_ARCH : '$RCQP_CROSS_ARCH'."
-	fi
-	AC_SUBST(RCQP_CROSS_ARCH)
-	
-fi
 
 
 # C support
@@ -78,22 +54,13 @@ AC_PROG_YACC()
 # Support the MacPorts location
 LDFLAGS="$LDFLAGS -L/opt/local/lib"
 
-# Check for the required libraries
-if test "$RCQP_CROSS_COMPILING" = 0; then
-	AC_CHECK_LIB(glib-2.0, g_list_append, [], AC_MSG_ERROR(the glib-2.0 library is required. Please install it.))
-	AC_CHECK_LIB(pcre, pcre_free, [], AC_MSG_ERROR(the pcre library is required. Please install it.))
-fi
-
-# Check for pkg-config
-AC_PATH_PROGS(PKGCONFIG, pkg-config) 
 
 
 
 # Process the .in files
 # ---------------------
 AC_CONFIG_FILES(
-[ src/Makefile
-cwb/config/platform/mingwRcqp
+[ src/Makevars
 ])
 
 AC_OUTPUT
