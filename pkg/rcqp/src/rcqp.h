@@ -26,16 +26,16 @@
 #include <unistd.h>
 #include <math.h>
 
-#include "../cwb/CQi/server.h"
-#include "../cwb/CQi/auth.h"
-#include "../cwb/CQi/cqi.h"
+#include "cwb/CQi/server.h"
+#include "cwb/CQi/auth.h"
+#include "cwb/CQi/cqi.h"
 
-#include "../cwb/cl/cl.h"
-#include "../cwb/cl/macros.h"
-#include "../cwb/cqp/cqp.h"
-#include "../cwb/cqp/options.h"
-#include "../cwb/cqp/corpmanag.h"
-#include "../cwb/cqp/groups.h"
+#include "cwb/cl/cl.h"
+#include "cwb/cl/macros.h"
+#include "cwb/cqp/cqp.h"
+#include "cwb/cqp/options.h"
+#include "cwb/cqp/corpmanag.h"
+#include "cwb/cqp/groups.h"
 	
 #include "rcqpCommands.h"
 #include "rcqpUtils.h"
