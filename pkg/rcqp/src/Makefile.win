@@ -1,2 +1,4 @@
 all:
-	@echo "Nothing to do. Compiled libraries are downloaded by configure.win."
+	@echo "Nothing to do."
+	@echo "Windows dll can be obtained via cross-compilation."
+	@echo "See the instructions in INSTALL file."
