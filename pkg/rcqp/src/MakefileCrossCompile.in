@@ -18,7 +18,7 @@
 
 
 ## Read configuration settings for cwb
-TOP = $(shell pwd)/../cwb
+TOP = $(shell pwd)/cwb
 include $(TOP)/configRcqpCrossCompile.mk
 
 CFLAGS:=${CFLAGS} @RCQP_R_CFLAGS@
@@ -58,9 +58,7 @@ RCQP_VIGNETTE_PDF :=  $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
 # Substitutable variables
 # =======================
 
-RCQP_STATLIB_CL=../cwb/cl/libcl.a
-RCQP_STATLIB_CQP=../cwb/cqp/libcqp.a
-RCQP_STATLIB=../cwb/libclcqp.a
+RCQP_STATLIB=cwb/libclcqp.a
 
 RCQP_R_CPPFLAGS=@RCQP_R_CPPFLAGS@
 
@@ -87,21 +85,21 @@ rcqp: ${RCQP_C_SRC} cwb
 
 
 cwb:
-	${MAKE} --makefile=MakefileRcqpCrossCompile -C ../cwb
+	${MAKE} --makefile=MakefileRcqpCrossCompile -C cwb
 
 
 .PHONY: clean
 
 
 clean:
-	${MAKE} --makefile=MakefileRcqpCrossCompile -C ../cwb clean
+	${MAKE} --makefile=MakefileRcqpCrossCompile -C cwb clean
 	${RM} *.o *.so
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.synctex.gz
 
 
 clean-all:
-	${MAKE} --makefile=MakefileRcqpCrossCompile -C ../cwb clean-all
+	${MAKE} --makefile=MakefileRcqpCrossCompile -C cwb clean-all
 	${RM} *.o *.so Makefile
 	cd ../inst/doc/; \
 	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.pdf *.synctex.gz

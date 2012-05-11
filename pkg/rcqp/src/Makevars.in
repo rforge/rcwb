@@ -1,7 +1,7 @@
 # ===========================================================================
 # File: "Makefile.in"
 #                        Created: 2012-05-10 18:55:47
-#              Last modification: 2012-05-10 18:55:41
+#              Last modification: 2012-05-11 11:05:51
 # Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 #          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 # This is part of the R package 'rcqp'.
@@ -142,20 +142,19 @@ parsers: ${CQP_FLEX_C} ${CQP_BISON_C} ${CL_FLEX_C} ${CL_BISON_C}
 
 
 clean:
-	${RM} *.o *.so
-	${RM} -rf ../config.log ../config.status
+	rm -f *.o *.so src/Makevars
+	rm -f ../config.log ../config.status
 	if test -e ../autom4te.cache; then \
-		${RM} -rf ../autom4te.cache/*; \
+		rm -rf ../autom4te.cache/*; \
 		rmdir ../autom4te.cache; \
 	fi
 	cd ../inst/doc/; \
-	${RM} *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
-	${RM} ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} \
-	    ${RCQP_STATLIB} ${MMAPS_OBJ}
+	rm -f *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
+	rm -f ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} ${RCQP_STATLIB} ${MMAPS_OBJ}
 
 
 clean-parsers:
-	${RM} -f ${CQP_FLEX_C} ${CQP_FLEX_H} \
+	rm -f ${CQP_FLEX_C} ${CQP_FLEX_H} \
 	    ${CQP_BISON_C} ${CQP_BISON_H} \
 	    ${CL_FLEX_C} ${CL_FLEX_H} \
 	    ${CL_BISON_C} ${CL_BISON_H}
@@ -163,7 +162,7 @@ clean-parsers:
 
 vignette:
 	cd ../inst/doc; \
-	${RM} ${RCQP_VIGNETTE_TEX}; \
+	rm -f ${RCQP_VIGNETTE_TEX}; \
 	echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
 	pdflatex ${RCQP_VIGNETTE_TEX}; \
 	makeindex ${RCQP_VIGNETTE_IDX}; \
