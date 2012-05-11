@@ -110,9 +110,9 @@ AC_PATH_PROGS(PKGCONFIG, pkg-config)
 # ---------------------
 AC_CONFIG_FILES(
 [ ../../../pkg/rcqp/src/MakefileCrossCompile
-../../../pkg/rcqp/cwb/configRcqpCrossCompile.mk
-../../../pkg/rcqp/cwb/config/platform/mingwRcqp
-../../../pkg/rcqp/cwb/MakefileRcqpCrossCompile
+../../../pkg/rcqp/src/cwb/configRcqpCrossCompile.mk
+../../../pkg/rcqp/src/cwb/config/platform/mingwRcqp
+../../../pkg/rcqp/src/cwb/MakefileRcqpCrossCompile
 ])
 
 AC_OUTPUT
