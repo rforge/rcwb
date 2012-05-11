@@ -1,4 +1,0 @@
-all:
-	@echo "Nothing to do."
-	@echo "Windows dll can be obtained via cross-compilation."
-	@echo "See the instructions in INSTALL file."
