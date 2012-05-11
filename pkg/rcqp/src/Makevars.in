@@ -24,14 +24,14 @@ OBJECTS = ${RCQP_STATLIB} ${RCQP_C_OBJ}
 # Source files
 # ============
 
-# C files
+# src directory
+# -------------
 RCQP_C_SRC = rcqpCommands.c rcqpUtils.c
-
 RCQP_C_OBJ = $(RCQP_C_SRC:.c=.o)
 
 
-# cqp directory
-# -------------
+# cwb/cqp directory
+# -----------------
 CQP_C_SRC = cwb/cqp/ascii-print.c cwb/cqp/attlist.c cwb/cqp/builtins.c cwb/cqp/concordance.c \
 	cwb/cqp/context_descriptor.c cwb/cqp/corpmanag.c cwb/cqp/cqp.c cwb/cqp/eval.c \
 	cwb/cqp/groups.c cwb/cqp/hash.c cwb/cqp/html-print.c cwb/cqp/latex-print.c cwb/cqp/macro.c \
@@ -56,26 +56,20 @@ CQP_FLEX_FLAGS=
 CQP_BISON_FLAGS=
 
 
-# CQi directory
-# -------------
+# cwb/CQi directory
+# -----------------
 CQI_C_SRC = cwb/CQi/server.c cwb/CQi/auth.c 
 CQI_C_H = $(CQI_C_SRC:.c=.h) cwb/CQi/cqi.h
 CQI_C_OBJ = $(CQI_C_SRC:.c=.o)
 
 
-# cl directory
-# ------------
-MMAPS_SRC = cwb/cl/windows-mmap.c
-MMAPS_OBJ = $(MMAPS_SRC:.c=.o)
-ifndef __MINGW__
-MMAPS_SRC =
-endif
+# cwb/cl directory
+# ----------------
 
 CL_C_SRC = cwb/cl/globals.c cwb/cl/macros.c cwb/cl/list.c cwb/cl/lexhash.c cwb/cl/bitfields.c \
 	cwb/cl/storage.c cwb/cl/fileutils.c cwb/cl/special-chars.c cwb/cl/regopt.c cwb/cl/corpus.c \
 	cwb/cl/attributes.c cwb/cl/makecomps.c cwb/cl/cdaccess.c cwb/cl/bitio.c cwb/cl/endian.c \
-	cwb/cl/compression.c cwb/cl/binsert.c cwb/cl/class-mapping.c ${MMAPS_SRC}
-
+	cwb/cl/compression.c cwb/cl/binsert.c cwb/cl/class-mapping.c
 CL_C_H = $(CL_C_SRC:.c=.h)
 CL_C_OBJ = $(CL_C_SRC:.c=.o)
 
@@ -150,7 +144,7 @@ clean:
 	fi
 	cd ../inst/doc/; \
 	rm -f *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
-	rm -f ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} ${RCQP_STATLIB} ${MMAPS_OBJ}
+	rm -f ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} ${RCQP_STATLIB}
 
 
 clean-parsers:
