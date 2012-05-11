@@ -7,7 +7,6 @@
 # This is part of the R package 'rcqp'.
 # ===========================================================================
 
-
 # Substitutable variables
 # =======================
 
@@ -16,7 +15,6 @@ RCQP_REGISTRY_DEFAULT_PATH="-DREGISTRY_DEFAULT_PATH=\"@prefix@/share/cwb/registr
 
 FLEX_PRG=@LEX@
 BISON_PRG=@YACC@
-
 
 PKG_CFLAGS=@CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@ ${RCQP_REGISTRY_DEFAULT_PATH}
 PKG_LIBS=@LDFLAGS@ @LIBS@ @RCQP_PCRE_LFLAGS@ @RCQP_GLIB_LFLAGS@
@@ -30,11 +28,6 @@ OBJECTS = ${RCQP_STATLIB} ${RCQP_C_OBJ}
 RCQP_C_SRC = rcqpCommands.c rcqpUtils.c
 
 RCQP_C_OBJ = $(RCQP_C_SRC:.c=.o)
-
-RCQP_VIGNETTE_RNW = rcqp.Rnw
-RCQP_VIGNETTE_TEX = $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
-RCQP_VIGNETTE_IDX = $(RCQP_VIGNETTE_RNW:.Rnw=.idx)
-RCQP_VIGNETTE_PDF = $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
 
 
 # cqp directory
@@ -105,11 +98,17 @@ CWB_FLEX_OBJ = ${CQP_FLEX_OBJ} ${CL_FLEX_OBJ}
 CWB_BISON_OBJ = ${CQP_BISON_OBJ} ${CL_BISON_OBJ}
  
 
+# Sweave files
+RCQP_VIGNETTE_RNW = rcqp.Rnw
+RCQP_VIGNETTE_TEX = $(RCQP_VIGNETTE_RNW:.Rnw=.tex)
+RCQP_VIGNETTE_IDX = $(RCQP_VIGNETTE_RNW:.Rnw=.idx)
+RCQP_VIGNETTE_PDF = $(RCQP_VIGNETTE_RNW:.Rnw=.pdf)
+
 
 # Targets
 # =======
 
-rcqp: ${RCQP_STATLIB} $(SHLIB)
+all: ${RCQP_STATLIB} $(SHLIB)
 
 
 # The order of the prerequisites is important: bison, then flex, 
@@ -139,7 +138,7 @@ ${CL_BISON_C}: ${CL_BISON_SRC}
 parsers: ${CQP_FLEX_C} ${CQP_BISON_C} ${CL_FLEX_C} ${CL_BISON_C}
 
 
-.PHONY: all clean clean-parsers
+.PHONY: clean clean-parsers vignette
 
 
 clean:

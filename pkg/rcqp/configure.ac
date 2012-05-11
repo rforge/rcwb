@@ -1,7 +1,7 @@
 ### ===========================================================================
 ### File: "configure.ac"
 ###                        Created: 2010-06-24 08:46:27
-###              Last modification: 2012-05-04 11:49:27
+###              Last modification: 2012-05-11 10:42:07
 ### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 ###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 ### This is part of the R package 'rcqp'.
@@ -22,7 +22,7 @@ if test -n "${PKG_CONFIG}"; then
 		RCQP_PCRE_CFLAGS=`pkg-config --cflags libpcre`
 		RCQP_PCRE_LFLAGS=`pkg-config --libs libpcre`
     else
-         echo "ERROR: 'pcre' not found by pkg-config."
+         echo "ERROR: 'pcre' library not found by pkg-config. Please install it."
          exit 1
     fi
 	
@@ -30,12 +30,12 @@ if test -n "${PKG_CONFIG}"; then
 		RCQP_GLIB_CFLAGS=`pkg-config --cflags glib-2.0`
 		RCQP_GLIB_LFLAGS=`pkg-config --libs glib-2.0`
     else
-         echo "ERROR: 'glib-2.0' not found by pkg-config."
+         echo "ERROR: 'glib-2.0' library not found by pkg-config. Please install it."
          exit 1
     fi	
 	
 else
-    echo "ERROR: Cannot find pkg-config."
+    echo "ERROR: can't find pkg-config. Please install it."
     exit 1
 fi
 
