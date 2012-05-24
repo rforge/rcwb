@@ -13,7 +13,7 @@
 
 \details{
 	The available corpora are referenced in the registry (which is a
-	directory located by default in \code{/usr/local/share/cwb} on
+	directory located by default in \file{/usr/local/share/cwb} on
 	Unix-like systems). See \code{\link{cqp_registry}} to learn how
 	to set the \emph{registry} directory. 
 	

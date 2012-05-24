@@ -18,7 +18,7 @@ directory is to define the environment variable
 In \code{rcqp}, the \code{CORPUS_REGISTRY} environment variable is first
 read. If it is not set, rcqp tries to use the default registry directory,
 which varies according to your system (on most Unixes, it is
-\emph{/usr/local/share/cwb/registry}; on Windows, it is \emph{C:\\CWB\\Registry}). If this default
+\file{/usr/local/share/cwb/registry}; on Windows, it is \file{C:\\CWB\\Registry}). If this default
 directory does not exist, \code{rcqp} cannot proceed further.
 
 In order to set the \code{CORPUS_REGISTRY} variable, you can 
@@ -31,7 +31,7 @@ In order to set the \code{CORPUS_REGISTRY} variable, you can
 	is loaded. 
 	
 	\item or define this variable in the configuration file
-	\code{~/.Renviron} which is read by R at startup. In that case,
+	\file{~/.Renviron} which is read by R at startup. In that case,
 	the environment variable is defined only for \code{rcqp}, and will not be seen
 	by any other CWB program.
 	
