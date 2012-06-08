@@ -620,7 +620,7 @@ cqpmessage(MessageType type, char *format, ...)
       msg = "CQP Error";
       break;
     case Warning:
-      msg = "Warning";
+      msg = "Issue";
       break;
     case Message:
       msg = "Message";
