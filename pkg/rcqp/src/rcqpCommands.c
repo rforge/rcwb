@@ -345,7 +345,7 @@ SEXP rcqpCmd_lexicon_size(SEXP inAttribute)
 		size = cl_max_id(attribute);
 		if (size < 0) {
 			UNPROTECT(1);
-			printf("negative size");
+			Rprintf("negative size");
 			rcqp_send_error();
 		} else {
 			result = PROTECT(allocVector(INTSXP, 1));
