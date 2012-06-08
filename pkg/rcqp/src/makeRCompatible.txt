@@ -17,3 +17,8 @@ dans initialize_cqp :
 
  svn ci rcqp/src/cwb/editline/vc_editline_config.h -m "win to unix line endings"
 
+dans :
+rcqp/src/cwb/cqp/output.c
+attention à remplacer "Warning" par "Issue" dans la fonction cqpmessage 
+pour éviter que ce soit interprété comme un "Warning" durant la phase "R 
+CMD check"
