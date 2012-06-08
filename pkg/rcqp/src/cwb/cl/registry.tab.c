@@ -836,6 +836,8 @@ while (YYID (0))
 #  define YYFPRINTF fprintf
 # endif
 
+#include "cl.h"
+
 # define YYDPRINTF(Args)			\
 do {						\
   if (yydebug)					\

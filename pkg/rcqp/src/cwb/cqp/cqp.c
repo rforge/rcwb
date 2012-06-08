@@ -39,7 +39,6 @@
 
 #include "parser.tab.h"
 
-
 /** File handle used by the CQP-query-language parser. */
 extern FILE *yyin;
 /** Activates the CQP-query-language parser. */
@@ -170,8 +169,8 @@ initialize_cqp(int argc, char **argv)
 
   /* let's always run stdout unbuffered */
   /*  if (batchmode || rangeoutput || insecure || !isatty(fileno(stdout))) */
-  if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
-    perror("unbuffer stdout");
+//  if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
+//    perror("unbuffer stdout");
 
   yydebug = parser_debug;
 

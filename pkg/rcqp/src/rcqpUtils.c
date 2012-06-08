@@ -61,23 +61,6 @@ R_init_rcqp(DllInfo * info)
 /* 
  * ------------------------------------------------------------------------
  * 
- * "rcqp_send_error()" --
- * 
- * This is a replacement for send_cl_error() in order to intercept the
- * exit() call.
- * 
- * ------------------------------------------------------------------------
- */
-void rcqp_send_error()
-{
-	error("cqp error #%d\n", cderrno);
-}
-
-
-
-/* 
- * ------------------------------------------------------------------------
- * 
  * "rcqp_error_code()" --
  * 
  * CQI_ERROR_GENERAL_ERROR          	0x0201	513
@@ -234,5 +217,19 @@ rcqp_get_field_type(SEXP inField)
 	} 
 }
 
+
+/* 
+ * ------------------------------------------------------------------------
+ * 
+ * "rcqp_send_error()" --
+ * 
+ * ------------------------------------------------------------------------
+ */
+void rcqp_send_error()
+{
+//	error("cqp error #%d\n", cderrno);
+	Rprintf("Error! Please close and restart R as rcqp may be in unknown state");
+	
+}
 
 

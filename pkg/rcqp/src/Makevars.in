@@ -17,7 +17,23 @@ FLEX_PRG=@LEX@
 BISON_PRG=@YACC@
 
 PKG_CFLAGS=@CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@ ${RCQP_REGISTRY_DEFAULT_PATH}
+
+
+# "-Dexit(x)=rcqp_receive_error(x)" -D"fprintf(x,y,...)=rcqpPrintf(y,__VA_ARGS__)" -include "makeRCompatible.h"
+
+# "-Dexit(x)=rcqp_receive_error(x)" -D"fprintf(x,y) Rprintf(y)" -include "/Library/Frameworks/R.framework/Resources/include/R_ext/Print.h" -include "makeRCompatible.h"
+#
+# "-Dfprintf(x, y, ...)=Rprintf(y, __VA_ARGS__)" -include "makeRCompatible.h"
+# 
+
 PKG_LIBS=@LDFLAGS@ @LIBS@ @RCQP_PCRE_LFLAGS@ @RCQP_GLIB_LFLAGS@
+
+#  
+#  => de toute façon il y a la production de fichier avec dump
+# 
+#define exit(x) rcqp_receive_error(x)
+#define fprintf(x, y) Rprintf(y)
+
 
 ##OBJECTS = ${RCQP_C_OBJ} ${RCQP_STATLIB} 
 OBJECTS = ${RCQP_C_OBJ} ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
@@ -27,7 +43,7 @@ OBJECTS = ${RCQP_C_OBJ} ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
 
 # src directory
 # -------------
-RCQP_C_SRC = rcqpCommands.c rcqpUtils.c
+RCQP_C_SRC = rcqpCommands.c rcqpUtils.c makeRCompatible.c
 RCQP_C_OBJ = $(RCQP_C_SRC:.c=.o)
 
 

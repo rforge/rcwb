@@ -41,6 +41,8 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "cl.h"
+
 /* end standard C headers. */
 
 /* flex integer type definitions */

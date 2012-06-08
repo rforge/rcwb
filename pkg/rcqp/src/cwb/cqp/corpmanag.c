@@ -42,7 +42,6 @@
 #define COLON ':'
 #define SLASH '^'
 
-
 #define subcorpload_debug 0
 
 /** magic number for {?? subcorpus files} */
@@ -1707,6 +1706,7 @@ save_unsaved_subcorpora()
 CorpusList *
 FirstCorpusFromList()
 {
+  fprintf(stdout, "Sonde !!!");
   return corpuslist;
 }
 

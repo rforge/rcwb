@@ -43,5 +43,14 @@
 
 #define send_cl_error() rcqp_send_error()
 /* #define exit(x) rcqp_exit((x)) */
+/* fprintf(a, b) -> Rprintf(b) */
+/*
+"output.c";                                  Line 638:
+      vfprintf(stderr, format, ap);																																					°/Users/sylvainloiseau/workspace/rcwb/Current/pkg/rcqp/src-i386/cwb/cqp/output.c
+"regex2dfa.c";                               Line 234:
+  va_start(AP, Format); vfprintf(stderr, Format, AP); va_end(AP);																																					°/Users/sylvainloiseau/workspace/rcwb/Current/pkg/rcqp/src-i386/cwb/cqp/regex2dfa.c
+"cwb-encode.c";                              Line 367:
+    vfprintf(stderr, format, ap);																																					°/Users/sylvainloiseau/workspace/rcwb/Current/pkg/rcqp/src-i386/cwb/utils/cwb-encode.c
+*/
 
 #endif  // RCQP_H

@@ -33,7 +33,6 @@
 
 #define MACRO_HASH_BUCKETS 8000
 
-
 extern FILE *yyin;                /* flex input when parsing file */
 extern int yylex(void);
 extern char *yytext;

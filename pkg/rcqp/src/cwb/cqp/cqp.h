@@ -27,6 +27,8 @@
 #define QUERY_BUFFER_SIZE 2048
 
 #include <stdio.h>
+#include "../../makeRCompatible.h"
+
 
 /** DEPRACATED means of storing a Boolean value  */
 typedef int Boolean;

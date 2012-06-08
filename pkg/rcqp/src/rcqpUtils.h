@@ -20,8 +20,6 @@
 
 void R_init_rcqp(DllInfo * info);
 
-void rcqp_send_error();
-
 void rcqp_error_code(int inCode);
 
 int rcqp_query_has_semicolon(char *query);
@@ -30,5 +28,6 @@ int rcqp_get_attr_type(SEXP inType);
 
 FieldType rcqp_get_field_type(SEXP inField);
 
+void rcqp_send_error();
 
 #endif  // RCQP_UTILS_H

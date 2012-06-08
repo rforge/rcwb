@@ -54,7 +54,6 @@
 #include "output.h"
 #include "matchlist.h"
 
-
 #define no_match -1
 
 #define RED_THRESHOLD 0.01
