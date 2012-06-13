@@ -586,7 +586,7 @@ and \emph{to} denoting token cpos\index{cpos}.
 Create a variable containing the size (in tokens) of a given structural 
 attribute.
 
-<<region_size_session, fig=TRUE, echo=TRUE>>=
+<<region_size_session, fig=FALSE, echo=TRUE>>=
 c <- corpus("DICKENS");
 sentences <- region_sizes(c$s);
 hist(sentences);
