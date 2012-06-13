@@ -1706,7 +1706,6 @@ save_unsaved_subcorpora()
 CorpusList *
 FirstCorpusFromList()
 {
-  fprintf(stdout, "Sonde !!!");
   return corpuslist;
 }
 
