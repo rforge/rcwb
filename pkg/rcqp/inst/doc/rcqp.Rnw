@@ -1038,7 +1038,6 @@ attribute.
 > hist(sentences);
 \end{Sinput}
 \end{Schunk}
-\includegraphics{rcqp-region_size_session}
 
 % ======================================================
 
