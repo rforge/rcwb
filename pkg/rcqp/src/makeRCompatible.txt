@@ -22,3 +22,5 @@ rcqp/src/cwb/cqp/output.c
 attention à remplacer "Warning" par "Issue" dans la fonction cqpmessage 
 pour éviter que ce soit interprété comme un "Warning" durant la phase "R 
 CMD check"
+
+Rajouter #include <time.h> dans cwb/cqp/cqp.h
