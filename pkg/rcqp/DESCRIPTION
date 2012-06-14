@@ -7,8 +7,8 @@ Author: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>, Sylvain Loiseau <s
 Maintainer: Sylvain Loiseau, University of Paris 13 <sylvain.loiseau@univ-paris13.fr>
 Depends: R (>= 1.8.0), plyr
 Suggests: reshape
-Description: implements Corpus Query Protocol functions based on the CWB software
-License: GPL (>= 2)
+Description: implements Corpus Query Protocol functions based on the CWB software. Rely on CWB (GPL v2), PCRE (BSD licence), glib2 (LGPL).
+License: GPL (>= 2). 
 Lazyload: yes
 URL: http://www.r-project.org
 Collate: main.R zzz.R s3.R
