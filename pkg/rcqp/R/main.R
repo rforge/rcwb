@@ -25,6 +25,27 @@
 ## 
  # ------------------------------------------------------------------------
  # 
+ # "cqi_cqp(mother, child, query)" --
+ # 
+ # Example:
+ #      cqi_query("DICKENS", "Aa", '[(pos="JJ") & (lemma="modern")];')
+ #		cqi_cqp('set Aa keyword nearest [pos="NN"] within right 5 words from match;')
+ # 
+ # ------------------------------------------------------------------------
+ ##
+# cqi_cqp <- function(query) {
+# # 	if (nchar(child) == 0) {
+# # 
+# # 	} TODO check ;
+# 	.Call("rcqpCmd_cqp", query, PACKAGE="rcqp")
+#     return(invisible())
+# }
+
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
  # "cqi_query(mother, child, query)" --
  # 
  # Example:
