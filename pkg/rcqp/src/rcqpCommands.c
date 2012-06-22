@@ -1088,6 +1088,42 @@ SEXP rcqpCmd_regex2id(SEXP inAttribute, SEXP inRegex)
 /* 
  * ------------------------------------------------------------------------
  * 
+ * "rcqpCmd_cqp(SEXP inQuery)" --
+ * 
+ *  
+ * 
+ * ------------------------------------------------------------------------
+SEXP rcqpCmd_cqp(SEXP inQuery)
+{
+	SEXP			result = R_NilValue;
+	char			*query;
+	
+	if (!isString(inQuery) || length(inQuery) != 1) error("invalid query name");
+	
+	PROTECT(inQuery);
+
+	query = (char*)CHAR(STRING_ELT(inQuery,0));	
+
+	
+	query_lock = 0;
+		
+	if (!cqp_parse_string(query)) {
+		rcqp_error_code(CQI_CQP_ERROR_GENERAL);
+	} 
+
+	query_lock = 0;
+
+	UNPROTECT(1);
+
+	return result;
+}
+*/
+
+
+
+/* 
+ * ------------------------------------------------------------------------
+ * 
  * "rcqpCmd_query(SEXP inMother, SEXP inChild, SEXP inQuery)" --
  * 
  *  
