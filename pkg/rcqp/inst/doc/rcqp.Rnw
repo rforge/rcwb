@@ -75,21 +75,13 @@ tables) for statistical analyses of CWB corpora with R.
 % ----------------------------------------------------------------
 % ----------------------------------------------------------------
 
+\subsection{CWB data-model and CQP syntax}
 
-\section{The CQi set of functions}
-\label{sec:cqi}
 
-\subsection{CWB data-model}
-
-Detailled information about the data model used into CWB is available in
-\textit{CQP Query Language Tutorial}, Stefan Evert \& The OCWB 
-Development Team, 17 February 2010.
-
-In the short presentation below, the conventions used in \texttt{cqi\_*} function
-names are in boldface.
-
-The fundamental information is the position, or rank, of each token: each token
-has a position, 0-based, called \textbf{cpos}\index{cpos}.
+Beside token attributes, called positionnal attribute, CWB corpora may
+have spans of tokens corresponding to various unit: phrases, clauses,
+sentences, paragraph, chapter, book, \ldots Each of these groups of
+span corresponding to an unit are called structural attribute.
 
 A corpus\index{corpus} may be represented as an array where each line represents a token 
 and each column represents an \textbf{attribute}\index{attribute}.
@@ -247,6 +239,13 @@ available on each hit.
 All indices are 0-based: the cpos of the first token is 0, the first 
 id for a positional attribute\index{attribute!positional} or the first struc for a structural attribute\index{attribute!structural} is 0, etc.
 
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+
+
+\section{The CQi set of functions}
+\label{sec:cqi}
 
 \subsection{A sample session}
 

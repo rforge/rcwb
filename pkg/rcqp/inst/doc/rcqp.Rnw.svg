@@ -14,6 +14,28 @@
 
 \date{\today}
 
+<<startup, echo=FALSE>>=
+#
+# Convert given token span of a corpus into a tabular
+#
+corpus2LaTeXtabular <- function (corpus_name="DICKENS", from=0, to=20) {
+  c <- corpus(corpus_name);
+  df <- print(c, from, to);
+  att <- sort(cqi_attributes(corpus_name, "p"), decreasing=TRUE);
+  att <- att[-which(att == "nbc")];
+  df <- df[,att]
+    df <- t(df)
+    cat(paste("\\begin{tabular}{|l|", paste(rep("l", ncol(df)), collapse=""), "|}\\hline\n"));
+  cat(paste("\\textbf{CPOS}", paste(paste("&\\textbf{", 0:(ncol(df)-1), "}", sep=""), collapse=""), paste("\\\\\\hline\n")));
+  for (l in 1:nrow(df)) {
+    line <- df[l,];
+    line <- gsub(pattern="$", fixed=T, replacement="", x=line)
+      cat(paste("\\textbf{",att[l], "}", paste(paste("&", line), collapse=""), paste("\\\\\\hline\n"), sep=""));
+  }
+  cat("\\end{tabular}\n");
+}
+@
+
 \begin{document}
 
 \maketitle
