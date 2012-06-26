@@ -16,7 +16,7 @@ RCQP_REGISTRY_DEFAULT_PATH="-DREGISTRY_DEFAULT_PATH=\"@prefix@/share/cwb/registr
 FLEX_PRG=@LEX@
 BISON_PRG=@YACC@
 
-PKG_CFLAGS=@CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@ ${RCQP_REGISTRY_DEFAULT_PATH}
+PKG_CFLAGS=@CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@ ${RCQP_REGISTRY_DEFAULT_PATH} -I$(PWD)/cwb/cl -I$(PWD)/cwb/cqp
 
 
 # "-Dexit(x)=rcqp_receive_error(x)" -D"fprintf(x,y,...)=rcqpPrintf(y,__VA_ARGS__)" -include "makeRCompatible.h"
