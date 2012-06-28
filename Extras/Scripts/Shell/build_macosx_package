@@ -1,0 +1,91 @@
+#! /bin/bash
+
+### ===========================================================================
+### File: "build_macosx_package"
+###                        Created: 2012-06-28 15:36:12
+###              Last modification: 2012-06-28 15:36:13
+### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
+###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
+### This is part of the R package 'rcqp'.
+### ===========================================================================
+
+cd $(dirname $0)
+RCQP_SCRIPTS_DIR=`pwd`
+
+
+if [ -z $RCQP_MACOSX_PACKAGING_DIR ] ; then
+	RCQP_MACOSX_PACKAGING_DIR=${RCQP_SCRIPTS_DIR}/../../../Packaging
+	echo "RCQP_MACOSX_PACKAGING_DIR variable not defined. Using '$RCQP_MACOSX_PACKAGING_DIR'."
+fi
+
+if ! [ -e $RCQP_MACOSX_PACKAGING_DIR ] ; then
+	mkdir -p $RCQP_MACOSX_PACKAGING_DIR
+fi
+
+if [ -z $RCQP_MACOSX_RLIBRARY ] ; then
+	RCQP_MACOSX_RLIBRARY=~/Library/R/2.15/library/
+	echo "RCQP_MACOSX_RLIBRARY variable not defined. Using '$RCQP_MACOSX_RLIBRARY'."
+fi
+
+RCQP_MACOSX_RCQP_PKG=${RCQP_MACOSX_RLIBRARY}/rcqp
+RCQP_MACOSX_LIBS_DIR=$RCQP_MACOSX_PACKAGING_DIR/rcqp/libs/x86_64
+
+
+# Starting from an already installed rcqp package, built with "R CMD install"
+if ! [ -e $RCQP_MACOSX_RCQP_PKG ] ; then
+	echo "can't find rcqp package in R Library (${RCQP_MACOSX_RLIBRARY})"
+	exit 1
+fi
+
+# Copy the package in the Packaging directory
+# # # cp -R $RCQP_MACOSX_RCQP_PKG $RCQP_MACOSX_PACKAGING_DIR
+
+
+# Copy the required libraries
+# # # cp /opt/local/lib/libglib-2.0.0.dylib $RCQP_MACOSX_LIBS_DIR
+# # # cp /opt/local/lib/libiconv.2.dylib $RCQP_MACOSX_LIBS_DIR
+# # # cp /opt/local/lib/libintl.8.dylib $RCQP_MACOSX_LIBS_DIR
+# # # cp /usr/local/lib/libpcre.1.dylib $RCQP_MACOSX_LIBS_DIR
+
+
+# Rename the library paths
+cd $RCQP_MACOSX_LIBS_DIR
+
+# glib
+install_name_tool -id @loader_path/libglib-2.0.0.dylib libglib-2.0.0.dylib
+install_name_tool -change /opt/local/lib/libintl.8.dylib @loader_path/libintl.8.dylib libglib-2.0.0.dylib
+install_name_tool -change /opt/local/lib/libiconv.2.dylib @loader_path/libiconv.2.dylib libglib-2.0.0.dylib
+
+# libintl
+install_name_tool -id @loader_path/libintl.8.dylib libintl.8.dylib
+install_name_tool -change /opt/local/lib/libiconv.2.dylib @loader_path/libiconv.2.dylib libintl.8.dylib
+
+# libiconv
+install_name_tool -id @loader_path/libiconv.2.dylib libiconv.2.dylib
+
+# libpcre
+install_name_tool -id @loader_path/libpcre.1.dylib libpcre.1.dylib
+
+# rcqp.so
+install_name_tool -change /opt/local/lib/libglib-2.0.0.dylib @loader_path/libglib-2.0.0.dylib rcqp.so
+install_name_tool -change /opt/local/lib/libintl.8.dylib @loader_path/libintl.8.dylib rcqp.so
+install_name_tool -change /usr/local/lib/libpcre.1.dylib @loader_path/libpcre.1.dylib rcqp.so
+
+
+otool -L *
+
+echo "*** Done." 
+
+
+
+# > library(rcqp)
+# Le chargement a nŽcessitŽ le package : plyr
+# The environment variable CORPUS_REGISTRY is not defined.
+# Using default registry '/usr/local/share/cwb/registry'.
+# See ?cqp_registry for more info on how to set the registry.
+# > cqi_list_corpora()
+# [1] "VIE_RU"     "VIE_FR"     "GERMAN-LAW" "FRRU_RU"    "FRRU_FR"    "DICKENS"   
+# > cqi_query("DICKENS","Aa",'"interesting"')
+# > cqi_dump_subcorpus("DICKENS:Aa")
+
+
