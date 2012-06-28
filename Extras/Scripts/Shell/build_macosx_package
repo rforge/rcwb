@@ -3,7 +3,7 @@
 ### ===========================================================================
 ### File: "build_macosx_package"
 ###                        Created: 2012-06-28 15:36:12
-###              Last modification: 2012-06-28 15:36:13
+###              Last modification: 2012-06-28 17:02:32
 ### Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 ###          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 ### This is part of the R package 'rcqp'.
@@ -12,6 +12,26 @@
 cd $(dirname $0)
 RCQP_SCRIPTS_DIR=`pwd`
 
+RCQP_MACOSX_GLIB_DEFAULT=/opt/local/lib/libglib-2.0.0.dylib
+RCQP_MACOSX_ICONV_DEFAULT=/opt/local/lib/libiconv.2.dylib
+RCQP_MACOSX_INTL_DEFAULT=/opt/local/lib/libintl.8.dylib
+RCQP_MACOSX_PCRE_DEFAULT=/usr/local/lib/libpcre.1.dylib
+RCQP_MACOSX_RLIBRARY_DEFAULT=~/Library/R/2.15/library/
+
+# The rcqpmacosxrc file can be used to define the following variables,
+# otherwise the defaults above are used:
+# 		RCQP_MACOSX_GLIB_PATH
+# 		RCQP_MACOSX_ICONV_PATH
+# 		RCQP_MACOSX_INTL_PATH
+# 		RCQP_MACOSX_PCRE_PATH
+# 		RCQP_MACOSX_RLIBRARY
+
+if [ -e ${RCQP_SCRIPTS_DIR}/rcqpmacosxrc ] ; then
+	echo "*** Sourcing '${RCQP_SCRIPTS_DIR}/rcqpmacosxrc' ..."
+	source ${RCQP_SCRIPTS_DIR}/rcqpmacosxrc
+else
+	echo "No file '${RCQP_SCRIPTS_DIR}/rcqpmacosxrc'. Using defaults."
+fi
 
 if [ -z $RCQP_MACOSX_PACKAGING_DIR ] ; then
 	RCQP_MACOSX_PACKAGING_DIR=${RCQP_SCRIPTS_DIR}/../../../Packaging
@@ -23,9 +43,30 @@ if ! [ -e $RCQP_MACOSX_PACKAGING_DIR ] ; then
 fi
 
 if [ -z $RCQP_MACOSX_RLIBRARY ] ; then
-	RCQP_MACOSX_RLIBRARY=~/Library/R/2.15/library/
+	RCQP_MACOSX_RLIBRARY=$RCQP_MACOSX_RLIBRARY_DEFAULT
 	echo "RCQP_MACOSX_RLIBRARY variable not defined. Using '$RCQP_MACOSX_RLIBRARY'."
 fi
+
+if [ -z $RCQP_MACOSX_GLIB_PATH ] ; then
+	RCQP_MACOSX_GLIB_PATH=$RCQP_MACOSX_GLIB_DEFAULT
+fi
+
+if [ -z $RCQP_MACOSX_ICONV_PATH ] ; then
+	RCQP_MACOSX_ICONV_PATH=$RCQP_MACOSX_ICONV_DEFAULT
+fi
+
+if [ -z $RCQP_MACOSX_INTL_PATH ] ; then
+	RCQP_MACOSX_INTL_PATH=$RCQP_MACOSX_INTL_DEFAULT
+fi
+
+if [ -z $RCQP_MACOSX_PCRE_PATH ] ; then
+	RCQP_MACOSX_PCRE_PATH=$RCQP_MACOSX_PCRE_DEFAULT
+fi
+
+RCQP_MACOSX_GLIB_NAME=${RCQP_MACOSX_GLIB_PATH##*/}
+RCQP_MACOSX_ICONV_NAME=${RCQP_MACOSX_ICONV_PATH##*/}
+RCQP_MACOSX_INTL_NAME=${RCQP_MACOSX_INTL_PATH##*/}
+RCQP_MACOSX_PCRE_NAME=${RCQP_MACOSX_PCRE_PATH##*/}
 
 RCQP_MACOSX_RCQP_PKG=${RCQP_MACOSX_RLIBRARY}/rcqp
 RCQP_MACOSX_LIBS_DIR=$RCQP_MACOSX_PACKAGING_DIR/rcqp/libs/x86_64
@@ -37,55 +78,51 @@ if ! [ -e $RCQP_MACOSX_RCQP_PKG ] ; then
 	exit 1
 fi
 
+
 # Copy the package in the Packaging directory
-# # # cp -R $RCQP_MACOSX_RCQP_PKG $RCQP_MACOSX_PACKAGING_DIR
+cp -R $RCQP_MACOSX_RCQP_PKG $RCQP_MACOSX_PACKAGING_DIR
 
 
 # Copy the required libraries
-# # # cp /opt/local/lib/libglib-2.0.0.dylib $RCQP_MACOSX_LIBS_DIR
-# # # cp /opt/local/lib/libiconv.2.dylib $RCQP_MACOSX_LIBS_DIR
-# # # cp /opt/local/lib/libintl.8.dylib $RCQP_MACOSX_LIBS_DIR
-# # # cp /usr/local/lib/libpcre.1.dylib $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_GLIB_PATH $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_ICONV_PATH $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_INTL_PATH $RCQP_MACOSX_LIBS_DIR
+cp $RCQP_MACOSX_PCRE_PATH $RCQP_MACOSX_LIBS_DIR
 
 
 # Rename the library paths
 cd $RCQP_MACOSX_LIBS_DIR
 
 # glib
-install_name_tool -id @loader_path/libglib-2.0.0.dylib libglib-2.0.0.dylib
-install_name_tool -change /opt/local/lib/libintl.8.dylib @loader_path/libintl.8.dylib libglib-2.0.0.dylib
-install_name_tool -change /opt/local/lib/libiconv.2.dylib @loader_path/libiconv.2.dylib libglib-2.0.0.dylib
+install_name_tool -id @loader_path/$RCQP_MACOSX_GLIB_NAME $RCQP_MACOSX_GLIB_NAME
+install_name_tool -change $RCQP_MACOSX_INTL_PATH @loader_path/$RCQP_MACOSX_INTL_NAME $RCQP_MACOSX_GLIB_NAME
+install_name_tool -change $RCQP_MACOSX_ICONV_PATH @loader_path/$RCQP_MACOSX_ICONV_NAME $RCQP_MACOSX_GLIB_NAME
 
 # libintl
-install_name_tool -id @loader_path/libintl.8.dylib libintl.8.dylib
-install_name_tool -change /opt/local/lib/libiconv.2.dylib @loader_path/libiconv.2.dylib libintl.8.dylib
+install_name_tool -id @loader_path/$RCQP_MACOSX_INTL_NAME $RCQP_MACOSX_INTL_NAME
+install_name_tool -change $RCQP_MACOSX_ICONV_PATH @loader_path/$RCQP_MACOSX_ICONV_NAME $RCQP_MACOSX_INTL_NAME
 
 # libiconv
-install_name_tool -id @loader_path/libiconv.2.dylib libiconv.2.dylib
+install_name_tool -id @loader_path/$RCQP_MACOSX_ICONV_NAME $RCQP_MACOSX_ICONV_NAME
 
 # libpcre
-install_name_tool -id @loader_path/libpcre.1.dylib libpcre.1.dylib
+install_name_tool -id @loader_path/$RCQP_MACOSX_PCRE_NAME $RCQP_MACOSX_PCRE_NAME
 
 # rcqp.so
-install_name_tool -change /opt/local/lib/libglib-2.0.0.dylib @loader_path/libglib-2.0.0.dylib rcqp.so
-install_name_tool -change /opt/local/lib/libintl.8.dylib @loader_path/libintl.8.dylib rcqp.so
-install_name_tool -change /usr/local/lib/libpcre.1.dylib @loader_path/libpcre.1.dylib rcqp.so
+install_name_tool -change $RCQP_MACOSX_GLIB_PATH @loader_path/$RCQP_MACOSX_GLIB_NAME rcqp.so
+install_name_tool -change $RCQP_MACOSX_INTL_PATH @loader_path/$RCQP_MACOSX_INTL_NAME rcqp.so
+install_name_tool -change $RCQP_MACOSX_PCRE_PATH @loader_path/$RCQP_MACOSX_PCRE_NAME rcqp.so
 
+
+# # Move the rcqp package back
+# mv $RCQP_MACOSX_RCQP_PKG ${RCQP_MACOSX_RCQP_PKG}_orig
+# cp -R $RCQP_MACOSX_PACKAGING_DIR/rcqp ${RCQP_MACOSX_RLIBRARY}
 
 otool -L *
 
+cd $RCQP_MACOSX_PACKAGING_DIR
+tar czvf rcqp_macosx_0.1.tar.gz rcqp/*
+
 echo "*** Done." 
-
-
-
-# > library(rcqp)
-# Le chargement a nŽcessitŽ le package : plyr
-# The environment variable CORPUS_REGISTRY is not defined.
-# Using default registry '/usr/local/share/cwb/registry'.
-# See ?cqp_registry for more info on how to set the registry.
-# > cqi_list_corpora()
-# [1] "VIE_RU"     "VIE_FR"     "GERMAN-LAW" "FRRU_RU"    "FRRU_FR"    "DICKENS"   
-# > cqi_query("DICKENS","Aa",'"interesting"')
-# > cqi_dump_subcorpus("DICKENS:Aa")
 
 
