@@ -118,8 +118,10 @@ install_name_tool -change $RCQP_MACOSX_PCRE_PATH @loader_path/$RCQP_MACOSX_PCRE_
 # mv $RCQP_MACOSX_RCQP_PKG ${RCQP_MACOSX_RCQP_PKG}_orig
 # cp -R $RCQP_MACOSX_PACKAGING_DIR/rcqp ${RCQP_MACOSX_RLIBRARY}
 
+# Checking the result 
 otool -L *
 
+# Build a tar.gz archive
 cd $RCQP_MACOSX_PACKAGING_DIR
 tar czvf rcqp_macosx_0.1.tar.gz rcqp/*
 
