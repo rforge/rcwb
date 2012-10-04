@@ -722,6 +722,13 @@ component_full_name(Attribute *attribute, ComponentID cid, char *path)
 {
   component_field_spec *compspec;
   Component *component;
+
+  // Sylvain
+  if (path == NULL) {
+    fprintf(stderr, "Path is null!\n");
+  } else {
+    fprintf(stderr, "Path: %s -- copying\n", path);
+  }
   
   static char buf[MAX_LINE_LENGTH];
   char rname[MAX_LINE_LENGTH];
@@ -748,6 +755,8 @@ component_full_name(Attribute *attribute, ComponentID cid, char *path)
       return NULL;
     }
     path = compspec->default_path;
+    // Sylvain
+    fprintf(stderr, "Path: %s \n", path);
   }
 
   /* index in string "path" */
