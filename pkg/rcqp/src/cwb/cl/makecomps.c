@@ -177,6 +177,9 @@ creat_freqs(Component *freqs)
 
   freqs->size = lexidx->size;
 
+  // Sylvain
+  fprintf(stderr, "calling component_full_name entering with: %s\n", corpus_fn);
+
   corpus_fn = component_full_name(freqs->attribute, CompCorpus, NULL);
   assert(corpus_fn != NULL);
 
