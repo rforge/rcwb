@@ -11,13 +11,13 @@
 #ifndef	RCQP_MAKE_R_COMPATIBLE_H
 #define RCQP_MAKE_R_COMPATIBLE_H
 
-#include "R_ext/Print.h";
+#include "R_ext/Print.h"
 
-// #include <stdio.h>;
+// #include <stdio.h>
 
 void rcqp_send_error();
 void rcqp_receive_error(int x);
-//int  rcqpvPrintf(const char * c, va_list ap);
+//int  rcqpvPrintf(const char * c, va_list ap)
 int rcqp_flush();
 
 #define exit(x) rcqp_receive_error(x)
