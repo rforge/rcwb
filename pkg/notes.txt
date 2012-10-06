@@ -1,0 +1,41 @@
+sudo install_name_tool -change libpcre.0.dylib @loader_path/libpcre.0.dylib rcqp.so
+sudo install_name_tool -id @loader_path/libpcre.0.dylib libpcre.0.dylib
+
+# sudo install_name_tool -change /usr/local/lib/libpcre.0.dylib libpcre.0.dylib rcqp.so
+
+cp /usr/local/lib/libpcre.0.dylib .
+
+
+rcqp
+	libpcre.0.dylib                                                               
+	    /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 125.2.11)
+	        Nombreuses dŽpendances toutes dasn /usr/lib/system/
+    => joindre et positionner -install_name sur .
+
+	/opt/local/lib/libglib-2.0.0.dylib (compatibility version 3201.0.0, current version 3201.3.0)
+		/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 153.0.0)
+		/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 833.25.0)
+		/usr/lib/libresolv.9.dylib (compatibility version 1.0.0, current version 46.1.0)
+		/opt/local/lib/libintl.8.dylib (compatibility version 10.0.0, current version 10.1.0)
+		    /opt/local/lib/libintl.8.dylib (compatibility version 10.0.0, current version 10.1.0)
+			/opt/local/lib/libiconv.2.dylib (compatibility version 8.0.0, current version 8.1.0)
+            => envoyer sur /usr/local/libiconv.dylib
+			/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
+        => envoyer sur .
+
+		/opt/local/lib/libiconv.2.dylib (compatibility version 8.0.0, current version 8.1.0)
+        => envoyer sur /usr/local/libiconv.dylib
+
+		/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
+		/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 53.0.0)
+		/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 635.21.0)
+	=> joindre et positionner -install_name sur .
+
+	/opt/local/lib/libintl.8.dylib (compatibility version 10.0.0, current version 10.1.0)
+	=> joindre et positionne -install_name sur .
+
+	/Library/Frameworks/R.framework/Versions/2.15/Resources/lib/libR.dylib (compatibility version 2.15.0, current version 2.15.0)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 635.21.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 159.1.0)
+
+
