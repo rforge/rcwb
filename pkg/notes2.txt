@@ -1,0 +1,12 @@
+fonction install_dickens...
+
+[no corpus]> set r "/Users/sylvainloiseau/TXM/registry";
+
+set Last match NULL
+
+subcorpus2text -> list de vecteur de tokens...
+
+install_corpus_sample
+install_corpus
+
+client / serveur : utilise Rserve
