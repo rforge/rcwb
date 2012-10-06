@@ -15,7 +15,7 @@
  *  WWW at http://www.gnu.org/copyleft/gpl.html).
  */
 
-// #include <ctype.h>
+/* #include <ctype.h> */
 #include <sys/types.h>
 
 #include "globals.h"

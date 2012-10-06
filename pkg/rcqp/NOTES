@@ -3,6 +3,11 @@ In order to reuse the cwb code base the following edition have to be made:
 - Comment out the first three functions in:
 src/cwb/cqp/hash.c
 
-- Comment out the following line (at the very top of the file) in src/cwb/cl/attributes.c
+- Comment out (in C style comment) the following line (at the very top of the file) in src/cwb/cl/attributes.c
 #include <ctype.h>
 
+- Change C++ style into C style comments mainly in :
+  cwb/cqp/corpmanag.c:40:1: warning: C++ style comments are not allowed in ISO C90
+  cwb/cqp/output.c:251: warning: ISO C90 forbids mixed declarations and code
+
+- cwb/cqp/output.c:251: warning: ISO C90 forbids mixed declarations and code

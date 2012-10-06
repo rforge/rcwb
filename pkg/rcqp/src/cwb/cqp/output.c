@@ -222,6 +222,7 @@ FILE *
 open_pager(char *cmd, CorpusCharset charset)
 {
   FILE *pipe;
+  char *current_value;
 
   if ((tested_pager == NULL) || (strcmp(tested_pager, cmd) != 0)) {
     /* this is a new pager, so test it */
@@ -248,7 +249,7 @@ open_pager(char *cmd, CorpusCharset charset)
     default:      new_value = "iso8859";  break; /* default non-ascii setting is ISO-8859 */
     }
 
-    char *current_value = getenv(less_charset_variable);
+    current_value = getenv(less_charset_variable);
 
     /* call setenv() if variable is not set or different from desired value */
     if (!current_value || strcmp(current_value, new_value)) {

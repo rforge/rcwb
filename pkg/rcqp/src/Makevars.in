@@ -153,7 +153,7 @@ parsers: ${CQP_FLEX_C} ${CQP_BISON_C} ${CL_FLEX_C} ${CL_BISON_C}
 
 
 clean:
-	rm -f *.o *.so src/Makevars
+	rm -f *.o *.so Makevars
 	rm -f ../config.log ../config.status
 	if test -e ../autom4te.cache; then \
 		rm -rf ../autom4te.cache/*; \
