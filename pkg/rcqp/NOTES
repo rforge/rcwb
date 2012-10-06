@@ -1,0 +1,8 @@
+In order to reuse the cwb code base the following edition have to be made:
+
+- Comment out the first three functions in:
+src/cwb/cqp/hash.c
+
+- Comment out the following line (at the very top of the file) in src/cwb/cl/attributes.c
+#include <ctype.h>
+
