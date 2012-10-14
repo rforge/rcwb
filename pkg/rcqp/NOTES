@@ -3,11 +3,39 @@ In order to reuse the cwb code base the following edition have to be made:
 - Comment out the first three functions in:
 src/cwb/cqp/hash.c
 
-- Comment out (in C style comment) the following line (at the very top of the file) in src/cwb/cl/attributes.c
-#include <ctype.h>
-
 - Change C++ style into C style comments mainly in :
   cwb/cqp/corpmanag.c:40:1: warning: C++ style comments are not allowed in ISO C90
   cwb/cqp/output.c:251: warning: ISO C90 forbids mixed declarations and code
 
 - cwb/cqp/output.c:251: warning: ISO C90 forbids mixed declarations and code
+  -> some refactoring
+
+- utils/cwb-encode.c :
+  main -> main_cwb_encode
+
+- "makeRCompatible.h" included in cl.h et cqp.h
+
+- "cl/endian.h" problem. This header file name may conflict with the standard
+  /usr/include/endian.h (When CWB is compiled with -I/.../cwb/cl). In order to
+  avoid the problem, endian.h is renamed cl_endian.h and references to this file
+  has been changed in:
+
+cl/attributes.c:#include "endian.h"
+cl/bitio.c:#include "endian.h"
+cl/cdaccess.c:#include "endian.h"
+cl/depend.mk:storage.o: storage.c globals.h cl.h endian.h macros.h storage.h
+cl/depend.mk:attributes.o: attributes.c globals.h cl.h endian.h corpus.h storage.h \
+cl/depend.mk:makecomps.o: makecomps.c globals.h cl.h endian.h macros.h storage.h \
+cl/depend.mk:cdaccess.o: cdaccess.c globals.h cl.h endian.h macros.h attributes.h \
+cl/depend.mk:bitio.o: bitio.c globals.h cl.h endian.h bitio.h
+cl/depend.mk:endian.o: endian.c globals.h cl.h endian.h
+cl/endian.c:#include "endian.h"
+cl/endian.h:/* endian.h
+cl/makecomps.c:#include "endian.h"
+cl/storage.c:#include "endian.h"
+utils/cwb-atoi.c:#include "../cl/endian.h"
+utils/cwb-encode.c:#include "../cl/endian.h"
+utils/cwb-itoa.c:#include "../cl/endian.h"
+utils/cwb-makeall.c:#include "../cl/endian.h"
+utils/cwb-s-encode.c:#include "../cl/endian.h"
+
