@@ -39,3 +39,8 @@ utils/cwb-itoa.c:#include "../cl/endian.h"
 utils/cwb-makeall.c:#include "../cl/endian.h"
 utils/cwb-s-encode.c:#include "../cl/endian.h"
 
+- Changing "_ENDIAN_H_" into "CL_ENDIAN_H" into cwb/cl/cl_endian.h (ex
+  cwb/cl/endian.h) both in order to reflect the new name of the file and in
+  order to avoid leading underscore in upper case macro.
+
+
