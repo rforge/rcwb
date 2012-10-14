@@ -28,7 +28,7 @@
 
 #include "globals.h"
 
-#include "endian.h"
+#include "cl_endian.h"
 #include "macros.h"
 
 #include "storage.h"

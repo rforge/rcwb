@@ -21,7 +21,7 @@
 #include <sys/types.h>
 
 /* byte order handling taken from Corpus Library */
-#include "../cl/endian.h"
+#include "../cl/cl_endian.h"
 #include "../cl/globals.h"
 
 /**

@@ -17,12 +17,12 @@
 
 #include <stdarg.h>
 #include <math.h>
-#include <ctype.h>
+/*#include <ctype.h>*/
 #include <sys/types.h>
 
 #include "globals.h"
 
-#include "endian.h"
+#include "cl_endian.h"
 #include "macros.h"
 #include "attributes.h"
 #include "special-chars.h"

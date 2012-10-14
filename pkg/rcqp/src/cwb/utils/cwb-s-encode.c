@@ -42,7 +42,7 @@
 
 /* byte order conversion functions taken from Corpus Library */
 #include "../cl/globals.h"
-#include "../cl/endian.h"
+#include "../cl/cl_endian.h"
 #include "../cl/macros.h"
 #include "../cl/storage.h"      /* for NwriteInt() */
 #include "../cl/lexhash.h"

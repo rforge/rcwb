@@ -19,7 +19,7 @@
 #include "../cl/globals.h"
 #include "../cl/corpus.h"
 #include "../cl/attributes.h"
-#include "../cl/endian.h"
+#include "../cl/cl_endian.h"
 #include "../cl/fileutils.h"
 
 /** The corpus we are working on */

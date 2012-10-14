@@ -18,7 +18,7 @@
 #include <sys/types.h>
 
 #include "globals.h"
-#include "endian.h"
+#include "cl_endian.h"
 #include "bitio.h"
 
 

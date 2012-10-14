@@ -20,7 +20,7 @@
 #include <sys/types.h>
 
 /* byte order handling taken from Corpus Library */
-#include "../cl/endian.h"
+#include "../cl/cl_endian.h"
 #include "../cl/cl.h"
 
 /* LONG and SHORT modes removed. Mon Mar 23 19:25:35 MET 1998 (evert) */

@@ -16,7 +16,7 @@
  */
 
 
-#include <ctype.h>
+/*#include <ctype.h>*/
 #include <math.h>
 #include <stdarg.h>
 
@@ -31,7 +31,7 @@
 #include "../cl/storage.h"      /* NwriteInt() & NwriteInts() */
 #include "../cl/lexhash.h"
 /* byte order conversion functions taken from Corpus Library */
-#include "../cl/endian.h"
+#include "../cl/cl_endian.h"
 #include "../cl/attributes.h"   /* for DEFAULT_ATT_NAME */
 
 
@@ -1722,7 +1722,7 @@ encode_generate_registry_file(char *registry_file)
  * @param argv   Command-line arguments.
  */
 int 
-main(int argc, char **argv)
+main_cwb_encode(int argc, char **argv)
 {
   int i, j, k, rng, handled;
 
