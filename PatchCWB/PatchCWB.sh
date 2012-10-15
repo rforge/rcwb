@@ -19,9 +19,9 @@
 # puts -> Rprintf
 # stdout -> NULL
 
-#SOURCE=rcqp/src/cwb
-cp PatchCWB.test.source PatchCWB.test
-SOURCE=PatchCWB.test
+SOURCE=../pkg/rcqp/src/cwb/
+#cp PatchCWB.test.source PatchCWB.test
+#SOURCE=PatchCWB.test
 
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/exit(/rcqp_receive_error(/"
 
@@ -44,6 +44,7 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\<printf/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/putchar(/Rprintf(\"%d\", /"
 # I have manually check that all fputc call have no "," in the first argument.
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc([^,]\{1,\},/Rprintf(\"%d\",/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc([^;]\{1,\},\([^,]\{1,\}\));/Rprintf(\"%d\",\1/);"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/puts/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/stdout/NULL/"
 
