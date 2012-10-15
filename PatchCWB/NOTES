@@ -1,5 +1,7 @@
 In order to reuse the cwb code base the following edition have to be made:
 
+- Apply PatchCWB.sh
+
 - Comment out the first three functions in:
 src/cwb/cqp/hash.c
 
