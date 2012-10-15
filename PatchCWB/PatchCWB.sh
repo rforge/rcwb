@@ -20,6 +20,10 @@
 # stdout -> NULL
 
 SOURCE=../pkg/rcqp/src/cwb/
+# -
+#cp input.source input.txt
+#SOURCE=input.txt
+# -
 #cp PatchCWB.test.source PatchCWB.test
 #SOURCE=PatchCWB.test
 
@@ -30,6 +34,10 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/exit(/rcqp_receive_error(/
 # printf is at the beginning of the line, or it is preceded by a word boundary.
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^fprintf([^,]\{1,\},/Rprintf(/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\bfprintf([^,]\{1,\},/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ fprintf([^,]\{1,\},/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	fprintf([^,]\{1,\},/Rprintf(/"
+# some fprintf have to be corrected by hand (when there is a new line after parenthesis:
+# fprintf(\n
 
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/vfprintf([^,]\{1,\},/Rvprintf(/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fflush(stdout)/rcqp_flush()/"
@@ -40,13 +48,19 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fflush(stderr)/rcqp_flush(
 # printf is at the beginning of the line, or it is preceded by a word boundary.
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^printf/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\<printf/Rprintf/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ printf/Rprintf/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	printf/Rprintf/"
 
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/putchar(/Rprintf(\"%d\", /"
 # I have manually check that all fputc call have no "," in the first argument.
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc([^,]\{1,\},/Rprintf(\"%d\",/"
+# but args have the other order : fputc('\n', stderr); in cqp/regex2dfa.c ?
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc(\([^,]\{1,\}\),[^)]\{1,\})/Rprintf(\"%d\",\1)/"
 #find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputs([^;]\{1,\},\([^,]\{1,\}\));/Rprintf(\"%d\",\1/);"
 # Not to be confused with fputs:
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^puts/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\<puts/Rprintf/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ puts/Rprintf/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	puts/Rprintf/"
+
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/stdout/NULL/"
 
