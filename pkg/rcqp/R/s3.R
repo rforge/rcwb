@@ -779,7 +779,7 @@ cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.
 		fdist <- cqi_fdist1(qualified.subcorpus.name, anchor, attribute, cutoff=cutoff, offset=offset);
 		id <- fdist[,1];
 		flist <- fdist[,2];
-		names(flist) <- cqi_cpos2str(
+		names(flist) <- cqi_id2str(
 			paste(parent.cqp_corpus.name, attribute, sep="."),
 			id
 		);
