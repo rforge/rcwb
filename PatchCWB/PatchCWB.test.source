@@ -1,0 +1,26 @@
+exit(0);
+exit(1);
+foo(bar); exit(exit_value);
+
+fprintf(stdout, x, y, z);
+fprintf(fd, x, y, z);
+fprintf(stderr, x, y, z);
+
+vfprintf(stderr, x, y);
+
+fflush(stderr);
+
+fflush(stdout);
+
+printf(x, y);
+printf(x, y);
+
+putchar(' ');
+putchar(x);
+
+fputc('x', stdout);
+
+puts(' ');
+puts(x);
+
+stdout;

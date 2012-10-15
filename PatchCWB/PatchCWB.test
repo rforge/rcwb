@@ -1,0 +1,26 @@
+rcqp_receive_error(0);
+rcqp_receive_error(1);
+foo(bar); rcqp_receive_error(exit_value);
+
+Rprintf( x, y, z);
+Rprintf( x, y, z);
+Rprintf( x, y, z);
+
+Rvprintf( x, y);
+
+rcqp_flush();
+
+rcqp_flush();
+
+Rprintf(x, y);
+Rprintf(x, y);
+
+Rprintf("%d", ' ');
+Rprintf("%d", x);
+
+Rprintf("%d", NULL);
+
+Rprintf(' ');
+Rprintf(x);
+
+NULL;
