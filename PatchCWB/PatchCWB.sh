@@ -44,7 +44,9 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\<printf/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/putchar(/Rprintf(\"%d\", /"
 # I have manually check that all fputc call have no "," in the first argument.
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc([^,]\{1,\},/Rprintf(\"%d\",/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc([^;]\{1,\},\([^,]\{1,\}\));/Rprintf(\"%d\",\1/);"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/puts/Rprintf/"
+#find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputs([^;]\{1,\},\([^,]\{1,\}\));/Rprintf(\"%d\",\1/);"
+# Not to be confused with fputs:
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^puts/Rprintf/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\<puts/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/stdout/NULL/"
 
