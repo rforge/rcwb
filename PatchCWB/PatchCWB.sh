@@ -32,12 +32,23 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/exit(/rcqp_receive_error(/
 # There are two distinct cases for sed to match the "fprintf" *token* (without
 # matching "fprintf" as part or a larger token, such as "vfprintf") : either
 # printf is at the beginning of the line, or it is preceded by a word boundary.
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^fprintf(\(stderr|stdout\),/Rprintf(/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\bfprintf(\(stderr|stdout\),/Rprintf(/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ fprintf(\(stderr|stdout\),/Rprintf(/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	fprintf(\(stderr|stdout\),/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^fprintf(stderr,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\bfprintf(stderr,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ fprintf(stderr,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	fprintf(stderr,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^fprintf(stdout,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\bfprintf(stdout,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ fprintf(stdout,/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	fprintf(stdout,/Rprintf(/"
 # some fprintf have to be corrected by hand (when there is a new line after parenthesis:
 # fprintf(\n
+# 3 in cwb/cl/corpus.c
+#         (void) fprintf( stderr, "%s\n", msg );
+# in cwb/cqp/parser.yy.c
+# and
+#        (void) fprintf( stderr, "%s\n", msg );
+# in cwb/cl/registry.yy.c
+
 
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/vfprintf(stderr,/Rvprintf(/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fflush(stdout)/rcqp_flush()/"
