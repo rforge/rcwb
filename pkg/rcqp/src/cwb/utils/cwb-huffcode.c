@@ -952,7 +952,7 @@ huffcode_usage(char *msg, int error_code)
  * @param argv   Command-line arguments.
  */
 int 
-main(int argc, char **argv)
+main_cwb_huffcode(int argc, char **argv)
 {
   char *registry_directory = NULL;
   char *output_fn = NULL;

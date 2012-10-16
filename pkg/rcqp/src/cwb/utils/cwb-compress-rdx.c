@@ -506,7 +506,7 @@ compressrdx_cleanup(int error_code)
  * @param argv   Command-line arguments.
  */
 int
-main(int argc, char **argv)
+main_cwb_compress_rdx(int argc, char **argv)
 {
   char *registry_directory = NULL;
   char *attr_name = DEFAULT_ATT_NAME;

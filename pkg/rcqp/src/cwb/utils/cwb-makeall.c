@@ -311,7 +311,7 @@ makeall_usage(void)
  * @param argv   Command-line arguments.
  */
 int
-main(int argc, char **argv)
+main_cwb_makeall(int argc, char **argv)
 {
   char *attr_name = NULL;
   Attribute *attribute;
