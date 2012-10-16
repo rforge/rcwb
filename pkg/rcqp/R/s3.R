@@ -351,6 +351,9 @@ print.cqp_attr <- function(x, ...) {
  # ------------------------------------------------------------------------
  ##
 corpus <- function(corpus.name) {
+        if (! corpus.name %in% cqi_list_corpora()) {
+	    stop("This corpus does not exist, see cqi_list_corpora()");
+	}
 	x <- 0;
 	class(x) <- "cqp_corpus";
 	attr(x, "cqp_corpus.name") <- corpus.name;
