@@ -819,7 +819,7 @@ YY_DECL
 			cregin = stdin;
 
 		if ( ! cregout )
-			cregout = NULL;
+			cregout = stdout;
 
 		if ( ! YY_CURRENT_BUFFER ) {
 			cregensure_buffer_stack ();
@@ -1877,8 +1877,8 @@ YY_BUFFER_STATE creg_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
 
 static void yy_fatal_error (yyconst char* msg )
 {
-    	(void)Rprintf( "%s\n", msg );
-	rcqp_receive_error( YY_EXIT_FAILURE );
+    	(void) fprintf( stderr, "%s\n", msg );
+	exit( YY_EXIT_FAILURE );
 }
 
 /* Redefine yyless() so it works in section 3 code. */
@@ -1994,7 +1994,7 @@ static int yy_init_globals (void)
 /* Defined in main.c */
 #ifdef YY_STDINIT
     cregin = stdin;
-    cregout = NULL;
+    cregout = stdout;
 #else
     cregin = (FILE *) 0;
     cregout = (FILE *) 0;

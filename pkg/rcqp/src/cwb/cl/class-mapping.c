@@ -337,27 +337,27 @@ print_mapping(Mapping map)
 {
   int cp, tp;
 
- Rprintf( "---------------------------------------- Mapping: \n");
+  fprintf(stderr, "---------------------------------------- Mapping: \n");
 
- Rprintf( "Name:  %s\n", map->mapping_name);
- Rprintf( "Valid: %s/%s\n", 
+  fprintf(stderr, "Name:  %s\n", map->mapping_name);
+  fprintf(stderr, "Valid: %s/%s\n", 
           map->corpus->registry_name,
           map->attribute->any.name);
- Rprintf( "NrCls: %d\n", 
+  fprintf(stderr, "NrCls: %d\n", 
           map->nr_classes);
 
   for (cp = 0; cp < map->nr_classes; cp++) {
-   Rprintf( "%5d/%s with %d members: \n", 
+    fprintf(stderr, "%5d/%s with %d members: \n", 
             cp, map->classes[cp].class_name, map->classes[cp].nr_tokens);
     for (tp = 0; tp < map->classes[cp].nr_tokens; tp++) {
-     Rprintf( "\t%d/%s", 
+      fprintf(stderr, "\t%d/%s", 
               map->classes[cp].tokens[tp],
               get_string_of_id(map->attribute, map->classes[cp].tokens[tp]));
     }
-   Rprintf( "\n");
+    fprintf(stderr, "\n");
   }
 
- Rprintf( "------------------------------------------------- \n");
+  fprintf(stderr, "------------------------------------------------- \n");
 
 }
 

@@ -32,14 +32,14 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/exit(/rcqp_receive_error(/
 # There are two distinct cases for sed to match the "fprintf" *token* (without
 # matching "fprintf" as part or a larger token, such as "vfprintf") : either
 # printf is at the beginning of the line, or it is preceded by a word boundary.
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^fprintf([^,]\{1,\},/Rprintf(/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\bfprintf([^,]\{1,\},/Rprintf(/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ fprintf([^,]\{1,\},/Rprintf(/"
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	fprintf([^,]\{1,\},/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^fprintf(\(stderr|stdout\),/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/\bfprintf(\(stderr|stdout\),/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/ fprintf(\(stderr|stdout\),/Rprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	fprintf(\(stderr|stdout\),/Rprintf(/"
 # some fprintf have to be corrected by hand (when there is a new line after parenthesis:
 # fprintf(\n
 
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/vfprintf([^,]\{1,\},/Rvprintf(/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/vfprintf(stderr,/Rvprintf(/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fflush(stdout)/rcqp_flush()/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fflush(stderr)/rcqp_flush()/"
 
@@ -54,7 +54,7 @@ find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/	printf/Rprintf/"
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/putchar(/Rprintf(\"%d\", /"
 # I have manually check that all fputc call have no "," in the first argument.
 # but args have the other order : fputc('\n', stderr); in cqp/regex2dfa.c ?
-find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc(\([^,]\{1,\}\),[^)]\{1,\})/Rprintf(\"%d\",\1)/"
+find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputc(\([^,]\{1,\}\), stderr)/Rprintf(\"%d\",\1)/"
 #find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/fputs([^;]\{1,\},\([^,]\{1,\}\));/Rprintf(\"%d\",\1/);"
 # Not to be confused with fputs:
 find $SOURCE -type f -print0 |  xargs -0 sed -i "" "s/^puts/Rprintf/"

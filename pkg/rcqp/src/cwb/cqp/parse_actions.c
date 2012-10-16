@@ -124,7 +124,7 @@ addHistoryLine(void)
       }
       else {
         fputs(QueryBuffer, fd);
-        Rprintf("%d",'\n');
+        fputc('\n', fd);
         fclose(fd);
       }
     }
@@ -142,7 +142,7 @@ addHistoryLine(void)
 void
 resetQueryBuffer(void)
 {
-  /*  Rprintf( "+ Resetting Query Buffer\n"); */
+  /*   fprintf(stderr, "+ Resetting Query Buffer\n"); */
   QueryBufferP = 0;
   QueryBuffer[0] = '\0';
   QueryBufferOverflow = 0;
@@ -200,11 +200,11 @@ after_CorpusCommand(CorpusList *cl)
 {
 #if defined(DEBUG_QB)
   if (QueryBufferOverflow) 
-   Rprintf( "+ Query Buffer overflow.\n");
+    fprintf(stderr, "+ Query Buffer overflow.\n");
   else if (QueryBuffer[0] == '\0')
-   Rprintf( "+ Query Buffer is empty.\n");
+    fprintf(stderr, "+ Query Buffer is empty.\n");
   else
-   Rprintf( "Query buffer: >>%s<<\n", QueryBuffer);
+    fprintf(stderr, "Query buffer: >>%s<<\n", QueryBuffer);
 #endif
 
   switch (last_cyc) {
@@ -217,7 +217,7 @@ after_CorpusCommand(CorpusList *cl)
         catalog_corpus(cl, NULL, 0, -1, GlobalPrintMode);
       }
       else if (!silent)
-       Rprintf("%d matches.%s\n",
+        printf("%d matches.%s\n",
                cl->size,
                (cl->size > 0 ? " Use 'cat' to show."
                 : ""));
@@ -238,7 +238,7 @@ after_CorpusCommand(CorpusList *cl)
       if (autoshow && (cl->size > 0))
         catalog_corpus(cl, NULL, 0, -1, GlobalPrintMode);
       else if (!silent)
-       Rprintf("%d matches.%s\n",
+        printf("%d matches.%s\n",
                cl->size,
                (cl->size > 0 ? " Use 'cat' to show."
                 : ""));
@@ -349,8 +349,8 @@ ActivateCorpus(CorpusList *cl)
   cqpmessage(Message, "CorpusActivate: %s", cl);
   
   if (inhibit_activation) {
-   Rprintf( "Activation prohibited\n");
-    rcqp_receive_error(1); /* hard way! */
+    fprintf(stderr, "Activation prohibited\n");
+    exit(1); /* hard way! */
   }
   else {
     query_corpus = cl;
@@ -1058,9 +1058,9 @@ do_SearchPattern(Evaltree expr, /* $1 */
       searchstr = (char *)evaltree2searchstr(CurEnv->evaltree,
                                              &sslen);
       if (search_debug) {
-       Rprintf("Evaltree: \n");
+        printf("Evaltree: \n");
         print_evaltree(eep, CurEnv->evaltree, 0);
-       Rprintf("Search String: ``%s''\n", searchstr);
+        printf("Search String: ``%s''\n", searchstr);
       }
       
       if (searchstr && (strspn(searchstr, " ") < strlen(searchstr))) { /* i.e. searchstr does not match /^\s*$/ */
@@ -2631,7 +2631,7 @@ printSingleVariableValue(Variable v, int max_items)
   int i;
 
   if (v) {
-   Rprintf("$%s = \n", v->my_name);
+    printf("$%s = \n", v->my_name);
     if (max_items <= 0)
       max_items = v->nr_items;
 
@@ -2685,7 +2685,7 @@ do_printVariableSize(char *varName)
       if (!v->items[i].free)
         size++;
     }
-   Rprintf("$%s has %d entries\n", v->my_name, size);
+    printf("$%s has %d entries\n", v->my_name, size);
   }
   else {
     cqpmessage(Error, "%s: no such variable", varName);
@@ -2911,7 +2911,7 @@ do_size(CorpusList *cl, FieldType field)
               count++;
           }
         }
-       Rprintf("%d\n", count);
+        printf("%d\n", count);
       }
       else if (field == KeywordField) {
         int count = 0, i;
@@ -2921,18 +2921,18 @@ do_size(CorpusList *cl, FieldType field)
               count++;
           }
         }
-       Rprintf("%d\n", count);
+        printf("%d\n", count);
       }
       else {                        /* must be Match or MatchEnd then */
-       Rprintf("%d\n", cl->size);
+        printf("%d\n", cl->size);
       }
     }
     else {
-     Rprintf("%d\n", cl->size);
+      printf("%d\n", cl->size);
     }
   }
   else {
-   Rprintf("0\n");                /* undefined corpus */
+    printf("0\n");                /* undefined corpus */
   }
 }
 
@@ -2964,7 +2964,7 @@ do_dump(CorpusList *cl, int first, int last, struct Redir *rd)
       target = (cl->targets) ? cl->targets[j] : -1;
       keyword = (cl->keywords) ? cl->keywords[j] : -1;
       rg = cl->range + j;
-     Rprintf( "%d\t%d\t%d\t%d\n", 
+      fprintf(rd->stream, "%d\t%d\t%d\t%d\n", 
               rg->start, rg->end, target, keyword);
     }
 

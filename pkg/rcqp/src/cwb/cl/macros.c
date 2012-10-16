@@ -50,10 +50,10 @@ cl_malloc(size_t bytes)
 
   block = malloc(bytes);
   if (block == NULL) {
-   Rprintf( "CL: Out of memory. (killed)\n");
-   Rprintf( "CL: [cl_malloc(%ld)]\n", bytes);
-   Rprintf("\n");		/* for CQP's child mode */
-    rcqp_receive_error(1);
+    fprintf(stderr, "CL: Out of memory. (killed)\n");
+    fprintf(stderr, "CL: [cl_malloc(%ld)]\n", bytes);
+    printf("\n");		/* for CQP's child mode */
+    exit(1);
   }
   return block;
 }
@@ -73,10 +73,10 @@ cl_calloc(size_t nr_of_elements, size_t element_size)
 
   block = calloc(nr_of_elements, element_size);
   if (block == NULL) {
-   Rprintf( "CL: Out of memory. (killed)\n");
-   Rprintf( "CL: [cl_calloc(%ld*%ld bytes)]\n", nr_of_elements, element_size);
-   Rprintf("\n");		/* for CQP's child mode */
-    rcqp_receive_error(1);
+    fprintf(stderr, "CL: Out of memory. (killed)\n");
+    fprintf(stderr, "CL: [cl_calloc(%ld*%ld bytes)]\n", nr_of_elements, element_size);
+    printf("\n");		/* for CQP's child mode */
+    exit(1);
   }
   return block;
 }
@@ -103,13 +103,13 @@ cl_realloc(void *block, size_t bytes)
     if (bytes == 0) {
       /* don't warn any more, reallocating to 0 bytes should create no problems, at least on Linux and Solaris */
       /* (the message was probably shown on Linux only, because Solaris doesn't return NULL in this case) */
-      /*Rprintf( "CL: WARNING realloc() to 0 bytes!\n"); */      
+      /* fprintf(stderr, "CL: WARNING realloc() to 0 bytes!\n"); */      
     }
     else {
-     Rprintf( "CL: Out of memory. (killed)\n");
-     Rprintf( "CL: [cl_realloc(block at %p to %ld bytes)]\n", block, bytes);
-     Rprintf("\n");		/* for CQP's child mode */
-      rcqp_receive_error(1);
+      fprintf(stderr, "CL: Out of memory. (killed)\n");
+      fprintf(stderr, "CL: [cl_realloc(block at %p to %ld bytes)]\n", block, bytes);
+      printf("\n");		/* for CQP's child mode */
+      exit(1);
     }
   }
   return new_block;
@@ -129,10 +129,10 @@ cl_strdup(char *string)
 
   new_string = strdup(string);
   if (new_string == NULL) {
-   Rprintf( "CL: Out of memory. (killed)\n");
-   Rprintf( "CL: [cl_strdup(addr=%p, len=%ld)]\n", string, strlen(string));
-   Rprintf("\n");		/* for CQP's child mode */
-    rcqp_receive_error(1);
+    fprintf(stderr, "CL: Out of memory. (killed)\n");
+    fprintf(stderr, "CL: [cl_strdup(addr=%p, len=%ld)]\n", string, strlen(string));
+    printf("\n");		/* for CQP's child mode */
+    exit(1);
   }
   return new_string;
 }
@@ -272,8 +272,8 @@ progress_bar_clear_line(void) {
   }
   else {
     /* clear the contents of the bottom terminal line */
-   Rprintf( "                                                            \r");
-    rcqp_flush();
+    fprintf(stderr, "                                                            \r");
+    fflush(stderr);
   }
 }
 
@@ -301,14 +301,14 @@ progress_bar_message(int pass, int total, char *message)
     progress_bar_total = total;
   }
   if (progress_bar_simple) {
-   Rprintf( "-::-PROGRESS-::-\t%d\t%d\t%s\n", pass, total, message);
-    rcqp_flush();
+    fprintf(stdout, "-::-PROGRESS-::-\t%d\t%d\t%s\n", pass, total, message);
+    fflush(stdout);
   }
   else {
-   Rprintf( "[");
-   Rprintf( "pass %d of %d: ", pass, total);
-   Rprintf( "%s]     \r", message);
-    rcqp_flush();
+    fprintf(stderr, "[");
+    fprintf(stderr, "pass %d of %d: ", pass, total);
+    fprintf(stderr, "%s]     \r", message);
+    fflush(stderr);
   }
 }
 
@@ -349,7 +349,7 @@ void
 ilist_print_blanks(int n)
 {
   while (n > 0) {
-   Rprintf(" ");
+    printf(" ");
     n--;
   }
 }
@@ -392,16 +392,16 @@ print_indented_list_br(char *label)
   int llen = (label != NULL) ? strlen(label) : 0;
   
   if (ilist_cursor != 0) {
-   Rprintf("\n");
+    printf("\n");
   }
   else {
-   Rprintf("\r");
+    printf("\r");
   }
   if (llen <= 0) {
     ilist_print_blanks(ilist_indent);
   }
   else {
-   Rprintf(label);
+    printf(label);
     ilist_print_blanks(ilist_indent - llen);
   }
   ilist_cursor = 0;
@@ -422,15 +422,15 @@ print_indented_list_item(char *string)
     if ((ilist_cursor + len) > ilist_linewidth) {
       print_indented_list_br("");
     }
-   Rprintf("%s", string);
+    printf("%s", string);
     ilist_cursor += len;
     /* advance cursor to next tabstop */
     if (ilist_cursor < ilist_linewidth) {
-     Rprintf(" ");
+      printf(" ");
       ilist_cursor++;
     }
     while ((ilist_cursor < ilist_linewidth) && ((ilist_cursor % ilist_tab) != 0)) {
-     Rprintf(" ");
+      printf(" ");
       ilist_cursor++;
     }
   }
@@ -443,12 +443,12 @@ void
 end_indented_list(void)
 {
   if (ilist_cursor == 0) {
-   Rprintf("\r");        /* no output on last line (just indention) -> erase indention */
+    printf("\r");        /* no output on last line (just indention) -> erase indention */
   }
   else {
-   Rprintf("\n");
+    printf("\n");
   }
   ilist_cursor = 0;
-  rcqp_flush();
+  fflush(stdout);
 }
 

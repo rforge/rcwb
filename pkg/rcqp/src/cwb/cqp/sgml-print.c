@@ -200,7 +200,7 @@ sgml_puts(FILE *fd, char *s, int flags)
       else if (*s == '"' && (flags & SUBST_QUOT))
         fputs("&quot;", fd);
       else 
-        Rprintf("%d",*s);
+        fputc(*s, fd);
       s++;
     }
   }
@@ -216,7 +216,7 @@ sgml_print_aligned_line(FILE *stream, char *attribute_name, char *line)
   sgml_puts(stream, "\">", 0);
   sgml_puts(stream, line, SUBST_NONE); /* entities have already been escaped */
 
-  Rprintf("%d",'\n');
+  fputc('\n', stream);
 }
 
 void sgml_print_context(ContextDescriptor *cd, FILE *stream)
@@ -237,7 +237,7 @@ void sgml_print_context(ContextDescriptor *cd, FILE *stream)
     s = "error";
     break;
   }
- Rprintf( "<leftContext size=%d base=\"%s\">\n",
+  fprintf(stream, "<leftContext size=%d base=\"%s\">\n",
           cd->left_width, s);
 
 
@@ -255,7 +255,7 @@ void sgml_print_context(ContextDescriptor *cd, FILE *stream)
     s = "error";
     break;
   }
- Rprintf( "<rightContext size=%d base=\"%s\">\n",
+  fprintf(stream, "<rightContext size=%d base=\"%s\">\n",
           cd->right_width, s);
 
 }
@@ -272,7 +272,7 @@ void sgml_print_corpus_header(CorpusList *cl, FILE *stream)
   /*   pwd = getpwuid(geteuid()); */
   /* disabled because of incompatibilities between different Linux versions */
 
- Rprintf(
+  fprintf(stream,
           "<concordanceInfo>\n"
           "<user><userID>%s</userID><userName>%s</userName></user>\n"
           "<date>%s</date>\n"
@@ -321,7 +321,7 @@ void sgml_print_output(CorpusList *cl,
     
     for (ai = cd->attributes->list; ai; ai = ai->next) {
       if (ai->attribute && ai->status > 0) {
-       Rprintf( "<attribute type=positional name=\"%s\" anr=%d>\n",
+        fprintf(stream, "<attribute type=positional name=\"%s\" anr=%d>\n",
                 ai->attribute->any.name, anr);
         anr++;
       }
@@ -424,11 +424,11 @@ sgml_print_group(Group *group, int expand, FILE *fd)
   last_source_id = -999;
   nr_targets = 0;
 
- Rprintf( "<TABLE>\n");
+  fprintf(fd, "<TABLE>\n");
 
   for (cell = 0; cell < group->nr_cells; cell++) {
 
-   Rprintf( "<TR><TD>");
+    fprintf(fd, "<TR><TD>");
 
     source_id = group->count_cells[cell].s;
     
@@ -438,21 +438,21 @@ sgml_print_group(Group *group, int expand, FILE *fd)
       nr_targets = 0;
     }
     else {
-     Rprintf( "&nbsp;");
+      fprintf(fd, "&nbsp;");
     }
     
     target_id = group->count_cells[cell].t;
     target_s = Group_id2str(group, target_id, 1);
     count     = group->count_cells[cell].freq;
     
-   Rprintf( "<TD>");
+    fprintf(fd, "<TD>");
     sgml_puts(fd, target_s, SUBST_ALL);
 
-   Rprintf( "<TD>%d</TR>\n", count);
+    fprintf(fd, "<TD>%d</TR>\n", count);
     
     nr_targets++;
   }
 
- Rprintf( "</TABLE>\n");
+  fprintf(fd, "</TABLE>\n");
 }
 

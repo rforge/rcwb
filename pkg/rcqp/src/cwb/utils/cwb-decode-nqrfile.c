@@ -102,7 +102,7 @@ nqrfile_print_info(FILE *fd, int print_header)
     /* read the subcorpus */
     
     if (len != fread(field, 1, len, fd)) {
-     Rprintf( "Read error while reading in data from subcorpus file\n");
+      fprintf(stderr, "Read error while reading in data from subcorpus file\n");
       return 0;
     }
     else if (*((int *)field) == SUBCORPMAGIC || *((int *)field) == SUBCORPMAGIC+1) {
@@ -139,23 +139,23 @@ nqrfile_print_info(FILE *fd, int print_header)
       else {
         memcpy(&size, p, sizeof(int));
         p += sizeof(int);
-       Rprintf( "Note: new subcorpus format\n");
+        fprintf(stderr, "Note: new subcorpus format\n");
       }
 
       if (print_header) {
-       Rprintf("REGISTRY %s\n", registry);
-       Rprintf("O_NAME   %s\n", o_name);
-       Rprintf("SIZE     %d\n", size);
+        printf("REGISTRY %s\n", registry);
+        printf("O_NAME   %s\n", o_name);
+        printf("SIZE     %d\n", size);
       }
 
       range = (struct range_t *) p;
 
       for (j = 0; j < size; j++)
-       Rprintf("%d\t%d\n",
+        printf("%d\t%d\n",
                range[j].start, range[j].end);
     }
     else {
-     Rprintf( "Error: Magic number incorrect in subcorpus file!\n");
+      fprintf(stderr, "Error: Magic number incorrect in subcorpus file!\n");
       return 0;
     }
       
@@ -199,20 +199,20 @@ main(int argc, char **argv)
 
       if (strcmp(argv[i], "-") == 0) {
         if (!nqrfile_print_info(stdin, header_required))
-          rcqp_receive_error(1);
+          exit(1);
       }
       else {
         if ((fd = fopen(argv[i], "rb")) == NULL) {
           perror(argv[i]);
-          rcqp_receive_error(1);
+          exit(1);
         }
         else {
           if (!nqrfile_print_info(fd, header_required))
-            rcqp_receive_error(1);
+            exit(1);
           fclose(fd);
         }
       }
     }
   }
-  rcqp_receive_error(0);
+  exit(0);
 }

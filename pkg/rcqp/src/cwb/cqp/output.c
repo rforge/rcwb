@@ -307,11 +307,11 @@ open_stream(struct Redir *rd, CorpusCharset charset)
     }
   }
   else { /* i.e. if rd->name is NULL */
-    if (pager && paging && isatty(fileno(NULL))) {
+    if (pager && paging && isatty(fileno(stdout))) {
       if (insecure) {
         cqpmessage(Error, "Insecure mode, paging not allowed.\n");
-        /* ... and default back to bare NULL */
-        rd->stream = NULL;
+        /* ... and default back to bare stdout */
+        rd->stream = stdout;
         rd->is_paging = False;
         rd->is_pipe = False;
       }
@@ -322,7 +322,7 @@ open_stream(struct Redir *rd, CorpusCharset charset)
           set_integer_option_value("Paging", 0);
           rd->is_pipe = False;
           rd->is_paging = False;
-          rd->stream = NULL;
+          rd->stream = stdout;
         }
         else {
           rd->is_pipe = 1;
@@ -336,7 +336,7 @@ open_stream(struct Redir *rd, CorpusCharset charset)
       }
     }
     else {
-      rd->stream = NULL;
+      rd->stream = stdout;
       rd->is_paging = False;
       rd->is_pipe = False;
     }
@@ -360,7 +360,7 @@ close_stream(struct Redir *rd)
   if (rd->stream) {
     if (rd->is_pipe)
       rv = ! pclose(rd->stream); /* pclose returns 0 = success, non-zero = failure */
-    else if (rd->stream != NULL)
+    else if (rd->stream != stdout)
       rv = ! fclose(rd->stream); /* fclose the same */
 
     rd->stream = NULL;
@@ -449,7 +449,7 @@ bp_signal_handler(int signum)
 #ifndef __MINGW__
   broken_pipe = 1;
 
-  /*Rprintf( "Handle broken pipe signal\n"); */
+  /* fprintf(stderr, "Handle broken pipe signal\n"); */
 
   if (signal(SIGPIPE, bp_signal_handler) == SIG_ERR)
     perror("Can't reinstall signal handler for broken pipe");
@@ -562,10 +562,10 @@ catalog_corpus(CorpusList *cl,
     broken_pipe = 0;
 
     /* first version (Oli Christ):
-       if ((!silent || printHeader) && !(rd->stream == NULL || rd->is_paging));
+       if ((!silent || printHeader) && !(rd->stream == stdout || rd->is_paging));
        */
     /* second version (Stefan Evert):     
-       if (printHeader || (mode == PrintASCII && !(rd->stream == NULL || rd->is_paging))); 
+       if (printHeader || (mode == PrintASCII && !(rd->stream == stdout || rd->is_paging))); 
     */
 
     /* header is printed _only_ when explicitly requested now
@@ -579,7 +579,7 @@ catalog_corpus(CorpusList *cl,
       print_corpus_info_header(cl, rd->stream, mode, 1);
     }
     else if (printNrMatches && mode == PrintASCII)
-     Rprintf( "%d matches.\n", cl->size);
+      fprintf(rd->stream, "%d matches.\n", cl->size);
     
     print_output(cl, rd->stream, 
                  isatty(fileno(rd->stream)) || rd->is_paging, 
@@ -635,9 +635,9 @@ cqpmessage(MessageType type, char *format, ...)
     }
 
     if (!silent || type == Error) {
-     Rprintf( "%s:\n\t", msg);
-      Rvprintf( format, ap);
-     Rprintf( "\n");
+      fprintf(stderr, "%s:\n\t", msg);
+      vfprintf(stderr, format, ap);
+      fprintf(stderr, "\n");
     }
 
   }
@@ -663,31 +663,31 @@ corpus_info(CorpusList *cl)
   if (cl->type == SYSTEM) {
 
     stream_ok = open_stream(&rd, ascii);
-    outfd = (stream_ok) ? rd.stream : NULL; /* use pager, or simply print to stdout if it fails */
+    outfd = (stream_ok) ? rd.stream : stdout; /* use pager, or simply print to stdout if it fails */
     /* print size (should be the mother_size entry) */
-   Rprintf( "Size:    %d\n", cl->mother_size);
+    fprintf(outfd, "Size:    %d\n", cl->mother_size);
     /* print charset */
-   Rprintf( "Charset: ");
+    fprintf(outfd, "Charset: ");
 
     if (cl->corpus->charset == unknown_charset) {
-     Rprintf( "<unsupported> (%s)\n", cl_corpus_property(cl->corpus, "charset"));
+      fprintf(outfd, "<unsupported> (%s)\n", cl_corpus_property(cl->corpus, "charset"));
     }
     else {
-     Rprintf( "%s\n", cl_charset_name(cl->corpus->charset));
+      fprintf(outfd, "%s\n", cl_charset_name(cl->corpus->charset));
     }
     /* print properties */
-   Rprintf( "Properties:\n");
+    fprintf(outfd, "Properties:\n");
     p = cl_first_corpus_property(cl->corpus);
     if (p == NULL)
-     Rprintf( "\t<none>\n");
+      fprintf(outfd, "\t<none>\n");
     else 
       for ( ; p != NULL; p = cl_next_corpus_property(p))
-       Rprintf( "\t%s = '%s'\n", p->property, p->value);
-   Rprintf( "\n");
+        fprintf(outfd, "\t%s = '%s'\n", p->property, p->value);
+    fprintf(outfd, "\n");
     
 
     if (cl->corpus->info_file == NULL)
-     Rprintf( "No further information available about %s\n", cl->name);
+      fprintf(outfd, "No further information available about %s\n", cl->name);
     else if ((fd = open_file(cl->corpus->info_file, "rb")) == NULL)
       cqpmessage(Warning,
                  "Can't open info file %s for reading",
@@ -892,7 +892,7 @@ print_tabulation(CorpusList *cl, int first, int last, struct Redir *rd)
 
       for (cpos = start; cpos <= end; cpos++) {
         if (item->attribute_type == ATT_NONE) {
-         Rprintf( "%d", cpos);
+          fprintf(rd->stream, "%d", cpos);
         }
         else {
           if (cpos >= 0) {      /* undefined anchors print empty string */
@@ -905,23 +905,23 @@ print_tabulation(CorpusList *cl, int first, int last, struct Redir *rd)
               if (item->flags) {
                 char *copy = cl_strdup(string);
                 cl_string_canonical(copy, cl->corpus->charset, item->flags);
-               Rprintf( "%s", copy);
+                fprintf(rd->stream, "%s", copy);
                 cl_free(copy);
               }
               else {
-               Rprintf( "%s", string);
+                fprintf(rd->stream, "%s", string);
               }
             }
           }
         }
         if (cpos < end)         /* multiple values for tabulation item are separated by blanks */
-         Rprintf( " "); 
+          fprintf(rd->stream, " "); 
       }
       if (item->next)           /* multiple tabulation items are separated by TABs */
-       Rprintf( "\t");
+        fprintf(rd->stream, "\t");
       item = item->next;
     }
-   Rprintf( "\n");
+    fprintf(rd->stream, "\n");
   }
   
   close_stream(rd);

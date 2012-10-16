@@ -257,7 +257,7 @@ NrFieldValues(CorpusList *cl, FieldType ft)
       
     default:
     case NoField:
-     Rprintf( "Illegal field type %d\n", ft);
+      fprintf(stderr, "Illegal field type %d\n", ft);
       break;
     }
   }
@@ -540,7 +540,7 @@ findcorpus(char *s, CorpusType type, int try_recursive_search)
       tmp = duplicate_corpus(sp, real_name, False);
       
       if (tmp == NULL) {
-       Rprintf( "Weird error in findcorpus\n");
+        fprintf(stderr, "Weird error in findcorpus\n");
         return NULL;
       }
 
@@ -596,7 +596,7 @@ dropcorpus(CorpusList *cl)
       prev = prev->next;
 
     if (prev == NULL) {
-     Rprintf( "%s:dropcorpus(): cl is not in list of loaded corpora\n", __FILE__);
+      fprintf(stderr, "%s:dropcorpus(): cl is not in list of loaded corpora\n", __FILE__);
       cl = NULL;
     }
     else {
@@ -605,7 +605,7 @@ dropcorpus(CorpusList *cl)
     }
   }
   else {
-   Rprintf( "%s:dropcorpus(): cl is not in list of loaded corpora (list empty)\n", __FILE__);
+    fprintf(stderr, "%s:dropcorpus(): cl is not in list of loaded corpora (list empty)\n", __FILE__);
     cl = NULL;
   }
 
@@ -645,7 +645,7 @@ duplicate_corpus(CorpusList *cl,
   CorpusList *newc;
 
   if (cl == NULL) {
-   Rprintf( "%s:duplicate_corpus(): WARNING: Called with NULL corpus\n",
+    fprintf(stderr, "%s:duplicate_corpus(): WARNING: Called with NULL corpus\n",
             __FILE__);
     return NULL;
   }
@@ -774,7 +774,7 @@ make_temp_corpus(CorpusList *cl,
   CorpusList *newc;
 
   if (cl == NULL) {
-   Rprintf( "%s:duplicate_corpus(): WARNING: Called with NULL corpus\n",
+    fprintf(stderr, "%s:duplicate_corpus(): WARNING: Called with NULL corpus\n",
             __FILE__);
     return NULL;
   }
@@ -879,7 +879,7 @@ assign_temp_to_sub(CorpusList *tmp, char *subname)
   CorpusList *cl;
 
   if (tmp == NULL) {
-   Rprintf( "%s:duplicate_corpus(): WARNING: Called with NULL corpus\n",
+    fprintf(stderr, "%s:duplicate_corpus(): WARNING: Called with NULL corpus\n",
             __FILE__);
     return NULL;
   }
@@ -1131,7 +1131,7 @@ load_corpusnames(enum corpus_type ct)
   CorpusList    *corpus;
 
   if (!((ct == SYSTEM) || (ct == SUB))) {
-   Rprintf( "Can't load corpus names for type %d\n", ct);
+    fprintf(stderr, "Can't load corpus names for type %d\n", ct);
     return;
   }
 
@@ -1291,7 +1291,7 @@ GetSystemCorpus(char *name, char *registry)
     else if (registry)
       cl->registry = cl_strdup(registry);
     else {
-     Rprintf( "Warning: no registry directory for %s\n",
+      fprintf(stderr, "Warning: no registry directory for %s\n",
               name);
       cl->registry = NULL;
     }
@@ -1401,13 +1401,13 @@ attach_subcorpus(CorpusList *cl,
     }
 
     if (fp == NULL)
-     Rprintf( "Subcorpus %s not accessible (can't open %s for reading)\n",
+      fprintf(stderr, "Subcorpus %s not accessible (can't open %s for reading)\n",
               cl->name, fullname);
     else {
       len = file_length(fullname);
 
       if (len <= 0)
-       Rprintf( "ERROR: File length of subcorpus is <= 0\n");
+        fprintf(stderr, "ERROR: File length of subcorpus is <= 0\n");
       else {
 
 
@@ -1417,9 +1417,9 @@ attach_subcorpus(CorpusList *cl,
         /* read the subcorpus */
         
         if (len != fread(field, 1, len, fp))
-         Rprintf( "Read error while reading subcorpus %s\n", cl->name);
+          fprintf(stderr, "Read error while reading subcorpus %s\n", cl->name);
         else if ((*((int *)field) != SUBCORPMAGIC) && (*((int *)field) != SUBCORPMAGIC+1))
-         Rprintf( "Magic number incorrect in %s\n", fullname);
+          fprintf(stderr, "Magic number incorrect in %s\n", fullname);
         else {
 
           CorpusList *mother;
@@ -1526,7 +1526,7 @@ attach_subcorpus(CorpusList *cl,
             }
 
             if (subcorpload_debug) {
-             Rprintf(
+              fprintf(stderr,
                       "Header size: %ld\n"
                       "Nr Matches: %d\n"
                       "regdir: %s\n"
@@ -1536,7 +1536,7 @@ attach_subcorpus(CorpusList *cl,
                       cl->registry,
                       cl->mother_name);
               for (j = 0; j < cl->size; j++)
-               Rprintf( 
+                fprintf(stderr, 
                         "range[%d].start = %d\n"
                         "range[%d].end   = %d\n",
                         j, cl->range[j].start, j, cl->range[j].end);
@@ -1620,7 +1620,7 @@ save_subcorpus(CorpusList *cl, char *fname)
 
       /* fill up */
       for (i = 0; (i+l1+l2)%4 != 0; i++)
-        Rprintf("%d",'\0');
+        fputc('\0', fp);
       
       /* write the size (the number of ranges) */
 
@@ -1672,7 +1672,7 @@ save_subcorpus(CorpusList *cl, char *fname)
       return(True);
     }
     else {
-     Rprintf( "cannot open output file %s\n", fname);
+      fprintf(stderr, "cannot open output file %s\n", fname);
       return(False);
     }
   }
@@ -1805,7 +1805,7 @@ change_corpus(char *name, Boolean silent)
 
   if ((cl = search_corpus(name)) != NULL) {
     if (!access_corpus(cl)) {
-     Rprintf( "Can't access corpus %s, keep previous corpus\n",
+      fprintf(stderr, "Can't access corpus %s, keep previous corpus\n",
               cl->name);
       cl = NULL;
     }
@@ -2016,7 +2016,7 @@ show_corpora_files1(enum corpus_type ct)
     qsort(list, N, sizeof(char *), show_corpora_files_sort);
 
     if (pretty_print) {
-     Rprintf("System corpora:\n");
+      printf("System corpora:\n");
       start_indented_list(0,0,0);       /* now print sorted list */
     }
     for (i = 0; i < N; i++) {
@@ -2029,7 +2029,7 @@ show_corpora_files1(enum corpus_type ct)
         print_indented_list_item(list[i]);
       }
       else {
-       Rprintf("%s\n", list[i]);
+        printf("%s\n", list[i]);
       }
     }
     if (pretty_print)
@@ -2039,10 +2039,10 @@ show_corpora_files1(enum corpus_type ct)
   }
   else if (ct == SUB) {
     if (pretty_print)
-     Rprintf("Named Query Results:\n");
+      printf("Named Query Results:\n");
     for (cl = corpuslist; cl; cl = cl->next)
       if (cl->type == SUB)
-         Rprintf(pretty_print ? "   %c%c%c  %s:%s [%d]\n" : "%c%c%c\t%s:%s\t%d\n",
+          printf(pretty_print ? "   %c%c%c  %s:%s [%d]\n" : "%c%c%c\t%s:%s\t%d\n",
                  cl->loaded ? 'm' : '-',
                  cl->saved ? 'd' : '-',
                  cl->needs_update ? '*' : '-',

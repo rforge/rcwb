@@ -109,7 +109,7 @@ DynArg *makearg(char *type_id);
 
 void cregerror_cleanup(char *message)
 {
- Rprintf( "REGISTRY ERROR (%s/%s): %s\n", cregin_path, cregin_name, message);
+  fprintf(stderr, "REGISTRY ERROR (%s/%s): %s\n", cregin_path, cregin_name, message);
 
   if (cregattrib != NULL)
     attr_drop_attribute(cregattrib);
