@@ -17,7 +17,7 @@
 
 #include <stdarg.h>
 #include <math.h>
-/*#include <ctype.h>*/
+#include <ctype.h>
 #include <sys/types.h>
 
 #include "globals.h"
