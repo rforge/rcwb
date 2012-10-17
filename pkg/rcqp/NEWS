@@ -6,4 +6,4 @@
 - Release 0.3
   Correcting a bug affecting linux users
   Correcting a bug in the function cqp_flist
-  svn revision : 343
+  svn revision : 346

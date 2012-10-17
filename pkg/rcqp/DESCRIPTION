@@ -16,3 +16,4 @@ Collate: main.R zzz.R s3.R
 Encoding: latin1
 SystemRequirements: GNU make, pcre (>= 7), glib2 (>= 2)
 Packaged: 2012-06-24 14:48:40 UTC; sylvainloiseau
+OS_type: unix
