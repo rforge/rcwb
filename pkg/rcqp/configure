@@ -2866,7 +2866,7 @@ LDFLAGS="$LDFLAGS -L/opt/local/lib"
 
 # Process the .in files
 # ---------------------
-ac_config_files="$ac_config_files src/Makevars src/Makevars.win"
+ac_config_files="$ac_config_files src/Makevars"
 
 
 cat >confcache <<\_ACEOF
@@ -3575,7 +3575,6 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "src/Makevars") CONFIG_FILES="$CONFIG_FILES src/Makevars" ;;
-    "src/Makevars.win") CONFIG_FILES="$CONFIG_FILES src/Makevars.win" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

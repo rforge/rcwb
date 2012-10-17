@@ -61,7 +61,6 @@ LDFLAGS="$LDFLAGS -L/opt/local/lib"
 # ---------------------
 AC_CONFIG_FILES(
 [ src/Makevars
-src/Makevars.win
 ])
 
 AC_OUTPUT
