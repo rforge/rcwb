@@ -45,7 +45,7 @@ OBJECTS = ${RCQP_C_OBJ} ${CWB_BISON_OBJ} ${CWB_FLEX_OBJ} ${CWB_C_OBJ}
 
 # src directory
 # -------------
-RCQP_C_SRC = rcqpCommands.c rcqpUtils.c makeRCompatible.c
+RCQP_C_SRC = rcqpCommands.c rcqpUtils.c makeRCompatible.c rcqpCreate.c
 RCQP_C_OBJ = $(RCQP_C_SRC:.c=.o)
 
 
@@ -94,9 +94,11 @@ CL_C_OBJ = $(CL_C_SRC:.c=.o)
 
 # cwb/utils directory
 # -------------------
-#
-UTILS_C_SRC = # utils/cwb-encode.c 
+
+UTILS_C_SRC = cwb/utils/cwb-encode.c cwb/utils/cwb-compress-rdx.c cwb/utils/cwb-makeall.c cwb/utils/cwb-huffcode.c
 UTILS_C_OBJ = $(UTILS_C_SRC:.c=.o)
+
+
 
 CL_FLEX_SRC = cwb/cl/registry.l
 CL_FLEX_C = $(CL_FLEX_SRC:.l=.yy.c)
