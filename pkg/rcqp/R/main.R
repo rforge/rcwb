@@ -578,5 +578,13 @@ cqi_struc2str <- function(attribute, ids) {
 
 
 
+cqp_undump <- function(file, corpus, subcorpus, target=FALSE, keyword=FALSE) {
+	ans <- .Call("rcqpCmd_cqpCmd", paste(corpus, ";"), PACKAGE="rcqp");
+        with <- ifelse(any(target, keyword), " with ", "");
+        target <- ifelse(target, " target ", "");
+        keyword <- ifelse(keyword, " keyword ", "");
+        cmd <- paste("undump ", subcorpus, with, target, keyword, " < \"", file, "\";", sep="");
+	ans <- .Call("rcqpCmd_cqpCmd", cmd, PACKAGE="rcqp");
+}
 
 
