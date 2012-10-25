@@ -247,13 +247,13 @@ encode_strtok(register char *s, register const char *delim)
  * @param msg     Message to incorporate into the string that is printed.
  */
 void
-encode_print_time(FILE *stream, char *msg)
+encode_print_time(char *msg)
 {
   time_t now;
 
   (void) time(&now);
 
-  fprintf(stream, "%s: %s\n", msg, ctime(&now));
+  Rprintf("%s: %s\n", msg, ctime(&now));
 }
 
 /* ======================================== print error message and exit */
@@ -1751,7 +1751,7 @@ main_cwb_encode(int argc, char **argv)
     else {
      Rprintf( "Reading from standard input.\n");
     }
-    encode_print_time(stderr, "Start");
+    encode_print_time("Start");
   }
 
   /* initialise loop variables ... */
@@ -1964,7 +1964,7 @@ main_cwb_encode(int argc, char **argv)
   }
 
   if (debug)
-    encode_print_time(stderr, "Done");
+    encode_print_time("Done");
 
-  rcqp_receive_error(0);
+  return(0);
 }

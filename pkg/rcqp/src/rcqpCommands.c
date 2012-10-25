@@ -1125,6 +1125,40 @@ SEXP rcqpCmd_cqp(SEXP inQuery)
 /* 
  * ------------------------------------------------------------------------
  * 
+ * "rcqpCmd_cqpCmd(SEXP inCommand)" --
+ * 
+ *  
+ * 
+ * ------------------------------------------------------------------------
+ */
+SEXP rcqpCmd_cqpCmd(SEXP inCommand)
+{
+	SEXP			result = R_NilValue;
+	char			*command;
+	
+	if (!isString(inCommand) || length(inCommand) != 1) error("invalid command argument type or length");
+	
+	PROTECT(inCommand);
+
+	command = (char*)CHAR(STRING_ELT(inCommand,0));
+	
+	//query_lock = floor(1e9 * cl_runif()) + 1; /* activate query lock mode with random key */
+	query_lock = 0;           /* deactivate query lock mode */
+			
+	if (!cqp_parse_string(command)) {
+	  rcqp_error_code(CQI_CQP_ERROR_GENERAL); /* should be changed to detailed error messages */
+	}
+	query_lock = 0;           /* deactivate query lock mode */
+	UNPROTECT(1);
+	
+	return result;
+}
+
+
+
+/* 
+ * ------------------------------------------------------------------------
+ * 
  * "rcqpCmd_query(SEXP inMother, SEXP inChild, SEXP inQuery)" --
  * 
  *  

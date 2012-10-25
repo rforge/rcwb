@@ -50,6 +50,7 @@ SEXP rcqpCmd_struc2str(SEXP inAttribute, SEXP inIds);
 SEXP rcqpCmd_structural_attribute_has_values(SEXP inAttribute);
 SEXP rcqpCmd_subcorpus_size(SEXP inSubcorpus);
 
+SEXP rcqpCmd_cqpCmd(SEXP inCommand);
 
 
 #endif  /* RCQP_COMMANDS_H */

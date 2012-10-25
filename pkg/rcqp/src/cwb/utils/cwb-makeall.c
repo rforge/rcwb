@@ -25,7 +25,7 @@
 /** The corpus we are working on */
 Corpus *corpus;
 /** Name of this program */
-char *progname = NULL;
+char *progname_cwb_makeall = NULL;
 
 
 /**
@@ -279,7 +279,7 @@ void
 makeall_usage(void)
 {
  Rprintf( "\n");
- Rprintf( "Usage:  %s [options] <corpus> [<attribute> ...] \n", progname);
+ Rprintf( "Usage:  %s [options] <corpus> [<attribute> ...] \n", progname_cwb_makeall);
  Rprintf( "\n");
  Rprintf( "Creates a lexicon and index for each p-attribute of an encoded CWB corpus.\n");
  Rprintf( "\n");
@@ -332,7 +332,7 @@ main_cwb_makeall(int argc, char **argv)
 
   /* ------------------------------------------------- PARSE ARGUMENTS */
 
-  progname = argv[0];
+  progname_cwb_makeall = argv[0];
 
   /* parse arguments */
   while ((c = getopt(argc, argv, "+r:c:P:hDM:V")) != EOF) {
@@ -343,7 +343,7 @@ main_cwb_makeall(int argc, char **argv)
       if (registry_directory == NULL)
         registry_directory = optarg;
       else {
-       Rprintf( "%s: -r option used twice\n", progname);
+       Rprintf( "%s: -r option used twice\n", progname_cwb_makeall);
         rcqp_receive_error(2);
       }
       break;
@@ -352,7 +352,7 @@ main_cwb_makeall(int argc, char **argv)
       if (attr_name == NULL)
         attr_name = optarg;
       else {
-       Rprintf( "%s: -P option used twice\n", progname);
+       Rprintf( "%s: -P option used twice\n", progname_cwb_makeall);
         rcqp_receive_error(2);
       }
       break;
@@ -361,7 +361,7 @@ main_cwb_makeall(int argc, char **argv)
       if (component == NULL)
         component = optarg;
       else {
-       Rprintf( "%s: -c option used twice\n", progname);
+       Rprintf( "%s: -c option used twice\n", progname_cwb_makeall);
         rcqp_receive_error(2);
       }
       break;
@@ -386,7 +386,7 @@ main_cwb_makeall(int argc, char **argv)
   }
 
   if (optind >= argc) {
-   Rprintf( "Missing argument, try \"%s -h\" for more information.\n", progname);
+   Rprintf( "Missing argument, try \"%s -h\" for more information.\n", progname_cwb_makeall);
     rcqp_receive_error(1);
   }
 
@@ -454,9 +454,55 @@ main_cwb_makeall(int argc, char **argv)
   }
 
  Rprintf("========================================\n");
-  rcqp_receive_error(0);
+  return(0);
 }
 
 
+/* --------------- *\
+ *      COPY OF MAIN FOR USE WITH R     *
+\* --------------- */
+
+int
+R_cwb_makeall(char *corpus_name, char* registry)
+{
+  Attribute *attribute;
+
+  char *registry_directory = registry;
+  char *corpus_id = corpus_name;
+
+  int validate = 0;
+
+  char *component = NULL;
+
+  ComponentID cid;
+
+  cid = CompLast;
 
 
+  if ((corpus = cl_new_corpus(registry_directory, corpus_id)) == NULL) {
+   Rprintf( "Corpus %s not found in registry %s . Aborted.\n",
+            corpus_id,
+            (registry_directory ? registry_directory
+             : central_corpus_directory()));
+    rcqp_receive_error(1);
+  }
+
+ Rprintf("=== Makeall: processing corpus %s ===\n", corpus_id);
+ Rprintf("Registry directory: %s\n", corpus->registry_dir);
+
+    /* process each p-attribute of the corpus in turn */
+    for (attribute = corpus->attributes; attribute; attribute = attribute->any.next)
+      if (attribute->type == ATT_POS) {
+        ComponentID my_cid;
+
+        makeall_do_attribute(attribute, cid, validate);
+        /* now destoy all components; this makes the attribute unusable,
+           but it is currently the only way to free allocated and memory-mapped data */
+        for (my_cid = CompDirectory; my_cid < CompLast; my_cid++) { /* ordering gleaned from attributes.h */
+          drop_component(attribute, my_cid);
+        }
+      }
+
+ Rprintf("========================================\n");
+  return(0);
+}

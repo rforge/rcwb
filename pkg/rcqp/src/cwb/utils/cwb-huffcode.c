@@ -34,9 +34,9 @@ FILE *protocol; /* " = NULL;" init moved to main() for Gnuwin32 compatibility */
 char *progname;
 
 Corpus *corpus; 
-char *corpus_id = NULL;
+char *corpus_id_cwb_huffcode = NULL;
 
-int debug = 0;
+int debug_cwb_huffcode = 0;
 
 void huffcode_usage(char *msg, int error_code);
 
@@ -304,7 +304,7 @@ compute_code_lengths(Attribute *attr, HCD *hc, char *fname)
   long sum_bits;
 
 
- Rprintf("COMPRESSING TOKEN STREAM of %s.%s\n", corpus_id, attr->any.name);
+ Rprintf("COMPRESSING TOKEN STREAM of %s.%s\n", corpus_id_cwb_huffcode, attr->any.name);
 
   /* I need the following components:
    * - CompCorpus
@@ -801,7 +801,7 @@ decode_check_huff(Attribute *attr, char *fname)
   char sync_path[CL_MAX_LINE_LENGTH];
 
   
- Rprintf("VALIDATING %s.%s\n", corpus_id, attr->any.name);
+ Rprintf("VALIDATING %s.%s\n", corpus_id_cwb_huffcode, attr->any.name);
 
   if (fname) {
     sprintf(hcd_path, "%s.hcd", fname);
@@ -1010,7 +1010,7 @@ main_cwb_huffcode(int argc, char **argv)
       
       /* d: debug mode  --- unused */
     case 'd':
-      debug++;
+      debug_cwb_huffcode++;
       break;
 
       /* A: compress all attributes */
@@ -1031,7 +1031,7 @@ main_cwb_huffcode(int argc, char **argv)
   
   /* single argument: corpus id */
   if (optind < argc) {
-    corpus_id = argv[optind++];
+    corpus_id_cwb_huffcode = argv[optind++];
   }
   else {
     huffcode_usage("corpus not specified (missing argument)", 1);
@@ -1041,9 +1041,9 @@ main_cwb_huffcode(int argc, char **argv)
     huffcode_usage("Too many arguments", 1);
   }
   
-  if ((corpus = cl_new_corpus(registry_directory, corpus_id)) == NULL) {
+  if ((corpus = cl_new_corpus(registry_directory, corpus_id_cwb_huffcode)) == NULL) {
    Rprintf( "Corpus %s not found in registry %s . Aborted.\n", 
-            corpus_id,
+            corpus_id_cwb_huffcode,
             (registry_directory ? registry_directory
                : central_corpus_directory()));
     rcqp_receive_error(1);
@@ -1060,7 +1060,7 @@ main_cwb_huffcode(int argc, char **argv)
   else {
     if ((attr = cl_new_attribute(corpus, attr_name, ATT_POS)) == NULL) {
      Rprintf( "Attribute %s.%s doesn't exist. Aborted.\n", 
-              corpus_id, attr_name);
+              corpus_id_cwb_huffcode, attr_name);
       rcqp_receive_error(1);
     }
     compute_code_lengths(attr, &hc, output_fn);
@@ -1070,5 +1070,66 @@ main_cwb_huffcode(int argc, char **argv)
   
   cl_delete_corpus(corpus);
   
-  rcqp_receive_error(0);
+  return(0);
+}
+
+int 
+R_cwb_huffcode (char *corpus_name, char *registry_dir)
+{
+  char *registry_directory = registry_dir;
+  char *output_fn = NULL;
+  char *attr_name = DEFAULT_ATT_NAME;
+  Attribute *attr;
+
+  HCD hc;
+
+  Rprintf("Corpus: %s\n", corpus_name);
+
+  int i_want_to_believe = 0;        /* skip error checks? */
+  int all_attributes = 0;
+
+  protocol = NULL;                /* 'delayed' init (see top of file) */
+
+  /* ------------------------------------------------- PARSE ARGUMENTS */
+  /* parse arguments */
+
+  all_attributes++;
+  corpus_id_cwb_huffcode = corpus_name;
+
+  Rprintf("Corpus 1: %s\n", corpus_name);
+  
+  if ((corpus = cl_new_corpus(registry_directory, corpus_id_cwb_huffcode)) == NULL) {
+   Rprintf( "Corpus %s not found in registry %s . Aborted.\n", 
+            corpus_id_cwb_huffcode,
+            (registry_directory ? registry_directory
+               : central_corpus_directory()));
+    rcqp_receive_error(1);
+  }
+
+  Rprintf("Corpus 2: %s\n", corpus_name);
+
+  if (all_attributes) {
+    for (attr = corpus->attributes; attr; attr = attr->any.next)
+      if (attr->any.type == ATT_POS) {
+        compute_code_lengths(attr, &hc, output_fn);
+        if (! i_want_to_believe)
+          decode_check_huff(attr, output_fn);
+      }
+  }
+  else {
+    if ((attr = cl_new_attribute(corpus, attr_name, ATT_POS)) == NULL) {
+     Rprintf( "Attribute %s.%s doesn't exist. Aborted.\n", 
+              corpus_id_cwb_huffcode, attr_name);
+      rcqp_receive_error(1);
+    }
+    compute_code_lengths(attr, &hc, output_fn);
+    if (! i_want_to_believe)
+      decode_check_huff(attr, output_fn);
+  }
+  
+  Rprintf("Corpus 3: %s\n", corpus_name);
+
+  cl_delete_corpus(corpus);
+  
+  return(0);
 }

@@ -31,7 +31,7 @@
 /* ---------------------------------------------------------------------- */
 
 /** Name of the program */
-char *progname = NULL;
+char *progname_cwb_compress_rdx = NULL;
 
 /** CWB id of the corpus we are working on */
 char *corpus_id = NULL;
@@ -41,9 +41,9 @@ Corpus *corpus;
 void compressrdx_usage(char *msg, int error_code);
 void compressrdx_cleanup(int error_code);
 
-/** debug level */
-int debug = 0;
-/** where debug messages are to be sent to (stderr) */
+/** debug_cwb_compress_rdx level */
+int debug_cwb_compress_rdx = 0;
+/** where debug_cwb_compress_rdx messages are to be sent to (stderr) */
 FILE *debug_output; /* " = stderr;" init moved to main() for Gnuwin32 compatibility */
 
 /** stores current position in a bit-write-file */
@@ -85,7 +85,7 @@ void write_golomb_code_am(int x, int b, BFile *bf)
 
   nr_sc = (1 << ub) - b;
   
-  if (debug)
+  if (debug_cwb_compress_rdx)
     fprintf(debug_output, " res=%5d CL [%3d/%3d] #sc %4d "
             "writing %5d/%d\n",
             res, lb, ub, nr_sc,
@@ -137,7 +137,7 @@ int read_golomb_code_am(int b, BFile *bf)
     r |= bit;
   }
 
-  if (debug)
+  if (debug_cwb_compress_rdx)
     fprintf(debug_output, "%8d:  Read r=%5d [%3d/%3d]  #sc=%4d, ",
             codepos, r, lb, ub, nr_sc);
 
@@ -148,7 +148,7 @@ int read_golomb_code_am(int b, BFile *bf)
     r -= nr_sc;
   }
 
-  if (debug)
+  if (debug_cwb_compress_rdx)
     fprintf(debug_output, "final r=%d\tgap=%d\n", 
             r, r+q*b);
 
@@ -276,8 +276,8 @@ compress_reversed_index(Attribute *attr, char *output_fn)
     fpos = BFposition(&data_file);
     NwriteInt(fpos, index_file);
     
-    if (debug)
-      fprintf(debug_output, "------------------------------ ID %d (f: %d, b: %d)\n",
+    if (debug_cwb_compress_rdx)
+      Rprintf("------------------------------ ID %d (f: %d, b: %d)\n",
               i, element_freq, b);
     
     last_pos = 0;
@@ -290,8 +290,8 @@ compress_reversed_index(Attribute *attr, char *output_fn)
       gap = new_pos - last_pos;
       last_pos = new_pos;
       
-      if (debug)
-        fprintf(debug_output, "%8d:  gap=%4d, b=%4d\n", codepos, gap, b);
+      if (debug_cwb_compress_rdx)
+        Rprintf("%8d:  gap=%4d, b=%4d\n", codepos, gap, b);
       
       write_golomb_code(gap, b, &data_file);
       codepos++;
@@ -404,8 +404,8 @@ decompress_check_reversed_index(Attribute *attr, char *output_fn)
 
     b = compute_ba(element_freq, corpus_size);
 
-    if (debug)
-      fprintf(debug_output, "------------------------------ ID %d (f: %d, b: %d)\n",
+    if (debug_cwb_compress_rdx)
+      Rprintf("------------------------------ ID %d (f: %d, b: %d)\n",
               i, element_freq, b);
 
     pos = 0;
@@ -457,7 +457,7 @@ compressrdx_usage(char *msg, int error_code)
   if (msg)
    Rprintf( "Usage error: %s\n", msg);
  Rprintf( "\n");
- Rprintf( "Usage:  %s [options] <corpus>\n\n", progname);
+ Rprintf( "Usage:  %s [options] <corpus>\n\n", progname_cwb_compress_rdx);
  Rprintf( "Compress the index of a positional attribute. Creates .crc and .crx files\n");
  Rprintf( "which replace the corresponding .corpus.rev and .corpus.rdx files. After\n");
  Rprintf( "running this tool successfully, the latter files can be deleted.\n");
@@ -467,8 +467,8 @@ compressrdx_usage(char *msg, int error_code)
  Rprintf( "  -A        compress all positional attributes\n");
  Rprintf( "  -r <dir>  set registry directory\n");
  Rprintf( "  -f <file> set output file prefix (creates <file>.crc and <file>.crx)\n");
- Rprintf( "  -d        debug mode (print messages on stderr)\n");
- Rprintf( "  -D <file> debug mode (write messages to <file>)\n");
+ Rprintf( "  -d        debug_cwb_compress_rdx mode (print messages on stderr)\n");
+ Rprintf( "  -D <file> debug_cwb_compress_rdx mode (write messages to <file>)\n");
  Rprintf( "  -T        skip validation pass ('I trust you')\n");
  Rprintf( "  -h        this help page\n\n");
  Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
@@ -487,8 +487,8 @@ compressrdx_cleanup(int error_code)
   if (corpus)
     cl_delete_corpus(corpus);
 
-  if (debug_output != stderr)
-    fclose(debug_output);
+//  if (debug_output != stderr)
+//    fclose(debug_output);
 
   rcqp_receive_error(error_code);
 }
@@ -522,11 +522,11 @@ main_cwb_compress_rdx(int argc, char **argv)
   int i_want_to_believe = 0;        /* skip error checks? */
   int all_attributes = 0;
 
-  debug_output = stderr;        /* 'delayed' init (see top of file) */
+//  debug_output = stderr;        /* 'delayed' init (see top of file) */
 
   /* ------------------------------------------------- PARSE ARGUMENTS */
 
-  progname = argv[0];
+  progname_cwb_compress_rdx = argv[0];
 
 
   /* parse arguments */
@@ -548,7 +548,7 @@ main_cwb_compress_rdx(int argc, char **argv)
       if (registry_directory == NULL) 
         registry_directory = optarg;
       else {
-       Rprintf( "%s: -r option used twice\n", progname);
+       Rprintf( "%s: -r option used twice\n", progname_cwb_compress_rdx);
         compressrdx_cleanup(2);
       }
       break;
@@ -558,14 +558,14 @@ main_cwb_compress_rdx(int argc, char **argv)
       output_fn = optarg;
       break;
       
-      /* d: debug mode */
+      /* d: debug_cwb_compress_rdx mode */
     case 'd':
-      debug++;
+      debug_cwb_compress_rdx++;
       break;
 
-      /* D: debug to file */
+      /* D: debug_cwb_compress_rdx to file */
     case 'D':
-      debug++;
+      debug_cwb_compress_rdx++;
       debug_fn = optarg;
       break;
 
@@ -589,7 +589,7 @@ main_cwb_compress_rdx(int argc, char **argv)
     if (strcmp(debug_fn, "-") == 0)
       debug_output = NULL;
     else if ((debug_output = fopen(debug_fn, "w")) == NULL) {
-     Rprintf( "Can't write debug output to file %s. Aborted.", debug_fn);
+     Rprintf( "Can't write debug_cwb_compress_rdx output to file %s. Aborted.", debug_fn);
       perror(debug_fn);
       compressrdx_cleanup(1);
     }
@@ -633,5 +633,66 @@ main_cwb_compress_rdx(int argc, char **argv)
   }
   
   compressrdx_cleanup(0);
-  return 0;                        /* to keep gcc from complaining */
+  return(0);                        /* to keep gcc from complaining */
+}
+
+int
+R_cwb_compress_rdx(char *corpus_name, char * registry_dir)
+{
+  char *registry_directory = registry_dir;
+  char *attr_name = DEFAULT_ATT_NAME;
+  Attribute *attr;
+
+  char *output_fn = NULL;
+  char *debug_fn = NULL;
+
+  int i_want_to_believe = 0;        /* skip error checks? */
+  int all_attributes = 0;
+
+//  debug_output = stderr;        /* 'delayed' init (see top of file) */
+
+  /* ------------------------------------------------- PARSE ARGUMENTS */
+
+
+  /* parse arguments */
+      all_attributes++;
+    corpus_id = corpus_name;
+
+  if (debug_fn)  {
+    if (strcmp(debug_fn, "-") == 0)
+      debug_output = NULL;
+    else if ((debug_output = fopen(debug_fn, "w")) == NULL) {
+     Rprintf( "Can't write debug_cwb_compress_rdx output to file %s. Aborted.", debug_fn);
+      perror(debug_fn);
+      compressrdx_cleanup(1);
+    }
+  }
+
+  if ((corpus = cl_new_corpus(registry_directory, corpus_id)) == NULL) {
+   Rprintf( "Corpus %s not found in registry %s . Aborted.\n", 
+            corpus_id,
+            (registry_directory ? registry_directory : cl_standard_registry()));
+    compressrdx_cleanup(1);
+  }
+
+  if (all_attributes) {
+    for (attr = corpus->attributes; attr; attr = attr->any.next)
+      if (attr->any.type == ATT_POS) {
+        compress_reversed_index(attr, output_fn);
+        if (! i_want_to_believe)
+          decompress_check_reversed_index(attr, output_fn);
+      }
+  }
+  else {
+    if ((attr = cl_new_attribute_oldstyle(corpus, attr_name, ATT_POS, NULL)) == NULL) {
+     Rprintf( "Attribute %s.%s doesn't exist. Aborted.\n", corpus_id, attr_name);
+      compressrdx_cleanup(1);
+    }
+    compress_reversed_index(attr, output_fn);
+    if (! i_want_to_believe) 
+      decompress_check_reversed_index(attr, output_fn);
+  }
+  
+  compressrdx_cleanup(0);
+  return(0);                        /* to keep gcc from complaining */
 }
