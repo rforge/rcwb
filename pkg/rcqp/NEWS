@@ -4,6 +4,8 @@
 - Release 0.2
 
 - Release 0.3
-  Correcting a bug affecting linux users
-  Correcting a bug in the function cqp_flist
-  svn revision : 346
+  Correcting bug affecting linux users
+
+- Release 0.4
+  undump command
+  create corpus

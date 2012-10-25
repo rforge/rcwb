@@ -81,8 +81,11 @@ export(
 
 	"size",
 	"size.cqp_corpus",
-	"size.cqp_subcorpus"
+	"size.cqp_subcorpus",
 
+        "create.corpus",
+
+	"cqp_undump"
 
 )
 

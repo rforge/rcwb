@@ -1,3 +1,21 @@
+I just noticed that rcqp seems to have the same limitations as CQi
+generally. Is there any way to do a "undump" or to "set target", "sort
+...", "randomize", etc.? Would it be difficult to implement those
+functions as well?
+
+-----
+
+best thing to do is to search another way. You cannot read a dump (with
+undump) but you can save a R subcorpus object with save() and re-read it
+with load().
+
+Yes, but I cannot run an query on my saved subcorpus anymore - or can I?
+
+-----
+
+
+
+
 fonction install_dickens...
 
 [no corpus]> set r "/Users/sylvainloiseau/TXM/registry";
