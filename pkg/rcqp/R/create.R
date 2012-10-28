@@ -26,48 +26,20 @@
 # 
 # }
 
-## 
- # ------------------------------------------------------------------------
- # 
- # Create a corpus with files
- # 
- # ------------------------------------------------------------------------
- ##
-create.corpus <- function(corpus.dir, registry.file, input.files, input.dirs=NULL, p.attributes, s.attributes, encoding="utf8") {
-
-    
-# TODO :
-    #corpus.dir doit exister et être un chemin absolu
-
-    corpus.name <- toupper(basename(registry.file));
-    registry.dir <- dirname(registry.file);
-
-    if (length(grep("^[A-Z][A-Z0-9_-]+$", corpus.name)) == 0) {
-        stop("The corpus name (ie. the registry filename) may contain only alphabetic characters, digits, '-' and '_' and must begin with a letter");
-    }
-    print(paste("Corpus:", corpus.name));
-
-    # registry dir doit exister et être un chemin absolu
-
-    # By convention, all attribute names must be lowercase (more precisely,
-    # they may only contain the characters a-z, 0-9, -, and , and may not start
-    # with a digit).  Therefore, the names of XML elements to be included in
-    # the CWB corpus must not contain any non-ASCII or uppercase letters.
-    for (a in p.attributes) {
-        if (length(grep("^[a-zA-Z0-9-]+$", a)) == 0) {
-            stop(paste("Positional attribute name\"", a, "\" do not contains only letters, digit and '-'.", sep=""));
-	}
-    }
-    for (a in s.attributes) {
-        if (length(grep("^[a-zA-Z0-9-]+$", a)) == 0) {
-            stop(paste("Structural attribute name\"", a, "\" do not contains only letters, digit and '-'.", sep=""));
-	}
-    }
-
+.build.cwb_encode.cmd <- function(
+    corpus.dir,
+    registry.file,
+    input.files,
+    p.attributes,
+    s.attributes,
+    encoding="utf8",
+    input.dirs=NULL) {
     args <- "cwb-encode"
-    args <- append(args, c("-c", "utf8"));
+    args <- append(args, c("-c", encoding));
     args <- append(args, c("-d", corpus.dir));
     args <- append(args, c("-R", registry.file));
+
+# -f and -F options: files or directories to read
     for (f in input.files) {
         args <- append(args, "-f");
         args <- append(args, f);
@@ -79,44 +51,112 @@ create.corpus <- function(corpus.dir, registry.file, input.files, input.dirs=NUL
         }
     }
 
+# All options (-d, -f, -R, etc.) must precede the attribute declarations (-P,
+# -S, etc.) on the command line.
     for (p.attr in p.attributes) {
         args <- append(args, "-P");
         args <- append(args, p.attr);
     }
-    for (s.attr in s.attributes) {
+    for (s.attr in names(s.attributes)) {
         args <- append(args, "-S");
-        args <- append(args, s.attr);
+        if (!is.null(s.attributes[[s.attr]])) {
+	  attr_text <- paste(c("0", s.attributes[[s.attr]]), collapse="+");
+          attr_text <- paste(c(s.attr, attr_text), collapse=":");
+	  args <- append(args, attr_text);
+	} else {
+	  args <- append(args, s.attr);
+	}
+    }
+    return(args);
+}
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # Create a corpus
+ # 
+ # ------------------------------------------------------------------------
+ ##
+create.corpus <- function(
+corpus.name,
+corpus.dir,
+registry.dir,
+input.files,
+p.attributes,
+s.attributes,
+encoding="utf8",
+input.dirs=NULL,
+compression.huffcode=FALSE,
+compression.rdx=FALSE
+) {
+
+## corpus.name
+
+    if (length(corpus.name) != 1) {
+        stop("corpus.name must be of length 1");
+    }
+    if (length(grep("^[A-Z][A-Z0-9_-]+$", corpus.name)) == 0) {
+        stop("The corpus name may contain only alphabetic characters, digits, '-' and '_' and must begin with a letter");
     }
 
+## registry dir
 
-# All options (-d, -f, -R, etc.) must precede the attribute declarations (-P,
-# -S, etc.) on the command line.
+    if (length(registry.dir) != 1) {
+        stop("corpus.name must be of length 1");
+    }
+    if (!file.exists(registry.dir)) {
+        stop(paste("Registry directory '", registry.dir, "' does not exists", sep=""));
+    }
+    registry.dir <- normalizePath(registry.dir);
 
-#cwb-encode
-#-d /corpora/data/example
-#-f example.vrt
-#-R /usr/local/share/cwb/registry/example
-#-P pos
-#-P lemma
-#-S s
+    registry.file <- paste(registry.dir, tolower(corpus.name), sep="/")
 
-print(paste("[cwb-encode]", paste(args, collapse=" ")));
-ans <- .Call("rcqpCreate_cwb_encode", args, PACKAGE="rcqp");
-if (ans != 0) {
+## corpus dir
 
-}
-#cqi_corpus_info <- function(corpus) {
-#    return(invisible())
-#}
+    if (length(corpus.dir) != 1) {
+        stop("corpus.name must be of length 1");
+    }
+    if (!file.exists(corpus.dir)) {
+        stop(paste("Corpus directory '", registry.dir, "' does not exists", sep=""));
+    }
+    corpus.dir <- normalizePath(corpus.dir);
 
+## P attribute
+
+    for (a in p.attributes) {
+        if (length(grep("^[a-zA-Z0-9-]+$", a)) == 0) {
+            stop(paste("Positional attribute name\"", a, "\" do not contains only letters, digit and '-'.", sep=""));
+	}
+    }
+
+## S attribute
+
+    if (!is.list(s.attributes)) {
+        stop("s.attributes must be a list");
+    }
+    for (a in names(s.attributes)) {
+        if (length(grep("^[a-zA-Z0-9-]+$", a)) == 0) {
+            stop(paste("Structural attribute name\"", a, "\" do not contains only letters, digit and '-'.", sep=""));
+	}
+    }
+
+##
+##
+## Encoding
+##
+##
+
+    args <- .build.cwb_encode.cmd(corpus.dir, registry.file, input.files, p.attributes, s.attributes, encoding="utf8", input.dirs);
+    ans <- .Call("rcqpCreate_cwb_encode", args, PACKAGE="rcqp");
+    if (ans != 0) {
+      stop("Error during cwb-encode")
+    }
 
 ##
 ##
 ## Creating index files
 ##
 ##
-
-# cwb-makeall -V EXAMPLE
 
 # The -V switch enables additional validation passes when an index is created
 # and when data files are compressed. It should be omitted when encoding very
@@ -128,22 +168,32 @@ if (ans != 0) {
 # safe choice. Note that the cwb-make utility applies a default limit of -M 75
 # if not explicit -M option is given.
 
-# + -r registry
-#print(paste("[cwb-makeall]", paste(args, collapse=" ")));
-    ans <- .Call("rcqpCreate_cwb_makeall", c(corpus.name, registry.dir), PACKAGE="rcqp" )
+    ans <- .Call("rcqpCreate_cwb_makeall", c(corpus.name, registry.dir), PACKAGE="rcqp" );
 
 ##
 ##
-## Compression
+## Compression huffcode
 ##
 ##
 
 # The token stream can be compressed with the cwb-huffcode tool. Use the -P
 # option to process a single attribute, or compress all p-attributes with -A.
 
-#    ans <- .Call("rcqpCreate_cwb_huffcode", c(corpus.name, registry.dir), PACKAGE="rcqp" )
+    if(compression.huffcode) {
+      ans <- .Call("rcqpCreate_cwb_huffcode", c(corpus.name, registry.dir), PACKAGE="rcqp");
+    }
+
+##
+##
+## Compression rdx
+##
+##
 
 # Index files can be compressed with the cwb-compress-rdx tool, which accepts the same options.
 #         $ cwb-compress-rdx -A EXAMPLE
-#    ans <- .Call("rcqpCreate_cwb_compress_rdx", c(corpus.name, registry.dir), PACKAGE="rcqp" )
+    if(compression.rdx) {
+      ans <- .Call("rcqpCreate_cwb_compress_rdx", c(corpus.name, registry.dir), PACKAGE="rcqp");
+    }
+
+  invisible(0);
 }

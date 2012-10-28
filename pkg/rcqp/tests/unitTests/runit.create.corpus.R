@@ -5,28 +5,95 @@ if(FALSE) {
   library("RUnit")
   library("rcqp")
 }
+
+#.setUp <- function() {
+#}
+#.tearDown <- function() {
+#}
  
- 
-test.create <- function()
+test.create.corpus <- function()
 {
-  root <- file.expand(file.path(getwd(), "..", "tests", "unitTests"));
+  root <- path.expand(file.path(getwd(), "unitTests"));
 
   registry.dir <- paste(root, "registry", sep="/");
   data.dir <- paste(root, "data", sep="/");
 
-  print(registry.dir);
-  print(data.dir);
-
+    if(file.exists(registry.dir)) {
+    stop("Registry directory already exists");
+  }
+  if(file.exists(data.dir)) {
+    stop("data directory already exists");
+  }
   dir.create(registry.dir);
   dir.create(data.dir);
 
+  create.corpus(
+      "TEST",
+      data.dir,
+      registry.dir,
+      paste("unitTests", "corpus.wtc", sep="/"),
+      c("pos", "lemma"),
+      list("txmcorpus"="lang", "teiCorpus"=NULL, "TEI"=NULL, "text"=c("base", "project", "id"), "div1"=NULL, "div2"=c("id", "n"), "p"="id")
+      );
+  #registry.dir <- "/Users/sylvainloiseau/TXM/registry/"
+  #.Call("rcqpCreate_cwb_huffcode", c("CORPUS", registry.dir), PACKAGE="rcqp" )
 
-library(rcqp)
-create.corpus("/Users/sylvainloiseau/TXM/corpora/test1/", "/Users/sylvainloiseau/TXM/registry/test1", "/Users/sylvainloiseau/TXM/corpora/montesquieu/wtc/montesquieu.wtc", NULL, c("pos", "lemma"), c("txmcorpus", "teiCorpus", "TEI", "text", "div1"))
+  unlink(paste(path, "data", sep="/"), recursive=TRUE, force=TRUE)
+  unlink(paste(path, "registry", sep="/"), recursive=TRUE, force=TRUE)
+}
 
-corpus.name = "TEST";
-registry.dir <- "/Users/sylvainloiseau/TXM/registry/"
-.Call("rcqpCreate_cwb_huffcode", c(corpus.name, registry.dir), PACKAGE="rcqp" )
+test.create.corpus.vector.too.long <- function() {
+  root <- path.expand(file.path(getwd(), "unitTests"));
+  registry.dir <- paste(root, "registry", sep="/");
+  data.dir <- paste(root, "data", sep="/");
 
-  checkTrue(a < b)
+  if(file.exists(registry.dir)) {
+    stop("Registry directory already exists");
+  }
+  if(file.exists(data.dir)) {
+    stop("data directory already exists");
+  }
+  dir.create(registry.dir);
+  dir.create(data.dir);
+
+  checkException(
+  create.corpus(
+      c("TEST", "TEST2"),
+      data.dir,
+      registry.dir,
+      paste("unitTests", "corpus.wtc", sep="/"),
+      c("pos", "lemma"),
+      list("txmcorpus"="lang", "teiCorpus"=NULL, "TEI"=NULL, "text"=c("base", "project", "id"), "div1"=NULL, "div2"=c("id", "n"), "p"="id")
+      )
+  );
+  #registry.dir <- "/Users/sylvainloiseau/TXM/registry/"
+  #.Call("rcqpCreate_cwb_huffcode", c("CORPUS", registry.dir), PACKAGE="rcqp" )
+}
+
+test.create.corpus. <- function() {
+  root <- path.expand(file.path(getwd(), "unitTests"));
+  registry.dir <- paste(root, "registry", sep="/");
+  data.dir <- paste(root, "data", sep="/");
+
+  if(file.exists(registry.dir)) {
+    stop("Registry directory already exists");
+  }
+  if(file.exists(data.dir)) {
+    stop("data directory already exists");
+  }
+  dir.create(registry.dir);
+  dir.create(data.dir);
+
+  checkException(
+  create.corpus(
+      c("TEST", "TEST2"),
+      data.dir,
+      registry.dir,
+      paste("unitTests", "corpus.wtc", sep="/"),
+      c("pos", "lemma"),
+      list("txmcorpus"="lang", "teiCorpus"=NULL, "TEI"=NULL, "text"=c("base", "project", "id"), "div1"=NULL, "div2"=c("id", "n"), "p"="id")
+      )
+  );
+  #registry.dir <- "/Users/sylvainloiseau/TXM/registry/"
+  #.Call("rcqpCreate_cwb_huffcode", c("CORPUS", registry.dir), PACKAGE="rcqp" )
 }
