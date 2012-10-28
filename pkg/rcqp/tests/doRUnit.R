@@ -1,4 +1,5 @@
-http://rwiki.sciviews.org/doku.php?id=developers%3arunit
+#http://rwiki.sciviews.org/doku.php?id=developers%3arunit
+
 if(!require("RUnit")) {
     stop("RUnit package must be installed in order for the tests to be executed");
 }
@@ -36,7 +37,7 @@ if(require("RUnit", quietly=TRUE)) {
                                           dirs=path);
   ## Run
   tests <- runTestSuite(testSuite)
- 
+
   ## Default report name
   pathReport <- file.path(path, "report")
  
@@ -62,3 +63,4 @@ if(require("RUnit", quietly=TRUE)) {
 } else {
   warning("cannot run unit tests -- package RUnit is not available")
 }
+

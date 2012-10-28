@@ -10,6 +10,6 @@ inst: # Install package
 	${R} CMD INSTALL ${PKG}
 
 test: # Run unit tests
-	export RCMDCHECK=FALSE;\
+	export RCMDCHECK=FALSE CORPUS_REGISTRY=${PKG}/tests/unitTest/registry;\
 	cd ${TOP}/tests;\
 	${R} --vanilla --slave < ${SUITE}
