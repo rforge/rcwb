@@ -159,7 +159,7 @@ tokens.cqp_attr <- function(attribute, ...) {
 		max <- ntoken(attribute) - 1;
 		x <- cqi_cpos2id(qualified.attribute.name, 0:max);
 		str <- types(attribute);
-		x <- str[x];
+		x <- str[x+1];
 	} else if (.is.structural(attribute)) {
 		s <- size(attr(attribute, "parent.cqp_corpus"));
 		max <- s - 1;
@@ -167,7 +167,6 @@ tokens.cqp_attr <- function(attribute, ...) {
 	} else {
 		stop("unknown type");
 	}
-
 	return(x);
 }
 
