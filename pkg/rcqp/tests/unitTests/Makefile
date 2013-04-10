@@ -3,13 +3,18 @@ PKG=${shell cd ${TOP};pwd}
 SUITE=doRUnit.R
 R=R
 
-all: inst test
+all: test
 
-inst: # Install package
+# Install package
+inst: 
 	cd ${TOP}/..;\
 	${R} CMD INSTALL ${PKG}
 
-test: # Run unit tests
-	export RCMDCHECK=FALSE CORPUS_REGISTRY=${PKG}/tests/unitTest/registry;\
+setup:
 	cd ${TOP}/tests;\
-	${R} --vanilla --slave < ${SUITE}
+	RCMDCHECK=FALSE CORPUS_REGISTRY=${PKG}/tests/unitTests/registry ${R} --no-environ CMD BATCH setTestCorpora.R
+
+# Run unit tests
+test: 
+	cd ${TOP}/tests;\
+	RCMDCHECK=FALSE CORPUS_REGISTRY=${PKG}/tests/unitTests/registry ${R} --no-environ CMD BATCH ${SUITE}
