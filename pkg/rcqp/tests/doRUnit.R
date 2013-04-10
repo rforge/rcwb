@@ -8,6 +8,10 @@ if(!require("RUnit")) {
 if(require("RUnit", quietly=TRUE)) {
  
   ## --- Setup ---
+
+  cat("-----------------------\n");
+  cat(paste("Corpus registry (CORPUS_REGISTRY env variable value): ", Sys.getenv("CORPUS_REGISTRY"), "\n"));
+  cat("-----------------------\n");
  
   pkg <- "rcqp" 
   if(Sys.getenv("RCMDCHECK") == "FALSE") {
@@ -30,13 +34,21 @@ if(require("RUnit", quietly=TRUE)) {
   ##
   ## or simply call PKG:::myPrivateFunction() in tests
  
+  ## PRE
+
+  #create_test_corpus();
+
   ## --- Testing ---
- 
+
   ## Define tests
   testSuite <- defineTestSuite(name=paste(pkg, "unit testing"),
                                           dirs=path);
   ## Run
   tests <- runTestSuite(testSuite)
+
+  ## POST
+
+  #delete_test_corpus();
 
   ## Default report name
   pathReport <- file.path(path, "report")
