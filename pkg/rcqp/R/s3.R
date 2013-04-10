@@ -27,8 +27,6 @@
 # S3 generic methods
 ###########################################################################
 
-
-
 size <- function (x) UseMethod("size");
 cqp_flist <- function(x, ...) UseMethod("cqp_flist");
 cqp_ftable <- function(x, ...) UseMethod("cqp_ftable");
@@ -46,15 +44,12 @@ region_sizes <- function (attribute) UseMethod("region_sizes");
 # Matrix-like interface for accessing cqp object
 ###########################################################################
 
-
-
 # crŽation d'un sous-corpus
 `[.cqp_corpus` <- function(i, j, k, ...) {
 #	.create_cqp_attr(i, j);
 #	.cqp_corpus2matrix <- function(x, from, to, use_value=use_value) {	
 
 }
-
 
 ###########################################################################
 # S3 Object cqp_attr
@@ -97,7 +92,6 @@ region_sizes <- function (attribute) UseMethod("region_sizes");
 	return(cqp_attr);
 }
 
-
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -112,7 +106,6 @@ region_sizes <- function (attribute) UseMethod("region_sizes");
  #
  # ------------------------------------------------------------------------
  ##
-
 
 ntype.cqp_attr <- function(attribute, ...) {
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
@@ -233,8 +226,7 @@ regions.cqp_attr <- function(attribute, ...) {
 	}
 }
 
-
-## 
+##
  # ------------------------------------------------------------------------
  # 
  # "region_sizes.cqp_attr(attribute)" --
@@ -269,7 +261,6 @@ region_sizes.cqp_attr <- function(attribute) {
 		)
 	);
 }
-
 
 summary.cqp_attr <- function(object, ...) {
 	attribute <- object;
@@ -336,8 +327,6 @@ print.cqp_attr <- function(x, ...) {
 # S3 Object cqp_corpus
 ###########################################################################
 
-
-
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -359,8 +348,6 @@ corpus <- function(corpus.name) {
 	attr(x, "cqp_corpus.name") <- corpus.name;
 	return(x);
 }
-
-
 
 .is_cqp_corpus <- function(x) {
 	if (class(x) == "cqp_corpus") {
@@ -467,13 +454,21 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 
 
 .cqp_corpus2matrix <- function(x, from, to, use_value=use_value) {	
-	
-	cqp_corpus.name <- .cqp_name(x);
 	max <- size(x) - 1;
+	if (from < 0) {
+	    stop("'from' must be equal or greater than 0");
+	}
+	
+	if (to >= max) {
+	    stop(paste("'to' must be smaller than the number of tokens (", max, ")"));
+	}
 
+	cqp_corpus.name <- .cqp_name(x);	 
 	token_id=from:to;
-	nbr_token <- length(token_id);
+    .cqp_cpos2matrix(cqp_corpus.name, token_id, use_value);
+}
 
+.cqp_cpos2matrix <- function(cqp_corpus.name, cpos, use_value=use_value) {	
 	positional <- cqi_attributes(cqp_corpus.name, "p");
 	nbr_positional <- length(positional);
 
@@ -482,25 +477,25 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	structural <- structural[grep("[a-z]+", structural)]
 	nbr_structural <- length(structural);
 
+	nbr_token <- length(cpos);
 	printed <- data.frame(matrix("", nrow=nbr_token, ncol=nbr_positional+nbr_structural));
-	rownames(printed) <- token_id;
+	rownames(printed) <- cpos;
 	colnames(printed) <- c(structural, positional);
 
 	for (i in 1:nbr_structural) {
-		qualified_structural_attribute <- .cqp_name(x, structural[i]);
-		ids <- cqi_cpos2struc(qualified_structural_attribute, token_id);
+		qualified_structural_attribute <- paste(cqp_corpus.name, structural[i], sep=".");
+		ids <- cqi_cpos2struc(qualified_structural_attribute, cpos);
 		printed[,i] <- ids
 	}
 	
 	for (i in 1:nbr_positional) {
-		qualified_positional_attribute <- .cqp_name(x, positional[i]);
-		ids <- cqi_cpos2str(qualified_positional_attribute, token_id);
+		qualified_positional_attribute <- paste(cqp_corpus.name, positional[i], sep=".");
+		ids <- cqi_cpos2str(qualified_positional_attribute, cpos);
 		printed[,i+nbr_structural] <- ids
 	}
 
 	return(printed);
 }
-
 
 .cqp_name.cqp_corpus <- function(x, attribute=NULL) {
 	corpus_name <- attr(x, "cqp_corpus.name");
@@ -519,7 +514,6 @@ size.cqp_corpus <- function(x) {
 ###########################################################################
 # S3 Object cqp_subcorpus
 ###########################################################################
-
 
 ## 
  # ------------------------------------------------------------------------
@@ -551,6 +545,20 @@ subcorpus <- function(corpus, query) {
 	return(x);
 }
 
+.cqp_subcorpus2matrix <- function(x, use_value=use_value) {
+	cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
+	qualified_subcorpus_name <- .cqp_name(x);
+
+	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
+	cpos_list <- mapply(`:`, dump[,1], dump[,2])
+	cpos <- unlist(cpos_list);
+    m <- .cqp_cpos2matrix(cqp_corpus.name, cpos, use_value);
+#    m$Match <- rep(1:length(cpos_list), each=sapply(cpos_list, length));
+    return(m);
+}
+
+#Erreur dans `$<-.data.frame`(`*tmp*`, "Match", value = c(1L, 1L, 1L, 1L,  : 
+#  replacement has 76475 rows, data has 61443
 
 
 ## 
