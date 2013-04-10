@@ -50,27 +50,16 @@ the following instruction from a Terminal window :
 
 
 
-Configuration
-=============
-
-You can specify platform-specific and site-specific settings on the
-./configure command line using the RCQP_PLATFORM and RCQP_SITE variables.
-Their default values are 'linux' and 'standard' respectively. The possible
-values are the names mentionned in the commentys at the top of the the file
-cwb/configRcqp.mk.
-
-For cross-compilation for Windows, you should use mingw
-	./configure RCQP_PLATFORM=mingw
-More details on cross-compilation below.
-
-
-
 Building and installing with R on a Unix-like system
 ====================================================
 
 From the directory containing the source code, i-e the directory containing
 the rcqp/ directory, execute the following command:
-	R CMD install rcqp
+	R CMD INSTALL rcqp
+
+You may have to call explicitly R64 (on some 64-bits machines the architecture
+is not correctly recognized by R):
+	R64 CMD install rcqp
 
 R will automatically find the configure script, run it, execute the make 
 command and finally install the package in the appropriate location.
@@ -87,6 +76,19 @@ following from the R console:
 Help is also available through the usual mechanism. For instance, start with:
 	> ?rcqp
 
+
+Configuration
+=============
+
+You can specify platform-specific and site-specific settings on the
+./configure command line using the RCQP_PLATFORM and RCQP_SITE variables.
+Their default values are 'linux' and 'standard' respectively. The possible
+values are the names mentionned in the commentys at the top of the the file
+cwb/configRcqp.mk.
+
+For cross-compilation for Windows, you should use mingw
+	./configure RCQP_PLATFORM=mingw
+More details on cross-compilation below.
 
 
 Cross-compilation for Windows
