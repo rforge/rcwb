@@ -8,41 +8,6 @@
 # All rights reserved.
 # ===========================================================================
 
-# ## 
-#  # ------------------------------------------------------------------------
-#  # 
-#  # "concordance" --
-#  # 
-#  # ------------------------------------------------------------------------
-#  ##
-# concordance <- function(corpus, query, left.context=10, right.context=10)
-# {
-# 	ans <- .Call("rcqpCmd_concordance", corpus, query, left.context, right.context, PACKAGE="rcqp")
-#     return(ans)
-# }
-
-
-## 
- # ------------------------------------------------------------------------
- # 
- # "cqi_cqp(mother, child, query)" --
- # 
- # Example:
- #      cqi_query("DICKENS", "Aa", '[(pos="JJ") & (lemma="modern")];')
- #		cqi_cqp('set Aa keyword nearest [pos="NN"] within right 5 words from match;')
- # 
- # ------------------------------------------------------------------------
- ##
-# cqi_cqp <- function(query) {
-# # 	if (nchar(child) == 0) {
-# # 
-# # 	} TODO check ;
-# 	.Call("rcqpCmd_cqp", query, PACKAGE="rcqp")
-#     return(invisible())
-# }
-
-
-
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -596,5 +561,24 @@ cqp_undump <- function(file, corpus, subcorpus, target=FALSE, keyword=FALSE) {
   ans <- .Call("rcqpCmd_cqpCmd", cmd, PACKAGE="rcqp");
   invisible(0);
 }
+
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "cqi_cqpCmd(cmd)" --
+ #
+ # This function allows for sending any CQP command and must be used carefully
+ # 
+ # Example:
+ #	cqi_cqp('set Aa keyword nearest [pos="NN"] within right 5 words from match;')
+ # 
+ # ------------------------------------------------------------------------
+ ##
+cqi_cqp <- function(cmd) {
+  .Call("rcqpCmd_cqpCmd", query, PACKAGE="rcqp");
+  return(invisible());
+}
+
 
 
