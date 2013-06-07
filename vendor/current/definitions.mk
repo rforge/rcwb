@@ -23,7 +23,7 @@
 #
 # CWB version
 #
-VERSION = 3.4.5
+VERSION = 3.4.7
 # 3.4.x = beta versions leading up to new stable 3.5.0
 
 #
@@ -208,8 +208,8 @@ ifdef READLINE_LIBS
 CFLAGS += -DUSE_READLINE
 endif
 
-# we always add Glib header file info to CFLAGS...
-CFLAGS += `pkg-config --cflags glib-2.0`
+# Glib header file info (added to CFLAGS_ALL below)
+GLIB_DEFINES = `pkg-config --cflags glib-2.0`
 
 # define macro variables for some global settings
 INTERNAL_DEFINES = -DREGISTRY_DEFAULT_PATH=\""$(DEFAULT_REGISTRY)"\" -DCOMPILE_DATE=\"$(COMPILE_DATE)\" -DVERSION=\"$(VERSION)\"
@@ -256,8 +256,8 @@ LDFLAGS_LIBS = -lpcre `pkg-config --libs glib-2.0`
 endif 
 
 # complete sets of compiler and linker flags (allows easy specification of specific build rules)
-CFLAGS_ALL = $(CFLAGS) $(INTERNAL_DEFINES) $(READLINE_DEFINES) $(TERMCAP_DEFINES) $(GLIB_DEFINES)
-DEPEND_CFLAGS_ALL = $(DEPEND_CLAGS) $(INTERNAL_DEFINES) $(READLINE_DEFINES) $(TERMCAP_DEFINES)
+CFLAGS_ALL = $(CFLAGS) $(INTERNAL_DEFINES) $(GLIB_DEFINES) $(READLINE_DEFINES) $(TERMCAP_DEFINES)
+DEPEND_CFLAGS_ALL = $(DEPEND_CLAGS) $(INTERNAL_DEFINES)
 LDFLAGS_ALL = $(LDFLAGS) $(LDFLAGS_LIBS)
 
 # readline and termcap libraries are only needed for building CQP

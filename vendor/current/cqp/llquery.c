@@ -61,7 +61,7 @@ char **cc_compl_list = NULL;      /* list of possible completions */
 int cc_compl_list_size = 0;       /* number of completions in list */
 int cc_compl_list_allocated = 0;  /* number of entries allocated for list (incl. NULL terminator) */
 #define CC_COMPL_LIST_ALLOC_BLOCK 256 /* how many list cells to allocate at a time */
-
+#define RL_DEBUG 0
 
 /* initialise new completion list (size 0) without freeing previous list (which was deallocated by readline library) */
 void
@@ -76,8 +76,8 @@ cc_compl_list_init(void) {
 /* add string (must be alloc'ed by caller) to completion list */
 void
 cc_compl_list_add(char *string) {
-  if (cc_compl_list_size >= cc_compl_list_allocated) {
-    /* extend list if necessary */
+  if (cc_compl_list_size >= cc_compl_list_allocated - 1) {
+    /* extend list if necessary (NB: need to leave room for NULL marker at end of list) */
     cc_compl_list_allocated += CC_COMPL_LIST_ALLOC_BLOCK;
     cc_compl_list = (char **) cl_realloc(cc_compl_list, cc_compl_list_allocated * sizeof(char *));
   }
@@ -93,8 +93,6 @@ cc_compl_list_sort(const void *p1, const void *p2) {
   int result = strcmp(name1, name2);
   return result;
 }
-
-#define RL_DEBUG 0
 
 /* sort list and remove (& free) duplicates; returns pointer to list */
 char **
@@ -153,7 +151,7 @@ cqp_custom_completion(const char *text, int start, int end) {
   Variable var;
   CorpusList *cl;
   char *prototype, *prefix;
-  char mother[128];
+  char mother[CL_MAX_LINE_LENGTH];
   char *real_name, *colon;
   int mother_len, real_len, prefix_len;
   char *completion;
@@ -235,7 +233,7 @@ cqp_custom_completion(const char *text, int start, int end) {
    */
   cc_compl_list_init();
   colon = strchr(text, ':');
-  if ((colon != NULL) && ((mother_len = colon - text) < 128)) {
+  if ((colon != NULL) && ((mother_len = colon - text) < CL_MAX_LINE_LENGTH)) {
     /* full subcorpus specifier: ''HGC:Last'' */
     strncpy(mother, text, mother_len);
     mother[mother_len] = '\0';
@@ -345,7 +343,7 @@ ensure_semicolon (char *line) {
 void
 readline_main(void)
 {
-  char prompt[512];
+  char prompt[CL_MAX_LINE_LENGTH];
   char *input = NULL;
 
   /* activate CQP's custom completion function */

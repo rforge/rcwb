@@ -6,6 +6,11 @@ Other changes:
  - cwb-scan-corpus now accepts negated regular expression constraints (e.g. 'lemma+0!=/anti.*/c').
    The -C option is consistently ignored for constraint keys ('?...'), and documented to be.
    It is also now compatible with multiple ISO-8859 character sets and with UTF-8.
+ - cwb-lexdecode now has a "no-blanks" option (-b) to turn off the padding of numeric columns with
+   spaces to the minimum width of seven.
+ - cwb-align is now safe for use with UTF-8 corpora.
+ - there is now a precise limit on the size of a CWB corpus: CL_MAX_CORPUS_SIZE = 2^32 - 1 tokens;
+   cwb-encode will discard additional input data with a warning once the limit has been reached
 
 Bug fixes:
 
@@ -27,6 +32,16 @@ Bug fixes:
  - [2012-05-20: v3.4.4] Fixed bug causing segmentation fault in cwb-scan-corpus.
 
  - [2012-07-17: v3.4.5] Fixed bug causing segmentation fault in CQP when cat output with header is requested.
+ 
+ - [2013-05-08: v3.4.7] Fixed problems with command-line completion on Mac OS X (bugs #8 and #55); #8 was a 
+   buffer overflow for long lists of completion candidates; #55 is fixed by auto-detecting a genuine GNU Readline
+   library installed by the user in /usr/local or with a package manager such as HomeBrew.
+   
+ - [2013-05-09] Fixed bug #45: implicit expansion of named query result (e.g. with A^s) is recomputed on every
+   access, so it updates automatically if the underlying query A is changed. This produces noticeable overhead
+   only for query results containing more than 10 million matches, and usage of implict expansion is deprecated.
+   Parser now distinguishes between plain IDs and named query specifiers (e.g. BNC:Result^s), so it is no longer
+   possible to use A^s as the name of a query result.
 
 Version 3.2
 -----------

@@ -23,6 +23,7 @@
 #include <math.h>
 
 #include "../cl/globals.h"
+#include "../cl/attributes.h"
 
 #include "feature_maps.h"
 
@@ -85,8 +86,8 @@ int pre2 = 0;                   /**< number of pre-alignment regions (target cor
 
 /* global options */
 
-char word_name[CL_MAX_FILENAME_LENGTH] = "word";         /**< name of the word attribute (default: word) */
-char outfile_name[CL_MAX_FILENAME_LENGTH] = "out.align"; /**< name of the output file */
+char word_name[CL_MAX_FILENAME_LENGTH] = DEFAULT_ATT_NAME;  /**< name of the word attribute (default: word) */
+char outfile_name[CL_MAX_FILENAME_LENGTH] = "out.align";    /**< name of the output file */
 
 double split_factor = 1.2;      /**< 2:2 alignment split factor */
 int beam_width = 50;            /**< best path search beam width */
@@ -253,10 +254,10 @@ align_parse_args(int ac, char *av[], int min_args)
  * align_print_line(fd, f1, l1, f2, l2, quality);
  *
  * @param fd       File handle to print to.
- * @param f1       First cpos in source corpus.
- * @param l1       Last cpos in source corpus.
- * @param f2       First cpos in target corpus.
- * @param l2       Last cpos in target corpus.
+ * @param f1       First s-attribute instance in source corpus.
+ * @param l1       Last s-attribute instance in source corpus.
+ * @param f2       First s-attribute instance in target corpus.
+ * @param l2       Last s-attribute instance in target corpus.
  * @param quality  Quality of the alignment.
  *
  */
@@ -290,18 +291,20 @@ align_print_line(FILE *fd, int f1, int l1, int f2, int l2, int quality)
  * (in .align format).
  *
  * Usage:
- * steps = align_do_alignment(FMS, f1, l1, f2, l2, outfile);
+ *
+ * steps += align_do_alignment(FMS, f1, l1, f2, l2, outfile);
  *
  * @param fms      The feature map to use in best_path alignment.
- * @param if1      First cpos in source corpus.
- * @param il1      Last cpos in source corpus.
- * @param if2      First cpos in target corpus.
- * @param il2      Last cpos in target corpus.
+ * @param if1      Number of s-attribute instance that is the start point (first) in source corpus.
+ * @param il1      Number of s-attribute instance that is the end point (last) in source corpus.
+ * @param if2      Number of s-attribute instance that is the start point (first) in target corpus.
+ * @param il2      Number of s-attribute instance that is the start point (last) in target corpus.
  * @param outfile  File handle to print the alignment lines to.
+ * @return         The number of alignment steps created (= number of lines written to outfile).
  */
 int
 align_do_alignment(FMS fms, int if1, int il1, int if2, int il2, FILE *outfile) {
-  int steps, *out1, *out2, *quality;    /* return values of best_path() */
+  int steps, *out1, *out2, *quality;    /* out-arguments for best_path() */
   int f1 = 0, l1 = 0, f2 = 0, l2 = 0;
   int q1 = 0, q2 = 0;
   int i, steps_created;
@@ -376,6 +379,13 @@ main(int argc, char *argv[]) {
     fprintf(stderr, "%s: can't open corpus %s\n", progname, corpus2_name);
     exit(1);
   }
+  /* check that the two corpora have the same character encoding */
+  if (cl_corpus_charset(corpus1) != cl_corpus_charset(corpus2)) {
+    fprintf(stderr, "%s: can't align %s and %s as they do not share the same character encoding.\n",
+            progname, corpus1_name, corpus2_name);
+    exit(1);
+  }
+
   if (!(word1 = cl_new_attribute(corpus1, word_name, ATT_POS))) {
     fprintf(stderr, "%s: can't open p-attribute %s.%s\n",
             progname, corpus1_name, word_name);
@@ -418,31 +428,25 @@ main(int argc, char *argv[]) {
   }
   size2 = cl_max_struc(s2);
   if (size2 <= 0) {
-    fprintf(stderr, "%s: data access error (%s.%s)\n",
-            progname, corpus2_name, s_name);
+    fprintf(stderr, "%s: data access error (%s.%s)\n", progname, corpus2_name, s_name);
     exit(1);
   }
-  printf("OPENING %s [%d tokens, %d <%s> regions]\n",
-         corpus1_name, ws1, size1, s_name);
-  printf("OPENING %s [%d tokens, %d <%s> regions]\n",
-         corpus2_name, ws2, size2, s_name);
+  printf("OPENING %s [%d tokens, %d <%s> regions]\n", corpus1_name, ws1, size1, s_name);
+  printf("OPENING %s [%d tokens, %d <%s> regions]\n", corpus2_name, ws2, size2, s_name);
 
   /* open pre-alignment attributes if requested */
   if (*prealign_name != '\0') {
     if (!(prealign1 = cl_new_attribute(corpus1, prealign_name, ATT_STRUC))) {
-      fprintf(stderr, "%s: can't open s-attribute %s.%s\n",
-              progname, corpus1_name, prealign_name);
+      fprintf(stderr, "%s: can't open s-attribute %s.%s\n", progname, corpus1_name, prealign_name);
       exit(1);
     }
     if (!(prealign2 = cl_new_attribute(corpus2, prealign_name, ATT_STRUC))) {
-      fprintf(stderr, "%s: can't open s-attribute %s.%s\n",
-              progname, corpus2_name, prealign_name);
+      fprintf(stderr, "%s: can't open s-attribute %s.%s\n", progname, corpus2_name, prealign_name);
       exit(1);
     }
     pre1 = cl_max_struc(prealign1);
     if (pre1 <= 0) {
-      fprintf(stderr, "%s: data access error (%s.%s)\n",
-              progname, corpus1_name, prealign_name);
+      fprintf(stderr, "%s: data access error (%s.%s)\n", progname, corpus1_name, prealign_name);
       exit(1);
     }
     pre2 = cl_max_struc(prealign2);
@@ -456,7 +460,7 @@ main(int argc, char *argv[]) {
     if (prealign_has_values) {
       /* -V: check if pre-alignment attributes really have annotations */
       if (! (cl_struc_values(prealign1) && cl_struc_values(prealign2))) {
-        fprintf(stderr, "%s: -V option requires s-attribute with annotations!\n",
+        fprintf(stderr, "%s: -V option requires an s-attribute with annotations!\n",
                 progname);
         exit(1);
       }
@@ -479,7 +483,7 @@ main(int argc, char *argv[]) {
   of_is_pipe = 0;
   l = strlen(outfile_name);
   if ((l > 3) && (strncasecmp(outfile_name + l - 3, ".gz", 3) == 0)) {
-    char *pipe_cmd = (char *) cl_malloc(l+8);
+    char *pipe_cmd = (char *) cl_malloc(l + 8);
     sprintf(pipe_cmd, "gzip > %s", outfile_name); /* write .gz file through gzip pipe */
     of = popen(pipe_cmd, "w");
     if (of == NULL) {
@@ -504,12 +508,15 @@ main(int argc, char *argv[]) {
 
   /* DO THE ALIGNMENT */
   if (prealign1 == NULL) {
+
     /* neither -S nor -V used: just do a global alignment */
     printf("Running global alignment, please be patient ...\n");
     steps = align_do_alignment(fms, 0, size1 - 1, 0, size2 - 1, of);
+
   } /* end of global alignment */
 
   else if (!prealign_has_values) {
+
     /* -S switch: use pre-aligned regions in given order */
     int i = 0;
     int start, end, start1, end1, start2, end2;
@@ -550,14 +557,16 @@ main(int argc, char *argv[]) {
              prealign_name, i, f1, l1, f2, l2);
       steps += align_do_alignment(fms, f1, l1, f2, l2, of);
     }
+
   } /* end of -S type alignment */
 
   else {
+
     /* -V switch: this is the tricky bit -- need to find matching annotation strings */
     cl_lexhash lh = cl_new_lexhash(2 * pre2); /* use lexhash to identify target regions; make number of buckets large enough for fast access */
     cl_lexhash_entry entry;
     int start, end;
-    int f1, l1, f2, l2;
+    int f1, l1, f2, l2;   /* holders for cpos values */
     char *value;
     int i;
 
@@ -576,8 +585,7 @@ main(int argc, char *argv[]) {
       entry = cl_lexhash_find(lh, value);
       if (entry == NULL) {
         /* no match found */
-        printf("[Skipping source region <%s %s>]\n",
-               prealign_name, value);
+        printf("[Skipping source region <%s %s>]\n", prealign_name, value);
       }
       else {
         int j = entry->data.integer;    /* number of target region */
@@ -602,7 +610,9 @@ main(int argc, char *argv[]) {
     }
 
     cl_delete_lexhash(lh);
+
   } /* end of -V type alignment */
+
   printf("Alignment complete. [created %d alignment regions]\n", steps);
 
 

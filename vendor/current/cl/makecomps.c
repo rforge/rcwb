@@ -299,7 +299,6 @@ creat_rev_corpus(Component *revcorp)
       /* increment secundus to fit as many IDs as possible into the buffer for this pass */
       f = cl_id2freq(attr, secundus);
       if (buf_used + f > bufsize) {
-        secundus--;
         break;
       }
       else {
@@ -307,6 +306,7 @@ creat_rev_corpus(Component *revcorp)
         buf_used += f;
       }
     }
+    secundus--; /* this is the last valid ID we're indexing in this pass */
 
     pass++;
     if (cl_debug) {
@@ -328,7 +328,7 @@ creat_rev_corpus(Component *revcorp)
 
     /* check pointers (i.e. observed frequencies vs. data from FREQS component) */
     ptr = buffer;
-    for (id = primus + 1; id < secundus; id++) {
+    for (id = primus + 1; id <= secundus; id++) {
       ptr += cl_id2freq(attr, id);
       if (ptr != ptab[id]) {
         fprintf(stderr, "Pointer inconsistency for id=%d. Aborting.\n", id);

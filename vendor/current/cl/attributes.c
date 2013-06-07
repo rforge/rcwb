@@ -434,7 +434,7 @@ cl_new_attribute_oldstyle(Corpus *corpus,
   attr = NULL;
 
   if (corpus == NULL)
-    fprintf(stderr, "attributes:find_attribute(): called with NULL corpus\n");
+    fprintf(stderr, "attributes:cl_new_attribute_oldstyle(): called with NULL corpus\n");
   else {
     
     for (attr = corpus->attributes; attr != NULL; attr = attr->any.next)
@@ -565,6 +565,15 @@ cl_delete_attribute(Attribute *attribute)
   /* notreached */
   assert("Notreached point reached ..." && 0);
   return 1;
+}
+
+/**
+ * Accessor function to get the mother corpus of the attribute.
+ */
+Corpus *
+cl_attribute_mother_corpus(Attribute *attribute)
+{
+  return attribute->any.mother;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -735,8 +744,8 @@ component_full_name(Attribute *attribute, ComponentID cid, char *path)
   component_field_spec *compspec;
   Component *component;
   
-  static char buf[MAX_LINE_LENGTH];
-  char rname[MAX_LINE_LENGTH];
+  static char buf[CL_MAX_LINE_LENGTH];
+  char rname[CL_MAX_LINE_LENGTH];
   char *reference;
   char c;
 
