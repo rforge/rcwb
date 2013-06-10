@@ -16,7 +16,8 @@
  */
 
 
-/* int 
+/* 
+ * int 
  * is_prime(int n) {
  *   int i;
  *   for(i = 2; i*i <= n; i++)
@@ -27,7 +28,7 @@
  * 
  * int 
  * find_prime(int n) {
- *   for( ; n > 0 ; n++)		/ * will exit on int overflow * /
+ *   for( ; n > 0 ; n++)        / * will exit on int overflow * /
  *     if (is_prime(n)) 
  *       return n;
  *   return 0;

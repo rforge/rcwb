@@ -88,7 +88,7 @@ add_user_to_list(char *user, char *passwd)
   UserEntry *new_user;
 
   if (find_user(user) != NULL) {
-   Rprintf( "WARNING: user '%s' already in list (ignored)\n", user);
+    Rprintf( "WARNING: user '%s' already in list (ignored)\n", user);
   }
   else {
     new_user = (UserEntry *) cl_malloc(sizeof(UserEntry));
@@ -128,7 +128,7 @@ add_host_to_list(char *ipaddr)
   }
 
   if (host->address.s_addr == -1) {
-   Rprintf( "WARNING: '%s' isn't a valid IP address (ignored)\n", ipaddr);
+    Rprintf( "WARNING: '%s' isn't a valid IP address (ignored)\n", ipaddr);
     free(host);
   }
   else {
@@ -209,15 +209,15 @@ show_grants(void)
   Grant *grant;
 
   for (host = authorized_hosts; host != NULL; host=host->next) {
-   Rprintf("HOST: %s\n", inet_ntoa(host->address));
+    printf("HOST: %s\n", inet_ntoa(host->address));
   }
 
   for (user = authorized_users; user != NULL; user=user->next) {
-   Rprintf("USER: %s, pass='%s'  (", user->name, user->passwd);
+    printf("USER: %s, pass='%s'  (", user->name, user->passwd);
     for (grant = user->grants; grant != NULL; grant=grant->next) {
-     Rprintf("%s ", grant->corpus);
+      printf("%s ", grant->corpus);
     }
-   Rprintf(")\n");
+    printf(")\n");
   }
 }
 

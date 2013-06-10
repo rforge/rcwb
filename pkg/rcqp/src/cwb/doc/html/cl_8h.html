@@ -5789,7 +5789,7 @@ Variables</h2>
 <p>Usage:</p>
 <p><a class="el" href="cl_8h.html#a5e4fbd44e2df4d0c89bc3d4633833dd1" title="Reset the &quot;success counter&quot; for optimised regexes.">cl_regopt_count_reset()</a>;</p>
 <p>for (i = 0, hits = 0; i &lt; n; i++) if (cl_regex_match(rx, haystacks[i])) hits++;</p>
-<p>fprintf(stderr, "Found %d matches; avoided regex matching %d times out of %d trials", hits, <a class="el" href="cl_8h.html#ac579f14edd519c3f2aa4a4cb33c76fcb" title="Get a reading from the &quot;success counter&quot; for optimised regexes.">cl_regopt_count_get()</a>, n );</p>
+<p>Rprintf( "Found %d matches; avoided regex matching %d times out of %d trials", hits, <a class="el" href="cl_8h.html#ac579f14edd519c3f2aa4a4cb33c76fcb" title="Get a reading from the &quot;success counter&quot; for optimised regexes.">cl_regopt_count_get()</a>, n );</p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="regopt_8c.html#a5e4fbd44e2df4d0c89bc3d4633833dd1" title="Reset the &quot;success counter&quot; for optimised regexes.">cl_regopt_count_reset</a> </dd></dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>an integer indicating the number of times a regular expression has been matched using the regopt system of "grains", rather than by calling an external regex library. </dd></dl>
 

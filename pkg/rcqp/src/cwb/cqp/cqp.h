@@ -26,10 +26,7 @@
 /** Size of the CQP query buffer. */
 #define QUERY_BUFFER_SIZE 2048
 
-#include <time.h>
 #include <stdio.h>
-#include "../../makeRCompatible.h"
-
 
 /** DEPRACATED means of storing a Boolean value  */
 typedef int Boolean;

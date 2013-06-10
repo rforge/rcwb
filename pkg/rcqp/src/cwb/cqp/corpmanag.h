@@ -24,6 +24,8 @@
 #include "cqp.h"
 #include "context_descriptor.h"
 
+
+
 /**
  * The FieldType object represents the fields (or 'anchor points') of a subcorpus (inc query result).
  *

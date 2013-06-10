@@ -11,6 +11,12 @@
 
 #include "rcqp.h"
 
+// Prototypes of redefined main() functions
+int R_cwb_compress_rdx(char *corpus_name, char * registry_dir);
+int R_cwb_makeall(char *corpus_name, char* registry);
+int R_cwb_huffcode(char *corpus_name, char *registry_dir);
+int main_cwb_encode(int argc, char **argv);
+
 /* 
  * ------------------------------------------------------------------------
  * 
@@ -29,7 +35,7 @@ SEXP rcqpCreate_cwb_encode(SEXP inArgs)
 
   PROTECT(inArgs);
 
-  const char *a[nbrArgs];
+  char *a[nbrArgs];
   for (int i=0; i<nbrArgs; i++) {
     a[i] = (char*)CHAR(STRING_ELT(inArgs,i));
   }
@@ -62,7 +68,7 @@ SEXP rcqpCreate_cwb_makeall(SEXP inArgs)
 
   PROTECT(inArgs);
 
-  const char *a[nbrArgs];
+  char *a[nbrArgs];
   for (int i=0; i<nbrArgs; i++) {
     a[i] = (char*)CHAR(STRING_ELT(inArgs,i));
   }
@@ -98,7 +104,7 @@ SEXP rcqpCreate_cwb_huffcode(SEXP inArgs)
 
   PROTECT(inArgs);
 
-  const char *a[nbrArgs];
+  char *a[nbrArgs];
   for (int i=0; i<nbrArgs; i++) {
     a[i] = (char*)CHAR(STRING_ELT(inArgs,i));
   }
@@ -133,7 +139,7 @@ SEXP rcqpCreate_cwb_compress_rdx(SEXP inArgs)
 
   PROTECT(inArgs);
 
-  const char *a[nbrArgs];
+  char *a[nbrArgs];
   for (int i=0; i<nbrArgs; i++) {
     a[i] = (char*)CHAR(STRING_ELT(inArgs,i));
   }

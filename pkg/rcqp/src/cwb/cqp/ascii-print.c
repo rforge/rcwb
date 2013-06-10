@@ -23,6 +23,7 @@
 #include "../cl/cdaccess.h"
 
 #include <sys/time.h>
+#include <time.h>
 
 #ifndef __MINGW__
 #include <pwd.h>
@@ -239,7 +240,7 @@ get_screen_escapes(void)
 
   /* Linux terminfo bug? fix: tigetstr("sgr0") returns an extra ^O (\x0f) character appended to the escape sequence
      (this may be some code used internally by the ncurses library).
-     Since weRprintf() the escape sequences directly, we have to remove the extra character or 'less -R' will get confused. */
+     Since we printf() the escape sequences directly, we have to remove the extra character or 'less -R' will get confused. */
   l = strlen(sc_all_out);
   if ((l > 0) && (sc_all_out[l-1] == '\x0f')) {
     sc_all_out = cl_strdup(sc_all_out);
@@ -320,7 +321,7 @@ get_typeface_escape(char typeface)
   case 's': return sc_s_in;
   case 'n': return sc_all_out;        /* also switches off colour */
   default:
-   Rprintf( "Internal error: unknown typeface '%c'.\n", typeface);
+    Rprintf( "Internal error: unknown typeface '%c'.\n", typeface);
     return "";
   }
 }
@@ -342,7 +343,7 @@ get_colour_escape(char colour, int foreground) {
       case 'p': return "\x1B[0;35m";
       case 'c': return "\x1B[0;36m";
       default:
-       Rprintf( "Internal error: unknown colour '%c'.\n", colour);
+        Rprintf( "Internal error: unknown colour '%c'.\n", colour);
         return "\x1B[0m";
       }
     }
@@ -355,7 +356,7 @@ get_colour_escape(char colour, int foreground) {
       case 'p': return "\x1B[0;45m";
       case 'c': return "\x1B[0;46m";
       default:
-       Rprintf( "Internal error: unknown colour '%c'.\n", colour);
+        Rprintf( "Internal error: unknown colour '%c'.\n", colour);
         return "\x1B[0m";
       }
     }
@@ -699,7 +700,7 @@ ascii_print_group(Group *group, int expand, FILE *fd)
       if ((UseExternalGrouping) || (cell == 0))
         fprintf(fd, SEPARATOR);
       
-     fprintf(fd, "%-28s  %-28s\t%6d\n",
+      fprintf(fd, "%-28s  %-28s\t%6d\n",
               (nr_targets == 0) ? source_s : " ", target_s, count);
     }
     else {

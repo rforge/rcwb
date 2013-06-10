@@ -30,14 +30,14 @@ char *progname = NULL;
 void
 describecorpus_usage(void)
 {
- Rprintf( "\n");
- Rprintf( "Usage:  %s [flags] <corpus> [<corpus> ...] \n", progname);
- Rprintf( "Options:\n");
- Rprintf( "  -r <dir>  use registry directory <dir>\n");
- Rprintf( "  -s        show statistics (attribute & lexicon size)\n");
- Rprintf( "  -d        show details (about component files)\n");
- Rprintf( "  -h        this help page\n");
- Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
+  Rprintf( "\n");
+  Rprintf( "Usage:  %s [flags] <corpus> [<corpus> ...] \n", progname);
+  Rprintf( "Options:\n");
+  Rprintf( "  -r <dir>  use registry directory <dir>\n");
+  Rprintf( "  -s        show statistics (attribute & lexicon size)\n");
+  Rprintf( "  -d        show details (about component files)\n");
+  Rprintf( "  -h        this help page\n");
+  Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
   rcqp_receive_error(2);
 }
 
@@ -62,7 +62,7 @@ describecorpus_show_attribute_names (Corpus *corpus, int type)
     }
   }
   /* don't end_indented_list() because that might print "\r" */
- Rprintf("\n\n");
+  printf("\n\n");
 }
 
 /**
@@ -81,21 +81,21 @@ describecorpus_show_basic_info (Corpus *corpus, int with_attribute_names)
   int size;
   char *colon = (with_attribute_names) ? ":" : "";
 
- Rprintf("description:    %s\n", corpus->name);
- Rprintf("registry file:  %s/%s\n", corpus->registry_dir, corpus->registry_name);
- Rprintf("home directory: %s/\n", corpus->path);
- Rprintf("info file:      %s\n", (corpus->info_file) ? corpus->info_file : "(none)");
+  printf("description:    %s\n", corpus->name);
+  printf("registry file:  %s/%s\n", corpus->registry_dir, corpus->registry_name);
+  printf("home directory: %s/\n", corpus->path);
+  printf("info file:      %s\n", (corpus->info_file) ? corpus->info_file : "(none)");
   if ((word = cl_new_attribute(corpus, "word", ATT_POS)) == NULL) {
-   Rprintf( "ERROR: 'word' attribute is missing. Aborted.\n");
+    Rprintf( "ERROR: 'word' attribute is missing. Aborted.\n");
     rcqp_receive_error(1);
   }
   size = cl_max_cpos(word);
- Rprintf("size (tokens):  ");
+  printf("size (tokens):  ");
   if (size >= 0) 
-   Rprintf("%d\n", size);
+    printf("%d\n", size);
   else
-   Rprintf("ERROR\n");
- Rprintf("\n");
+    printf("ERROR\n");
+  printf("\n");
   
   for (a = corpus->attributes; a; a = a->any.next) {
     switch(a->any.type) {
@@ -105,16 +105,16 @@ describecorpus_show_basic_info (Corpus *corpus, int with_attribute_names)
     default: break;
     }
   }
- Rprintf("%3d positional attributes%s\n", p_atts, colon);
+  printf("%3d positional attributes%s\n", p_atts, colon);
   if (with_attribute_names)
     describecorpus_show_attribute_names(corpus, ATT_POS);
- Rprintf("%3d structural attributes%s\n", s_atts, colon);
+  printf("%3d structural attributes%s\n", s_atts, colon);
   if (with_attribute_names)
     describecorpus_show_attribute_names(corpus, ATT_STRUC);
- Rprintf("%3d alignment  attributes%s\n", a_atts, colon);
+  printf("%3d alignment  attributes%s\n", a_atts, colon);
   if (with_attribute_names)
     describecorpus_show_attribute_names(corpus, ATT_ALIGN);
- Rprintf("\n");
+  printf("\n");
 }
 
 /**
@@ -136,44 +136,44 @@ describecorpus_show_statistics (Corpus *corpus)
   for (a = corpus->attributes; a; a = a->any.next) {
     switch(a->any.type) {
     case ATT_POS:
-     Rprintf("p-ATT %-16s ", a->any.name);
+      printf("p-ATT %-16s ", a->any.name);
       tokens = cl_max_cpos(a);
       types = cl_max_id(a);
       if ((tokens > 0) && (types > 0))
-       Rprintf("%10d tokens, %8d types", tokens, types);
+        printf("%10d tokens, %8d types", tokens, types);
       else 
-       Rprintf("           NO DATA");
+        printf("           NO DATA");
       break;
     case ATT_STRUC:
-     Rprintf("s-ATT %-16s ", a->any.name); 
+      printf("s-ATT %-16s ", a->any.name); 
       regions = cl_max_struc(a);
       if (regions >= 0) {
-       Rprintf("%10d regions", regions);
+        printf("%10d regions", regions);
         if (cl_struc_values(a))
-         Rprintf(" (with annotations)");
+          printf(" (with annotations)");
       }
       else 
-       Rprintf("           NO DATA");
+        printf("           NO DATA");
       break;
     case ATT_ALIGN:
-     Rprintf("a-ATT %-16s ", a->any.name); 
+      printf("a-ATT %-16s ", a->any.name); 
       blocks = cl_max_alg(a);
       if (blocks >= 0) {
-       Rprintf("%10d alignment blocks", blocks);
+        printf("%10d alignment blocks", blocks);
         if (cl_has_extended_alignment(a))
-         Rprintf(" (extended)");
+          printf(" (extended)");
       }
       else
-       Rprintf("           NO DATA");
+        printf("           NO DATA");
       break;
     default:
-     Rprintf("???   %-16s (unknown attribute type)", a->any.name); 
+      printf("???   %-16s (unknown attribute type)", a->any.name); 
       break;
     }
-   Rprintf("\n");
+    printf("\n");
   }
 
- Rprintf("\n");
+  printf("\n");
 }
 
 /* *************** *\
@@ -212,7 +212,7 @@ main(int argc, char **argv)
       if (registry == NULL)
         registry = optarg;
       else {
-       Rprintf( "%s: -r option used twice\n", progname);
+        Rprintf( "%s: -r option used twice\n", progname);
         rcqp_receive_error(2);
       }
       break;
@@ -237,19 +237,19 @@ main(int argc, char **argv)
   }
 
   if (optind >= argc) {
-   Rprintf( "Missing argument, try \"%s -h\" for more information.\n", progname);
+    Rprintf( "Missing argument, try \"%s -h\" for more information.\n", progname);
     rcqp_receive_error(1);
   }
 
   for (i = optind; i < argc; i++) {
     if ((corpus = cl_new_corpus(registry, argv[i])) == NULL) {
-     Rprintf( "ERROR. Can't access corpus %s !\n", argv[i]);
+      Rprintf( "ERROR. Can't access corpus %s !\n", argv[i]);
       rcqp_receive_error(1);
     }
 
-   Rprintf("\n============================================================\n");
-   Rprintf("Corpus: %s\n", argv[i]);
-   Rprintf("============================================================\n\n");
+    printf("\n============================================================\n");
+    printf("Corpus: %s\n", argv[i]);
+    printf("============================================================\n\n");
 
     describecorpus_show_basic_info(corpus, !(show_stats || show_details));
     /* show attribute names only if no other options are selected */

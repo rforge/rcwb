@@ -42,21 +42,22 @@ int verbose = 0;                      /**< print some information about what fil
 void
 alignencode_usage(void)
 {
- Rprintf( "\n");
- Rprintf( "Usage: %s [options] <alignment_file>\n\n", progname);
- Rprintf( "\n");
- Rprintf( "Adds an alignment attribute to an existing CWB corpus\n");
- Rprintf( "\n");
- Rprintf( "Options:\n");
- Rprintf( "  -d <dir> write data file(s) to directory <dir>\n");
- Rprintf( "  -D       write files to corpus data directory\n");
- Rprintf( "  -C       compatibility mode (creates .alg file)\n");
-  /*  Rprintf( "  -R       reverse alignment (target -> source)\n"); */
+  Rprintf( "\n");
+  Rprintf( "Usage: %s [options] <alignment_file>\n\n", progname);
+  Rprintf( "\n");
+  Rprintf( "Adds an alignment attribute to an existing CWB corpus\n");
+  Rprintf( "\n");
+  Rprintf( "Options:\n");
+  Rprintf( "  -d <dir> write data file(s) to directory <dir>\n");
+  Rprintf( "  -D       write files to corpus data directory\n");
+  Rprintf( "  -C       compatibility mode (creates .alg file)\n");
+  /*   Rprintf( "  -R       reverse alignment (target -> source)\n"); */
   /* -R option disabled ... need to re-order alignment file for reverse alignment */
- Rprintf( "  -r <reg> use registry directory <reg>\n");
- Rprintf( "  -v       verbose mode\n");
- Rprintf( "  -h       this help page\n\n");
- Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
+  /*TODO -R is not actually disabled in code. Has it been re-enabled, or does it need ot be disabled? */
+  Rprintf( "  -r <reg> use registry directory <reg>\n");
+  Rprintf( "  -v       verbose mode\n");
+  Rprintf( "  -h       this help page\n\n");
+  Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
   rcqp_receive_error(1);
 }
 /* note: must specify either -d or -D option */
@@ -90,7 +91,7 @@ alignencode_parse_args(int ac, char *av[], int min_args)
       if (data_dir == NULL)
         data_dir = optarg;
       else {
-       Rprintf( "%s: -d option used twice\n", progname);
+        Rprintf( "%s: -d option used twice\n", progname);
         rcqp_receive_error(2);
       }
       break;
@@ -111,7 +112,7 @@ alignencode_parse_args(int ac, char *av[], int min_args)
       if (registry_dir == NULL)
         registry_dir = optarg;
       else {
-       Rprintf( "%s: -r option used twice\n", progname);
+        Rprintf( "%s: -r option used twice\n", progname);
         rcqp_receive_error(2);
       }
       break;
@@ -131,14 +132,14 @@ alignencode_parse_args(int ac, char *av[], int min_args)
     alignencode_usage();                /* no optional arguments in this case */
 
   if ((data_dir == NULL) && (! data_dir_from_corpus)) {
-   Rprintf( "%s: either -d or -D must be specified\n", progname);
-   Rprintf( "Type \"%s -h\" for more information.\n", progname);
+    Rprintf( "%s: either -d or -D must be specified\n", progname);
+    Rprintf( "Type \"%s -h\" for more information.\n", progname);
     rcqp_receive_error(1);
   }
 
   if ((data_dir != NULL) && data_dir_from_corpus) {
-   Rprintf( "%s: -d and -D flags cannot be used at the same time\n", progname);
-   Rprintf( "Type \"%s -h\" for more information.\n", progname);
+    Rprintf( "%s: -d and -D flags cannot be used at the same time\n", progname);
+    Rprintf( "Type \"%s -h\" for more information.\n", progname);
     rcqp_receive_error(1);
   }
 
@@ -205,7 +206,7 @@ main(int argc, char *argv[])
     af = popen(pipe_cmd, "r");
     if (af == NULL) {
       perror(pipe_cmd);
-     Rprintf( "%s: can't read compressed file %s\n", progname, align_name);
+      Rprintf( "%s: can't read compressed file %s\n", progname, align_name);
       rcqp_receive_error(1);
     }
     af_is_pipe = 1;
@@ -215,7 +216,7 @@ main(int argc, char *argv[])
     af = fopen(align_name, "r");
     if (af == NULL) {
       perror(align_name);
-     Rprintf( "%s: can't read file %s\n", progname, align_name);
+      Rprintf( "%s: can't read file %s\n", progname, align_name);
       rcqp_receive_error(1);
     }
   }
@@ -223,43 +224,43 @@ main(int argc, char *argv[])
   /* read header = first line */
   fgets(line, CL_MAX_LINE_LENGTH, af);
   if (4 != sscanf(line, "%s %s %s %s", corpus1_name, s1_name, corpus2_name, s2_name)) {
-   Rprintf( "%s: %s not in .align format\n", progname, align_name);
-   Rprintf( "wrong header: %s", line);
+    Rprintf( "%s: %s not in .align format\n", progname, align_name);
+    Rprintf( "wrong header: %s", line);
     rcqp_receive_error(1);
   }
   if (verbose) {
     if (reverse)
-     Rprintf("Encoding alignment for [%s, %s] from file %s\n", corpus2_name, corpus1_name, align_name);
+      printf("Encoding alignment for [%s, %s] from file %s\n", corpus2_name, corpus1_name, align_name);
     else
-     Rprintf("Encoding alignment for [%s, %s] from file %s\n", corpus1_name, corpus2_name, align_name);
+      printf("Encoding alignment for [%s, %s] from file %s\n", corpus1_name, corpus2_name, align_name);
   }
 
   /* open corpora and determine their sizes (for validity checks and compatibility mode) */
   if (NULL == (corpus1 = cl_new_corpus(registry_dir, corpus1_name))) {
-   Rprintf( "%s: can't open corpus %s\n", progname, corpus1_name);
+    Rprintf( "%s: can't open corpus %s\n", progname, corpus1_name);
     rcqp_receive_error(1);
   }
   if (NULL == (corpus2 = cl_new_corpus(registry_dir, corpus2_name))) {
-   Rprintf( "%s: can't open corpus %s\n", progname, corpus2_name);
+    Rprintf( "%s: can't open corpus %s\n", progname, corpus2_name);
     rcqp_receive_error(1);
   }
   if (NULL == (w1 = cl_new_attribute(corpus1, "word", ATT_POS))) {
-   Rprintf( "%s: can't open p-attribute %s.word\n", progname, corpus1_name);
+    Rprintf( "%s: can't open p-attribute %s.word\n", progname, corpus1_name);
     rcqp_receive_error(1);
   }
   if (NULL == (w2 = cl_new_attribute(corpus2, "word", ATT_POS))) {
-   Rprintf( "%s: can't open p-attribute %s.word\n", progname, corpus2_name);
+    Rprintf( "%s: can't open p-attribute %s.word\n", progname, corpus2_name);
     rcqp_receive_error(1);
   }
 
   size1 = cl_max_cpos(w1);
   if (size1 <= 0) {
-   Rprintf( "%s: data access error (%s.word)\n", progname, corpus1_name);
+    Rprintf( "%s: data access error (%s.word)\n", progname, corpus1_name);
     rcqp_receive_error(1);
   }
   size2 = cl_max_cpos(w2);
   if (size2 <= 0) {
-   Rprintf( "%s: data access error (%s.word)\n", progname, corpus2_name);
+    Rprintf( "%s: data access error (%s.word)\n", progname, corpus2_name);
     rcqp_receive_error(1);
   }
 
@@ -276,20 +277,21 @@ main(int argc, char *argv[])
     char *comp_pathname;
 
     if (alignment == NULL) {
-     Rprintf( "%s: alignment attribute %s.%s not declared in registry file\n",
+      Rprintf( "%s: alignment attribute %s.%s not declared in registry file\n",
               progname, source_corpus_name, attribute_name);
       rcqp_receive_error(1);
     }
     comp_pathname = component_full_name(alignment, CompXAlignData, NULL);
     if (comp_pathname == NULL) {
-     Rprintf( "%s: can't determine pathname for .alx file (internal error)\n", progname);
+      Rprintf( "%s: can't determine pathname for .alx file (internal error)\n", progname);
       rcqp_receive_error(1);
     }
-    strcpy(alx_name, comp_pathname); /* need to strcpy because component_full_name() returns pointer to internal buffer */
+    strcpy(alx_name, comp_pathname);
+    /* need to strcpy because component_full_name() returns pointer to internal buffer */
     if (compatibility) {
       comp_pathname = component_full_name(alignment, CompAlignData, NULL);
       if (comp_pathname == NULL) {
-       Rprintf( "%s: can't determine pathname for .alg file (internal error)\n", progname);
+        Rprintf( "%s: can't determine pathname for .alg file (internal error)\n", progname);
         rcqp_receive_error(1);
       }
       strcpy(alg_name, comp_pathname);
@@ -305,22 +307,22 @@ main(int argc, char *argv[])
   alx = fopen(alx_name, "wb");
   if (alx == NULL) {
     perror(alx_name);
-   Rprintf( "%s: can't write file %s\n", progname, alx_name);
+    Rprintf( "%s: can't write file %s\n", progname, alx_name);
     rcqp_receive_error(1);
   }
   if (verbose)
-   Rprintf("Writing file %s ...\n", alx_name);
+    printf("Writing file %s ...\n", alx_name);
 
   if (compatibility) {
     alg = fopen(alg_name, "wb");
     if (alg == NULL) {
       perror(alg_name);
-     Rprintf( "%s: can't write file %s\n", progname, alg_name);
+      Rprintf( "%s: can't write file %s\n", progname, alg_name);
       rcqp_receive_error(1);
     }
 
     if (verbose)
-     Rprintf("Writing file %s ...\n", alg_name);
+      printf("Writing file %s ...\n", alg_name);
   }
 
   /* main encoding loop */
@@ -332,7 +334,7 @@ main(int argc, char *argv[])
     if (NULL == fgets(line, CL_MAX_LINE_LENGTH, af))
       break;                        /* end of file (or read error, which we choose to ignore) */
     if (4 != sscanf(line, "%d %d %d %d", &f1, &l1, &f2, &l2)) {
-     Rprintf( "%s: input format error: %s", progname, line);
+      Rprintf( "%s: input format error: %s", progname, line);
       rcqp_receive_error(1);
     }
 
@@ -346,9 +348,9 @@ main(int argc, char *argv[])
 
     /* check that source regions are non-overlapping and in ascending order */
     if (((reverse) ? f2 : f1) <= mark) {
-     Rprintf( "%s: source regions of alignment must be in ascending order\n", progname);
-     Rprintf( "Last region was [*, %d]; current is [%d, %d].\n", mark, f1, l1);
-     Rprintf( "Aborted.\n");
+      Rprintf( "%s: source regions of alignment must be in ascending order\n", progname);
+      Rprintf( "Last region was [*, %d]; current is [%d, %d].\n", mark, f1, l1);
+      Rprintf( "Aborted.\n");
       rcqp_receive_error(1);
     }
     mark = (reverse) ? l2 : l1;
@@ -388,7 +390,7 @@ main(int argc, char *argv[])
   }
 
   if (verbose) {
-   Rprintf("I skipped %d 0:1 alignments and %d 1:0 alignments.\n", n_0_1, n_1_0);
+    printf("I skipped %d 0:1 alignments and %d 1:0 alignments.\n", n_0_1, n_1_0);
   }
 
   /* that's it; close file handles */

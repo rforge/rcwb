@@ -22,7 +22,7 @@
 
 #include "globals.h"
 
-#include "cl_endian.h"
+#include "endian.h"
 #include "macros.h"
 #include "attributes.h"
 #include "special-chars.h"
@@ -171,9 +171,9 @@ void
 cl_error(char *message)
 {
   if (message != NULL)
-   Rprintf( "%s: %s\n", cl_error_string(cl_errno), message);
+    Rprintf( "%s: %s\n", cl_error_string(cl_errno), message);
   else
-   Rprintf( "%s\n", cl_error_string(cl_errno));
+    Rprintf( "%s\n", cl_error_string(cl_errno));
 }
 
 
@@ -259,7 +259,7 @@ cl_str2id(Attribute *attribute, char *id_string)
     for(nr = 0; ; nr++) {
 
       if (nr >= 1000000) {
-       Rprintf( "get_id_of_string: too many comparisons with %s\n",
+        Rprintf( "get_id_of_string: too many comparisons with %s\n",
                 id_string);
         cl_errno = CDA_EOTHER;
         return cl_errno;
@@ -681,21 +681,21 @@ cl_id2cpos_oldstyle(Attribute *attribute, int id, int *freq, int *restrictor_lis
 
   size  = get_attribute_size(attribute);
   if ((size <= 0) || (cl_errno != CDA_OK)) {
-    /*      Rprintf( "Cannot determine size of PA %s\n", */
+    /*       Rprintf( "Cannot determine size of PA %s\n", */
     /*        attribute->any.name); */
       return NULL;
   }
 
   range  = get_id_range(attribute);
   if ((range <= 0) || (cl_errno != CDA_OK)) {
-    /*      Rprintf( "Cannot determine ID range of PA %s\n", */
+    /*       Rprintf( "Cannot determine ID range of PA %s\n", */
     /*        attribute->any.name); */
     return NULL;
   }
 
   if ((id <0) || (id >= range)) {
     cl_errno = CDA_EIDORNG;
-    /*      Rprintf( "ID %d out of range of PA %s\n", */
+    /*       Rprintf( "ID %d out of range of PA %s\n", */
     /*        id, attribute->any.name); */
     *freq = 0;
     return NULL;
@@ -703,7 +703,7 @@ cl_id2cpos_oldstyle(Attribute *attribute, int id, int *freq, int *restrictor_lis
 
   *freq = get_id_frequency(attribute, id);
   if ((*freq < 0) || (cl_errno != CDA_OK)) {
-    /*      Rprintf( "Frequency %d of ID %d illegal (PA %s)\n", */
+    /*       Rprintf( "Frequency %d of ID %d illegal (PA %s)\n", */
     /*        *freq, id, attribute->any.name); */
     return NULL;
   }
@@ -791,7 +791,7 @@ cl_id2cpos_oldstyle(Attribute *attribute, int id, int *freq, int *restrictor_lis
 
     if (revcorp == NULL || revcidx == NULL) {
       cl_errno = CDA_ENODATA;
-      /*       Rprintf( "Cannot load REVCORP or REVCIDX component of %s\n",  */
+      /*        Rprintf( "Cannot load REVCORP or REVCIDX component of %s\n",  */
       /*                attribute->any.name); */
       *freq = 0;
       return NULL;
@@ -1122,7 +1122,7 @@ cl_cpos2id(Attribute *attribute, int position)
     unsigned int block, rest, offset, max, v, l, i;
 
     if (COMPRESS_DEBUG > 1)
-     Rprintf( "Accessing position %d of %s via compressed item sequence\n",
+      Rprintf( "Accessing position %d of %s via compressed item sequence\n",
               position, attribute->any.name);
 
     cis      = ensure_component(attribute, CompHuffSeq, 0);
@@ -1146,7 +1146,7 @@ cl_cpos2id(Attribute *attribute, int position)
          * and hope that we'll get a cache hit next time. */
 
         if (COMPRESS_DEBUG > 0)
-         Rprintf( "Block miss: have %d, want %d\n",
+          Rprintf( "Block miss: have %d, want %d\n",
                   attribute->pos.this_block_nr, block);
 
         /* is the block we read the last block of the corpus? Then, we
@@ -1164,7 +1164,7 @@ cl_cpos2id(Attribute *attribute, int position)
         offset = ntohl(cis_sync->data.data[block]);
 
         if (COMPRESS_DEBUG > 1)
-         Rprintf( "-> Block %d, rest %d, offset %d\n",
+          Rprintf( "-> Block %d, rest %d, offset %d\n",
                   block, rest, offset);
 
         BSopen((unsigned char *)cis->data.data, "r", &bs);
@@ -1173,7 +1173,7 @@ cl_cpos2id(Attribute *attribute, int position)
         for (i = 0; i < max; i++) {
 
           if (!BSread(&bit, 1, &bs)) {
-           Rprintf( "cdaccess:decompressed read: Read error/1\n");
+            Rprintf( "cdaccess:decompressed read: Read error/1\n");
             cl_errno = CDA_ENODATA;
             return cl_errno;
           }
@@ -1184,7 +1184,7 @@ cl_cpos2id(Attribute *attribute, int position)
           while (v < attribute->pos.hc->min_code[l]) {
 
             if (!BSread(&bit, 1, &bs)) {
-             Rprintf( "cdaccess:decompressed read: Read error/2\n");
+              Rprintf( "cdaccess:decompressed read: Read error/2\n");
               cl_errno = CDA_ENODATA;
               return cl_errno;
             }
@@ -1207,7 +1207,7 @@ cl_cpos2id(Attribute *attribute, int position)
 
       }
       else if (COMPRESS_DEBUG > 0)
-       Rprintf( "Block hit: block[%d,%d]\n", block, rest);
+        Rprintf( "Block hit: block[%d,%d]\n", block, rest);
 
       assert(rest < SYNCHRONIZATION);
 
@@ -1369,7 +1369,7 @@ cl_regex2id(Attribute *attribute, char *pattern, int flags, int *number_of_match
 
   rx = cl_new_regex(pattern, flags, attribute->pos.mother->charset);
   if (rx == NULL) {
-   Rprintf( "Regex Compile Error: %s\n", cl_regex_error);
+    Rprintf( "Regex Compile Error: %s\n", cl_regex_error);
     cl_errno = CDA_EBADREGEX;
     return NULL;
   }
@@ -1417,7 +1417,7 @@ cl_regex2id(Attribute *attribute, char *pattern, int flags, int *number_of_match
   } /* endfor (loop across lexicon items) */
 
   if (cl_debug && optimised) 
-   Rprintf( "CL: regexp optimiser avoided calling regex engine for %d candidates out of %d strings\n"
+    Rprintf( "CL: regexp optimiser avoided calling regex engine for %d candidates out of %d strings\n"
                     "    (%d matching strings in total) \n", cl_regopt_count_get(), lexsize, match_count);
 
   if (match_count == 0) {       /* no matches */
@@ -1534,7 +1534,7 @@ static int intcompare(const void *i, const void *j)
  * positions, and secondarily by b. restrictor_list_size is the number of
  * integers in this list, NOT THE NUMBER OF PAIRS.
  * WARNING: CURRENTLY UNIMPLEMENTED
- * {NB -- this descrtiption of restrictor_list_size DOESN'T MATCH
+ * {NB -- this description of restrictor_list_size DOESN'T MATCH
  * the one for get_positions(), which this function calls...
  *
  * REMEMBER: this monster returns a list of corpus indices, not a list
@@ -1581,7 +1581,7 @@ cl_idlist2cpos_oldstyle(Attribute *attribute,
     return NULL;
   }
 
-  size = cumulative_id_frequency(attribute, word_ids, number_of_words);
+  size = cl_idlist2freq(attribute, word_ids, number_of_words);
   if ((size < 0) || (cl_errno != CDA_OK)) {
     return NULL;
   }
@@ -1673,7 +1673,7 @@ get_previous_mark(int *data, int size, int position)
     nr++;
 
     if (nr > 100000) {
-     Rprintf( "Binary search in get_surrounding_positions failed\n");
+      Rprintf( "Binary search in get_surrounding_positions failed\n");
       return NULL;
     }
 
@@ -1781,7 +1781,7 @@ int
 cl_max_struc(Attribute *a)
 {
   int nr = -1;
-  if (get_nr_of_strucs(a, &nr)) 
+  if (cl_max_struc_oldstyle(a, &nr))
     return nr;
   else
     return cl_errno;
@@ -1945,7 +1945,7 @@ cl_struc2cpos(Attribute *attribute,
  * @return             boolean: true for all OK, false for problem.
  */
 int
-get_nr_of_strucs(Attribute *attribute, int *nr_strucs)
+cl_max_struc_oldstyle(Attribute *attribute, int *nr_strucs)
 {
   Component *struc_data;
 
@@ -2098,7 +2098,7 @@ structure_value_at_position(Attribute *struc, int position)
       (!get_num_of_struc(struc, position, &snum)))
     return NULL;
   else 
-    return structure_value(struc, snum);
+    return cl_struc2str(struc, snum);
 }
 
 
@@ -2149,7 +2149,7 @@ get_alignment(int *data, int size, int position)   /* ALIGN component */
   while (low <= high) {
     nr++;
     if (nr > 100000) {
-     Rprintf( "Binary search in get_alignment_item failed\n");
+      Rprintf( "Binary search in get_alignment failed\n");
       return -1;
     }
 
@@ -2215,7 +2215,7 @@ get_extended_alignment(int *data, int size, int position)   /* XALIGN component 
   while (low <= high) {
     nr++;
     if (nr > 100000) {
-     Rprintf( "Binary search in get_extended_alignment_item failed\n");
+      Rprintf( "Binary search in get_extended_alignment_item failed\n");
       return -1;
     }
 
@@ -2528,7 +2528,6 @@ cl_dynamic_call(Attribute *attribute,
   DynArg *p;
   char c;
 
-
   check_arg(attribute, ATT_DYN, cl_errno);
 
   if ((args == NULL) || (nr_args <= 0))
@@ -2670,7 +2669,7 @@ cl_dynamic_call(Attribute *attribute,
     }
     call[ins++] = '\0';
     
-    /*      Rprintf( "Composed dynamic call: \"%s\"\n", call); */
+    /*       Rprintf( "Composed dynamic call: \"%s\"\n", call); */
 
     pipe = popen(call, "r");
       

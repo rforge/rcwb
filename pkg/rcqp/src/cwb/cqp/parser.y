@@ -75,7 +75,7 @@ void yyerror (char *s)
 
 void warn_query_lock_violation(void) {
   if (which_app != cqpserver)
-   Rprintf( "WARNING: query lock violation attempted\n");
+    Rprintf( "WARNING: query lock violation attempted\n");
   query_lock_violation++;       /* this is for the CQPserver */
 }
 
@@ -99,12 +99,12 @@ synchronize(void)
   enable_macros = 0;
 
   if (cqp_input_string != NULL) {
-   Rprintf( "Synchronizing to end of line ... \n");
+    Rprintf( "Synchronizing to end of line ... \n");
     while (!(yychar <= 0))
       yychar = yylex();
   }
   else {
-   Rprintf( "Synchronizing until next ';'...\n");
+    Rprintf( "Synchronizing until next ';'...\n");
     while (!(yychar <= 0 || yychar == ';'))
       yychar = yylex();
   }
@@ -189,7 +189,7 @@ synchronize(void)
   TabulationItem     tabulation_item;
 }
 
-%token <strval> ID QID LABEL STRING FLAG TAGSTART TAGEND VARIABLE IPAddress IPSubnet
+%token <strval> ID QID NQRID LABEL STRING FLAG TAGSTART TAGEND VARIABLE IPAddress IPSubnet
 %token <ival> INTEGER
 %token <fval> DOUBLEFLOAT
 %token <field> FIELD FIELDLABEL ANCHORTAG ANCHORENDTAG
@@ -305,7 +305,7 @@ synchronize(void)
 %type <boolt> GlobalConstraint ExtConstraint LookaheadConstraint BoolExpr
 %type <boolt> RelExpr RelLHS RelRHS FunctionCall
 %type <boolo> RelOp
-%type <strval> LabelReference OptRefId
+%type <strval> LabelReference OptRefId ID_OR_NQRID
 %type <context> Description MeetContext OptDistance
 %type <direction> OptDirection
 %type <redir> OptionalRedir Redir
@@ -374,9 +374,9 @@ command:                                 { prepare_input(); }
                         query_lock = 0;
                       }
                       else {
-                       Rprintf( "ALERT! Query lock violation.\n");
-                       Rprintf("\n"); /* so CQP.pm won't block -- should no longer be needed after switching to .EOL. mechanism */
-                        rcqp_receive_error(1);
+                        Rprintf( "ALERT! Query lock violation.\n");
+                        printf("\n"); /* so CQP.pm won't block -- should no longer be needed after switching to .EOL. mechanism */
+                        exit(1);
                       }
                     } ';'
                 | EOLCmd ';'    /* .EOL. must be allowed in query lock mode */
@@ -435,7 +435,7 @@ InteractiveCommand:       Showing
 
 
 /* print special code ``-::-EOL-::-'' marking end-of-command in child mode */
-EOLCmd:           EOL_SYM               {Rprintf("-::-EOL-::-\n"); rcqp_flush(); }
+EOLCmd:           EOL_SYM               { printf("-::-EOL-::-\n"); fflush(stdout); }
                 ;
 
 Cat:              CAT_SYM OptionalCID
@@ -458,7 +458,7 @@ Saving:           SAVE_SYM OptionalCID
 OptionalRedir:    Redir
                 | /* epsilon */         { $$.name = (char *)NULL;
                                           $$.mode = (char *)NULL;
-                                          $$.stream = NULL;
+                                          $$.stream = stdout;
                                           $$.is_pipe = 0;
                                         }
                 ;
@@ -1229,7 +1229,7 @@ OptionalCID:    CID                     { $$ = $1; }
                 ;
 
 
-CID:            ID                      { CorpusList *cl;
+CID:            ID_OR_NQRID             { CorpusList *cl;
 
                                           cqpmessage(Message, "CID: %s", $1);
 
@@ -1247,6 +1247,10 @@ CID:            ID                      { CorpusList *cl;
                                           else
                                             $$ = cl;
                                         }
+                ;
+
+ID_OR_NQRID:    NQRID                   { $$ = $1; }
+              | ID                      { $$ = $1; }
                 ;
 
 BoolExpr:     BoolExpr IMPLIES BoolExpr { $$ = bool_implies($1, $3); }

@@ -282,7 +282,8 @@ calculate_ranges(CorpusList *cl, int cpos, Context spc, int *left, int *right)
     assert(corpsize > 0);
     
     *left  = MAX(0, cpos - d); 
-    *right = MIN(corpsize - 1, cpos + d);
+    d = MIN(d, (corpsize - 1) - cpos); /* avoid 32-bit wrap-around for very very large corpora (close to CL_MAX_CORPUS_SIZE) */
+    *right = cpos + d;
     break;
     
   case structure:
@@ -331,8 +332,8 @@ calculate_ranges(CorpusList *cl, int cpos, Context spc, int *left, int *right)
     break;
     
   default: 
-   Rprintf( "calculate_ranges: undefined space type %d detected\n", spc.type);
-    rcqp_receive_error(1);
+    Rprintf( "calculate_ranges: undefined space type %d detected\n", spc.type);
+    exit(1);
     break;
   }
   return 1;
@@ -441,9 +442,9 @@ RangeSort(CorpusList *c, int mk_sortidx)
   _RS_range = c->range;         /* intialise global data for callback and run qsort()  */
   qsort(index, size, sizeof(int), _RS_compare_ranges);
 
-/*    Rprintf("Resort index is:\n"); */
+/*     printf("Resort index is:\n"); */
 /*     for (i = 0; i < size; i++) */
-/*      Rprintf("\t%4d => [%d,%d]\n", index[i], c->range[index[i]].start, c->range[index[i]].end); */
+/*       printf("\t%4d => [%d,%d]\n", index[i], c->range[index[i]].start, c->range[index[i]].end); */
 
   new_range = cl_malloc(size * sizeof(Range)); /* allocate new range vector and fill it with sorted ranges */
   for (i = 0; i < size; i++)
@@ -993,7 +994,7 @@ RangeSetop(CorpusList *corpus1,
     break;
 
   default:
-   Rprintf( "Operation was %d, ranges from %d to %d\n", operation, RUnion, RReduce);
+    Rprintf( "Operation was %d, ranges from %d to %d\n", operation, RUnion, RReduce);
     assert("Illegal operator in RangeSetOp" && 0);
     return 0;
     break;
@@ -1193,7 +1194,7 @@ SortExternally(void)
       /* now, execute the external sort command on the temporary file */
       sprintf(sort_call, "%s %s %s | gawk '{print $1}'", ExternalSortingCommand, (srt_ascending ? "" : "-r"), temporary_name);
       if (SORT_DEBUG)
-       Rprintf( "Running sort: \n\t%s\n", sort_call);
+        Rprintf( "Running sort: \n\t%s\n", sort_call);
       
       /* run sort cmd and read from pipe */
       line = -1;                /* will indicate failure of external sort command  */
@@ -1214,14 +1215,14 @@ SortExternally(void)
           if (line < srt_cl->size) {
             int num = atoi(sort_call);
             if (num < 0 || num >= srt_cl->size) {
-             Rprintf( "Error in externally sorted file - line number #%d out of range\n", num);
+              Rprintf( "Error in externally sorted file - line number #%d out of range\n", num);
               break;            /* abort */
             }
             srt_cl->sortidx[line] = num;
             line++;
           }
           else
-           Rprintf( "Warning: too many lines from external sort command (ignored).\n");
+            Rprintf( "Warning: too many lines from external sort command (ignored).\n");
         }
         pclose(pipe);
       }
@@ -1380,7 +1381,7 @@ i2compare(const void *vidx1, const void *vidx2)
    * (similar to the standard comparison algorithm in cl_string_qsort_compare() above)
    */
   if (SORT_DEBUG)
-   Rprintf( "Comparing [%d,%d](%+d) with [%d,%d](%+d)\n",
+    Rprintf( "Comparing [%d,%d](%+d) with [%d,%d](%+d)\n",
             p1start, p1end, step1, p2start, p2end, step2);
 
   len1 = abs(p1end - p1start) + 1;

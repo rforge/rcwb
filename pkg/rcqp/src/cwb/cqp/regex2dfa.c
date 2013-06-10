@@ -222,7 +222,7 @@ UNGET(int Ch)
 }
 
 /**
- * Prints an error message to NULL, and
+ * Prints an error message to stdout, and
  * exits the program if there are now just too many errors.
  */
 static void
@@ -230,13 +230,13 @@ REGEX2DFA_ERROR(char *Format, ...)
 {
   va_list AP;
   
- Rprintf( "[%d] ", LINE);
+  Rprintf( "[%d] ", LINE);
   va_start(AP, Format); Rvprintf( Format, AP); va_end(AP);
-  Rprintf("%d",'\n');
+  fputc('\n', stderr);
   if (++ERRORS == MAX_ERRORS) {
-   Rprintf( "regex2dfa: Reached the %d error limit.\n",
+    Rprintf( "regex2dfa: Reached the %d error limit.\n",
             MAX_ERRORS);
-    rcqp_receive_error(1);
+    exit(1);
   }
 }
 
@@ -280,8 +280,8 @@ LEX(void)
   if (isalpha(Ch) || Ch == '_' || Ch == '$') {
     for (LastW = ChP; isalnum(Ch) || Ch == '_' || Ch == '$'; ChP++) {
       if (ChP - ChArr == MAX_CHAR) {
-       Rprintf("Out of character space.\n");
-        rcqp_receive_error(1);
+        printf("Out of character space.\n");
+        exit(1);
       }
       *ChP = Ch;
       Ch = GET();
@@ -289,8 +289,8 @@ LEX(void)
     if (Ch != EOF) 
       UNGET(Ch);
     if (ChP - ChArr == MAX_CHAR) {
-     Rprintf("Out of character space.\n");
-      rcqp_receive_error(1);
+      printf("Out of character space.\n");
+      exit(1);
     }
     *ChP++ = '\0';
     return IdenT;
@@ -299,19 +299,19 @@ LEX(void)
     Ch = GET();
     for (LastW = ChP; Ch != '"' && Ch != EOF; ChP++) {
       if (ChP - ChArr == MAX_CHAR) {
-       Rprintf("Out of character space.\n");
-        rcqp_receive_error(1);
+        printf("Out of character space.\n");
+        exit(1);
       }
       *ChP = Ch;
       Ch = GET();
     }
     if (Ch == EOF) {
-     Rprintf("Missing closing \".\n");
-      rcqp_receive_error(1);
+      printf("Missing closing \".\n");
+      exit(1);
     }
     if (ChP - ChArr == MAX_CHAR) {
-     Rprintf("Out of character space.\n");
-      rcqp_receive_error(1);
+      printf("Out of character space.\n");
+      exit(1);
     }
     *ChP++ = '\0';
     return IdenT;
@@ -546,7 +546,7 @@ PUSH(StackTag Tag, int Q)
   if (SP >= Stack + STACK_MAX) 
     {
       REGEX2DFA_ERROR("Expression too complex ... aborting.");
-      rcqp_receive_error(1);
+      exit(1);
     }
   SP->Tag = Tag;
   SP->Q = Q; 
@@ -620,7 +620,7 @@ Parse(void)
   switch (Action[TOP][L])  {
   case 'A':
     REGEX2DFA_ERROR("Extra ','");
-    rcqp_receive_error(1);
+    exit(1);
   case 'B':
     REGEX2DFA_ERROR("Unmatched ).");
     L = LEX();
@@ -647,10 +647,10 @@ Parse(void)
     goto MakeOpt;
   case 'H':
     REGEX2DFA_ERROR("Left-hand side of '=' must be symbol.");
-    rcqp_receive_error(1);
+    exit(1);
   case 'I':
     REGEX2DFA_ERROR("Missing evaluation.");
-    rcqp_receive_error(1);
+    exit(1);
   case '.':
     ignore_value = POP();
     return RHS;
@@ -985,7 +985,7 @@ MergeStates(void)
     }
 }
 
-/** Write states to NULL. Private function. */
+/** Write states to stdout. Private function. */
 void
 WriteStates(void)
 {
@@ -999,19 +999,19 @@ WriteStates(void)
       if (SP->Class != Classes) 
         continue;
       Classes++;
-     Rprintf("s%d =", SP->Class);
+      printf("s%d =", SP->Class);
       if (SP->Empty) {
-       Rprintf(" fin");
+        printf(" fin");
         if (SP->Shifts > 0)
-         Rprintf(" |");
+          printf(" |");
       }
       for (Sh = 0; Sh < SP->Shifts; Sh++) {
         C = SP->ShList[Sh].RHS;
         if (Sh > 0)
-         Rprintf(" |");
-       Rprintf(" %s s%d", SP->ShList[Sh].LHS->Name, STab[C].Class);
+          printf(" |");
+        printf(" %s s%d", SP->ShList[Sh].LHS->Name, STab[C].Class);
       }
-      Rprintf("%d", '\n');
+      putchar('\n');
     }
 }
 
@@ -1050,26 +1050,26 @@ free_dfa(DFA *dfa)
   dfa->Max_Input = 0;
 }
 
-/** Prints the contents of a DFA to NULL. */
+/** Prints the contents of a DFA to stdout. */
 void
 show_complete_dfa(DFA dfa)
 {
   int i, j;
 
   for (i = 0; i < dfa.Max_States; i++) {
-   Rprintf("s%d", i);
+    printf("s%d", i);
     if (dfa.Final[i])
-     Rprintf("(final)");
+      printf("(final)");
     else
-      Rprintf("%d", '\t');
+      putchar('\t');
     for (j = 0; j < dfa.Max_Input; j++)   {
-     Rprintf("\t%d -> ", j);
+      printf("\t%d -> ", j);
       if (dfa.TransTable[i][j] == dfa.E_State)
-       Rprintf("E\t");
+        printf("E\t");
       else
-       Rprintf("s%d,",dfa.TransTable[i][j]);
+        printf("s%d,",dfa.TransTable[i][j]);
     }
-    Rprintf("%d", '\n');
+    putchar('\n');
   }
 }
 
@@ -1141,9 +1141,9 @@ regex2dfa(char *rxs, DFA *automaton)
   Q = Parse();
   
   if (ERRORS > 0) 
-   Rprintf( "%d error(s)\n", ERRORS);
+    Rprintf( "%d error(s)\n", ERRORS);
   if (Q == -1) 
-    rcqp_receive_error(1);
+    exit(1);
   FormState(Q);
   MergeStates(); 
 

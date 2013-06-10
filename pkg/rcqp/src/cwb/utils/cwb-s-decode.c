@@ -28,7 +28,7 @@ char *progname;
 void
 sdecode_usage(void)
 {
- Rprintf(
+  Rprintf(
           "\n"
           "Usage: %s [options] corpus-id -S <att>\n\n"
           "Outputs a list of the given s-attribute, with begin and end positions\n\n"
@@ -88,7 +88,7 @@ main(int argc, char **argv)
     case 'r':
       if (registry_directory == NULL) registry_directory = optarg;
       else {
-       Rprintf( "%s: -r option used twice\n", progname);
+        Rprintf( "%s: -r option used twice\n", progname);
         rcqp_receive_error(2);
       }
       break;
@@ -116,14 +116,14 @@ main(int argc, char **argv)
     sdecode_usage();
 
   if (!show_regions && !show_values) {
-   Rprintf( "Error: options -n and -v cannot be combined (would print nothing)\n");
+    Rprintf( "Error: options -n and -v cannot be combined (would print nothing)\n");
     rcqp_receive_error(1);
   }
 
   /* first argument: corpus id */
   corpus_id = argv[optind++];
   if ((corpus = cl_new_corpus(registry_directory, corpus_id)) == NULL) {
-   Rprintf( "%s: Corpus <%s> not registered in %s\n",
+    Rprintf( "%s: Corpus <%s> not registered in %s\n",
               progname,
               corpus_id,
               (registry_directory ? registry_directory
@@ -138,7 +138,7 @@ main(int argc, char **argv)
   /* third argument: attribute name */
   attr_name = argv[optind];
   if ((att = cl_new_attribute(corpus, attr_name, ATT_STRUC)) == NULL) {
-   Rprintf( "%s: Can't access s-attribute <%s.%s>\n",
+    Rprintf( "%s: Can't access s-attribute <%s.%s>\n",
               progname,
               corpus_id, attr_name);
     rcqp_receive_error(1);
@@ -149,7 +149,7 @@ main(int argc, char **argv)
   if (! has_values)
     show_values = 0;
   if (!show_regions && !has_values) {
-   Rprintf( "Error: option -n can only be used if s-attribute has annotated values\n");
+    Rprintf( "Error: option -n can only be used if s-attribute has annotated values\n");
     rcqp_receive_error(1);
   }
 
@@ -163,20 +163,20 @@ main(int argc, char **argv)
       rcqp_receive_error(1);
     }
     if (show_regions) {
-     Rprintf("%d\t%d", start, end);
+      printf("%d\t%d", start, end);
       if (show_values)
-       Rprintf("\t");
+        printf("\t");
     }
     if (show_values) {
       annot = cl_struc2str(att, n);
       if (annot == NULL) {
-       Rprintf("<no annotation>");
+        printf("<no annotation>");
       }
       else {
-       Rprintf("%s", annot);
+        printf("%s", annot);
       }
     }
-   Rprintf("\n");
+    printf("\n");
   }
 
   /* that was all ...  */

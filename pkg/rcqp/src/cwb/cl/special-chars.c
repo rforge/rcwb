@@ -1645,7 +1645,7 @@ maptable_init_both(unsigned char *maptable,
   for (i = 0; i < 256; i++) {
     maptable[i] = nocasetable[nodiactable[i]];
     if (maptable[i] != nodiactable[nocasetable[i]]) {
-     Rprintf( "CL: tables inconsistent for #%d -> #%d\n", i, maptable[i]);
+      Rprintf( "CL: tables inconsistent for #%d -> #%d\n", i, maptable[i]);
     }
   }
 }
@@ -1676,7 +1676,7 @@ cl_string_maptable(CorpusCharset charset, int flags)
   int idiac = (flags & IGNORE_DIAC) != 0;
 
   if (charset == utf8) {
-   Rprintf( "CL: major error, cl_string_maptable called with invalid charset (UTF8).\n"
+    Rprintf( "CL: major error, cl_string_maptable called with invalid charset (UTF8).\n"
                     "    Mapping tables for ASCII have been supplied, but this means any \n"
                     "    characters outside the ASCII range will NOT be correct!\n");
     charset = ascii;
@@ -1697,10 +1697,10 @@ cl_string_maptable(CorpusCharset charset, int flags)
   }
   else {
     if (! identity_tab_init[charset]) {
-      maptable_init_identity((unsigned char *)identity_tab[charset]);
+      maptable_init_identity(identity_tab[charset]);
       identity_tab_init[charset] = 1;
     }
-    return (unsigned char *)identity_tab[charset];
+    return identity_tab[charset];
   }
   /*
    * old version of code follows...
@@ -1747,6 +1747,7 @@ cl_string_maptable(CorpusCharset charset, int flags)
 int
 cl_string_zap_controls(char *s, CorpusCharset charset, char replace, int zap_tabs, int zap_newlines)
 {
+  unsigned char *str = s;
   int i;
   /* number of replacements made */
   int num = 0;
@@ -1760,15 +1761,15 @@ cl_string_zap_controls(char *s, CorpusCharset charset, char replace, int zap_tab
   /* we don't currently do anything with charset because all CWB character sets are ascii-compatible.
      But the parameter is retained in case of a theoretical future charset that isn't.  */
 
-  for (; *s ; s++)
-    if (*s < 0x20 && zappable[*s]) {
+  for (; *str ; str++)
+    if (*str < 0x20 && zappable[*str]) {
       num++;
       if (replace)
-        *s = replace;
+        *str = replace;
       else
         /* it is safe to do a bare down-copy because
          * the C0s are all single-byte under UTF-8 */
-        for (i = 0 ; *(s+i) = *(s+i+1) ; i++)
+        for (i = 0 ; *(str+i) = *(str+i+1) ; i++)
           ;
     }
   return num;
@@ -1920,7 +1921,7 @@ cl_string_validate_encoding(char *s, CorpusCharset charset, int repair)
     break;
 
   default: /* unknown_charset, etc. */
-   Rprintf( "CL: Error, unrecognised CorpusCharset in cl_string_validate_encoding.\n");
+    Rprintf( "CL: Error, unrecognised CorpusCharset in cl_string_validate_encoding.\n");
     return 0;
 
   } /* end switch */
@@ -1947,7 +1948,7 @@ cl_string_reverse(const char *s, CorpusCharset charset)
   char *reversed;
 
   if (charset != utf8) {
-    reversed = cl_strdup((char*)s);
+    reversed = cl_strdup(s);
     g_strreverse((gchar *)s);
   }
   else {
@@ -2004,8 +2005,8 @@ cl_string_qsort_compare(const char *s1,
 
   /* preparatory string manipulation... */
   if (!flags && !reverse) {
-    comp1 = (char *)s1;
-    comp2 = (char *)s2;
+    comp1 = s1;
+    comp2 = s2;
   }
   else {
 
@@ -2251,7 +2252,7 @@ cl_string_canonical(char *s, CorpusCharset charset, int flags)
     /* UTF8 accent folding */
     if (idiac) {
       if (NULL == (string = g_utf8_normalize((gchar *)s, -1, G_NORMALIZE_NFD)) ) {
-       Rprintf( "CL: major error, invalid UTF8 string passed to cl_string_canonical...\n");
+        Rprintf( "CL: major error, invalid UTF8 string passed to cl_string_canonical...\n");
         return;
       }
 
@@ -2273,7 +2274,7 @@ cl_string_canonical(char *s, CorpusCharset charset, int flags)
     /* UTF8 precomposing -- always happens */
     /* precomposed = g_utf8_normalize(string, -1, G_NORMALIZE_NFC); */ /* -- duplicate call to g_utf8_normalize() removed */
     if (NULL == (precomposed = g_utf8_normalize(string, -1, G_NORMALIZE_NFC)) ) {
-     Rprintf( "CL: major error, invalid UTF8 string passed to cl_string_canonical...\n");
+      Rprintf( "CL: major error, invalid UTF8 string passed to cl_string_canonical...\n");
       return;
     }
 

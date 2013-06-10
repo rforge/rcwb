@@ -15,13 +15,13 @@
  *  WWW at http://www.gnu.org/copyleft/gpl.html).
  */
 
-/*#include <ctype.h>*/
+#include <ctype.h>
 #include <sys/types.h>
 
 
 #include "globals.h"
 
-#include "cl_endian.h"
+#include "endian.h"
 #include "macros.h"
 #include "storage.h"
 #include "fileutils.h"
@@ -100,7 +100,7 @@ creat_sort_lexicon(Component *lexsrt)
 
   /* read the contents of the lexidx component into the blob of the lexsrt component */
   if (!read_file_into_blob(lexidx->path, MALLOCED, sizeof(int), &(lexsrt->data))) {
-   Rprintf( "Can't open %s, can't create lexsrt component\n", lexidx->path);
+    Rprintf( "Can't open %s, can't create lexsrt component\n", lexidx->path);
     perror(lexidx->path);
     return 0;
   }
@@ -168,7 +168,7 @@ creat_freqs(Component *freqs)
   }
 
   if (!read_file_into_blob(lexidx->path, MALLOCED, sizeof(int), &(freqs->data))) {
-   Rprintf( "Can't open %s, can't create freqs component\n", lexidx->path);
+    Rprintf( "Can't open %s, can't create freqs component\n", lexidx->path);
     perror(lexidx->path);
     return 0;
   }
@@ -181,9 +181,9 @@ creat_freqs(Component *freqs)
   assert(corpus_fn != NULL);
 
   if ((fd = fopen(corpus_fn, "rb")) == NULL) {
-   Rprintf( "makecomps:creat_freqs(): Couldn't open corpus %s\n", corpus_fn);
+    Rprintf( "makecomps:creat_freqs(): Couldn't open corpus %s\n", corpus_fn);
     perror(corpus_fn);
-    rcqp_receive_error(2);
+    exit(2);
   }
 
   /* do the counts */
@@ -195,7 +195,7 @@ creat_freqs(Component *freqs)
       if ((ptr >= 0) && (ptr < freqs->size))
         freqs->data.data[ptr]++;
       else
-       Rprintf( ";;; makecomps:creat_freqs(): WARNING: index %d out of range\n", ptr);
+        Rprintf( ";;; makecomps:creat_freqs(): WARNING: index %d out of range\n", ptr);
     }
   } while (i == BUFSIZE);
   fclose(fd);
@@ -274,7 +274,7 @@ creat_rev_corpus(Component *revcorp)
   /* open REVCORP data file for writing */
   if ((revcorp_fd = fopen(revcorp->path, "wb")) == NULL) {
     perror(revcorp->path);
-    rcqp_receive_error(1);
+    exit(1);
   }
 
   /* NEW multi-pass algorithm.
@@ -284,8 +284,8 @@ creat_rev_corpus(Component *revcorp)
      */
 
   if (cl_debug) {
-   Rprintf( "\nCreating REVCORP component as '%s' ... \n", revcorp->path);
-   Rprintf( "Size = %d INTs,  Buffer Size = %ld INTs\n", datasize, bufsize);
+    Rprintf( "\nCreating REVCORP component as '%s' ... \n", revcorp->path);
+    Rprintf( "Size = %d INTs,  Buffer Size = %ld INTs\n", datasize, bufsize);
   }
 
   primus = 0;
@@ -299,7 +299,6 @@ creat_rev_corpus(Component *revcorp)
       /* increment secundus to fit as many IDs as possible into the buffer for this pass */
       f = cl_id2freq(attr, secundus);
       if (buf_used + f > bufsize) {
-        secundus--;
         break;
       }
       else {
@@ -307,11 +306,12 @@ creat_rev_corpus(Component *revcorp)
         buf_used += f;
       }
     }
+    secundus--; /* this is the last valid ID we're indexing in this pass */
 
     pass++;
     if (cl_debug) {
       double perc = (100.0 * secundus) / lexsize;
-     Rprintf( "Pass #%-3d (%6.2f%c complete)\n", pass, perc, '%');
+      Rprintf( "Pass #%-3d (%6.2f%c complete)\n", pass, perc, '%');
     }
 
     for (cpos = 0; cpos < datasize; cpos++) {
@@ -328,11 +328,11 @@ creat_rev_corpus(Component *revcorp)
 
     /* check pointers (i.e. observed frequencies vs. data from FREQS component) */
     ptr = buffer;
-    for (id = primus + 1; id < secundus; id++) {
+    for (id = primus + 1; id <= secundus; id++) {
       ptr += cl_id2freq(attr, id);
       if (ptr != ptab[id]) {
-       Rprintf( "Pointer inconsistency for id=%d. Aborting.\n", id);
-        rcqp_receive_error(1);
+        Rprintf( "Pointer inconsistency for id=%d. Aborting.\n", id);
+        exit(1);
       }
     }
 
@@ -349,8 +349,8 @@ creat_rev_corpus(Component *revcorp)
 
   /* finally, check amount of data read/written vs. expected */
   if ((ints_written != cpos) || (ints_written != datasize)) {
-   Rprintf( "Data size inconsistency: expected=%d, read=%d, written=%d.\n", datasize, cpos, ints_written);
-    rcqp_receive_error(1);
+    Rprintf( "Data size inconsistency: expected=%d, read=%d, written=%d.\n", datasize, cpos, ints_written);
+    exit(1);
   }
 
   /* free allocated memory */
@@ -418,9 +418,9 @@ creat_rev_corpus_idx(Component *revcidx)
    * */
 
   if (write_file_from_blob(revcidx->path, &(revcidx->data), 0) == 0) {
-   Rprintf( "Can't open %s for writing", revcidx->path);
+    Rprintf( "Can't open %s for writing", revcidx->path);
     perror(revcidx->path);
-    rcqp_receive_error(2);
+    exit(2);
   }
 
   return 1;

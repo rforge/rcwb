@@ -61,7 +61,7 @@ char **cc_compl_list = NULL;      /* list of possible completions */
 int cc_compl_list_size = 0;       /* number of completions in list */
 int cc_compl_list_allocated = 0;  /* number of entries allocated for list (incl. NULL terminator) */
 #define CC_COMPL_LIST_ALLOC_BLOCK 256 /* how many list cells to allocate at a time */
-
+#define RL_DEBUG 0
 
 /* initialise new completion list (size 0) without freeing previous list (which was deallocated by readline library) */
 void
@@ -76,8 +76,8 @@ cc_compl_list_init(void) {
 /* add string (must be alloc'ed by caller) to completion list */
 void
 cc_compl_list_add(char *string) {
-  if (cc_compl_list_size >= cc_compl_list_allocated) {
-    /* extend list if necessary */
+  if (cc_compl_list_size >= cc_compl_list_allocated - 1) {
+    /* extend list if necessary (NB: need to leave room for NULL marker at end of list) */
     cc_compl_list_allocated += CC_COMPL_LIST_ALLOC_BLOCK;
     cc_compl_list = (char **) cl_realloc(cc_compl_list, cc_compl_list_allocated * sizeof(char *));
   }
@@ -94,8 +94,6 @@ cc_compl_list_sort(const void *p1, const void *p2) {
   return result;
 }
 
-#define RL_DEBUG 0
-
 /* sort list and remove (& free) duplicates; returns pointer to list */
 char **
 cc_compl_list_sort_uniq(void) {
@@ -107,7 +105,7 @@ cc_compl_list_sort_uniq(void) {
     rl_attempted_completion_over = 1; /* so readline doesn't fall back to filename completion */
     cl_free(cc_compl_list);
 #if RL_DEBUG
-   Rprintf("\nRETURNING 0 COMPLETIONS.\n");
+    printf("\nRETURNING 0 COMPLETIONS.\n");
 #endif
     return NULL;
   }
@@ -136,9 +134,9 @@ cc_compl_list_sort_uniq(void) {
   cc_compl_list_size = mark + 1;
   cc_compl_list[cc_compl_list_size] = NULL;
 #if RL_DEBUG
- Rprintf("\nRETURNING %d COMPLETIONS:\n", cc_compl_list_size);
+  printf("\nRETURNING %d COMPLETIONS:\n", cc_compl_list_size);
   for (mark=0; cc_compl_list[mark]; mark++) {
-   Rprintf(" - %s\n", cc_compl_list[mark]);
+    printf(" - %s\n", cc_compl_list[mark]);
   }
 #endif
   return cc_compl_list;
@@ -153,13 +151,13 @@ cqp_custom_completion(const char *text, int start, int end) {
   Variable var;
   CorpusList *cl;
   char *prototype, *prefix;
-  char mother[128];
+  char mother[CL_MAX_LINE_LENGTH];
   char *real_name, *colon;
   int mother_len, real_len, prefix_len;
   char *completion;
 
 #if RL_DEBUG
- Rprintf("\n>> COMPLETING TEXT '%s'\n", text);
+  printf("\n>> COMPLETING TEXT '%s'\n", text);
 #endif
 
   /*
@@ -192,7 +190,7 @@ cqp_custom_completion(const char *text, int start, int end) {
     var = variables_iterator_next();
     while (var != NULL) {
 #if RL_DEBUG
-     Rprintf("Comparing variable $%s with prefix $%s\n", var->my_name, prefix);
+      printf("Comparing variable $%s with prefix $%s\n", var->my_name, prefix);
 #endif
       if (strncmp(prefix, var->my_name, prefix_len) == 0) { /* found variable matching prefix -> format and add */
         completion = cl_malloc(strlen(var->my_name) + 2);
@@ -235,7 +233,7 @@ cqp_custom_completion(const char *text, int start, int end) {
    */
   cc_compl_list_init();
   colon = strchr(text, ':');
-  if ((colon != NULL) && ((mother_len = colon - text) < 128)) {
+  if ((colon != NULL) && ((mother_len = colon - text) < CL_MAX_LINE_LENGTH)) {
     /* full subcorpus specifier: ''HGC:Last'' */
     strncpy(mother, text, mother_len);
     mother[mother_len] = '\0';
@@ -345,7 +343,7 @@ ensure_semicolon (char *line) {
 void
 readline_main(void)
 {
-  char prompt[512];
+  char prompt[CL_MAX_LINE_LENGTH];
   char *input = NULL;
 
   /* activate CQP's custom completion function */
@@ -368,8 +366,8 @@ readline_main(void)
       }
 
     if (highlighting) {
-     Rprintf(get_typeface_escape('n')); /* work around 'bug' in less which may not switch off display attributes when user exits */
-      rcqp_flush();
+      printf(get_typeface_escape('n')); /* work around 'bug' in less which may not switch off display attributes when user exits */
+      fflush(stdout);
     }
 
     if (silent) {
@@ -409,7 +407,7 @@ readline_main(void)
     save_unsaved_subcorpora();
 
   if (!silent) {
-   Rprintf("\nDone. Share and enjoy!\n");
+    printf("\nDone. Share and enjoy!\n");
   }
 
 }
@@ -433,8 +431,8 @@ main(int argc, char *argv[])
   which_app = cqp;
 
   if (!initialize_cqp(argc, argv)) {
-   Rprintf( "Can't initialize CQP\n");
-    rcqp_receive_error(1);
+    Rprintf( "Can't initialize CQP\n");
+    exit(1);
   }
 
   /* Test ANSI colours (if CQP was invoked with -C switch) */
@@ -454,14 +452,14 @@ main(int argc, char *argv[])
     char sc_colour[256];
     int i, j;
 
-   Rprintf("%s%sWelcome%s to %s%sC%s%sQ%s%sP%s -- ", green, bold, normal, red, bold, pink, bold, blue, bold, normal);
-   Rprintf("the %s Colourful %s Query %s Processor %s.\n", yellowBack, greenBack, cyanBack, normal);
+    printf("%s%sWelcome%s to %s%sC%s%sQ%s%sP%s -- ", green, bold, normal, red, bold, pink, bold, blue, bold, normal);
+    printf("the %s Colourful %s Query %s Processor %s.\n", yellowBack, greenBack, cyanBack, normal);
 
     for (i = 3; i <= 4; i++) {
-     Rprintf("[");
+      printf("[");
       for (j = 0; j < 8; j++) {
         sprintf(sc_colour, "\x1B[0;%d%dm", i,j);
-       Rprintf("%d%d: %sN%s%sB%s%sU%s%sS%s  ",
+        printf("%d%d: %sN%s%sB%s%sU%s%sS%s  ",
                i, j,
                sc_colour,
                sc_colour, bold,
@@ -469,11 +467,11 @@ main(int argc, char *argv[])
                sc_colour, standout,
                normal);
       }
-     Rprintf("]\n");
+      printf("]\n");
     }
 #else
-   Rprintf( "We're sorry, CQP's Colourful Mode is not available under Windows.\n");
-   Rprintf( "CQP will continue as normal without it...\n");
+    Rprintf( "We're sorry, CQP's Colourful Mode is not available under Windows.\n");
+    Rprintf( "CQP will continue as normal without it...\n");
     use_colour = 0;
 #endif
   } /* endif use_colour */
@@ -481,13 +479,13 @@ main(int argc, char *argv[])
   install_signal_handler();
 
   if (child_process) {
-   Rprintf("CQP version " VERSION "\n");
-    rcqp_flush();
+    printf("CQP version " VERSION "\n");
+    fflush(stdout);
   }
 
   if (batchmode) {
     if (batchfd == NULL)
-     Rprintf( "Can't open batch file\n");
+      Rprintf( "Can't open batch file\n");
     else
       cqp_parse_file(batchfd, 1);
   }

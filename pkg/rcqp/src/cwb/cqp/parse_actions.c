@@ -142,7 +142,7 @@ addHistoryLine(void)
 void
 resetQueryBuffer(void)
 {
-  /*  Rprintf( "+ Resetting Query Buffer\n"); */
+  /*   Rprintf( "+ Resetting Query Buffer\n"); */
   QueryBufferP = 0;
   QueryBuffer[0] = '\0';
   QueryBufferOverflow = 0;
@@ -184,7 +184,7 @@ in_CorpusCommand(char *id, CorpusList *cl)
     return NULL;
   }
   else {
-    (void) duplicate_corpus(cl, id, True);
+    duplicate_corpus(cl, id, True);
     
     last_cyc = Assignment;
     return current_corpus;
@@ -200,11 +200,11 @@ after_CorpusCommand(CorpusList *cl)
 {
 #if defined(DEBUG_QB)
   if (QueryBufferOverflow) 
-   Rprintf( "+ Query Buffer overflow.\n");
+    Rprintf( "+ Query Buffer overflow.\n");
   else if (QueryBuffer[0] == '\0')
-   Rprintf( "+ Query Buffer is empty.\n");
+    Rprintf( "+ Query Buffer is empty.\n");
   else
-   Rprintf( "Query buffer: >>%s<<\n", QueryBuffer);
+    Rprintf( "Query buffer: >>%s<<\n", QueryBuffer);
 #endif
 
   switch (last_cyc) {
@@ -217,10 +217,9 @@ after_CorpusCommand(CorpusList *cl)
         catalog_corpus(cl, NULL, 0, -1, GlobalPrintMode);
       }
       else if (!silent)
-       Rprintf("%d matches.%s\n",
+        printf("%d matches.%s\n",
                cl->size,
-               (cl->size > 0 ? " Use 'cat' to show."
-                : ""));
+               (cl->size > 0 ? " Use 'cat' to show." : ""));
     }
     query_corpus = NULL;
     
@@ -238,7 +237,7 @@ after_CorpusCommand(CorpusList *cl)
       if (autoshow && (cl->size > 0))
         catalog_corpus(cl, NULL, 0, -1, GlobalPrintMode);
       else if (!silent)
-       Rprintf("%d matches.%s\n",
+        printf("%d matches.%s\n",
                cl->size,
                (cl->size > 0 ? " Use 'cat' to show."
                 : ""));
@@ -260,7 +259,8 @@ after_CorpusCommand(CorpusList *cl)
 
 /**
  * This function is called after an UnnamedCorpusCommand rule is parsed.
- * Seems to be a tidying=upfunction.
+ *
+ * Seems to be a tidying-up function.
  *
  * @param cl  The result of the corpus-yielding command (first component of this syntax rule).
  * @return    Modified valuse of cl. May be NULL.
@@ -349,8 +349,8 @@ ActivateCorpus(CorpusList *cl)
   cqpmessage(Message, "CorpusActivate: %s", cl);
   
   if (inhibit_activation) {
-   Rprintf( "Activation prohibited\n");
-    rcqp_receive_error(1); /* hard way! */
+    Rprintf( "Activation prohibited\n");
+    exit(1); /* hard way! */
   }
   else {
     query_corpus = cl;
@@ -1058,9 +1058,9 @@ do_SearchPattern(Evaltree expr, /* $1 */
       searchstr = (char *)evaltree2searchstr(CurEnv->evaltree,
                                              &sslen);
       if (search_debug) {
-       Rprintf("Evaltree: \n");
+        printf("Evaltree: \n");
         print_evaltree(eep, CurEnv->evaltree, 0);
-       Rprintf("Search String: ``%s''\n", searchstr);
+        printf("Search String: ``%s''\n", searchstr);
       }
       
       if (searchstr && (strspn(searchstr, " ") < strlen(searchstr))) { /* i.e. searchstr does not match /^\s*$/ */
@@ -2631,7 +2631,7 @@ printSingleVariableValue(Variable v, int max_items)
   int i;
 
   if (v) {
-   Rprintf("$%s = \n", v->my_name);
+    printf("$%s = \n", v->my_name);
     if (max_items <= 0)
       max_items = v->nr_items;
 
@@ -2685,7 +2685,7 @@ do_printVariableSize(char *varName)
       if (!v->items[i].free)
         size++;
     }
-   Rprintf("$%s has %d entries\n", v->my_name, size);
+    printf("$%s has %d entries\n", v->my_name, size);
   }
   else {
     cqpmessage(Error, "%s: no such variable", varName);
@@ -2911,7 +2911,7 @@ do_size(CorpusList *cl, FieldType field)
               count++;
           }
         }
-       Rprintf("%d\n", count);
+        printf("%d\n", count);
       }
       else if (field == KeywordField) {
         int count = 0, i;
@@ -2921,18 +2921,18 @@ do_size(CorpusList *cl, FieldType field)
               count++;
           }
         }
-       Rprintf("%d\n", count);
+        printf("%d\n", count);
       }
       else {                        /* must be Match or MatchEnd then */
-       Rprintf("%d\n", cl->size);
+        printf("%d\n", cl->size);
       }
     }
     else {
-     Rprintf("%d\n", cl->size);
+      printf("%d\n", cl->size);
     }
   }
   else {
-   Rprintf("0\n");                /* undefined corpus */
+    printf("0\n");                /* undefined corpus */
   }
 }
 

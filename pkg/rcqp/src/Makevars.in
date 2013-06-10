@@ -87,7 +87,7 @@ CQI_C_OBJ = $(CQI_C_SRC:.c=.o)
 
 CL_C_SRC = cwb/cl/globals.c cwb/cl/macros.c cwb/cl/list.c cwb/cl/lexhash.c cwb/cl/bitfields.c \
 	cwb/cl/storage.c cwb/cl/fileutils.c cwb/cl/special-chars.c cwb/cl/regopt.c cwb/cl/corpus.c \
-	cwb/cl/attributes.c cwb/cl/makecomps.c cwb/cl/cdaccess.c cwb/cl/bitio.c cwb/cl/cl_endian.c \
+	cwb/cl/attributes.c cwb/cl/makecomps.c cwb/cl/cdaccess.c cwb/cl/bitio.c \
 	cwb/cl/compression.c cwb/cl/binsert.c cwb/cl/class-mapping.c
 CL_C_H = $(CL_C_SRC:.c=.h)
 CL_C_OBJ = $(CL_C_SRC:.c=.o)

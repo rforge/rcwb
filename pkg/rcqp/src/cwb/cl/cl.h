@@ -75,7 +75,9 @@
  *
  *   1.5                SETTING CL CONFIG VARIABLES
  *
- *   1.6                MISCELLANEOUS UTILITIES
+ *   1.6                CONSTANTS
+ *
+ *   1.7                MISCELLANEOUS UTILITIES
  *
  * SECTION 2          THE CORE CL LIBRARY (DATA ACCESS)
  *
@@ -123,8 +125,7 @@
 #define _cwb_cl_h
 
 #include <strings.h>                /* for size_t */
-#include <stdio.h>
-#include "../../makeRCompatible.h"
+
 
 
 /*
@@ -274,13 +275,24 @@ void cl_set_memory_limit(int megabytes);  /* 0 or less turns limit off */
 
 /*
  *
- * SECTION 1.6 -- MISCELLANEOUS UTILITIES
+ * SECTION 1.6 -- CONSTANTS
  *
  */
 
 /*
- *  misc CL utility functions
+ *  various constants describing size limits in CWB
  */
+
+/**
+ * Maximum size of a CWB corpus.
+ *
+ * This is the upper limit on the size of a CWB corpus on 64-bit platforms;
+ * for 32-bit versions of CWB, much tighter limits apply.
+ * cwb-encode will abort once this limit has been reaching, discarding any
+ * further input data. The precise value of the limit is 2^32 - 1 tokens,
+ * i.e. hex 0x7FFFFFFF and decimal 2147483647.
+ */
+#define CL_MAX_CORPUS_SIZE 2147483647
 
 /**
  * General string buffer size constant.
@@ -293,6 +305,7 @@ void cl_set_memory_limit(int megabytes);  /* 0 or less turns limit off */
  * cl_strcpy() will copy this many bytes at most.
  */
 #define CL_MAX_LINE_LENGTH 4096
+
 /**
  * String buffer size constant (for filenames).
  *
@@ -301,6 +314,19 @@ void cl_set_memory_limit(int megabytes);  /* 0 or less turns limit off */
  * be shorter than CL_MAX_LINE_LENGTH.
  */
 #define CL_MAX_FILENAME_LENGTH 1024
+
+
+
+
+/*
+ *
+ * SECTION 1.7 -- MISCELLANEOUS UTILITIES
+ *
+ */
+
+/*
+ *  misc CL utility functions
+ */
 
 /* CL-specific version of strcpy. Don't use unless you know what you're doing. */
 char *cl_strcpy(char *buf, const char *src);
@@ -322,14 +348,14 @@ char *cl_xml_entity_decode(char *s); /* removes the four default XML entities fr
  * is almost certainly too lax.
  *
  * @param c  Character to check. (It is expected to be a char,
- *           so is typecase to unsigned char for comparison with
+ *           so is typecast to unsigned char for comparison with
  *           upper-128 hex values.)
  */
 #define cl_xml_is_name_char(c)  ( ( c >= 'A'  && c <= 'Z')  ||       \
                                   ( c >= 'a'  && c <= 'z')  ||       \
                                   ( c >= '0'  && c <= '9')  ||       \
                                   (    (unsigned char) c >= 0x80     \
-                                    && (unsigned char) c <= 0xff     \
+                                  /* && (unsigned char) c <= 0xff */ \
                                   ) ||                               \
                                   ( c == '-') ||                     \
                                   ( c == '_')                        \
@@ -465,6 +491,9 @@ int cl_delete_attribute(Attribute *attribute);
 int cl_sequence_compressed(Attribute *attribute);
 int cl_index_compressed(Attribute *attribute);
 
+/* get the Corpus object of which the Attribute is a daughter */
+Corpus *cl_attribute_mother_corpus(Attribute *attribute);
+
 /* attribute access functions: lexicon access (positional attributes) */
 char *cl_id2str(Attribute *attribute, int id);
 int cl_str2id(Attribute *attribute, char *id_string);
@@ -596,7 +625,7 @@ int cl_cpos2alg2cpos_oldstyle(Attribute *attribute,
  *  The DynCallResult object (needed to allocate space for dynamic function arguments)
  */
 typedef struct _DCR {
-  int type;              /**< Type of DynCallResult, indicated by one of the  ATTAT_x macro constants*/
+  int type;              /**< Type of DynCallResult, indicated by one of the ATTAT_x macro constants*/
   union {
     int intres;
     char *charres;
@@ -849,7 +878,7 @@ typedef struct _cl_lexhash *cl_lexhash;
  * Unlike most underlying structures, this is public in the CL API.
  */
 typedef struct _cl_lexhash_entry {
-  char *key;                        /**< hash key == token */
+  char *key;                        /**< hash key == form of tokens */
   unsigned int freq;                /**< frequency of this type */
   int id;                           /**< the id code of this type */
   /**

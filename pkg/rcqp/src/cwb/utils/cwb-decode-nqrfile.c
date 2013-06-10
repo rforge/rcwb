@@ -102,7 +102,7 @@ nqrfile_print_info(FILE *fd, int print_header)
     /* read the subcorpus */
     
     if (len != fread(field, 1, len, fd)) {
-     Rprintf( "Read error while reading in data from subcorpus file\n");
+      Rprintf( "Read error while reading in data from subcorpus file\n");
       return 0;
     }
     else if (*((int *)field) == SUBCORPMAGIC || *((int *)field) == SUBCORPMAGIC+1) {
@@ -139,23 +139,23 @@ nqrfile_print_info(FILE *fd, int print_header)
       else {
         memcpy(&size, p, sizeof(int));
         p += sizeof(int);
-       Rprintf( "Note: new subcorpus format\n");
+        Rprintf( "Note: new subcorpus format\n");
       }
 
       if (print_header) {
-       Rprintf("REGISTRY %s\n", registry);
-       Rprintf("O_NAME   %s\n", o_name);
-       Rprintf("SIZE     %d\n", size);
+        printf("REGISTRY %s\n", registry);
+        printf("O_NAME   %s\n", o_name);
+        printf("SIZE     %d\n", size);
       }
 
       range = (struct range_t *) p;
 
       for (j = 0; j < size; j++)
-       Rprintf("%d\t%d\n",
+        printf("%d\t%d\n",
                range[j].start, range[j].end);
     }
     else {
-     Rprintf( "Error: Magic number incorrect in subcorpus file!\n");
+      Rprintf( "Error: Magic number incorrect in subcorpus file!\n");
       return 0;
     }
       

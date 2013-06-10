@@ -88,7 +88,7 @@ char *cregin_name = "";
 /**
  * Buffer for an error message. {Used in registry parser???}
  */
-char errmsg[MAX_LINE_LENGTH];
+char errmsg[CL_MAX_LINE_LENGTH];
 
 
 
@@ -193,7 +193,7 @@ find_corpus(char *registry_dir, char *registry_name)
 FILE *
 find_corpus_registry(char *registry_dir, char *registry_name, char **real_registry_dir)
 {
-  char full_name[MAX_LINE_LENGTH];
+  char full_name[CL_MAX_LINE_LENGTH];
 
   int re_p, ins_p, p, start_of_entry, end_of_entry;
 
@@ -290,7 +290,8 @@ check_access_conditions(Corpus *corpus, int verbose)
   /* get password data only if we have user / group access restrictions */
   if (corpus->userAccessList || corpus->groupAccessList) {
     /*     pwd = getpwuid(getuid()); */
-    Rprintf(
+    fprintf(
+        stderr,
         "CL Error: Sorry, user/group access restrictions are disabled due to incompatibilities.\n");
     if (pwd == NULL) {
       perror("getpwuid(getuid()): can't get user information");
@@ -326,12 +327,13 @@ check_access_conditions(Corpus *corpus, int verbose)
       for (i = 0; i < nr_groups; i++) {
 
         /*      grpent = getgrgid(gidset[i]); */
-        Rprintf(
+        fprintf(
+            stderr,
             "CL Error: Sorry, user/group access restrictions are disabled due to incompatibilities.\n");
 
         if (grpent == NULL) {
           perror("getgrgid(2): ");
-         Rprintf( "Can't get group information for gid %d\n",
+          Rprintf( "Can't get group information for gid %d\n",
               (int) gidset[i]);
           access_ok = 0;
         }
@@ -355,12 +357,12 @@ check_access_conditions(Corpus *corpus, int verbose)
 #if 0
       IDList l;
 
-     Rprintf(
+      Rprintf(
           "The corpus ``%s'' may be used on the following systems only:\n",
           corpus->id ? corpus->id : "(unknown)");
 
       for (l = corpus->hostAccessList; l; l = l->next) {
-       Rprintf( "\t%s\n", l->string ? l->string : "(null)");
+        Rprintf( "\t%s\n", l->string ? l->string : "(null)");
       }
 #endif
     }
@@ -370,7 +372,7 @@ check_access_conditions(Corpus *corpus, int verbose)
   }
 
   if (!access_ok) {
-   Rprintf( "User ``%s'' is not authorized to access corpus ``%s''\n",
+    Rprintf( "User ``%s'' is not authorized to access corpus ``%s''\n",
         (pwd && pwd->pw_name) ? pwd->pw_name : "(unknown)", corpus->name);
   }
 
@@ -404,7 +406,7 @@ cl_new_corpus(char *registry_dir, char *registry_name)
   /* new function replaces call to cl_string_canonical ... */
   cl_id_tolower(canonical_name);
   if (!cl_id_validate(canonical_name)) {
-   Rprintf( "cl_new_corpus: <%s> is not a valid corpus name\n", registry_name);
+    Rprintf( "cl_new_corpus: <%s> is not a valid corpus name\n", registry_name);
   }
 
   /* ------------------------------------------------------------------ */
@@ -422,7 +424,7 @@ cl_new_corpus(char *registry_dir, char *registry_name)
     cregin = find_corpus_registry(registry_dir, canonical_name, &real_registry_name);
 
     if (cregin == NULL) {
-     Rprintf( "cl_new_corpus: can't locate <%s> in %s\n", registry_name, registry_dir);
+      Rprintf( "cl_new_corpus: can't locate <%s> in %s\n", registry_name, registry_dir);
     }
     else {
       cregrestart(cregin);
@@ -437,7 +439,8 @@ cl_new_corpus(char *registry_dir, char *registry_name)
           loaded_corpora = corpus;
           /* check whether ID field corresponds to name of registry file */
           if (corpus->id && (strcmp(corpus->id, canonical_name) != 0)) {
-            Rprintf(
+            fprintf(
+                stderr,
                 "CL warning: ID field '%s' does not match name of registry file %s/%s\n",
                 corpus->id, real_registry_name, canonical_name);
           }
@@ -540,6 +543,8 @@ cl_delete_corpus(Corpus *corpus)
 
 /**
  * Prints a description of the corpus to STDOUT.
+ *
+ * TODO might be nice to have this function offer an option of XML-style output.
  */
 void
 describe_corpus(Corpus *corpus)
@@ -548,24 +553,24 @@ describe_corpus(Corpus *corpus)
 
   assert(corpus != NULL);
 
- Rprintf("\n\n-------------------- CORPUS SETUP ---------------------\n\n");
+  printf("\n\n-------------------- CORPUS SETUP ---------------------\n\n");
 
- Rprintf("ID:\t%s\n", corpus->id ? corpus->id : "(null)");
- Rprintf("Name:\t%s\n", corpus->name ? corpus->name : "(null)");
- Rprintf("Path:\t%s\n", corpus->path ? corpus->path : "(null)");
- Rprintf("Info:\t%s\n", corpus->info_file ? corpus->info_file : "(null)");
+  printf("ID:\t%s\n", corpus->id ? corpus->id : "(null)");
+  printf("Name:\t%s\n", corpus->name ? corpus->name : "(null)");
+  printf("Path:\t%s\n", corpus->path ? corpus->path : "(null)");
+  printf("Info:\t%s\n", corpus->info_file ? corpus->info_file : "(null)");
 
- Rprintf("\nRegistry Directory:\t%s\n",
+  printf("\nRegistry Directory:\t%s\n",
       corpus->registry_dir ? corpus->registry_dir : "(null)");
- Rprintf("Registry Name:     \t%s\n\n",
+  printf("Registry Name:     \t%s\n\n",
       corpus->registry_name ? corpus->registry_name : "(null)");
 
- Rprintf("Attributes:\n");
+  printf("Attributes:\n");
   for (attr = (Attribute *) (corpus->attributes); attr != NULL; attr
       = (Attribute *) (attr->any.next))
     describe_attribute(attr);
 
- Rprintf("\n\n------------------------- END -------------------------\n\n");
+  printf("\n\n------------------------- END -------------------------\n\n");
 }
 
 /* ---------------------------------------------------------------------- */
@@ -674,7 +679,7 @@ cl_first_corpus_property(Corpus *corpus)
  * (The corpus properties iterator / property datatype is public.)
  *
  * @param prop      The current property.
- * @return          The next property on the list.
+ * @return          The next property on the list, or NULL if there isn't one.
  *
  */
 CorpusProperty
@@ -847,7 +852,7 @@ add_corpus_property(Corpus *corpus, char *property, char *value)
   int i;
 
   if (cl_corpus_property(corpus, property) != NULL) {
-   Rprintf(
+    Rprintf(
         "REGISTRY WARNING (%s/%s): re-defintion of property '%s' (ignored)\n",
         cregin_path, cregin_name, property);
   }

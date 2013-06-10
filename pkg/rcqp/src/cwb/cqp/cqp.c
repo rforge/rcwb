@@ -39,6 +39,7 @@
 
 #include "parser.tab.h"
 
+
 /** File handle used by the CQP-query-language parser. */
 extern FILE *yyin;
 /** Activates the CQP-query-language parser. */
@@ -93,7 +94,7 @@ static void
 sigINT_signal_handler(int signum)
 {
   if (EvaluationIsRunning) {
-   Rprintf( "** Aborting evaluation ... (press Ctrl-C again to exit CQP)\n");
+    Rprintf( "** Aborting evaluation ... (press Ctrl-C again to exit CQP)\n");
     EvaluationIsRunning = 0;
   }
   signal_handler_is_installed = 0;
@@ -142,7 +143,7 @@ initialize_cqp(int argc, char **argv)
   char *home = NULL;
   char *homedrive = NULL;
   char *homepath = NULL;
-  char init_file_fullname[256];
+  char init_file_fullname[CL_MAX_FILENAME_LENGTH];
 
   /* file handle for initialisation files, if any */
   FILE *cqprc;
@@ -167,11 +168,10 @@ initialize_cqp(int argc, char **argv)
   /* parse program options */
   parse_options(argc, argv);
 
-  /* let's always run NULL unbuffered */
-  /*  if (batchmode || rangeoutput || insecure || !isatty(fileno(NULL))) */
-/*  if (setvbuf(NULL, NULL, _IONBF, 0) != 0)
-    perror("unbuffer NULL");
-    */
+  /* let's always run stdout unbuffered */
+  /*  if (batchmode || rangeoutput || insecure || !isatty(fileno(stdout))) */
+  if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
+    perror("unbuffer stdout");
 
   yydebug = parser_debug;
 
@@ -219,18 +219,18 @@ initialize_cqp(int argc, char **argv)
 
         reading_cqprc = 1;        /* not good for very much, really */
         if (!cqp_parse_file(cqprc, 1)) {
-         Rprintf( "Parse errors while reading %s, exiting.\n",
+          Rprintf( "Parse errors while reading %s, exiting.\n",
                   init_file_fullname);
-          rcqp_receive_error(1);
+          exit(1);
         }
         reading_cqprc = 0;
 
         /* fclose(cqprc);  was already closed by cqp_parse_file!! */
       }
       else if (cqp_init_file) {
-       Rprintf( "Can't read initialization file %s\n",
+        Rprintf( "Can't read initialization file %s\n",
                 init_file_fullname);
-        rcqp_receive_error(1);
+        exit(1);
       }
     }
   }
@@ -257,18 +257,18 @@ initialize_cqp(int argc, char **argv)
 
         reading_cqprc = 1;        /* not good for very much, really */
         if (!cqp_parse_file(cqprc, 1)) {
-         Rprintf( "Parse errors while reading %s, exiting.\n",
+          Rprintf( "Parse errors while reading %s, exiting.\n",
                   init_file_fullname);
-          rcqp_receive_error(1);
+          exit(1);
         }
         reading_cqprc = 0;
 
         /* fclose(cqprc);  was already closed by cqp_parse_file!! */
       }
       else if (macro_init_file) {
-       Rprintf( "Can't read macro initialization file %s\n",
+        Rprintf( "Can't read macro initialization file %s\n",
                 init_file_fullname);
-        rcqp_receive_error(1);
+        exit(1);
       }
     }
   } /* ends if (!child_process || (batchmode ... ) ... ) */
@@ -277,14 +277,14 @@ initialize_cqp(int argc, char **argv)
 
   /* load the default corpus. */
   if ((default_corpus) && !set_current_corpus_name(default_corpus, 0)) {
-   Rprintf( "Can't set current corpus to default corpus %s, exiting.\n",
+    Rprintf( "Can't set current corpus to default corpus %s, exiting.\n",
             default_corpus);
-    rcqp_receive_error(1);
+    exit(1);
   }
 
 #ifndef __MINGW__
   if (signal(SIGPIPE, SIG_IGN) == SIG_IGN) {
-    /*Rprintf( "Couldn't install SIG_IGN for SIGPIPE signal\n"); */
+    /* Rprintf( "Couldn't install SIG_IGN for SIGPIPE signal\n"); */
     /* -- be silent about not being able to ignore the SIGPIPE signal, which often happens in slave mode */
     /* note that SIGPIPE does not seem to exist in signal.h under MinGW */
     signal(SIGPIPE, SIG_DFL);
@@ -330,21 +330,21 @@ cqp_parse_file(FILE *fd, int exit_on_parse_errors)
     while (ok && !feof(fd) && !exit_cqp) {
       if (child_process && ferror(fd)) {
         /* in child mode, abort on read errors (to avoid hang-up when parent has died etc.) */
-       Rprintf( "READ ERROR -- aborting CQP session\n");
+        Rprintf( "READ ERROR -- aborting CQP session\n");
         break;
       }
 
       if (!quiet) {
         if (current_corpus != NULL)
           if (STREQ(current_corpus->name, current_corpus->mother_name))
-           Rprintf("%s> ", current_corpus->name);
+            printf("%s> ", current_corpus->name);
           else
-           Rprintf("%s:%s[%d]> ",
+            printf("%s:%s[%d]> ",
                    current_corpus->mother_name,
                    current_corpus->name,
                    current_corpus->size);
         else
-         Rprintf("[no corpus]> ");
+          printf("[no corpus]> ");
       }
 
       cqp_status = yyparse();
@@ -352,15 +352,15 @@ cqp_parse_file(FILE *fd, int exit_on_parse_errors)
         ok = 0;
 
       if (child_process && (cqp_status != 0) && !reading_cqprc) {
-       Rprintf( "PARSE ERROR\n"); /*  */
+        Rprintf( "PARSE ERROR\n"); /*  */
       }
       if (child_process && !reading_cqprc) {
 #if 0
         /* empty lines after commands in child mode have been disabled as of version 2.2.b94 */
-       Rprintf("\n");                /* print empty line as separator in child mode */
+        printf("\n");                /* print empty line as separator in child mode */
 #endif
-        rcqp_flush();
-        rcqp_flush();
+        fflush(stdout);
+        fflush(stderr);
       }
 
     } /* endwhile */
@@ -377,7 +377,7 @@ cqp_parse_file(FILE *fd, int exit_on_parse_errors)
     return ok;
   } /* endif (cqp_file_p < MAXCQPFILES) */
   else {
-   Rprintf( "CQP: too many nested files (%d)\n", cqp_file_p);
+    Rprintf( "CQP: too many nested files (%d)\n", cqp_file_p);
     return 0;
   }
 }

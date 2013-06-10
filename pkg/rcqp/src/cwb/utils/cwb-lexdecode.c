@@ -30,6 +30,7 @@ char *progname;
 int print_nr = 0;           /**< boolean: flag whether we should print line numbers */
 int print_freqs = 0;        /**< boolean: print the frequencies of the words? */
 int print_len = 0;          /**< boolean: print the word length s? */
+int dont_pad_cols = 0;      /**< boolean: omit padding spaces on numeric columns? */
 int sort = 0;               /**< boolean: print the lexicon in a sorted order? */
 int input_are_numbers = 0;  /**< boolean: read lexicon IDs from file? */
 int show_size_only = 0;     /**< boolean: do_show should just print the size of the lexicon and exit? */
@@ -52,6 +53,7 @@ char *input_filename = NULL;
 void
 lexdecode_print_item_info(Attribute *attr, int id, char *fallback_s)
 {
+  char *format;
   char *item;
   int freq, slen;
 
@@ -72,10 +74,11 @@ lexdecode_print_item_info(Attribute *attr, int id, char *fallback_s)
     item = NULL;
   }
 
-  if (print_nr)   Rprintf("%7d\t", id);
-  if (print_freqs)Rprintf("%7d\t", freq);
-  if (print_len)  Rprintf("%7d\t", slen);
- Rprintf("%s\n", item ? item : fallback_s);
+  format = (dont_pad_cols ? "%d\t" : "%7d\t" );
+  if (print_nr)    printf(format, id);
+  if (print_freqs) printf(format, freq);
+  if (print_len)   printf(format, slen);
+  printf("%s\n", item ? item : fallback_s);
 }
 
 /**
@@ -102,7 +105,7 @@ lexdecode_show(char *attr_name, char *rx, int rx_flags)
   Attribute *attr = NULL;
 
   if ((attr = cl_new_attribute(corpus, attr_name, ATT_POS)) == NULL) {
-   Rprintf( "Attribute %s.%s does not exist. Aborted.\n",
+    Rprintf( "Attribute %s.%s does not exist. Aborted.\n",
             corpus_id, attr_name);
     rcqp_receive_error(1);
   }
@@ -120,8 +123,8 @@ lexdecode_show(char *attr_name, char *rx, int rx_flags)
   }
 
   if (show_size_only) {
-   Rprintf("Tokens:\t%d\n", attr_size);
-   Rprintf("Types:\t%d\n", size);
+    printf("Tokens:\t%d\n", attr_size);
+    printf("Types:\t%d\n", size);
   }
   else {                        /* without -S option */
 
@@ -139,7 +142,7 @@ lexdecode_show(char *attr_name, char *rx, int rx_flags)
 
         len = strlen(s);
         if (len <= 0) {
-         Rprintf( "%s Warning: read empty string from input file (ignored)\n",
+          Rprintf( "%s Warning: read empty string from input file (ignored)\n",
                   progname);
         }
         else {
@@ -154,7 +157,7 @@ lexdecode_show(char *attr_name, char *rx, int rx_flags)
             i = cl_str2id(attr, s);
 
           if ((i < 0) && (!freq_0_if_unknown))
-             Rprintf( "%s Warning: ``%s'' not found in lexicon (ignored)\n", progname, s);
+              Rprintf( "%s Warning: ``%s'' not found in lexicon (ignored)\n", progname, s);
             else
               lexdecode_print_item_info(attr, i, (input_are_numbers) ? NULL : s);
         }
@@ -203,27 +206,28 @@ lexdecode_show(char *attr_name, char *rx, int rx_flags)
 void
 lexdecode_usage(void)
 {
- Rprintf( "\n");
- Rprintf( "Usage:  %s [options] <corpus>\n\n", progname);
- Rprintf( "Prints the lexicon (or part of it) of a positional attribute on NULL,\n");
- Rprintf( "optionally with frequency information. The output line format is\n");
- Rprintf( "  [ <lexicon id> TAB ] [ <frequency> TAB ] [<length> TAB ] <string>\n\n");
- Rprintf( "Options:\n");
- Rprintf( "  -P <att>  use p-attribute <att> [default: word]\n");
- Rprintf( "  -S        only show lexicon and corpus size\n");
- Rprintf( "  -r <dir>  set registry directory\n");
- Rprintf( "  -f        show frequency (number of occurrences)\n");
- Rprintf( "  -n        show internal lexicon ID\n");
- Rprintf( "  -l        show length of annotation string\n");
- Rprintf( "  -s        print in (lexically) sorted order\n");
- Rprintf( "  -p <rx>   show lexicon entries matching regexp <rx> only\n");
- Rprintf( "  -c        [with -p <rx>] ignore case\n");
- Rprintf( "  -d        [with -p <rx>] ignore diacritics\n");
- Rprintf( "  -F <file> lookup strings read from <file> ('-' for stdin)\n");
- Rprintf( "  -0        [with -F <file>] show non-existing strings with frequency 0\n");
- Rprintf( "  -N        [with -F <file>] read lexicon IDs from <file>\n");
- Rprintf( "  -h        this help page\n\n");
- Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
+  Rprintf( "\n");
+  Rprintf( "Usage:  %s [options] <corpus>\n\n", progname);
+  Rprintf( "Prints the lexicon (or part of it) of a positional attribute on stdout,\n");
+  Rprintf( "optionally with frequency information. The output line format is\n");
+  Rprintf( "  [ <lexicon id> TAB ] [ <frequency> TAB ] [<length> TAB ] <string>\n\n");
+  Rprintf( "Options:\n");
+  Rprintf( "  -P <att>  use p-attribute <att> [default: word]\n");
+  Rprintf( "  -S        only show lexicon and corpus size\n");
+  Rprintf( "  -r <dir>  set registry directory\n");
+  Rprintf( "  -f        show frequency (number of occurrences)\n");
+  Rprintf( "  -n        show internal lexicon ID\n");
+  Rprintf( "  -l        show length of annotation string\n");
+  Rprintf( "  -b        do not pad columns with space characters\n");
+  Rprintf( "  -s        print in (lexically) sorted order\n");
+  Rprintf( "  -p <rx>   show lexicon entries matching regexp <rx> only\n");
+  Rprintf( "  -c        [with -p <rx>] ignore case\n");
+  Rprintf( "  -d        [with -p <rx>] ignore diacritics\n");
+  Rprintf( "  -F <file> lookup strings read from <file> ('-' for stdin)\n");
+  Rprintf( "  -0        [with -F <file>] show non-existing strings with frequency 0\n");
+  Rprintf( "  -N        [with -F <file>] read lexicon IDs from <file>\n");
+  Rprintf( "  -h        this help page\n\n");
+  Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
   rcqp_receive_error(2);
 }
 
@@ -273,7 +277,7 @@ main(int argc, char **argv) {
       if (registry_directory == NULL)
         registry_directory = optarg;
       else {
-       Rprintf( "%s: -r option used twice\n", progname);
+        Rprintf( "%s: -r option used twice\n", progname);
         rcqp_receive_error(2);
       }
       break;
@@ -288,6 +292,10 @@ main(int argc, char **argv) {
 
     case 'l':                        /* l: print word length */
       print_len++;
+      break;
+
+    case 'b':                        /* b: omit space passing on numberic columns */
+      dont_pad_cols++;
       break;
 
     case 's':                        /* s: print sorted */
@@ -338,14 +346,14 @@ main(int argc, char **argv) {
     corpus_id = argv[optind++];
 
     if ((corpus = cl_new_corpus(registry_directory, corpus_id)) == NULL) {
-     Rprintf( "%s: Corpus %s not found in registry %s . Aborted.\n",
+      Rprintf( "%s: Corpus %s not found in registry %s . Aborted.\n",
               progname, corpus_id,
               (registry_directory ? registry_directory : central_corpus_directory()));
       rcqp_receive_error(1);
     }
 
     if (optind < argc) {
-     Rprintf( "Too many arguments. Try \"%s -h\" for more information.\n",
+      Rprintf( "Too many arguments. Try \"%s -h\" for more information.\n",
               progname);
       rcqp_receive_error(2);
     }
@@ -355,7 +363,7 @@ main(int argc, char **argv) {
     cl_delete_corpus(corpus);
   }
   else {
-   Rprintf( "No corpus specified. Try \"%s -h\" for more information.\n",
+    Rprintf( "No corpus specified. Try \"%s -h\" for more information.\n",
             progname);
     rcqp_receive_error(2);
   }

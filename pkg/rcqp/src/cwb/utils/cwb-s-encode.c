@@ -42,7 +42,7 @@
 
 /* byte order conversion functions taken from Corpus Library */
 #include "../cl/globals.h"
-#include "../cl/cl_endian.h"
+#include "../cl/endian.h"
 #include "../cl/macros.h"
 #include "../cl/storage.h"      /* for NwriteInt() */
 #include "../cl/lexhash.h"
@@ -51,13 +51,13 @@
 
 #define UMASK              0644
 
-/**Rprintf format string for path of file storing ranges of given structural attribute */
+/** printf format string for path of file storing ranges of given structural attribute */
 #define RNG_RNG "%s" SUBDIR_SEP_STRING "%s.rng"
 
-/**Rprintf format string for path of attribute value index of a given structural attribute */
+/** printf format string for path of attribute value index of a given structural attribute */
 #define RNG_AVX "%s" SUBDIR_SEP_STRING "%s.avx"
 
-/**Rprintf format string for path of attribute values of a given structural attribute */
+/** printf format string for path of attribute values of a given structural attribute */
 #define RNG_AVS "%s" SUBDIR_SEP_STRING "%s.avs"
 
 
@@ -444,26 +444,26 @@ sencode_check_set(char *annot)
 void
 sencode_usage(void)
 {
- Rprintf( "\n");
- Rprintf( "Usage:  %s [options] (-S <att> | -V <att>)\n", progname);
- Rprintf( "\n");
- Rprintf( "Adds s-attributes with computed start and end points to a corpus\n");
- Rprintf( "\n");
- Rprintf( "Options:\n");
- Rprintf( "  -B        strip leading/trailing blanks from annotations\n");
- Rprintf( "  -d <dir>  directory for output files\n");
- Rprintf( "  -f <file> read input from <file> [default: stdin]\n");
- Rprintf( "  -M        create list of regions in memory (resolving overlaps)\n");
- Rprintf( "  -r <dir>  set registry directory <dir>\n");
- Rprintf( "  -C <id>   work on corpus <id> (with -a option)\n");
- Rprintf( "  -a        add to existing annotation (resolving overlaps, implies -M)\n");
- Rprintf( "  -m        treat annotations as feature set (or 'multi-value') attribute\n");
- Rprintf( "  -s        (with -m) check that format of set annotations is consistent\n");
- Rprintf( "  -q        silent mode ('be quiet')\n");
- Rprintf( "  -D        debug mode\n");
- Rprintf( "  -S <att>  generate s-attribute <att>\n");
- Rprintf( "  -V <att>  generate s-attribute <att> with annotations\n");
- Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
+  Rprintf( "\n");
+  Rprintf( "Usage:  %s [options] (-S <att> | -V <att>)\n", progname);
+  Rprintf( "\n");
+  Rprintf( "Adds s-attributes with computed start and end points to a corpus\n");
+  Rprintf( "\n");
+  Rprintf( "Options:\n");
+  Rprintf( "  -B        strip leading/trailing blanks from annotations\n");
+  Rprintf( "  -d <dir>  directory for output files\n");
+  Rprintf( "  -f <file> read input from <file> [default: stdin]\n");
+  Rprintf( "  -M        create list of regions in memory (resolving overlaps)\n");
+  Rprintf( "  -r <dir>  set registry directory <dir>\n");
+  Rprintf( "  -C <id>   work on corpus <id> (with -a option)\n");
+  Rprintf( "  -a        add to existing annotation (resolving overlaps, implies -M)\n");
+  Rprintf( "  -m        treat annotations as feature set (or 'multi-value') attribute\n");
+  Rprintf( "  -s        (with -m) check that format of set annotations is consistent\n");
+  Rprintf( "  -q        silent mode ('be quiet')\n");
+  Rprintf( "  -D        debug mode\n");
+  Rprintf( "  -S <att>  generate s-attribute <att>\n");
+  Rprintf( "  -V <att>  generate s-attribute <att> with annotations\n");
+  Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
   rcqp_receive_error(2);
 }
 
@@ -591,7 +591,7 @@ sencode_parse_options(int argc, char **argv)
       /* f: read input from file */
     case 'f':
       if (text_fd) {
-       Rprintf( "Error: -f option used twice\n\n");
+        Rprintf( "Error: -f option used twice\n\n");
         rcqp_receive_error(1);
       }
       if ((text_fd = fopen(optarg, "r")) == NULL) {
@@ -640,7 +640,7 @@ sencode_parse_options(int argc, char **argv)
     case 'S':
       sencode_declare_new_satt(optarg, directory, 0);
       if (optind < argc) {
-       Rprintf( "Error: -S <att> must be last flag on command line.\n\n");
+        Rprintf( "Error: -S <att> must be last flag on command line.\n\n");
         rcqp_receive_error(1);
       }
       break;
@@ -649,7 +649,7 @@ sencode_parse_options(int argc, char **argv)
     case 'V':
       sencode_declare_new_satt(optarg, directory, 1);
       if (optind < argc) {
-       Rprintf( "Error: -V <att> must be last flag on command line.\n\n");
+        Rprintf( "Error: -V <att> must be last flag on command line.\n\n");
         rcqp_receive_error(1);
       }
       break;
@@ -665,11 +665,11 @@ sencode_parse_options(int argc, char **argv)
   if (!text_fd)
     text_fd = stdin;
   if (new_satt.name == NULL) {
-   Rprintf( "Error: either -S or -V flag must be specified.\n\n");
+    Rprintf( "Error: either -S or -V flag must be specified.\n\n");
     rcqp_receive_error(1);
   }
   if (optind < argc) {
-   Rprintf( "Error: extra arguments.\n\n");
+    Rprintf( "Error: extra arguments.\n\n");
     rcqp_receive_error(1);
   }
 
@@ -677,7 +677,7 @@ sencode_parse_options(int argc, char **argv)
   if (corpus_name != NULL) {
     corpus = cl_new_corpus(registry, corpus_name);
     if (corpus == NULL) {
-     Rprintf( "Error: Can't find corpus <%s>!\n", corpus_name);
+      Rprintf( "Error: Can't find corpus <%s>!\n", corpus_name);
       rcqp_receive_error(1);
     }
   }
@@ -765,7 +765,7 @@ main(int argc, char **argv)
   /* -a mode: read existing regions into memory */
   if (add_to_existing) {
     if (corpus == NULL) {
-     Rprintf( "Error: You have to specify source corpus (-C <corpus>) for -a switch.\n");
+      Rprintf( "Error: You have to specify source corpus (-C <corpus>) for -a switch.\n");
       rcqp_receive_error(1);
     }
     att = cl_new_attribute(corpus, new_satt.name, ATT_STRUC);
@@ -773,15 +773,15 @@ main(int argc, char **argv)
       V_switch = new_satt.store_values;
       values = cl_struc_values(att);
       if (V_switch && (!values)) {
-       Rprintf( "Error: Existing regions of -V attribute have no annotations.\n");
+        Rprintf( "Error: Existing regions of -V attribute have no annotations.\n");
         rcqp_receive_error(1);
       }
       else if ((!V_switch) && values) {
-       Rprintf( "Error: Existing regions of -S attributes have annotations.\n");
+        Rprintf( "Error: Existing regions of -S attributes have annotations.\n");
         rcqp_receive_error(1);
       }
       if (!silent)
-       Rprintf("[Loading previous <%s> regions]\n", new_satt.name);
+        printf("[Loading previous <%s> regions]\n", new_satt.name);
 
       N = cl_max_struc(att);
       for (i = 0; i < N; i++) {
@@ -792,13 +792,13 @@ main(int argc, char **argv)
     }
     else {
       if (!silent)
-       Rprintf("[No <%s> regions defined (skipped)]\n", new_satt.name);
+        printf("[No <%s> regions defined (skipped)]\n", new_satt.name);
     }
   }
 
   /* loop reading input (stdin or -f <file>) */
   if (in_memory && (!silent))
-   Rprintf("[Reading input data]\n");
+    printf("[Reading input data]\n");
   input_line = 0;
   S_annotations_dropped = 0;
   while (fgets(buf, CL_MAX_LINE_LENGTH, text_fd)) {
@@ -806,42 +806,42 @@ main(int argc, char **argv)
 
     /* check for buffer overflow */
     if (strlen(buf) >= (CL_MAX_LINE_LENGTH - 1)) {
-     Rprintf( "BUFFER OVERFLOW, input line #%d is too long:\n>> %s", input_line, buf);
+      Rprintf( "BUFFER OVERFLOW, input line #%d is too long:\n>> %s", input_line, buf);
       rcqp_receive_error(1);
     }
 
     if (! sencode_parse_line(buf, &start, &end, &annot)) {
-     Rprintf( "FORMAT ERROR on line #%d:\n>> %s", input_line, buf);
+      Rprintf( "FORMAT ERROR on line #%d:\n>> %s", input_line, buf);
       rcqp_receive_error(1);
     }
     if (new_satt.store_values && (annot == NULL)) {
-     Rprintf( "MISSING ANNOTATION on line #%d:\n>> %s", input_line, buf);
+      Rprintf( "MISSING ANNOTATION on line #%d:\n>> %s", input_line, buf);
       rcqp_receive_error(1);
     }
     if ((!new_satt.store_values) && (annot != NULL)) {
       if (! S_annotations_dropped)
-       Rprintf( "WARNING: Annotation for -S attribute ignored on line #%d (warning issued only once):\n>> %s", input_line, buf);
+        Rprintf( "WARNING: Annotation for -S attribute ignored on line #%d (warning issued only once):\n>> %s", input_line, buf);
       S_annotations_dropped++;
     }
     if ((start <= new_satt.last_cpos) || (end < start)) {
-     Rprintf( "RANGE INCONSISTENCY on line #%d:\n>> %s(end of previous region was %d)\n", input_line, buf, new_satt.last_cpos);
+      Rprintf( "RANGE INCONSISTENCY on line #%d:\n>> %s(end of previous region was %d)\n", input_line, buf, new_satt.last_cpos);
       rcqp_receive_error(1);
     }
     if (annot != NULL && set_att != set_none) {
       /* convert set annotation into standard syntax */
       annot = sencode_check_set(annot);
       if (annot == NULL) {
-       Rprintf( "SET ANNOTATION SYNTAX ERROR on line #%d:\n>> %s", input_line, buf);
+        Rprintf( "SET ANNOTATION SYNTAX ERROR on line #%d:\n>> %s", input_line, buf);
         rcqp_receive_error(1);
       }
     }
 
     /* debugging output */
     if (debug) {
-     Rprintf( "[%d, %d]", start, end);
+      Rprintf( "[%d, %d]", start, end);
       if (annot != NULL)
-       Rprintf( " <%s>", annot);
-     Rprintf( "\n");
+        Rprintf( " <%s>", annot);
+      Rprintf( "\n");
     }
 
     /* in -M mode, store this region in memory; otherwise write it to the disk files */
@@ -858,7 +858,7 @@ main(int argc, char **argv)
     SL item;
 
     if (!silent)
-     Rprintf("[Creating encoded disk file(s)]\n");
+      printf("[Creating encoded disk file(s)]\n");
     SL_rewind();
     while ((item = SL_next()) != NULL)
       sencode_write_region(item->start, item->end, item->annot);
@@ -868,7 +868,7 @@ main(int argc, char **argv)
   sencode_close_files();
 
   if (S_annotations_dropped > 0)
-   Rprintf( "Warning: %d annotation values dropped for -S attribute '%s'.\n", S_annotations_dropped, new_satt.name);
+    Rprintf( "Warning: %d annotation values dropped for -S attribute '%s'.\n", S_annotations_dropped, new_satt.name);
 
   rcqp_receive_error(0);
 }

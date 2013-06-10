@@ -222,7 +222,6 @@ FILE *
 open_pager(char *cmd, CorpusCharset charset)
 {
   FILE *pipe;
-  char *current_value;
 
   if ((tested_pager == NULL) || (strcmp(tested_pager, cmd) != 0)) {
     /* this is a new pager, so test it */
@@ -235,21 +234,21 @@ open_pager(char *cmd, CorpusCharset charset)
     tested_pager = cl_strdup(cmd);
   }
 
-  /* if (less_charset_variable != "" and charset != ascii) set environment variable accordingly */
-  if (*less_charset_variable && charset != ascii) {
+  /* if (less_charset_variable != "" ) set environment variable accordingly */
+  if (*less_charset_variable) {
     char *new_value;
 
     switch (charset){
+    case ascii:   /* fallthru is intentional: ASCII is a subset of valid UTF-8 */
     case utf8:    new_value = "utf-8";    break;
 
-    /* TODO: insert other ISO charsets here. The strings needed for the environment val ARE NOT
-     * the same as those used internally by CWB to represent different charsets.
+    /* "less" does not distinguish between the different ISO-8859 character sets,
+     * so if not using UTF-8, always use ISO-8859
      */
-
-    default:      new_value = "iso8859";  break; /* default non-ascii setting is ISO-8859 */
+    default:      new_value = "iso8859";  break;
     }
 
-    current_value = getenv(less_charset_variable);
+    char *current_value = getenv(less_charset_variable);
 
     /* call setenv() if variable is not set or different from desired value */
     if (!current_value || strcmp(current_value, new_value)) {
@@ -307,11 +306,11 @@ open_stream(struct Redir *rd, CorpusCharset charset)
     }
   }
   else { /* i.e. if rd->name is NULL */
-    if (pager && paging && isatty(fileno(NULL))) {
+    if (pager && paging && isatty(fileno(stdout))) {
       if (insecure) {
         cqpmessage(Error, "Insecure mode, paging not allowed.\n");
-        /* ... and default back to bare NULL */
-        rd->stream = NULL;
+        /* ... and default back to bare stdout */
+        rd->stream = stdout;
         rd->is_paging = False;
         rd->is_pipe = False;
       }
@@ -322,7 +321,7 @@ open_stream(struct Redir *rd, CorpusCharset charset)
           set_integer_option_value("Paging", 0);
           rd->is_pipe = False;
           rd->is_paging = False;
-          rd->stream = NULL;
+          rd->stream = stdout;
         }
         else {
           rd->is_pipe = 1;
@@ -336,7 +335,7 @@ open_stream(struct Redir *rd, CorpusCharset charset)
       }
     }
     else {
-      rd->stream = NULL;
+      rd->stream = stdout;
       rd->is_paging = False;
       rd->is_pipe = False;
     }
@@ -360,7 +359,7 @@ close_stream(struct Redir *rd)
   if (rd->stream) {
     if (rd->is_pipe)
       rv = ! pclose(rd->stream); /* pclose returns 0 = success, non-zero = failure */
-    else if (rd->stream != NULL)
+    else if (rd->stream != stdout)
       rv = ! fclose(rd->stream); /* fclose the same */
 
     rd->stream = NULL;
@@ -449,7 +448,7 @@ bp_signal_handler(int signum)
 #ifndef __MINGW__
   broken_pipe = 1;
 
-  /*Rprintf( "Handle broken pipe signal\n"); */
+  /* Rprintf( "Handle broken pipe signal\n"); */
 
   if (signal(SIGPIPE, bp_signal_handler) == SIG_ERR)
     perror("Can't reinstall signal handler for broken pipe");
@@ -494,7 +493,20 @@ print_output(CorpusList *cl,
   }
 }
 
-/** prints matches #first..#last; use (0,-1) for entire corpus  */
+/**
+ * Prints a corpus, typically (some of) the matches of a query.
+ *
+ * (Not sure why it's called "catalog"; is this a pun on the cat keyword? -- AH 2012-07-17)
+ *
+ * The query is represented by a subcorpus (cl); only results
+ * #first..#last; will be printed; use (0,-1) for entire corpus.
+ *
+ * @param cl     The corpus/subcorpus/query to output.
+ * @param rd     Block of output redirection info; if NULL, default settings will be used.
+ * @param first  Offset of first match to print.
+ * @param last   Offset of last match to print.
+ * @param mode   Print mode to use.
+ */
 void 
 catalog_corpus(CorpusList *cl,
                struct Redir *rd,
@@ -544,7 +556,7 @@ catalog_corpus(CorpusList *cl,
 
     printHeader = GlobalPrintOptions.print_header;
 
-    /* fraglich... */
+    /* questionable... */
     if (GlobalPrintMode == PrintHTML)
       printHeader = True;
 
@@ -562,17 +574,17 @@ catalog_corpus(CorpusList *cl,
     broken_pipe = 0;
 
     /* first version (Oli Christ):
-       if ((!silent || printHeader) && !(rd->stream == NULL || rd->is_paging));
+       if ((!silent || printHeader) && !(rd->stream == stdout || rd->is_paging));
        */
     /* second version (Stefan Evert):     
-       if (printHeader || (mode == PrintASCII && !(rd->stream == NULL || rd->is_paging))); 
+       if (printHeader || (mode == PrintASCII && !(rd->stream == stdout || rd->is_paging))); 
     */
 
-    /* header is printed _only_ when explicitly requested now
-     * (previous behaviour was to print header automatically when saving results to a file;
+    /* header is printed _only_ when explicitly requested now (or, when in HTML mode; see above);
+     * previous behaviour was to print header automatically when saving results to a file;
      * this makes sense when such files are created to document the results of a corpus search,
      * but nowadays they are mostly used for automatic post-processing (e.g. in a Web interface),
-     * where the header is just a nuisance that has to be stripped)
+     * where the header is just a nuisance that has to be stripped.
      */
     if (printHeader) {
       /* print something like a header */
@@ -584,7 +596,7 @@ catalog_corpus(CorpusList *cl,
     print_output(cl, rd->stream, 
                  isatty(fileno(rd->stream)) || rd->is_paging, 
                  &CD, first, last, mode);
-    
+
 #ifndef __MINGW__
     if (rd->is_paging && handle_sigpipe) {
       if (signal(SIGPIPE, SIG_IGN) == SIG_ERR)
@@ -621,7 +633,7 @@ cqpmessage(MessageType type, char *format, ...)
       msg = "CQP Error";
       break;
     case Warning:
-      msg = "Issue";
+      msg = "Warning";
       break;
     case Message:
       msg = "Message";
@@ -635,9 +647,9 @@ cqpmessage(MessageType type, char *format, ...)
     }
 
     if (!silent || type == Error) {
-     Rprintf( "%s:\n\t", msg);
+      Rprintf( "%s:\n\t", msg);
       Rvprintf( format, ap);
-     Rprintf( "\n");
+      Rprintf( "\n");
     }
 
   }
@@ -663,7 +675,7 @@ corpus_info(CorpusList *cl)
   if (cl->type == SYSTEM) {
 
     stream_ok = open_stream(&rd, ascii);
-    outfd = (stream_ok) ? rd.stream : NULL; /* use pager, or simply print to stdout if it fails */
+    outfd = (stream_ok) ? rd.stream : stdout; /* use pager, or simply print to stdout if it fails */
     /* print size (should be the mother_size entry) */
     fprintf(outfd, "Size:    %d\n", cl->mother_size);
     /* print charset */

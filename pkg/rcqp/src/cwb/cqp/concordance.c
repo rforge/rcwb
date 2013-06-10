@@ -294,7 +294,7 @@ get_position_values(ContextDescriptor *cd,
 
   if (add_position_number && orientation == ConcLineHorizontal) {
 
-    char num[16];
+    char num[CL_MAX_LINE_LENGTH];
 
     sprintf(num, pdr->CPOSPrintFormat, position);
     append(s, num, sp, max_sp);
@@ -329,7 +329,7 @@ get_position_values(ContextDescriptor *cd,
   }
 
   if (add_position_number && orientation == ConcLineVertical) {
-    char num[16];
+    char num[CL_MAX_LINE_LENGTH];
     
     sprintf(num, pdr->CPOSPrintFormat, position);
     append(s, num, sp, max_sp);
@@ -415,7 +415,7 @@ get_position_values(ContextDescriptor *cd,
   s[*sp] = '\0';
 
 #if 0
- Rprintf(
+  Rprintf(
           "get_position_values() at pos %d: ``%s''\n",
           position, s);
 #endif
@@ -585,7 +585,7 @@ compose_kwic_line(Corpus *corpus,
       nr_selected_attributes++;
     }
     else {
-     Rprintf( "ERROR: Can't select default attribute in attribute list\n");
+      Rprintf( "ERROR: Can't select default attribute in attribute list\n");
       return NULL;
     }
   }
@@ -639,7 +639,7 @@ compose_kwic_line(Corpus *corpus,
 
       token_p = 0;
       
-      if (acc_len >= cd->left_width) {
+      if (acc_len >= cd->left_width || line_p >= MAXKWICLINELEN) {
         enough_context++;
       }
       else if (get_position_values(cd, 
@@ -698,7 +698,7 @@ compose_kwic_line(Corpus *corpus,
         enough_context = 1;
     }
 
-    /* auff�llen (padding) mit Blanks, bis linker Kontext erreicht */
+    /* auffüllen (padding) mit Blanks, bis linker Kontext erreicht */
     while (acc_len < cd->left_width) {
       append(line, " ", &line_p, MAXKWICLINELEN);
       acc_len++; /* pretend to fill in necessary number of blanks, even if buffer is already full */
@@ -709,14 +709,14 @@ compose_kwic_line(Corpus *corpus,
      */
 
 #if 0
-   Rprintf( "line bef srev(): >>%s<<\n", line + index);
+    Rprintf( "line bef srev(): >>%s<<\n", line + index);
 #endif
 
     line[line_p] = '\0';
     srev(line+index);
 
 #if 0
-   Rprintf( "line aft srev(): >>%s<<\n", line + index);
+    Rprintf( "line aft srev(): >>%s<<\n", line + index);
 #endif
 
     /* der spannende Teil: wir müssen wg srev() die Liste der
@@ -737,7 +737,7 @@ compose_kwic_line(Corpus *corpus,
           new_end   = line_p - 1 - old_start;
 
 #if 0
-         Rprintf( "Patching [%d,%d] to [%d,%d]\n",
+          Rprintf( "Patching [%d,%d] to [%d,%d]\n",
                   old_start, old_end, new_start, new_end);
 #endif
 
@@ -803,7 +803,7 @@ compose_kwic_line(Corpus *corpus,
   case ALIGN_CONTEXT:
     
     if (!cd->left_structure) {
-     Rprintf( "concordance.o/compose_kwic_line: lcontext attribute pointer is NULL\n");
+      Rprintf( "concordance.o/compose_kwic_line: lcontext attribute pointer is NULL\n");
       start = match_start - 20;
     }
     else {
@@ -1080,7 +1080,7 @@ compose_kwic_line(Corpus *corpus,
   case ALIGN_CONTEXT:
 
     if (!cd->right_structure) {
-     Rprintf( "concordance.o/compose_kwic_line: rcontext attribute pointer is NULL\n");
+      Rprintf( "concordance.o/compose_kwic_line: rcontext attribute pointer is NULL\n");
       end = match_end + 20;
     }
     else {

@@ -21,7 +21,7 @@
 #include <sys/types.h>
 
 /* byte order handling taken from Corpus Library */
-#include "../cl/cl_endian.h"
+#include "../cl/endian.h"
 #include "../cl/globals.h"
 
 /**
@@ -48,7 +48,7 @@ process_fd(FILE *fd)
     i = htonl(atoi(buf));
     if (little_endian) 
       i = cl_bswap32(i);        /* explicit conversion */
-    fwrite(&i, 4, 1, NULL);   /* always write 4 bytes ! */
+    fwrite(&i, 4, 1, stdout);   /* always write 4 bytes ! */
   }
 }
 
@@ -79,20 +79,20 @@ main(int argc, char **argv)
         break;
       case 'h':
       default:
-       Rprintf( "\n");
-       Rprintf( "Usage:  %s [options] [file]\n", argv[0]);
-       Rprintf( "Reads one integer per line from ASCII file <file> or from standard input\n");
-       Rprintf( "and writes values to standard output as 32-bit integers in network format\n");
-       Rprintf( "(the format used by CWB binary data files).\n");
-       Rprintf( "Options:\n");
-       Rprintf( "  -n  convert to network format [default]\n");
-       Rprintf( "  -l  convert to little endian format\n");
-       Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
+        Rprintf( "\n");
+        Rprintf( "Usage:  %s [options] [file]\n", argv[0]);
+        Rprintf( "Reads one integer per line from ASCII file <file> or from standard input\n");
+        Rprintf( "and writes values to standard output as 32-bit integers in network format\n");
+        Rprintf( "(the format used by CWB binary data files).\n");
+        Rprintf( "Options:\n");
+        Rprintf( "  -n  convert to network format [default]\n");
+        Rprintf( "  -l  convert to little endian format\n");
+        Rprintf( "Part of the IMS Open Corpus Workbench v" VERSION "\n\n");
         rcqp_receive_error(1);
       }
     }
     else if ((fd = fopen(argv[i], "rb")) == NULL) {
-     Rprintf( "%s: Couldn't open %s\n", progname, argv[i]);
+      Rprintf( "%s: Couldn't open %s\n", progname, argv[i]);
       rcqp_receive_error(1);
     }
   }

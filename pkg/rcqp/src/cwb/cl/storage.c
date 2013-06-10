@@ -28,7 +28,7 @@
 
 #include "globals.h"
 
-#include "cl_endian.h"
+#include "endian.h"
 #include "macros.h"
 
 #include "storage.h"
@@ -48,14 +48,16 @@
 
 #define MMAP_EMPTY_LEN 8    /* can't mmap() 0 bytes, so mmap() MMAP_EMPTY_LEN bytes beyond end-of-file for empty files */
 
-/* extern int munmap(); */
 
 /* ============================================================ */
 
 /**
- * Writes an integer to file, converting to network byte order.
+ * Writes a 32-bit integer to file, converting to network byte order.
  *
- * Other than the byte order conversion, this is the same as
+ * Other than the byte order conversion, amd the fact that it exits
+ * the program upon error (so the user of this function can assume
+ * success), this is the same as
+ *
  * fwrite(&val, sizeof(int), 1, fd) .
  *
  * @param val  The integer to write.
@@ -68,12 +70,12 @@ NwriteInt(int val, FILE *fd)
   word = htonl(val);
   if (1 != fwrite(&word, sizeof(int), 1, fd)) {
     perror("File write error");
-    rcqp_receive_error(1);
+    exit(1);
   }
 }
 
 /**
- * Reads an integer from file, converting from network byte order.
+ * Reads a 32-bit integer from file, converting from network byte order.
  *
  * This function does all the error checking for you, and will abort
  * the program if the int cannot be read.
@@ -87,14 +89,14 @@ NreadInt(int *val, FILE *fd)
   int word;
   if (1 != fread(&word, sizeof(int), 1, fd)) {
     perror("File read error");
-    rcqp_receive_error(1);
+    exit(1);
   }
   *val = ntohl(word);
 }
 
 
 /**
- * Writes an array of integers to file, converting to network byte order.
+ * Writes an array of 32-bit integers to file, converting to network byte order.
  *
  * Other than the byte order conversion, this is the same as
  * fwrite(vals, sizeof(int), nr_vals, fd) .
@@ -113,13 +115,13 @@ NwriteInts(int *vals, int nr_vals, FILE *fd)
     word = htonl(vals[k]);
     if (1 != fwrite(&word, sizeof(int), 1, fd)) {
       perror("File write error");
-      rcqp_receive_error(1);
+      exit(1);
     }
   }
 }
 
 /**
- * Reads an array of integers from file, converting from network byte order.
+ * Reads an array of 32-bit integers from file, converting from network byte order.
  *
  * This function does all the error checking for you, and will abort
  * the program if the requested number of ints cannot be read.
@@ -138,7 +140,7 @@ NreadInts(int *vals, int nr_vals, FILE *fd)
   for (k = 0; k < nr_vals; k++) {
     if (1 != fread(&word, sizeof(int), 1, fd)) {
       perror("File read error");
-      rcqp_receive_error(1);
+      exit(1);
     }
     vals[k] = ntohl(word);
   }
@@ -150,7 +152,7 @@ NreadInts(int *vals, int nr_vals, FILE *fd)
 
 /**
  * Clears all fields in a MemBlob, regardless of their usage,
- * andRprintf the blob back to its virginal state.
+ * and puts the blob back to its virginal state.
  *
  * Note that it doesn't free blob->data - just sets it to NULL.
  */
@@ -236,22 +238,22 @@ mfree(MemBlob *blob)
   if (blob->data != NULL) {
     switch (blob->allocation_method) {
     case UNALLOCATED: 
-     Rprintf( "storage:mfree():\n"
+      Rprintf( "storage:mfree():\n"
               "  Blob flag is UNALLOCATED, but data present -- no free\n");
       break;
     case MMAPPED:
       map_len = (blob->size > 0) ? blob->size : MMAP_EMPTY_LEN;
-      if (munmap((caddr_t)blob->data, map_len) < 0)
+      if (munmap((void *)blob->data, map_len) < 0)
         perror("storage:munmap()");
       break;
     case MALLOCED:
       free((void *)blob->data);
       break;
     case PAGED:
-      assert("Paged memory not yet implemented" && 0);
+      assert("CL: Paged memory not yet implemented" && 0);
       break;
     default:
-      assert("Illegal memory storage class in storage:mfree()" && 0);
+      assert("CL: Illegal memory storage class in storage:mfree()" && 0);
       break;
     }
     if (blob->fname != NULL)
@@ -259,7 +261,7 @@ mfree(MemBlob *blob)
     init_mblob(blob);
   }
   else if (blob->allocation_method != UNALLOCATED)
-   Rprintf( "storage:mfree():\n"
+    Rprintf( "storage:mfree():\n"
             "  No data, but Blob flag isn't UNALLOCATED\n");
   
 }
@@ -282,13 +284,13 @@ mfree(MemBlob *blob)
  * @return          The contents of file in filename as a pointer to a
  *                  memory area.
  */
-caddr_t 
+void *
 mmapfile(char *filename, size_t *len_ptr, char *mode)
 {
   struct stat stat_buf;
   int fd;
   int binflag = 0; /* set to O_BINARY if we want to use the binary flag with open() */
-  caddr_t space;
+  void *space;
   size_t map_len; /* should probably be off_t (for file sizes) rather than size_t (for size of objects), according to SUS */
 
   /* allow for: r+b, w+b, rb+, wb+ */
@@ -301,12 +303,12 @@ mmapfile(char *filename, size_t *len_ptr, char *mode)
     fd = open(filename, O_RDONLY|binflag);
     
     if (fd == EOF) {
-     Rprintf( "mmapfile()<storage.c>: Can't open file %s ... \n\tReason: ", 
+      Rprintf( "mmapfile()<storage.c>: Can't open file %s ... \n\tReason: ", 
               filename);
       perror(NULL);
     }
     else if(fstat(fd, &stat_buf) == EOF) {
-     Rprintf( "mmapfile()<storage.c>: Can't fstat() file %s ... \n\tReason: ", 
+      Rprintf( "mmapfile()<storage.c>: Can't fstat() file %s ... \n\tReason: ", 
               filename);
       perror(NULL);
     }
@@ -327,7 +329,7 @@ mmapfile(char *filename, size_t *len_ptr, char *mode)
       fd = creat(filename, 0666);
 
     if (fd == EOF) {
-     Rprintf( "mmapfile()<storage.c>: Can't create file %s ...\n\tReason: ", 
+      Rprintf( "mmapfile()<storage.c>: Can't create file %s ...\n\tReason: ", 
               filename);
       perror(NULL);
     }
@@ -344,15 +346,15 @@ mmapfile(char *filename, size_t *len_ptr, char *mode)
     
     break;
   default:
-   Rprintf( "mmapfile()<storage.c>: Mode '%s' is not supported ...\n", mode);
+    Rprintf( "mmapfile()<storage.c>: Mode '%s' is not supported ...\n", mode);
   }
 
 #if defined(__svr4__)
   if (space == MAP_FAILED) {
 #else
-  if (space == (caddr_t)-1) {        /* do we need this fallback ? */
+  if (space == (void *)-1) {        /* do we need this fallback ? */
 #endif
-   Rprintf( "mmapfile()<storage.c>: Can't mmap() file %s ...\n"
+    Rprintf( "mmapfile()<storage.c>: Can't mmap() file %s ...\n"
             "\tYou have probably run out of memory / address space!\n"
             "\tError Message: ",
             filename);
@@ -372,13 +374,13 @@ mmapfile(char *filename, size_t *len_ptr, char *mode)
  *
  * @see mmapfile
  */
-caddr_t
+void *
 mallocfile(char *filename, size_t *len_ptr, char *mode)
 {
   struct stat stat_buf;
   int fd;
   int binflag = 0; /* set to O_BINARY if we want to use the binary flag with open() */
-  caddr_t space;
+  void *space;
 
   /* allow for: r+b, w+b, rb+, wb+, rb, wb */
   binflag = (mode[1] == 'b' || (mode[1] == '+' && mode[2] == 'b') ) ? O_BINARY : 0;
@@ -391,20 +393,20 @@ mallocfile(char *filename, size_t *len_ptr, char *mode)
     fd = open(filename, O_RDONLY|binflag);
 
     if (fd == EOF) {
-     Rprintf( "storage:mallocfile():\n  can't open %s -- ", filename);
+      Rprintf( "storage:mallocfile():\n  can't open %s -- ", filename);
       perror(NULL);
     } 
     else if(fstat(fd, &stat_buf) == EOF) {
-     Rprintf( "storage:mallocfile():\n  can't stat %s -- ", filename);
+      Rprintf( "storage:mallocfile():\n  can't stat %s -- ", filename);
       perror(NULL);
     }
     else {
       *len_ptr = stat_buf.st_size;
 
-      space = (caddr_t)cl_malloc(*len_ptr);
+      space = (void *)cl_malloc(*len_ptr);
       
       if (read(fd, space, *len_ptr) != *len_ptr) {
-       Rprintf( "storage:mallocfile():\n  couldn't read file contents -- ");
+        Rprintf( "storage:mallocfile():\n  couldn't read file contents -- ");
         perror(NULL);
         free(space);
         space = NULL;
@@ -420,15 +422,15 @@ mallocfile(char *filename, size_t *len_ptr, char *mode)
       fd = creat(filename, 0666);
 
     if(fd == EOF) {
-     Rprintf( "storage:mallocfile():\n  can't open/create %s for writing -- ", filename);
+      Rprintf( "storage:mallocfile():\n  can't open/create %s for writing -- ", filename);
 
       perror(NULL);
     }
     else {
-      space = (caddr_t)cl_malloc(*len_ptr);
+      space = cl_malloc(*len_ptr);
       
       if (write(fd, space, *len_ptr) != *len_ptr) {
-       Rprintf( "storage:mallocfile():\n  couldn't write file -- ");
+        Rprintf( "storage:mallocfile():\n  couldn't write file -- ");
         perror(NULL);
         free(space);
         space = NULL;
@@ -441,7 +443,7 @@ mallocfile(char *filename, size_t *len_ptr, char *mode)
     break;
 
   default:
-   Rprintf( "storage:mallocfile():\n  mode %s is not supported\n", mode);
+    Rprintf( "storage:mallocfile():\n  mode %s is not supported\n", mode);
   }
   return space;
 
@@ -487,7 +489,7 @@ read_file_into_blob(char *filename,
   else if (allocation_method == MALLOCED)
     blob->data = (int *)mallocfile(filename, &(blob->size), "rb");
   else {
-   Rprintf( "storage:read_file_into_blob():\n"
+    Rprintf( "storage:read_file_into_blob():\n"
             "  allocation method %d is not supported\n", allocation_method);
     return 0;
   }
@@ -531,7 +533,7 @@ write_file_from_blob(char *filename,
   blob->changed = 0;
 
   if ((blob->data == NULL) || (blob->size == 0)) {
-   Rprintf( "storage:write_file_from_blob():\n"
+    Rprintf( "storage:write_file_from_blob():\n"
             "  no data in blob, nothing to write...\n");
     result = 0;
   }
@@ -539,14 +541,14 @@ write_file_from_blob(char *filename,
 
     switch (blob->allocation_method) {
     case UNALLOCATED:
-     Rprintf( "storage:write_file_from_blob():\n"
+      Rprintf( "storage:write_file_from_blob():\n"
               "  tried to write unallocated blob...\n");
       result = 0;
       break;
     case MMAPPED:
     case MALLOCED:
       if ((fd = fopen(filename, "wb")) == NULL) {
-       Rprintf( "storage:write_file_from_blob():\n"
+        Rprintf( "storage:write_file_from_blob():\n"
                 "  Can't open output file %s\n", filename);
         result = 0;
       }
@@ -560,7 +562,7 @@ write_file_from_blob(char *filename,
       }
       break;
     default:
-     Rprintf( "storage:write_file_from_blob():\n"
+      Rprintf( "storage:write_file_from_blob():\n"
               "  unsupported allocation method %d...\n", blob->allocation_method);
       result = 0;
       break;
