@@ -154,6 +154,26 @@ SEXP rcqpCreate_cwb_compress_rdx(SEXP inArgs)
   return result;
 }
 
+/*
+ * ------------------------------------------------------------------------
+ *
+ * "rcqpCreate_re_rcqpinitialize_cqp(SEXP args)" -- after creation of a corpus, the
+ * registry must be re-read.
+ *
+ *
+ * ------------------------------------------------------------------------
+ */
+SEXP rcqpCreate_re_rcqpinitialize_cqp(SEXP inArgs)
+{
+  SEXP result = R_NilValue;
+  int                     ac = 1;
+  char *          av[1];
+  av[0] = "rcqp";
+  initialize_cqp(ac, av);
+  make_attribute_hash(RCQP_ATT_HASH_SIZE);
+  return result;
+}
+
 // /* 
 //  * ------------------------------------------------------------------------
 //  * 
