@@ -195,5 +195,8 @@ compression.rdx=FALSE
       ans <- .Call("rcqpCreate_cwb_compress_rdx", c(corpus.name, registry.dir), PACKAGE="rcqp");
     }
 
+    .Call("rcqpCreate_re_rcqpinitialize_cqp", PACKAGE="rcqp");
+
+
   invisible(0);
 }
