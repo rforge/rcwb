@@ -1,7 +1,4 @@
-
-###########################################################################
-# S3 Object cqp_kwic
-###########################################################################
+setClass("cqp_kwic", representation(parent="cqp_corpus"));
 
 
 cqp_kwic.cqp_subcorpus <- function(x,

@@ -1,4 +1,4 @@
-.cqp_name <- function (x, ...) UseMethod(".cqp_name");
+
 
 types <- function (attribute, ...) UseMethod("types");
 regions <- function (attribute, ...) UseMethod("regions");
@@ -7,10 +7,12 @@ tokens <- function (attribute, ...) UseMethod("tokens");
 size <- function (x) UseMethod("size");
 
 
-ntype <- function (attribute, ...) UseMethod("ntype");
-nvalue <- function (attribute, ...) UseMethod("nvalue");
-ntoken <- function (attribute, ...) UseMethod("ntoken");
-nregion <- function (attribute, ...) UseMethod("nregion");
+ntypes <- function (attribute, ...) UseMethod("ntypes");
+nvalues <- function (attribute, ...) UseMethod("nvalues");
+ntokens <- function (attribute, ...) UseMethod("ntokens");
+nregions <- function (attribute, ...) UseMethod("nregions");
+
+
 
 region_sizes <- function (attribute) UseMethod("region_sizes");
 

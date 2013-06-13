@@ -1,87 +1,53 @@
 setClass("cqp_attr",
+  contains="cqp_object",
   representation(
-    cqp_corpus.name="character",
-    qualified.attribute.name="character",
-    name="character",
-    parent.cqp_corpus="cqp_corpus",
-    parent.cqp_corpus.name="character"
+    parent="cqp_queryable"
 ));
+
+setClass("cqp_attr_positional",
+  contains="cqp_attr",
+);
+
+setClass("cqp_attr_structural",
+  contains="cqp_attr",
+  representation(
+    has_value="logical"
+));
+
+
 
 ###########################################################################
 # Constructors
 ###########################################################################
 
-`[[.cqp_corpus` <- function(i, j, ...) {
-	.create_cqp_attr(i, j);
-}
+setMethod("[[", signature(x = "cqp_corpus", i = "character", exact = TRUE),
+function (x, i, exact) {
+	stop("deprecated; use '$' operator instead");
+})
 
-`$.cqp_corpus` <- function(x, name) {
-	.create_cqp_attr(x, name);
-}
+setMethod("$", signature(x = "cqp_corpus", name = "character"),
+function (x, name) {
+  corpus <- x;
+  attribute <- name;
+  cqp_corpus.name <- .cqp_name(corpus);
+  positional <- cqi_attributes(cqp_corpus.name, "p");
+  structural <- cqi_attributes(cqp_corpus.name, "s");	
 
-`[[.cqp_subcorpus` <- function(i, j, ...) {
-	.create_cqp_attr_subcorpus(i, j);
-}
-
-`$.cqp_subcorpus` <- function(x, name) {
-	.create_cqp_attr_subcorpus(x, name);
-}
-
-.create_cqp_attr <- function(corpus, attribute) {
-	qualified.attribute.name <- .cqp_name(corpus, attribute);
-	cqp_corpus.name <- .cqp_name(corpus);
-	
-	cqp_attr <- 0;
-	class(cqp_attr) <- "cqp_attr";
-	attr(cqp_attr, "parent.cqp_corpus") <- corpus;
-	attr(cqp_attr, "parent.cqp_corpus.name") <- cqp_corpus.name;
-	attr(cqp_attr, "name") <- attribute;
-	attr(cqp_attr, "qualified.attribute.name") <- qualified.attribute.name;
-		
-	positional <- cqi_attributes(cqp_corpus.name, "p");
-	structural <- cqi_attributes(cqp_corpus.name, "s");	
 	if (attribute %in% positional) {
-		attr(cqp_attr, "type") <- "positional";
+        obj <- new("cqp_attr_positional", cqp_name=attribute, parent=corpus);
 	} else if (attribute %in% structural) {
-		attr(cqp_attr, "type") <- "structural";
 		if (cqi_structural_attribute_has_values(qualified.attribute.name)) {
-			attr(cqp_attr, "has_value") <- TRUE;
+			has_value <- TRUE;
 		} else {
-			attr(cqp_attr, "has_value") <- FALSE;
+			has_value <- FALSE;
 		}
+        obj <- new("cqp_attr_structural", cqp_name=attribute, parent=corpus, has_value=has_value);
 	} else {
 		stop("Unknown attribute");
 	}		
 	
-	return(cqp_attr);
-}
-
-.create_cqp_attr_subcorpus <- function(x, name) {
-    cqp_corpus.name <- parent.corpus <- attr(x, "parent.cqp_corpus.name");
-    cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-    qualified.attribute.name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=".");
-	
-	x <- cqi_dump(...)
-	start <- x[,1];
-	end <- y[,2];
-	
-	y <- mapply(`:`, start, end, SIMPLIFY=FALSE)
-	y <- unlist(y);
-	
-	z <- cqi_cpos2id(qualified.attribute.name, y);
-	cqp_attr_subcorpus <- id2str(qualified.attribute.name, z);
-	
-	class(cqp_attr) <- "cqp_attr";
-	attr(cqp_attr, "cqp_subcorpus") <- x;
-	attr(cqp_attr, "cqp_corpus.name") <- cqp_corpus.name;
-	attr(cqp_attr, "cqp_subcorpus.name") <- cqp_subcorpus;
-	attr(cqp_attr, "name") <- attribute;
-	attr(cqp_attr, "qualified.attribute.name") <- qualified.attribute.name;
-	attr(cqp_attr, "type") <- "cap_attr_subcorpus";
-	return(cqp_attr);
-
-	return(cqp_attr_subcorpus);
-}
+	return(obj);
+})
 
 ###########################################################################
 # Public
@@ -90,103 +56,113 @@ setClass("cqp_attr",
 ## 
  # ------------------------------------------------------------------------
  # 
- # "ntype(corpus, attribute, ...)" --
+ # "get.corpus(attribute)" --
+ #
+ # Accessor for the corpus this attribute belong to.
+ # 
+ # Example:
+ #              c <- corpus("DICKENS")
+ #              attr <- c$pos
+ #              get.corpus(attr);
+ #
+ # ------------------------------------------------------------------------
+ ##
+setGeneric("get.corpus", function(attribute) standardGeneric("get.corpus"));
+
+setMethod("get.corpus", "cqp_attr", function(attribute) {
+    return(attribute@parent);
+});
+
+## 
+ # ------------------------------------------------------------------------
+ # 
+ # "ntypes(corpus, attribute)" --
  #
  # Get the number of types or the actual list of types for a positional attribute
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$pos );
+ #              attr <- c$pos
+ #              ntypes(attr);
  #
  # ------------------------------------------------------------------------
  ##
-ntype.cqp_attr <- function(attribute, ...) {
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+setGeneric("ntypes", function(corpus) standardGeneric("ntypes"));
 
-	if (.is.positional(attribute)) {
-		n <- cqi_lexicon_size(qualified.attribute.name);
-	} else {
-		stop("ntype() is intented for positional attribute");
-	}
-
+setMethod("ntypes", "cqp_attr_positional", function(attribute) {
+	name <- .cqp_name(attribute);
+	n <- cqi_lexicon_size(qualified.attribute.name);
 	return(n);
-}
+});
 
 ## 
  # ------------------------------------------------------------------------
  # 
- # "nvalue(corpus, attribute)" --
+ # "nvalues(corpus, attribute)" --
  #
  # Get the number of (unique) values for a structural attribute "with values".
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$novel_title );
+ #              nvalues( c$novel_title );
  #
  # ------------------------------------------------------------------------
  ##
-nvalue.cqp_attr <- function(attribute, ...) {
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+setGeneric("nvalues", function(corpus) standardGeneric("nvalues"));
 
-    if (.is.structural(attribute)) {
-		if (.has_value(attribute)) {
-			n <- length(values(attribute));
-		} else {
-			stop("no values on this structural attribute");
-		}
+setMethod("nvalues", "cqp_attr_structural", function(attribute) {
+
+	if (attribute@has_value) {
+		n <- length(values(attribute));
 	} else {
-		stop("nvalue() is intended for structural attribute with value");
+		stop("no values on this structural attribute");
 	}
 
 	return(n);
-}
+});
 
 ## 
  # ------------------------------------------------------------------------
  # 
- # "ntoken(attribute, ...)" --
+ # "ntokens(attribute)" --
  #
  # Get the number of tokens for a positional attribute (the result is the same
  # for all the positional attribute belonging to the same corpus).
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$pos );
+ #              ntokens( c$pos );
  #
  # ------------------------------------------------------------------------
  ##
-## == size(corpus)
-ntoken.cqp_attr <- function(attribute, ...) {
-	if (!.is.positional(attribute)) {
-		stop("cannot count token on non-positional attribute");
-	}
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+setGeneric("ntokens", function(corpus) standardGeneric("ntokens"));
 
-	n <- cqi_attribute_size(qualified.attribute.name);
+setMethod("ntokens", "cqp_attr_positional", function(attribute) {
+	name <- .cqp_name(attribute);
+	n <- cqi_attribute_size(name);
 	return(n);
-}
+});
 
 ## 
  # ------------------------------------------------------------------------
  # 
- # "nregion(attribute, ...)" --
+ # "nregions(attribute, ...)" --
  #
  # Get the number of regions for a structural attribute.
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$novel_title );
+ #              nregions( c$novel_title );
  #
  # ------------------------------------------------------------------------
  ##
-nregion.cqp_attr <- function(attribute, ...) {
-	if (!.is.structural(attribute)) {
-		stop("cannot count region on non-structural attribute");
-	}
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	n <- cqi_attribute_size(qualified.attribute.name);
+setGeneric("nregions", function(corpus) standardGeneric("nregions"));
+
+setMethod("nregions", "cqp_attr_structural", function(attribute) {
+	name <- .cqp_name(attribute);
+	n <- cqi_attribute_size(name);
 	return(n);
-}
+});
 
 ## 
  # ------------------------------------------------------------------------
@@ -197,23 +173,21 @@ nregion.cqp_attr <- function(attribute, ...) {
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$novel_title );
+ #              tokens( c$word );
  #
  # ------------------------------------------------------------------------
  ##
-tokens.cqp_attr <- function(attribute, ...) {
-	if (!.is.positional(attribute)) {
-		stop("attribute must be positional");
-	}	
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+setGeneric("tokens", function(attribute, from, to) standardGeneric("tokens"));
 
-	max <- ntoken(attribute) - 1;
-	x <- cqi_cpos2id(qualified.attribute.name, 0:max);
-	str <- types(attribute);
-	x <- str[x+1];
-
+setMethod("tokens", "cqp_attr_positional", function(attribute, from=0, to=ntokens(attribute) - 1) {
+	name <- .cqp_name(attribute, qualified=TRUE);
+    if (from < 0)
+	  stop("'from' cannot be < 0");
+    if (to > ntokens(attribute))
+	  stop("'to' cannot be > ntokens(attribute)");
+	x <- cqi_cpos2str(qualified.attribute.name, from:to);
 	return(x);
-}
+});
 
 ## 
  # ------------------------------------------------------------------------
@@ -224,28 +198,19 @@ tokens.cqp_attr <- function(attribute, ...) {
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$novel_title );
+ #              types(c$word);
  #
  # ------------------------------------------------------------------------
  ##
-types.cqp_attr <- function(attribute, ...) {
-	if (!.is.positional(attribute)) {
-		stop("attribute must be positional");
-	}	
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	max.id <- ntype(attribute) - 1;
+setGeneric("types", function(attribute) standardGeneric("types"));
+
+setMethod("types", "cqp_attr_positional", function(attribute) {
+	name <- .cqp_name(attribute, qualified=TRUE);
+	max.id <- ntypes(attribute) - 1;
 	ids <- 0:max.id;
 	str <- cqi_id2str(qualified.attribute.name, ids);
 	return(str);
-}
-
-#	else if (.is.structural(attribute)) {
-#		s <- size(attr(attribute, "parent.cqp_corpus"));
-#		max <- s - 1;
-#		x <- cqi_cpos2struc(qualified.attribute.name, 0:max);
-#	} else {
-#		stop("unknown type");
-#	}
+});
 
 ## 
  # ------------------------------------------------------------------------
@@ -257,46 +222,47 @@ types.cqp_attr <- function(attribute, ...) {
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$novel_title );
+ #              regions( c$novel_title );
  #
  # ------------------------------------------------------------------------
  ##
-regions.cqp_attr <- function(attribute, ...) {
-	if (! .is.structural(attribute)) {
-		stop("cannot list region on non-structural attribute");
-	}
-	if (!.has_value(attribute)) {
+setGeneric("regions", function(attribute, from, to) standardGeneric("regions"));
+
+setMethod("regions", "cqp_attr_positional", function(attribute, from=0, to=nregions(attribute)-1) {
+	if (!attribute@has_value) {
 		stop("cannot list region on structural without value");
 	}
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
-	max <- cqi_attribute_size(qualified.attribute.name) - 1;
-	x <- cqi_struc2str(qualified.attribute.name, 0:max);
+	name <- .cqp_name(attribute, qualified=TRUE);
+	max <- nregions(attribute) - 1;
+	if (from < 0)
+	  stop("'from' cannot be < 0");
+    if (to > max)
+	  stop("'to' cannot be > nregions(attribute)");
 
-	return(x);
-}
+	x <- cqi_struc2str(name, from:to);
+
+	return(x);	
+});
 
 ## 
  # ------------------------------------------------------------------------
  # 
- # "regions(attribute, ...)" --
+ # "values(attribute, ...)" --
  #
  # Get the vecteur of the different (unique) value for a structural attribute with values
+ # Is equivalent to 'unique(regions)'
  # 
  # Example:
  #              c <- corpus("DICKENS")
- #              types( c$novel_title );
+ #              values( c$novel_title );
  #
  # ------------------------------------------------------------------------
  ##
-value.cqp_attr <- function(attribute, ...) {
-	if (! .is.structural(attribute)) {
-		stop("cannot list region on non-structural attribute");
-	}
-	if (!.has_value(attribute)) {
-		stop("cannot list region on structural without value");
-	}
-	return(unique(region(attribute)));
-}
+setGeneric("values", function(attribute, from, to) standardGeneric("values"));
+
+setMethod("values", "cqp_attr_positional", function(attribute, from=0, to=nregions(attribute)-1) {
+	return(unique(regions(attribute, from, to)));
+});
 
 ###########################################################################
 # Utilities
@@ -316,29 +282,30 @@ value.cqp_attr <- function(attribute, ...) {
  # 
  # ------------------------------------------------------------------------
  ##
+ ## TODO il y aurait encore plus simple : table() sur tous les struc.
+setGeneric("region_sizes", function(attribute, from, to) standardGeneric("region_sizes"));
 
-## TODO il y aurait encore plus simple : table() sur tous les struc.
-region_sizes.cqp_attr <- function(attribute) {
-	if (!.is.structural(attribute)) {
-		stop("cannot list region on non-structural attribute");
-	}
-	
-	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
+setMethod("region_sizes", "cqp_attr_positional", function(attribute, from=0, to=nregions(attribute)-1) {
+	name <- .cqp_name(attribute);
 
-	att_size <- cqi_attribute_size(qualified.attribute.name);
+	att_size <- cqi_attribute_size(name);
+	if (from < 0)
+	  stop("'from' cannot be < 0");
+    if (to > max)
+	  stop("'to' cannot be > nregions(attribute)");
 
 	return(
 		sapply(
-			0:(att_size-1),
+			from:to,
 			function(x) {
-				bound <- cqi_struc2cpos(qualified.attribute.name, x);
+				bound <- cqi_struc2cpos(name, x);
 				return(bound[2] - bound[1] + 1);
 			}
 		)
 	);
-}
+});
 
-summary.cqp_attr <- function(object, ...) {
+setMethod("summary", signature(object = "cqp_attr"), function(object){
 	attribute <- object;
 	type <- attr(attribute, "type");
 	qualified.attribute.name <- attr(attribute, "qualified.attribute.name");
@@ -346,12 +313,12 @@ summary.cqp_attr <- function(object, ...) {
 	cat(paste(type, ": "));
 	
 	if (type == "positional") {
-		number_of_types <- ntype(object);
+		number_of_types <- ntypes(object);
 		cat(paste(
 				qualified.attribute.name, 
 				" (",
 				number_of_types, " types; ",
-				ntoken(object), " tokens",
+				ntokens(object), " tokens",
 				")\n",
 				sep=""));
 		.print_sample_types(cqi_id2str, qualified.attribute.name, number_of_types);
@@ -365,7 +332,7 @@ summary.cqp_attr <- function(object, ...) {
 				qualified.attribute.name, 
 				" (",
 				number_of_types, " types; ",
-				nregion(object), " regions",
+				nregions(object), " regions",
 				")\n",
 				sep=""));
 			.print_sample_types(cqi_struc2str, qualified.attribute.name, number_of_types);
@@ -373,58 +340,21 @@ summary.cqp_attr <- function(object, ...) {
 			cat(paste(
 				qualified.attribute.name, 
 				" (",
-				nregion(object), " regions",
+				nregions(object), " regions",
 				")\n",
 				sep=""));
 		}
 	}
 }
+});
 
-print.cqp_attr <- function(x, ...) {
+setMethod("print", signature(object = "cqp_attr"), function(x, ...){
 	print(tokens(x));
-}
+});
 
 ###########################################################################
 # Private
 ###########################################################################
-
-.is.positional <- function (attribute) {
-	if(class(attribute) != "cqp_attr") {
-		stop("attr must be a cqp_attr object");
-	}
-	type <- attr(attribute, "type");
-	if (type=="positional") {
-		return(TRUE);
-	} else if (type=="structural") {
-		return(FALSE);
-	} else {
-		stop("type of attribute is unknown");
-	}
-}
-
-.is.structural <- function (attribute) {
-	if(class(attribute) != "cqp_attr") {
-		stop("attr must be a cqp_attr object");
-	}
-	type <- attr(attribute, "type");
-	if (type=="positional") {
-		return(FALSE);
-	} else if (type=="structural") {
-		return(TRUE);
-	} else {
-		stop("type of attribute is unknown");
-	}
-}
-
-.has_value <- function (attribute) {
-	if (!.is.structural(attribute)) stop("Not a structural attribute");
-	has_value <- attr(attribute, "has_value");
-	if (has_value) {
-		return(TRUE);
-	} else {
-		return(FALSE);
-	}
-}
 
 .print_sample_types <- function(type_function, attribute, number_of_types, default=10) {
 	max <- min(default, number_of_types) - 1;

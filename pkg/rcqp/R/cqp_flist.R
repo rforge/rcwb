@@ -1,7 +1,4 @@
-###########################################################################
-# S3 object cqp_flist
-###########################################################################
-
+setClass("cqp_flist", contains="cqp_object");
 
 ## 
  # ------------------------------------------------------------------------
@@ -18,36 +15,36 @@
  #
  # ------------------------------------------------------------------------
  ##
-cqp_flist.cqp_attr <- function(x, cutoff=0, ...) {
-	c <- attr(x, "parent.cqp_corpus");
-	attribute <- attr(x, "name");
-	cqp_flist(c, attribute, cutoff);
-}
+setGeneric("cqp_flist", function(corpus, attribute, cutoff, ...) standardGeneric("cqp_flist"));
 
+setMethod("cqp_flist", c("missing", "cqp_attr"), function(corpus, attribute, cutoff=0, ...) {
+	c <- get.corpus(attribute);
+	name <- .cqp_name(x, qualified=FALSE);
+	cqp_flist(c, attribute, cutoff);
+});
 
 ## 
  # ------------------------------------------------------------------------
  # 
  # "cqp_flist(corpus, attribute, cutoff)" --
  #
- # Create an S3 object holding a frequency list
+ # Create a frequency list as a named numeric vector
  #
- # A cqp_flist is a named numeric vector.
- # 
  # Example:
  #              c <- corpus("DICKENS")
  #              cqp_flist(c, "lemma")
  #
  # ------------------------------------------------------------------------
  ##
-cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
+setGeneric("cqp_flist", function(corpus, attribute_name, cutoff, ...) standardGeneric("cqp_flist"));
 
-	cqp_corpus.name <- .cqp_name(x);
-	
+setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute_name, cutoff=0, ...) {
+  x <- corpus;
+  cqp_corpus.name <- .cqp_name(x);
 	positional <- cqi_attributes(cqp_corpus.name, "p");
 	structural <- cqi_attributes(cqp_corpus.name, "s");
 	
-	qualified.attribute.name <- .cqp_name(x, attribute);
+	name <- .cqp_name(attribute, qualified=TRUE);
 
 	if (attribute %in% positional) {
 		max.id <- cqi_lexicon_size(qualified.attribute.name) - 1;
@@ -79,23 +76,20 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
 		}
 	}
 
+   obj <- new("cqp_flist", flist, attribute=corpus$attribute_name);
    class(flist) <- "cqp_flist";
 
    attr(flist, "cqp_corpus.name") <- cqp_corpus.name;
    attr(flist, "attribute") <- attribute;
    return(flist);	
-}
-
-
+});
 
 ## 
  # ------------------------------------------------------------------------
  # 
  # "cqp_flist(subcorpus, anchor, attribute, left.context, right.context)" --
  #
- # Create an S3 object holding a frequency list
- #
- # A cqp_flist is a named numeric vector.
+ # Create a frequency list as a named numeric vector.
  # 
  # Example:
  #              c <- corpus("DICKENS")
@@ -108,11 +102,14 @@ cqp_flist.cqp_corpus <- function(x, attribute, cutoff=0, ...) {
  # with all the tokens contained between match and matchend.
  # ------------------------------------------------------------------------
  ##
-cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.context=0, cutoff=0, offset=0, ...) {
+setMethod("cqp_flist", "cqp_subcorpus",
+    function(corpus, attribute_name, cutoff=0, anchor, left.context=0, right.context=0, offset=0, ...) {
 	
 	if (length(anchor) > 2 || length(anchor) < 1) {
 		stop("anchor must be a vector of lenth 1 or 2");
 	}
+	
+	x <- corpus;
 	
 	parent.cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
 	qualified.subcorpus.name <- .cqp_name(x);
@@ -167,8 +164,6 @@ cqp_flist.cqp_subcorpus <- function(x, anchor, attribute, left.context=0, right.
    return(flist);
 }
 
-
-
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -200,8 +195,6 @@ summary.cqp_flist <- function(object, ...) {
 		cat(paste("  offset:", attr(object, "offset"), "\n"));
 	}
 }
-
-
 
 ## 
  # ------------------------------------------------------------------------

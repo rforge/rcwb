@@ -123,6 +123,7 @@ cqi_subcorpus_size <- function(subcorpus) {
  # ------------------------------------------------------------------------
  ##
 cqi_dump_subcorpus <- function(subcorpus, first=0, last=cqi_subcorpus_size(subcorpus)-1) {
+    if (cqi_subcorpus_size(subcorpus) == 0) return(NULL);
 	ans <- .Call("rcqpCmd_dump_subcorpus", subcorpus, first, last, PACKAGE="rcqp")
     return(ans)
 }
