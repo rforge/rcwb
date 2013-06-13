@@ -11,6 +11,8 @@
 
 #include "rcqp.h"
 
+#define RCQP_ATT_HASH_SIZE 16384
+
 // Prototypes of redefined main() functions
 int R_cwb_compress_rdx(char *corpus_name, char * registry_dir);
 int R_cwb_makeall(char *corpus_name, char* registry);
