@@ -3389,30 +3389,30 @@ show_environment(int thisenv)
   else if (show_compdfa || show_evaltree || show_gconstraints || show_patlist) {
     /* Note, at least one of the above debugging-variables must be true, or there is nothing to print! */
 
-    printf("\n ================= ENVIRONMENT #%d ===============\n\n", thisenv);
+    Rprintf("\n ================= ENVIRONMENT #%d ===============\n\n", thisenv);
 
-    printf("Has %starget indicator.\n", Environment[thisenv].has_target_indicator ? "" : "no ");
+    Rprintf("Has %starget indicator.\n", Environment[thisenv].has_target_indicator ? "" : "no ");
 
     if (show_compdfa) {
-      printf("\n==================== DFA:\n\n");
+      Rprintf("\n==================== DFA:\n\n");
       show_complete_dfa(Environment[thisenv].dfa);
     }
 
     if (show_evaltree) {
-      printf("\n==================== Evaluation Tree:\n\n");
+      Rprintf("\n==================== Evaluation Tree:\n\n");
       print_evaltree(thisenv, Environment[thisenv].evaltree, 0);
     }
 
     if (show_gconstraints) {
-      printf("\n==================== Global Constraints:\n\n");
+      Rprintf("\n==================== Global Constraints:\n\n");
       print_booltree(Environment[thisenv].gconstraint, 0);
     }
 
     if (show_patlist)
       show_patternlist(thisenv);
 
-    printf(" ================= END ENVIRONMENT #%d =============\n", thisenv);
-    fflush(stdout);
+    Rprintf(" ================= END ENVIRONMENT #%d =============\n", thisenv);
+    rcqp_flush();
   }
 }
 

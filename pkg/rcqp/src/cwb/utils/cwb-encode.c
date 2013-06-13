@@ -248,13 +248,13 @@ encode_strtok(register char *s, register const char *delim)
  * @param msg     Message to incorporate into the string that is printed.
  */
 void
-encode_print_time(FILE *stream, char *msg)
+encode_print_time(char *msg)
 {
   time_t now;
 
   (void) time(&now);
 
-  fprintf(stream, "%s: %s\n", msg, ctime(&now));
+  Rprintf( "%s: %s\n", msg, ctime(&now));
 }
 
 /* ======================================== print error message and exit */
@@ -356,7 +356,7 @@ encode_print_input_lineno(void)
  * Then exits the program.
  *
  * @param format  Format-specifying string of the error message.
- * @param ...     Additional arguments, printf-style.
+ * @param ...     Additional arguments, Rprintf-style.
  */
 void
 encode_error(char *format, ...)
@@ -1752,7 +1752,7 @@ main_cwb_encode(int argc, char **argv)
     else {
       Rprintf( "Reading from standard input.\n");
     }
-    encode_print_time(stderr, "Start");
+    encode_print_time("Start");
   }
 
   /* initialise loop variables ... */
@@ -1766,8 +1766,8 @@ main_cwb_encode(int argc, char **argv)
   /* MAIN LOOP: read one line of input and process it */
   while ( encode_get_input_line(linebuf, MAX_INPUT_LINE_LENGTH) ) {
     if (verbose && (line % 15000 == 0)) {
-      printf("%" COMMA_SEP_THOUSANDS_CONVSPEC "9dk tokens processed\r", line >> 10);
-      fflush(stdout);
+      Rprintf("%" COMMA_SEP_THOUSANDS_CONVSPEC "9dk tokens processed\r", line >> 10);
+      rcqp_flush();
     }
 
     input_line++;
@@ -1881,8 +1881,8 @@ main_cwb_encode(int argc, char **argv)
   } /* endwhile (main loop for each line) */
 
   if (verbose) {
-    printf("%50s\r", "");       /* clear progress line */
-    printf("Total size: %" COMMA_SEP_THOUSANDS_CONVSPEC "d tokens (%.1fM)\n", line, ((float) line) / 1048576);
+    Rprintf("%50s\r", "");       /* clear progress line */
+    Rprintf("Total size: %" COMMA_SEP_THOUSANDS_CONVSPEC "d tokens (%.1fM)\n", line, ((float) line) / 1048576);
   }
 
   /* close open regions at end of input; then close file handles for s-attributes */
@@ -1973,7 +1973,7 @@ main_cwb_encode(int argc, char **argv)
   }
 
   if (debug)
-    encode_print_time(stderr, "Done");
+    encode_print_time("Done");
 
   return(0);
 }

@@ -44,9 +44,9 @@ char *passwd = "";
 void 
 cqiserver_welcome(void)
 {
-  printf("** CQPserver v" VERSION "\n");
-  printf("** implementing version %d.%d of the CQi\n", CQI_MAJOR_VERSION, CQI_MINOR_VERSION);
-  printf("\n");
+  Rprintf("** CQPserver v" VERSION "\n");
+  Rprintf("** implementing version %d.%d of the CQi\n", CQI_MAJOR_VERSION, CQI_MINOR_VERSION);
+  Rprintf("\n");
 }
 
 
@@ -65,7 +65,7 @@ void
 cqiserver_unknown_command_error(int cmd)
 {
   Rprintf( "CQPserver: unknown CQi command 0x%04X.\n", cmd);
-  exit(1);
+  rcqp_receive_error(1);
 }
 
 /**
@@ -77,7 +77,7 @@ void
 cqiserver_wrong_command_error(int cmd)
 {
   Rprintf( "CQPserver: command 0x%04X not allowed in this context.\n", cmd);
-  exit(1);
+  rcqp_receive_error(1);
 }
 
 /**
@@ -94,7 +94,7 @@ cqiserver_internal_error(char *function, char *reason)
 {
   Rprintf( "CQPserver: internal error in %s()\n", function);
   Rprintf( "CQPserver: ''%s''\n", reason);
-  exit(1);
+  rcqp_receive_error(1);
 }
 
 
@@ -148,10 +148,10 @@ send_cl_error(void)
     break;
   case CDA_OK:
     Rprintf( "CQPserver: send_cl_error() called with cderrno == CDA_OK\n");
-    exit(1);
+    rcqp_receive_error(1);
   default:
     Rprintf( "CQPserver: send_cl_error() unknown value in cderrno\n");
-    exit(1);
+    rcqp_receive_error(1);
   }
   if (server_debug)
     Rprintf( "CQi: CL error, returning 0x%04X\n", cmd);
@@ -1003,7 +1003,7 @@ do_cqi_cqp_query(void)
     else {
       query_lock = floor(1e9 * cl_runif()) + 1; /* activate query lock mode with random key */
 
-      printf("CQPSERVER: query_lock = %d\n", query_lock);
+      Rprintf("CQPSERVER: query_lock = %d\n", query_lock);
       if (query_has_semicolon(query))
         sprintf(cqp_query, "%s = %s", child, query);
       else
@@ -1020,9 +1020,9 @@ do_cqi_cqp_query(void)
           cqi_command(CQI_CQP_ERROR_GENERAL);
         else {
           if (server_log) {
-            printf("'%s' ran the following query on %s\n", user, mother);
-            printf("\t%s\n", cqp_query);
-            printf("and got %d matches.\n", childcl->size);
+            Rprintf("'%s' ran the following query on %s\n", user, mother);
+            Rprintf("\t%s\n", cqp_query);
+            Rprintf("and got %d matches.\n", childcl->size);
           }
           cqi_command(CQI_STATUS_OK);
 
@@ -1620,7 +1620,7 @@ main(int argc, char *argv[])
 
   if (!initialize_cqp(argc, argv)) {
     Rprintf( "CQPserver: ERROR Couldn't initialise CQP engine.\n");
-    exit(1);
+    rcqp_receive_error(1);
   }
   while (optind < argc) {
     /* remaining command-line arguments are <user>:<password> specifications */
@@ -1628,7 +1628,7 @@ main(int argc, char *argv[])
     if (sep != NULL) {
       if (sep == argv[optind]) {
         Rprintf( "CQPserver: Invalid account specification '%s' (username must not be empty)\n", argv[optind]);
-        exit(1);
+        rcqp_receive_error(1);
       }
       else {
         *sep = '\0';
@@ -1637,7 +1637,7 @@ main(int argc, char *argv[])
     }
     else {
       Rprintf( "CQPserver: Invalid account specification '%s' (password missing)\n", argv[optind]);
-      exit(1);
+      rcqp_receive_error(1);
     }
     optind++;
   }
@@ -1650,28 +1650,28 @@ main(int argc, char *argv[])
 
   if (0 < accept_connection(server_port)) {
     if (server_log)
-      printf("CQPserver: Connected. Waiting for CONNECT request.\n");
+      Rprintf("CQPserver: Connected. Waiting for CONNECT request.\n");
   }
   else {
     Rprintf( "CQPserver: ERROR Connection failed.\n");
-    exit(1);
+    rcqp_receive_error(1);
   }
 
   /* establish CQi connection: wait for CONNECT request */
   cmd = cqi_read_command();
   if (cmd != CQI_CTRL_CONNECT) {
     if (server_log)
-      printf("CQPserver: Connection refused.\n");
+      Rprintf("CQPserver: Connection refused.\n");
     cqiserver_wrong_command_error(cmd);
   }
   user = cqi_read_string();
   passwd = cqi_read_string();
   if (server_log)
-    printf("CQPserver: CONNECT  user = '%s'  passwd = '%s'  pid = %d\n", user, passwd, (int)getpid());
+    Rprintf("CQPserver: CONNECT  user = '%s'  passwd = '%s'  pid = %d\n", user, passwd, (int)getpid());
 
   /* check password here (always required !!) */
   if (!authenticate_user(user, passwd)) {
-    printf("CQPserver: Wrong username or password. Connection refused.\n"); /* TODO shouldn't this be to stderr as it is not conditional on server_log? */
+    Rprintf("CQPserver: Wrong username or password. Connection refused.\n"); /* TODO shouldn't this be to stderr as it is not conditional on server_log? */
     cqi_command(CQI_ERROR_CONNECT_REFUSED);
   }
   else {
@@ -1694,11 +1694,11 @@ main(int argc, char *argv[])
     interpreter();
 
     if (server_log)
-      printf("CQPserver: User '%s' has logged off.\n", user);
+      Rprintf("CQPserver: User '%s' has logged off.\n", user);
   }
 
   /* connection terminated; clean up and exit */
-  printf("CQPserver: Exit. (pid = %d)\n", (int)getpid());
+  Rprintf("CQPserver: Exit. (pid = %d)\n", (int)getpid());
 
   /* TODO should we check cqp_error_status as in the main cqp app? */
   return 0;

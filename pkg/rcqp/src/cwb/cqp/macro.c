@@ -226,7 +226,7 @@ MacroHashDelete(MacroEntry macro)
     }
     if (p == NULL) {                /* this REALLY shouldn't happen */
       cqpmessage(Error, "MacroHashDelete: MacroEntry not found in hash ???");
-      exit(1);
+      rcqp_receive_error(1);
     }
     p->next = macro->next;        /* cut macro from list */
   }
@@ -1083,7 +1083,7 @@ list_macros(char *prefix)
         print_indented_list_item(list[i]);
       }
       else {
-        printf("\t%s\n", list[i]);
+        Rprintf("\t%s\n", list[i]);
       }
     }
     if (pretty_print)
@@ -1109,36 +1109,36 @@ print_macro_definition(char *name, int args)
   else {
     macro = MacroHashLookup(name, args);
     if (macro == NULL) {
-      printf("Macro %s(%d) not defined.\n", name, args);
+      Rprintf("Macro %s(%d) not defined.\n", name, args);
     }
     else {
-      printf("/%s[", name);
+      Rprintf("/%s[", name);
       for (i = 0; i < args; i++) {
         if (macro->argnames[i] != NULL) {
-          printf("<%s>", macro->argnames[i]);
+          Rprintf("<%s>", macro->argnames[i]);
         }
         else {
-          printf("<%d>", i);
+          Rprintf("<%d>", i);
         }
-        if (i < (args-1)) printf(", ");
+        if (i < (args-1)) Rprintf(", ");
       }
-      printf("] = \n");
+      Rprintf("] = \n");
       for (seg = macro->replacement; seg != NULL; seg = seg->next) {
         if (seg->arg >= 0) {
           i = seg->arg;
           if (macro->argnames[i] != NULL) {
-            printf("<%s>", macro->argnames[i]);
+            Rprintf("<%s>", macro->argnames[i]);
           }
           else {
-            printf("<%d>", i);
+            Rprintf("<%d>", i);
           }
         }
         else if (seg->string != NULL)
-          printf("%s", seg->string);
+          Rprintf("%s", seg->string);
         else
-          printf("<$$>");
+          Rprintf("<$$>");
       }
-      printf("\n");
+      Rprintf("\n");
     }
   }
 }

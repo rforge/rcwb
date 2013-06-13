@@ -191,7 +191,7 @@ create_feature_maps(char **config,
     rcqp_receive_error(1);
   }
   
-  printf("LEXICON SIZE: %d / %d\n", nw1, nw2);
+  Rprintf("LEXICON SIZE: %d / %d\n", nw1, nw2);
 
   fcount1 = (unsigned int*) calloc(nw1 + 1, sizeof(unsigned int));
   fcount2 = (unsigned int*) calloc(nw2 + 1, sizeof(unsigned int));
@@ -231,8 +231,8 @@ create_feature_maps(char **config,
             rcqp_receive_error(1);
           }
           else {
-            printf("FEATURE: Shared words, threshold=%4.1f%c, weight=%d ... ",threshold * 100, '\%', weight);
-            fflush(stdout);
+            Rprintf("FEATURE: Shared words, threshold=%4.1f%c, weight=%d ... ",threshold * 100, '\%', weight);
+            rcqp_flush();
 
             /* for each type in target corpus, get its frequency, and the corresponding id and frequency
              * from the target corpus, then test whether it meets the criteria for use as a feature. */
@@ -250,7 +250,7 @@ create_feature_maps(char **config,
                 }
               }
             }
-            printf("[%d]\n", n_shared);
+            Rprintf("[%d]\n", n_shared);
           }
           break;
         }
@@ -276,8 +276,8 @@ create_feature_maps(char **config,
             int i,f,l; /* temp storage for lexicon index, n of possible features, && word length */
             char *s;
 
-            printf("FEATURE: %d-grams, weight=%d ... ", n, weight);
-            fflush(stdout);
+            Rprintf("FEATURE: %d-grams, weight=%d ... ", n, weight);
+            rcqp_flush();
 
             /* for each entry in source-corpus lexicon, add to the number of features IFF
              * that lexicon entry is longer than 4 characters */
@@ -304,7 +304,7 @@ create_feature_maps(char **config,
               f *= char_map_range;
             /* anmd add that to our total number of features! */
             r->n_features += f;
-            printf("[%d]\n", f);
+            Rprintf("[%d]\n", f);
           }
           break;
         }
@@ -331,8 +331,8 @@ create_feature_maps(char **config,
             rcqp_receive_error(-1);
           }
           else {
-            printf("FEATURE: word list %s, weight=%d ... ", filename, weight);
-            fflush(stdout);
+            Rprintf("FEATURE: word list %s, weight=%d ... ", filename, weight);
+            rcqp_flush();
             while((nw = fscanf(wordlist,"%s %s",word1,word2))>0) {
               /* on first line of file, skip UTF8 byte-order-mark if present */
               if (nl == 0 && charset == utf8 && strlen(word1) > 3)
@@ -360,7 +360,7 @@ create_feature_maps(char **config,
               }
             }
             fclose(wordlist);
-            printf("[%d]\n", n_matched);
+            Rprintf("[%d]\n", n_matched);
           }         
           break;
         }
@@ -380,7 +380,7 @@ create_feature_maps(char **config,
               fcount1[i]++;
             for (i=0; i<nw2; i++)
               fcount2[i]++;
-            printf("FEATURE: character count, weight=%d ... [1]\n", weight);
+            Rprintf("FEATURE: character count, weight=%d ... [1]\n", weight);
           }
           break;
         default:
@@ -396,7 +396,7 @@ create_feature_maps(char **config,
     }
   }
 
-  printf("[%d features allocated]\n",r->n_features);
+  Rprintf("[%d features allocated]\n",r->n_features);
 
 
   /*
@@ -412,8 +412,8 @@ create_feature_maps(char **config,
   for(i=1; i<=nw2; i++)
     fcount2[i] += fcount2[i-1];
 
-  printf("[%d entries in source text feature map]\n", fcount1[nw1]);
-  printf("[%d entries in target text feature map]\n", fcount2[nw2]);
+  Rprintf("[%d entries in source text feature map]\n", fcount1[nw1]);
+  Rprintf("[%d entries in target text feature map]\n", fcount2[nw2]);
 
 
   /* now we know how much memory we need, let's allocate it. */
@@ -458,7 +458,7 @@ create_feature_maps(char **config,
           if(sscanf(config[config_pointer],"%2s:%d:%f %s",command,&weight,&threshold,dummy)!=3)
             ;
           else {
-            printf("PASS 2: Processing shared words (th=%4.1f%c).\n", threshold * 100, '\%');
+            Rprintf("PASS 2: Processing shared words (th=%4.1f%c).\n", threshold * 100, '\%');
             /* for each word in the lexicon of the source corpus.... check it exists, get
              * corresponding word in target corpus. As before.
              * BUT this time, IF the criterion is met, we don't just count it, we assign
@@ -493,7 +493,7 @@ create_feature_maps(char **config,
             int i, f, ng, l;
             unsigned char *s, *s_orig;
 
-            printf("PASS 2: Processing %d-grams.\n",n);
+            Rprintf("PASS 2: Processing %d-grams.\n",n);
 
             f = 1;
             for(i = 0; i < n; i++)
@@ -557,7 +557,7 @@ create_feature_maps(char **config,
           else if(!(wordlist = fopen(filename,"r")))
             rcqp_receive_error(-1);
           else {
-            printf("PASS 2: Processing word list %s\n", filename);
+            Rprintf("PASS 2: Processing word list %s\n", filename);
             while((nw = fscanf(wordlist, "%s %s", word1, word2))>0) {
               /* skip utf-8 prefix if present */
               if (nl == 0 && charset == utf8 && strlen(word1) > 3)
@@ -582,7 +582,7 @@ create_feature_maps(char **config,
         }
         case 'C': 
           if (sscanf(config[config_pointer],"%2s:%d %s",command,&weight,dummy) == 2) {
-            printf("PASS 2: Setting character count weight.\n");
+            Rprintf("PASS 2: Setting character count weight.\n");
             if (r->fweight[0] != 0) {
               Rprintf( "WARNING: Character count weight redefined (new value is %d)\n", weight);
             }
@@ -596,7 +596,7 @@ create_feature_maps(char **config,
     }
   }
 
-  printf("PASS 2: Creating character counts.\n");
+  Rprintf("PASS 2: Creating character counts.\n");
   for(i=0; i<nw1; i++) {
     *(--r->w2f1[i]) = cl_id2strlen(w_attr1, i);
   }
@@ -604,7 +604,7 @@ create_feature_maps(char **config,
     *(--r->w2f2[i]) = cl_id2strlen(w_attr2, i);
   }
 
-  printf("[checking pointers]\n");
+  Rprintf("[checking pointers]\n");
 
   need_to_abort = 0;
   for(i=1;i<nw1;i++) {
@@ -819,7 +819,7 @@ check_fvectors(FMS fms)
     agenda=agenda->next;
   }
   
-  printf("[check_fvectors: All %d feature vectors empty]\n",n);
+  Rprintf("[check_fvectors: All %d feature vectors empty]\n",n);
 }
 
 
@@ -847,10 +847,10 @@ show_features(FMS fms, int which, char *word)
   
   id = cl_str2id(att, word);
 
-  printf("FEATURES of '%s', id=%d :\n", word, id);
-  printf("+ len=%2d  weight=%3d\n", *w2f[id], fms->fweight[0]);
+  Rprintf("FEATURES of '%s', id=%d :\n", word, id);
+  Rprintf("+ len=%2d  weight=%3d\n", *w2f[id], fms->fweight[0]);
   for(f = w2f[id] + 1; f < w2f[id+1]; f++)
-    printf("+ %6d  weight=%3d\n", *f, fms->fweight[*f]);
+    Rprintf("+ %6d  weight=%3d\n", *f, fms->fweight[*f]);
 }
 
 
@@ -994,14 +994,14 @@ best_path(FMS fms,
     } /* end of x coordinate loop (diagonal parametrisation) */
     /* new x_max is predicted to be the same as x_max determined for current diagonal */
     if (verbose) { 
-      printf("BEST_PATH: scanning diagonal #%d of %d [max sim = %d]        \r",
+      Rprintf("BEST_PATH: scanning diagonal #%d of %d [max sim = %d]        \r",
              id, idmax, q_max);
-      fflush(stdout);
+      rcqp_flush();
     }
   } /* end of diagonal loop */
   /* end of DP loop */
   if (verbose)
-    printf("\n");
+    Rprintf("\n");
   
   /* read best path from DP array (backward) */
   ix = x_ranges; 

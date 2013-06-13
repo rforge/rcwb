@@ -296,7 +296,7 @@ dup_reftab(RefTab rt1, RefTab rt2)
   assert(rt2);
   if (rt1->size != rt2->size) {
     Rprintf( "dup_reftab()<symtab.c>: Tried to dup() RefTab (%d entries) to RefTab of different size (%d entries)\n", rt1->size, rt2->size);
-    exit(1);
+    rcqp_receive_error(1);
   }
   (void) memcpy(rt2->data, rt1->data, rt1->size * sizeof(int));
 }
@@ -319,7 +319,7 @@ set_reftab(RefTab rt, int index, int value)
   if (rt != NULL) {
     if ((index < 0) || (index >= rt->size)) {
       cqpmessage(Error, "RefTab index #%d not in range 0 .. %d", index, rt->size - 1);
-      exit(1);
+      rcqp_receive_error(1);
     }
     else {
       rt->data[index] = value;

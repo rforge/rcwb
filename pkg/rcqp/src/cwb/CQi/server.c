@@ -97,7 +97,7 @@ cqi_send_error(char *function)
 {
   Rprintf( "ERROR CQi data send failure in function\n");
   Rprintf( "ERROR %s() <server.c>\n", function);
-  exit(1);
+  rcqp_receive_error(1);
 }
 
 /**
@@ -112,7 +112,7 @@ cqi_recv_error(char *function)
 {
   Rprintf( "ERROR CQi data recv failure in function\n");
   Rprintf( "ERROR %s() <server.c>\n", function);
-  exit(1);
+  rcqp_receive_error(1);
 }
 
 /**
@@ -129,7 +129,7 @@ cqi_internal_error(char *function, char *cause)
   Rprintf( "ERROR Internal error in function\n");
   Rprintf( "ERROR %s() <server.c>\n", function);
   Rprintf( "ERROR ''%s''\n", cause);
-  exit(1);
+  rcqp_receive_error(1);
 }
 
 
@@ -191,7 +191,7 @@ accept_connection(int port)
 #ifndef __MINGW__
   if (SIG_ERR == signal(SIGCHLD, SIG_IGN)) {
     perror("ERROR Can't ignore SIGCHLD");
-    exit(1);
+    rcqp_receive_error(1);
   }
 #endif
 
@@ -244,7 +244,7 @@ accept_connection(int port)
   }
 
   if (server_log)
-    printf("Waiting for client on port #%d.\n", port);
+    Rprintf("Waiting for client on port #%d.\n", port);
   if (0 != listen(sockfd, 5)) {
     perror("ERROR listen() failed");
     return -1;
@@ -256,8 +256,8 @@ accept_connection(int port)
     pid_t pid = fork();
     if (pid != 0) {
       close(sockfd);            /* parent returns to caller */
-      printf("[CQPserver running in background now]\n");
-      exit(0);
+      Rprintf("[CQPserver running in background now]\n");
+      rcqp_receive_error(0);
     }
   }
 #else
@@ -277,8 +277,8 @@ accept_connection(int port)
       
       if ((select(sockfd+1, &read_fd, NULL, NULL, &tv) <= 0)
           || (!FD_ISSET(sockfd, &read_fd))) {
-        printf("Port #%d timed out in private server mode. Aborting.\n", port);
-        exit(1);
+        Rprintf("Port #%d timed out in private server mode. Aborting.\n", port);
+        rcqp_receive_error(1);
       }
     }
 
@@ -293,10 +293,10 @@ accept_connection(int port)
     remote_address = inet_ntoa(client_addr.sin_addr);
     remote_host = gethostbyaddr((void *)&(client_addr.sin_addr), 4, AF_INET);
     if (server_log) {
-      printf("Connection established with %s ", remote_address);
+      Rprintf("Connection established with %s ", remote_address);
       if (remote_host != NULL) 
-        printf("(%s)", remote_host->h_name);
-      printf("\n");
+        Rprintf("(%s)", remote_host->h_name);
+      Rprintf("\n");
     }
     
 #ifndef __MINGW__
@@ -311,13 +311,13 @@ accept_connection(int port)
       break;                    /* the child exits the listen() loop */
 
     /* this is the listening 'parent', which exits immediately */
-    printf("Spawned CQPserver, pid = %d.\n", (int)child_pid);
+    Rprintf("Spawned CQPserver, pid = %d.\n", (int)child_pid);
     close(connfd);              /* this is the child's connection */
 
     if (private_server) {
-      printf("Accepting no more connections (private server).\n");
+      Rprintf("Accepting no more connections (private server).\n");
       close(sockfd);
-      exit(0);                  /* SIGCHLD should be reaped by calling process */
+      rcqp_receive_error(0);                  /* SIGCHLD should be reaped by calling process */
     }
 #else
     /* no forking in Windows!
@@ -330,7 +330,7 @@ accept_connection(int port)
      *      )
      * We print the "private server" message automatically.
      */
-    printf("Accepting no more connections (private server).\n");
+    Rprintf("Accepting no more connections (private server).\n");
     break;
 #endif
   }/* endwhile 42 */
@@ -342,10 +342,10 @@ accept_connection(int port)
 
   /* check if remote host is in validation list */
   if (!check_host(client_addr.sin_addr)) {
-    printf("WARNING %s not in list, connection refused!\n", remote_address);
-    printf("Exit. (pid = %d)\n", (int)getpid());
+    Rprintf("WARNING %s not in list, connection refused!\n", remote_address);
+    Rprintf("Exit. (pid = %d)\n", (int)getpid());
     close(connfd);
-    exit(1);
+    rcqp_receive_error(1);
   }
 
 #ifndef __MINGW__

@@ -232,11 +232,11 @@ REGEX2DFA_ERROR(char *Format, ...)
   
   Rprintf( "[%d] ", LINE);
   va_start(AP, Format); Rvprintf( Format, AP); va_end(AP);
-  fputc('\n', stderr);
+  Rprintf("%d",'\n');
   if (++ERRORS == MAX_ERRORS) {
     Rprintf( "regex2dfa: Reached the %d error limit.\n",
             MAX_ERRORS);
-    exit(1);
+    rcqp_receive_error(1);
   }
 }
 
@@ -280,8 +280,8 @@ LEX(void)
   if (isalpha(Ch) || Ch == '_' || Ch == '$') {
     for (LastW = ChP; isalnum(Ch) || Ch == '_' || Ch == '$'; ChP++) {
       if (ChP - ChArr == MAX_CHAR) {
-        printf("Out of character space.\n");
-        exit(1);
+        Rprintf("Out of character space.\n");
+        rcqp_receive_error(1);
       }
       *ChP = Ch;
       Ch = GET();
@@ -289,8 +289,8 @@ LEX(void)
     if (Ch != EOF) 
       UNGET(Ch);
     if (ChP - ChArr == MAX_CHAR) {
-      printf("Out of character space.\n");
-      exit(1);
+      Rprintf("Out of character space.\n");
+      rcqp_receive_error(1);
     }
     *ChP++ = '\0';
     return IdenT;
@@ -299,19 +299,19 @@ LEX(void)
     Ch = GET();
     for (LastW = ChP; Ch != '"' && Ch != EOF; ChP++) {
       if (ChP - ChArr == MAX_CHAR) {
-        printf("Out of character space.\n");
-        exit(1);
+        Rprintf("Out of character space.\n");
+        rcqp_receive_error(1);
       }
       *ChP = Ch;
       Ch = GET();
     }
     if (Ch == EOF) {
-      printf("Missing closing \".\n");
-      exit(1);
+      Rprintf("Missing closing \".\n");
+      rcqp_receive_error(1);
     }
     if (ChP - ChArr == MAX_CHAR) {
-      printf("Out of character space.\n");
-      exit(1);
+      Rprintf("Out of character space.\n");
+      rcqp_receive_error(1);
     }
     *ChP++ = '\0';
     return IdenT;
@@ -546,7 +546,7 @@ PUSH(StackTag Tag, int Q)
   if (SP >= Stack + STACK_MAX) 
     {
       REGEX2DFA_ERROR("Expression too complex ... aborting.");
-      exit(1);
+      rcqp_receive_error(1);
     }
   SP->Tag = Tag;
   SP->Q = Q; 
@@ -620,7 +620,7 @@ Parse(void)
   switch (Action[TOP][L])  {
   case 'A':
     REGEX2DFA_ERROR("Extra ','");
-    exit(1);
+    rcqp_receive_error(1);
   case 'B':
     REGEX2DFA_ERROR("Unmatched ).");
     L = LEX();
@@ -647,10 +647,10 @@ Parse(void)
     goto MakeOpt;
   case 'H':
     REGEX2DFA_ERROR("Left-hand side of '=' must be symbol.");
-    exit(1);
+    rcqp_receive_error(1);
   case 'I':
     REGEX2DFA_ERROR("Missing evaluation.");
-    exit(1);
+    rcqp_receive_error(1);
   case '.':
     ignore_value = POP();
     return RHS;
@@ -999,19 +999,19 @@ WriteStates(void)
       if (SP->Class != Classes) 
         continue;
       Classes++;
-      printf("s%d =", SP->Class);
+      Rprintf("s%d =", SP->Class);
       if (SP->Empty) {
-        printf(" fin");
+        Rprintf(" fin");
         if (SP->Shifts > 0)
-          printf(" |");
+          Rprintf(" |");
       }
       for (Sh = 0; Sh < SP->Shifts; Sh++) {
         C = SP->ShList[Sh].RHS;
         if (Sh > 0)
-          printf(" |");
-        printf(" %s s%d", SP->ShList[Sh].LHS->Name, STab[C].Class);
+          Rprintf(" |");
+        Rprintf(" %s s%d", SP->ShList[Sh].LHS->Name, STab[C].Class);
       }
-      putchar('\n');
+      Rprintf("%d", '\n');
     }
 }
 
@@ -1057,19 +1057,19 @@ show_complete_dfa(DFA dfa)
   int i, j;
 
   for (i = 0; i < dfa.Max_States; i++) {
-    printf("s%d", i);
+    Rprintf("s%d", i);
     if (dfa.Final[i])
-      printf("(final)");
+      Rprintf("(final)");
     else
-      putchar('\t');
+      Rprintf("%d", '\t');
     for (j = 0; j < dfa.Max_Input; j++)   {
-      printf("\t%d -> ", j);
+      Rprintf("\t%d -> ", j);
       if (dfa.TransTable[i][j] == dfa.E_State)
-        printf("E\t");
+        Rprintf("E\t");
       else
-        printf("s%d,",dfa.TransTable[i][j]);
+        Rprintf("s%d,",dfa.TransTable[i][j]);
     }
-    putchar('\n');
+    Rprintf("%d", '\n');
   }
 }
 
@@ -1143,7 +1143,7 @@ regex2dfa(char *rxs, DFA *automaton)
   if (ERRORS > 0) 
     Rprintf( "%d error(s)\n", ERRORS);
   if (Q == -1) 
-    exit(1);
+    rcqp_receive_error(1);
   FormState(Q);
   MergeStates(); 
 

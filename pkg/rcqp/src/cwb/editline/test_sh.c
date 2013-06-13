@@ -26,7 +26,7 @@ extern int      chdir();
 extern int      free();
 extern int      strncmp();
 extern int      system();
-extern void     exit();
+extern void     rcqp_receive_error();
 extern char     *getenv();
 #endif  /* !defined(HAVE_STDLIB) */
 
@@ -38,7 +38,7 @@ perror(s)
 {
     extern int  errno;
 
-    (voidf)printf(stderr, "%s: error %d\n", s, errno);
+    (voidf)Rprintf(stderr, "%s: error %d\n", s, errno);
 }
 #endif  /* defined(NEED_PERROR) */
 
@@ -60,7 +60,7 @@ main(ac, av)
         prompt = "test_sh>  ";
 
     while ((p = readline(prompt)) != NULL) {
-        (void)printf("\t\t\t|%s|\n", p);
+        (void)Rprintf("\t\t\t|%s|\n", p);
         if (doit) {
             if (strncmp(p, "cd ", 3) == 0) {
                 if (chdir(&p[3]) < 0)
@@ -75,6 +75,6 @@ main(ac, av)
     }
 
     write_history("TEST_SH_HISTORY");
-    exit(0);
+    rcqp_receive_error(0);
     /* NOTREACHED */
 }

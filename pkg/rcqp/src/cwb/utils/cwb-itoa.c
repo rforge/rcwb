@@ -50,7 +50,7 @@ process_fd(FILE *fd)
       i = ntohl(buf[k]);        /* convert from CWB to internal format */
       if (little_endian) 
         i = cl_bswap32(i);      /* explicit conversion */
-      fprintf(stdout, "%d\n", i);
+      Rprintf( "%d\n", i);
     }
   } while (N == CL_MAX_LINE_LENGTH);
 }

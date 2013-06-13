@@ -304,7 +304,7 @@ compute_code_lengths(Attribute *attr, HCD *hc, char *fname)
   long sum_bits;
 
 
-  printf("COMPRESSING TOKEN STREAM of %s.%s\n", corpus_id_cwb_huffcode, attr->any.name);
+  Rprintf("COMPRESSING TOKEN STREAM of %s.%s\n", corpus_id_cwb_huffcode, attr->any.name);
 
   /* I need the following components:
    * - CompCorpus
@@ -695,13 +695,13 @@ compute_code_lengths(Attribute *attr, HCD *hc, char *fname)
 
       }
 
-      printf("- writing code descriptor block to %s\n",  hcd_path);
+      Rprintf("- writing code descriptor block to %s\n",  hcd_path);
       if (!WriteHCD(hcd_path, hc)) {
         Rprintf( "ERROR: writing %s failed. Aborted.\n", hcd_path);
         rcqp_receive_error(1);
       }
 
-      printf("- writing compressed item sequence to %s\n", huf_path);
+      Rprintf("- writing compressed item sequence to %s\n", huf_path);
 
       if (!BFopen(huf_path, "w", &bfd)) {
         Rprintf( "ERROR: can't create file %s\n", huf_path);
@@ -709,7 +709,7 @@ compute_code_lengths(Attribute *attr, HCD *hc, char *fname)
         rcqp_receive_error(1);
       }
 
-      printf("- writing sync (every %d tokens) to %s\n", SYNCHRONIZATION, sync_path);
+      Rprintf("- writing sync (every %d tokens) to %s\n", SYNCHRONIZATION, sync_path);
 
       if ((sync = fopen(sync_path, "w")) == NULL) {
         Rprintf( "ERROR: can't create file %s\n", sync_path);
@@ -799,7 +799,7 @@ decode_check_huff(Attribute *attr, char *fname)
   char sync_path[CL_MAX_LINE_LENGTH];
 
   
-  printf("VALIDATING %s.%s\n", corpus_id_cwb_huffcode, attr->any.name);
+  Rprintf("VALIDATING %s.%s\n", corpus_id_cwb_huffcode, attr->any.name);
 
   if (fname) {
     sprintf(hcd_path, "%s.hcd", fname);
@@ -824,20 +824,20 @@ decode_check_huff(Attribute *attr, char *fname)
     
   }
 
-  printf("- reading code descriptor block from %s\n", hcd_path);
+  Rprintf("- reading code descriptor block from %s\n", hcd_path);
   if (!ReadHCD(hcd_path, &hc)) {
     Rprintf( "ERROR: reading %s failed. Aborted.\n",  hcd_path);
     rcqp_receive_error(1);
   }
 
-  printf("- reading compressed item sequence from %s\n", huf_path);
+  Rprintf("- reading compressed item sequence from %s\n", huf_path);
   if (!BFopen(huf_path, "r", &bfd)) {
     Rprintf( "ERROR: can't open file %s. Aborted.\n", huf_path);
     perror(huf_path);
     rcqp_receive_error(1);
   }
 
-  printf("- reading sync (mod %d) from %s\n", SYNCHRONIZATION, sync_path);
+  Rprintf("- reading sync (mod %d) from %s\n", SYNCHRONIZATION, sync_path);
   if ((sync = fopen(sync_path, "r")) == NULL) {
     Rprintf( "ERROR: can't open file %s. Aborted.\n", sync_path);
     perror(sync_path);
@@ -896,7 +896,7 @@ decode_check_huff(Attribute *attr, char *fname)
   BFclose(&bfd);
 
   /* tell the user it's safe to delete the CORPUS component now */
-  printf("!! You can delete the file <%s> now.\n",
+  Rprintf("!! You can delete the file <%s> now.\n",
          component_full_name(attr, CompCorpus, NULL));
   
   return;                        /* exits on error, so there's no return value */

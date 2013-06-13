@@ -746,7 +746,7 @@ main (int argc, char *argv[])
         int cpK = cpos >> 10;
         int csK = Csize >> 10;
         Rprintf( "Progress: %6dK / %dK   \r", cpK, csK);
-        fflush(stderr);
+        rcqp_flush();
       }
 
       accept = 1;
@@ -912,11 +912,11 @@ main (int argc, char *argv[])
       }
     }
     else {
-      of = stdout;
+      of = NULL;
       if (! quiet)
         Rprintf( "Printing frequency table on stdout ... \n");
     }
-    fflush(stderr);
+    rcqp_flush();
 
     for (bucket = 0; bucket < Hash.buckets; bucket++) {
       entry = Hash.table[bucket];

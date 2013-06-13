@@ -143,15 +143,15 @@ nqrfile_print_info(FILE *fd, int print_header)
       }
 
       if (print_header) {
-        printf("REGISTRY %s\n", registry);
-        printf("O_NAME   %s\n", o_name);
-        printf("SIZE     %d\n", size);
+        Rprintf("REGISTRY %s\n", registry);
+        Rprintf("O_NAME   %s\n", o_name);
+        Rprintf("SIZE     %d\n", size);
       }
 
       range = (struct range_t *) p;
 
       for (j = 0; j < size; j++)
-        printf("%d\t%d\n",
+        Rprintf("%d\t%d\n",
                range[j].start, range[j].end);
     }
     else {

@@ -375,8 +375,8 @@ command:                                 { prepare_input(); }
                       }
                       else {
                         Rprintf( "ALERT! Query lock violation.\n");
-                        printf("\n"); /* so CQP.pm won't block -- should no longer be needed after switching to .EOL. mechanism */
-                        exit(1);
+                        Rprintf("\n"); /* so CQP.pm won't block -- should no longer be needed after switching to .EOL. mechanism */
+                        rcqp_receive_error(1);
                       }
                     } ';'
                 | EOLCmd ';'    /* .EOL. must be allowed in query lock mode */
@@ -435,7 +435,7 @@ InteractiveCommand:       Showing
 
 
 /* print special code ``-::-EOL-::-'' marking end-of-command in child mode */
-EOLCmd:           EOL_SYM               { printf("-::-EOL-::-\n"); fflush(stdout); }
+EOLCmd:           EOL_SYM               { Rprintf("-::-EOL-::-\n"); rcqp_flush(); }
                 ;
 
 Cat:              CAT_SYM OptionalCID
@@ -458,7 +458,7 @@ Saving:           SAVE_SYM OptionalCID
 OptionalRedir:    Redir
                 | /* epsilon */         { $$.name = (char *)NULL;
                                           $$.mode = (char *)NULL;
-                                          $$.stream = stdout;
+                                          $$.stream = NULL;
                                           $$.is_pipe = 0;
                                         }
                 ;

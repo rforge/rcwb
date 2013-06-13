@@ -372,7 +372,7 @@ PrintContextDescriptor(ContextDescriptor *cdp)
 
   if (cdp) {
     stream_ok = open_stream(&rd, ascii);
-    fd = (stream_ok) ? rd.stream : stdout; /* use pager, or simply print to stdout if it fails */
+    fd = (stream_ok) ? rd.stream : NULL; /* use pager, or simply print to stdout if it fails */
 
     if (pretty_print) {
       fprintf(fd, "===Context Descriptor=======================================\n");

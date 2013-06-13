@@ -183,7 +183,7 @@ creat_freqs(Component *freqs)
   if ((fd = fopen(corpus_fn, "rb")) == NULL) {
     Rprintf( "makecomps:creat_freqs(): Couldn't open corpus %s\n", corpus_fn);
     perror(corpus_fn);
-    exit(2);
+    rcqp_receive_error(2);
   }
 
   /* do the counts */
@@ -274,7 +274,7 @@ creat_rev_corpus(Component *revcorp)
   /* open REVCORP data file for writing */
   if ((revcorp_fd = fopen(revcorp->path, "wb")) == NULL) {
     perror(revcorp->path);
-    exit(1);
+    rcqp_receive_error(1);
   }
 
   /* NEW multi-pass algorithm.
@@ -332,7 +332,7 @@ creat_rev_corpus(Component *revcorp)
       ptr += cl_id2freq(attr, id);
       if (ptr != ptab[id]) {
         Rprintf( "Pointer inconsistency for id=%d. Aborting.\n", id);
-        exit(1);
+        rcqp_receive_error(1);
       }
     }
 
@@ -350,7 +350,7 @@ creat_rev_corpus(Component *revcorp)
   /* finally, check amount of data read/written vs. expected */
   if ((ints_written != cpos) || (ints_written != datasize)) {
     Rprintf( "Data size inconsistency: expected=%d, read=%d, written=%d.\n", datasize, cpos, ints_written);
-    exit(1);
+    rcqp_receive_error(1);
   }
 
   /* free allocated memory */
@@ -420,7 +420,7 @@ creat_rev_corpus_idx(Component *revcidx)
   if (write_file_from_blob(revcidx->path, &(revcidx->data), 0) == 0) {
     Rprintf( "Can't open %s for writing", revcidx->path);
     perror(revcidx->path);
-    exit(2);
+    rcqp_receive_error(2);
   }
 
   return 1;

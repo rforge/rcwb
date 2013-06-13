@@ -290,8 +290,7 @@ check_access_conditions(Corpus *corpus, int verbose)
   /* get password data only if we have user / group access restrictions */
   if (corpus->userAccessList || corpus->groupAccessList) {
     /*     pwd = getpwuid(getuid()); */
-    fprintf(
-        stderr,
+    Rprintf(
         "CL Error: Sorry, user/group access restrictions are disabled due to incompatibilities.\n");
     if (pwd == NULL) {
       perror("getpwuid(getuid()): can't get user information");
@@ -327,8 +326,7 @@ check_access_conditions(Corpus *corpus, int verbose)
       for (i = 0; i < nr_groups; i++) {
 
         /*      grpent = getgrgid(gidset[i]); */
-        fprintf(
-            stderr,
+        Rprintf(
             "CL Error: Sorry, user/group access restrictions are disabled due to incompatibilities.\n");
 
         if (grpent == NULL) {
@@ -439,8 +437,7 @@ cl_new_corpus(char *registry_dir, char *registry_name)
           loaded_corpora = corpus;
           /* check whether ID field corresponds to name of registry file */
           if (corpus->id && (strcmp(corpus->id, canonical_name) != 0)) {
-            fprintf(
-                stderr,
+            Rprintf(
                 "CL warning: ID field '%s' does not match name of registry file %s/%s\n",
                 corpus->id, real_registry_name, canonical_name);
           }
@@ -553,24 +550,24 @@ describe_corpus(Corpus *corpus)
 
   assert(corpus != NULL);
 
-  printf("\n\n-------------------- CORPUS SETUP ---------------------\n\n");
+  Rprintf("\n\n-------------------- CORPUS SETUP ---------------------\n\n");
 
-  printf("ID:\t%s\n", corpus->id ? corpus->id : "(null)");
-  printf("Name:\t%s\n", corpus->name ? corpus->name : "(null)");
-  printf("Path:\t%s\n", corpus->path ? corpus->path : "(null)");
-  printf("Info:\t%s\n", corpus->info_file ? corpus->info_file : "(null)");
+  Rprintf("ID:\t%s\n", corpus->id ? corpus->id : "(null)");
+  Rprintf("Name:\t%s\n", corpus->name ? corpus->name : "(null)");
+  Rprintf("Path:\t%s\n", corpus->path ? corpus->path : "(null)");
+  Rprintf("Info:\t%s\n", corpus->info_file ? corpus->info_file : "(null)");
 
-  printf("\nRegistry Directory:\t%s\n",
+  Rprintf("\nRegistry Directory:\t%s\n",
       corpus->registry_dir ? corpus->registry_dir : "(null)");
-  printf("Registry Name:     \t%s\n\n",
+  Rprintf("Registry Name:     \t%s\n\n",
       corpus->registry_name ? corpus->registry_name : "(null)");
 
-  printf("Attributes:\n");
+  Rprintf("Attributes:\n");
   for (attr = (Attribute *) (corpus->attributes); attr != NULL; attr
       = (Attribute *) (attr->any.next))
     describe_attribute(attr);
 
-  printf("\n\n------------------------- END -------------------------\n\n");
+  Rprintf("\n\n------------------------- END -------------------------\n\n");
 }
 
 /* ---------------------------------------------------------------------- */

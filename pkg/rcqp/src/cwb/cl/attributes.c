@@ -1102,7 +1102,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
     Rprintf( "attributes:ensure_component(): Warning:\n"
             "  Undeclared component: %s\n", cid_name(cid));
 #ifdef CL_ENSURE_COMPONENT_EXITS
-    exit(1);
+    rcqp_receive_error(1);
 #endif
     return NULL;
   }
@@ -1122,7 +1122,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
                 cid_name(cid), attribute->any.name);
 #endif
 #ifdef CL_ENSURE_COMPONENT_EXITS
-        exit(1);
+        rcqp_receive_error(1);
 #endif
         return NULL;
       }
@@ -1142,7 +1142,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
                   cid_name(cid), attribute->any.name);
 #endif
 #ifdef CL_ENSURE_COMPONENT_EXITS
-          exit(1);
+          rcqp_receive_error(1);
 #endif
           return NULL;
         }
@@ -1151,7 +1151,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
                 "creation of corpus components. Please refer to the manuals\n"
                 "or use the ''makeall'' tool.\n");
 #ifdef CL_ENSURE_COMPONENT_EXITS
-        exit(1);
+        rcqp_receive_error(1);
 #endif
         return NULL;
 #endif
@@ -1164,7 +1164,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
                   cid_name(cid), attribute->any.name);
 #endif
 #ifdef CL_ENSURE_COMPONENT_EXITS
-        exit(1);
+        rcqp_receive_error(1);
 #endif
         return NULL;
       }
@@ -1175,7 +1175,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
               "  Can't ensure undefined/illegal %s component of %s\n", 
               cid_name(cid), attribute->any.name);
 #ifdef CL_ENSURE_COMPONENT_EXITS
-      exit(1);
+      rcqp_receive_error(1);
 #endif
       break;
 
@@ -1184,7 +1184,7 @@ ensure_component(Attribute *attribute, ComponentID cid, int try_creation)
               "  Illegal state of  %s component of %s\n", 
               cid_name(cid), attribute->any.name);
 #ifdef CL_ENSURE_COMPONENT_EXITS
-      exit(1);
+      rcqp_receive_error(1);
 #endif
       break;
     }
@@ -1311,29 +1311,29 @@ describe_attribute(Attribute *attribute)
   DynArg *arg;
   ComponentID cid;
   
-  printf("Attribute %s:\n", attribute->any.name);
-  printf("  Type:        %s\n", aid_name(attribute->any.type));
+  Rprintf("Attribute %s:\n", attribute->any.name);
+  Rprintf("  Type:        %s\n", aid_name(attribute->any.type));
 
   /* print type dependent additional data */
 
   if (attribute->type == ATT_DYN) {
-    printf("  Arguments:   (");
+    Rprintf("  Arguments:   (");
     for (arg = attribute->dyn.arglist; arg; arg = arg->next) {
-      printf("%s", argid_name(arg->type));
+      Rprintf("%s", argid_name(arg->type));
       if (arg->next != NULL)
-        printf(", ");
+        Rprintf(", ");
     }
-    printf("):%s\n"
+    Rprintf("):%s\n"
            "               by \"%s\"\n",
            argid_name(attribute->dyn.res_type),
            attribute->dyn.call);
   }
-  printf("\n");
+  Rprintf("\n");
   for (cid = CompDirectory; cid < CompLast; cid++)
     if (attribute->any.components[cid])
       describe_component(attribute->any.components[cid]);
 
-  printf("\n\n");
+  Rprintf("\n\n");
 }
 
 /**
@@ -1342,29 +1342,29 @@ describe_attribute(Attribute *attribute)
 void
 describe_component(Component *component)
 {
-  printf("  Component %s:\n", cid_name(component->id));
-  printf("    Attribute:   %s\n", component->attribute->any.name);
-  printf("    Path/Value:  %s\n", component->path);
-  printf("    State:       ");
+  Rprintf("  Component %s:\n", cid_name(component->id));
+  Rprintf("    Attribute:   %s\n", component->attribute->any.name);
+  Rprintf("    Path/Value:  %s\n", component->path);
+  Rprintf("    State:       ");
 
   switch (comp_component_state(component)) {
   case ComponentLoaded: 
-    printf("loaded");
+    Rprintf("loaded");
     break;
   case ComponentUnloaded:
-    printf("unloaded (valid & on disk)");
+    Rprintf("unloaded (valid & on disk)");
     break;
   case ComponentDefined:
-    printf("defined  (valid, but not on disk)");
+    Rprintf("defined  (valid, but not on disk)");
     break;
   case ComponentUndefined:
-    printf("undefined (not valid)");
+    Rprintf("undefined (not valid)");
     break;
   default:
-    printf("ILLEGAL! (Illegal component state %d)", comp_component_state(component));
+    Rprintf("ILLEGAL! (Illegal component state %d)", comp_component_state(component));
     break;
   }
-  printf("\n\n");
+  Rprintf("\n\n");
 }
 
 

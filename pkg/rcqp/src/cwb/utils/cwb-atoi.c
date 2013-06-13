@@ -48,7 +48,7 @@ process_fd(FILE *fd)
     i = htonl(atoi(buf));
     if (little_endian) 
       i = cl_bswap32(i);        /* explicit conversion */
-    fwrite(&i, 4, 1, stdout);   /* always write 4 bytes ! */
+    fwrite(&i, 4, 1, NULL);   /* always write 4 bytes ! */
   }
 }
 

@@ -256,56 +256,56 @@ decode_print_xml_declaration(void)
   if (corpus)
     charset = cl_corpus_charset(corpus);
 
-  printf("<?xml version=\"1.0\" encoding=\"");
+  Rprintf("<?xml version=\"1.0\" encoding=\"");
   switch (charset) {
   case latin1:
-    printf("ISO-8859-1");
+    Rprintf("ISO-8859-1");
     break;
   case latin2:
-    printf("ISO-8859-2");
+    Rprintf("ISO-8859-2");
     break;
   case latin3:
-    printf("ISO-8859-3");
+    Rprintf("ISO-8859-3");
     break;
   case latin4:
-    printf("ISO-8859-4");
+    Rprintf("ISO-8859-4");
     break;
   case cyrillic:
-    printf("ISO-8859-5");
+    Rprintf("ISO-8859-5");
     break;
   case arabic:
-    printf("ISO-8859-6");
+    Rprintf("ISO-8859-6");
     break;
   case greek:
-    printf("ISO-8859-7");
+    Rprintf("ISO-8859-7");
     break;
   case hebrew:
-    printf("ISO-8859-8");
+    Rprintf("ISO-8859-8");
     break;
   case latin5:
-    printf("ISO-8859-9");
+    Rprintf("ISO-8859-9");
     break;
   case latin6:
-    printf("ISO-8859-10");
+    Rprintf("ISO-8859-10");
     break;
   case latin7:
-    printf("ISO-8859-13");
+    Rprintf("ISO-8859-13");
     break;
   case latin8:
-    printf("ISO-8859-14");
+    Rprintf("ISO-8859-14");
     break;
   case latin9:
-    printf("ISO-8859-15");
+    Rprintf("ISO-8859-15");
     break;
   case utf8:
-    printf("UTF-8");
+    Rprintf("UTF-8");
     break;
   case unknown_charset:
   default:
-    printf("ISO-8859-1");       /* at least the parser isn't going to break down that way. probably. */
+    Rprintf("ISO-8859-1");       /* at least the parser isn't going to break down that way. probably. */
     break;
   }
-  printf("\" standalone=\"yes\" ?>\n");
+  Rprintf("\" standalone=\"yes\" ?>\n");
 }
 
 
@@ -440,25 +440,25 @@ decode_print_surrounding_s_att_values(int position)
 
         switch (mode) {
         case ConclineMode:
-          printf("<%s %s>: ", tagname, sval);
+          Rprintf("<%s %s>: ", tagname, sval);
           break;
 
         case LispMode:
-          printf("(VALUE %s \"%s\")\n", tagname, sval);
+          Rprintf("(VALUE %s \"%s\")\n", tagname, sval);
           break;
 
         case XMLMode:
-          printf("<element name=\"%s\" value=\"%s\"/>\n", tagname, sval);
+          Rprintf("<element name=\"%s\" value=\"%s\"/>\n", tagname, sval);
           break;
 
         case EncodeMode:
           /* pretends to be a comment, but has to be stripped before feeding output to encode */
-          printf("# %s=%s\n", tagname, sval);
+          Rprintf("# %s=%s\n", tagname, sval);
           break;
 
         case StandardMode:
         default:
-          printf("<%s %s>\n", tagname, sval);
+          Rprintf("<%s %s>\n", tagname, sval);
           break;
         }
       }
@@ -513,24 +513,24 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
     /* indicate that we're showing context */
     switch (mode) {
     case LispMode:
-      printf("(TARGET %d\n", start_position);
+      Rprintf("(TARGET %d\n", start_position);
       if (end_position >= 0)
-        printf("(INTERVAL %d %d)\n", start_position, end_position);
+        Rprintf("(INTERVAL %d %d)\n", start_position, end_position);
       break;
     case EncodeMode:
     case ConclineMode:
       /* nothing here */
       break;
     case XMLMode:
-      printf("<context start=\"%d\" end=\"%d\"/>\n", start_context, end_context);
+      Rprintf("<context start=\"%d\" end=\"%d\"/>\n", start_context, end_context);
       break;
     case StandardMode:
     default:
       if (end_position >= 0) {
-        printf("INTERVAL %d %d\n", start_position, end_position);
+        Rprintf("INTERVAL %d %d\n", start_position, end_position);
       }
       else {
-        printf("TARGET %d\n", start_position);
+        Rprintf("TARGET %d\n", start_position);
       }
       break;
     }
@@ -539,10 +539,10 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
 
   /* some extra information in -L and -H modes */
   if (mode == LispMode && end_position != -1)
-    printf("(CONTEXT %d %d)\n", start_context, end_context);
+    Rprintf("(CONTEXT %d %d)\n", start_context, end_context);
   else if (mode == ConclineMode) {
     if (printnum)
-      printf("%8d: ", start_position);
+      Rprintf("%8d: ", start_position);
   }
 
   /* now print the token sequence (including context) with all requested attributes */
@@ -573,10 +573,10 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
     if (printnum)
       switch (mode) {
       case LispMode:
-        printf("(%d ", w);
+        Rprintf("(%d ", w);
         break;
       case EncodeMode:
-        printf("%8d\t", w);
+        Rprintf("%8d\t", w);
         break;
       case ConclineMode:
         /* nothing here (shown at start of line in -H mode) */
@@ -586,12 +586,12 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
         break;
       case StandardMode:
       default:
-        printf("%8d: ", w);
+        Rprintf("%8d: ", w);
         break;
       }
     else {
       if (mode == LispMode)
-        printf("(");            /* entire match is parenthesised list in -L mode */
+        Rprintf("(");            /* entire match is parenthesised list in -L mode */
     }
 
     lastposa = -1;
@@ -611,16 +611,16 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
               && (w == aligned_start)
               ) {
             if (mode == XMLMode) {
-              printf("<align type=\"start\" target=\"%s\"", print_list[i]->any.name);
+              Rprintf("<align type=\"start\" target=\"%s\"", print_list[i]->any.name);
               if (printnum)
-                printf(" start=\"%d\" end=\"%d\"", aligned_start2, aligned_end2);
-              printf("/>\n");
+                Rprintf(" start=\"%d\" end=\"%d\"", aligned_start2, aligned_end2);
+              Rprintf("/>\n");
             }
             else {
-              printf("<%s", print_list[i]->any.name);
+              Rprintf("<%s", print_list[i]->any.name);
               if (printnum)
-                printf(" %d %d", aligned_start2, aligned_end2);
-              printf(">%c", (mode == EncodeMode) ? '\n' : ' ');
+                Rprintf(" %d %d", aligned_start2, aligned_end2);
+              Rprintf(">%c", (mode == EncodeMode) ? '\n' : ' ');
             }
           }
           break;
@@ -636,15 +636,15 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
 
         if (region->start == w) {
           if (mode == XMLMode) {
-            printf("<tag type=\"start\" name=\"%s\"", region->name);
+            Rprintf("<tag type=\"start\" name=\"%s\"", region->name);
             if (printnum)
-              printf(" cpos=\"%d\"", w);
+              Rprintf(" cpos=\"%d\"", w);
             if (region->annot)
-              printf(" value=\"%s\"", decode_string_escape(region->annot));
-            printf("/>\n");
+              Rprintf(" value=\"%s\"", decode_string_escape(region->annot));
+            Rprintf("/>\n");
           }
           else {
-            printf("<%s%s%s>%c",
+            Rprintf("<%s%s%s>%c",
                    region->name,
                    region->annot ? " " : "",
                    region->annot ? region->annot : "",
@@ -657,10 +657,10 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
 
     /* now print token with its attribute values (p-attributes only for -C,-H,-X) */
     if (mode == XMLMode) {
-      printf("<token");
+      Rprintf("<token");
       if (printnum)
-        printf(" cpos=\"%d\"", w);
-      printf(">");
+        Rprintf(" cpos=\"%d\"", w);
+      Rprintf(">");
     }
 
     beg_of_line = 1;
@@ -673,34 +673,34 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
         if ((wrd = decode_string_escape(cl_cpos2str(print_list[i], w))) != NULL) {
           switch (mode) {
           case LispMode:
-            printf("(%s \"%s\")", print_list[i]->any.name, wrd);
+            Rprintf("(%s \"%s\")", print_list[i]->any.name, wrd);
             break;
 
           case EncodeMode:
             if (beg_of_line) {
-              printf("%s", wrd);
+              Rprintf("%s", wrd);
               beg_of_line = 0;
             }
             else
-              printf("\t%s", wrd);
+              Rprintf("\t%s", wrd);
             break;
 
           case ConclineMode:
             if (beg_of_line) {
-              printf("%s", wrd);
+              Rprintf("%s", wrd);
               beg_of_line = 0;
             }
             else
-              printf("/%s", wrd);
+              Rprintf("/%s", wrd);
             break;
 
           case XMLMode:
-            printf(" <attr name=\"%s\">%s</attr>", print_list[i]->any.name, wrd);
+            Rprintf(" <attr name=\"%s\">%s</attr>", print_list[i]->any.name, wrd);
             break;
 
           case StandardMode:
           default:
-            printf("%s=%s\t", print_list[i]->any.name, wrd);
+            Rprintf("%s=%s\t", print_list[i]->any.name, wrd);
             break;
           }
         }
@@ -720,11 +720,11 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
                               &aligned_start2, &aligned_end2))
               ) {
             if (mode == LispMode) {
-              printf("(ALG %d %d %d %d)",
+              Rprintf("(ALG %d %d %d %d)",
                      aligned_start, aligned_end, aligned_start2, aligned_end2);
             }
             else {
-              printf("%d-%d==>%s:%d-%d\t",
+              Rprintf("%d-%d==>%s:%d-%d\t",
                      aligned_start, aligned_end, print_list[i]->any.name, aligned_start2, aligned_end2);
             }
           }
@@ -740,7 +740,7 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
         if ((mode != EncodeMode) && (mode != ConclineMode) && (mode != XMLMode)) {
           if (cl_cpos2struc2cpos(print_list[i], w, &rng_start, &rng_end)) {
             /* standard and -L mode don't show tag annotations */
-            printf(mode == LispMode ? "(STRUC %s %d %d)" : "<%s>:%d-%d\t",
+            Rprintf(mode == LispMode ? "(STRUC %s %d %d)" : "<%s>:%d-%d\t",
                    print_list[i]->any.name,
                    rng_start, rng_end);
           }
@@ -759,18 +759,18 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
     /* print token separator (or end of token in XML mode) */
     switch (mode) {
     case LispMode:
-      printf(")\n");
+      Rprintf(")\n");
       break;
     case ConclineMode:
-      printf(" ");
+      Rprintf(" ");
       break;
     case XMLMode:
-      printf(" </token>\n");
+      Rprintf(" </token>\n");
       break;
     case EncodeMode:
     case StandardMode:
     default:
-      printf("\n");
+      Rprintf("\n");
       break;
     }
 
@@ -783,13 +783,13 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
 
         if (region->end == w) {
           if (mode == XMLMode) {
-            printf("<tag type=\"end\" name=\"%s\"", region->name);
+            Rprintf("<tag type=\"end\" name=\"%s\"", region->name);
             if (printnum)
-              printf(" cpos=\"%d\"", w);
-            printf("/>\n");
+              Rprintf(" cpos=\"%d\"", w);
+            Rprintf("/>\n");
           }
           else {
-            printf("</%s>%c", region->name, (mode == ConclineMode ? ' ' : '\n'));
+            Rprintf("</%s>%c", region->name, (mode == ConclineMode ? ' ' : '\n'));
           }
         }
       }
@@ -806,16 +806,16 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
               && (w == aligned_end)
               ) {
             if (mode == XMLMode) {
-              printf("<align type=\"end\" target=\"%s\"", print_list[i]->any.name);
+              Rprintf("<align type=\"end\" target=\"%s\"", print_list[i]->any.name);
               if (printnum)
-                printf(" start=\"%d\" end=\"%d\"", aligned_start2, aligned_end2);
-              printf("/>\n");
+                Rprintf(" start=\"%d\" end=\"%d\"", aligned_start2, aligned_end2);
+              Rprintf("/>\n");
             }
             else {
-              printf("</%s", print_list[i]->any.name);
+              Rprintf("</%s", print_list[i]->any.name);
               if (printnum)
-                printf(" %d %d", aligned_start2, aligned_end2);
-              printf(">%c", (mode == EncodeMode) ? '\n' : ' ');
+                Rprintf(" %d %d", aligned_start2, aligned_end2);
+              Rprintf(">%c", (mode == EncodeMode) ? '\n' : ' ');
             }
           }
           break;
@@ -832,9 +832,9 @@ decode_print_token_sequence(int start_position, int end_position, Attribute *con
 
   /* end of match (for matchlist mode in particular) */
   if ((context != NULL) && (mode == LispMode))
-    printf(")\n");
+    Rprintf(")\n");
   else if (mode == ConclineMode)
-    printf("\n");
+    Rprintf("\n");
 
   return;
 }
@@ -1101,7 +1101,7 @@ main(int argc, char **argv)
 
     if ( (mode == XMLMode) ||  ((mode == EncodeMode) && xml_compatible) ) {
       decode_print_xml_declaration();
-      printf("<corpus name=\"%s\" start=\"%d\" end=\"%d\">\n",
+      Rprintf("<corpus name=\"%s\" start=\"%d\" end=\"%d\">\n",
              corpus_id, first_token, last);
     }
 
@@ -1111,7 +1111,7 @@ main(int argc, char **argv)
       decode_print_token_sequence(w, -1, context);
 
     if ( (mode == XMLMode) || ((mode == EncodeMode) && xml_compatible) ) {
-      printf("</corpus>\n");
+      Rprintf("</corpus>\n");
     }
   }
   else {
@@ -1121,7 +1121,7 @@ main(int argc, char **argv)
 
     if ( (mode == XMLMode) || ((mode == EncodeMode) && xml_compatible) ) {
       decode_print_xml_declaration();
-      printf("<matchlist corpus=\"%s\">\n", corpus_id);
+      Rprintf("<matchlist corpus=\"%s\">\n", corpus_id);
     }
 
     cnt = 0;
@@ -1144,10 +1144,10 @@ main(int argc, char **argv)
 
         cnt++;                  /* count matches in matchlist  */
         if (mode == XMLMode) {
-          printf("<match nr=\"%d\"", cnt);
+          Rprintf("<match nr=\"%d\"", cnt);
           if (printnum)
-            printf(" start=\"%d\" end=\"%d\"", sp, (ep >= 0) ? ep : sp);
-          printf(">\n");
+            Rprintf(" start=\"%d\" end=\"%d\"", sp, (ep >= 0) ? ep : sp);
+          Rprintf(">\n");
         }
         else {
           /* nothing shown before range */
@@ -1158,10 +1158,10 @@ main(int argc, char **argv)
         decode_print_token_sequence(sp, ep, context);
 
         if (mode == XMLMode) {
-          printf("</match>\n");
+          Rprintf("</match>\n");
         }
         else if (mode != ConclineMode) {
-          printf("\n");         /* blank line, unless in -H mode */
+          Rprintf("\n");         /* blank line, unless in -H mode */
         }
       }
       else {
@@ -1174,7 +1174,7 @@ main(int argc, char **argv)
       fclose(input_file);
 
     if ( (mode == XMLMode) || ((mode == EncodeMode) && xml_compatible) ) {
-      printf("</matchlist>\n");
+      Rprintf("</matchlist>\n");
     }
   }
 

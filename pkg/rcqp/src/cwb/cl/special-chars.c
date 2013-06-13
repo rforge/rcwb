@@ -1697,10 +1697,10 @@ cl_string_maptable(CorpusCharset charset, int flags)
   }
   else {
     if (! identity_tab_init[charset]) {
-      maptable_init_identity(identity_tab[charset]);
+      maptable_init_identity((unsigned char *)identity_tab[charset]);
       identity_tab_init[charset] = 1;
     }
-    return identity_tab[charset];
+    return (unsigned char *)identity_tab[charset];
   }
   /*
    * old version of code follows...
@@ -1948,7 +1948,7 @@ cl_string_reverse(const char *s, CorpusCharset charset)
   char *reversed;
 
   if (charset != utf8) {
-    reversed = cl_strdup(s);
+    reversed = cl_strdup((char*)s);
     g_strreverse((gchar *)s);
   }
   else {
@@ -2005,8 +2005,8 @@ cl_string_qsort_compare(const char *s1,
 
   /* preparatory string manipulation... */
   if (!flags && !reverse) {
-    comp1 = s1;
-    comp2 = s2;
+    comp1 = (char *)s1;
+    comp2 = (char *)s2;
   }
   else {
 

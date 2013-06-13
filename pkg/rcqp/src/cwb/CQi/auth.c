@@ -209,15 +209,15 @@ show_grants(void)
   Grant *grant;
 
   for (host = authorized_hosts; host != NULL; host=host->next) {
-    printf("HOST: %s\n", inet_ntoa(host->address));
+    Rprintf("HOST: %s\n", inet_ntoa(host->address));
   }
 
   for (user = authorized_users; user != NULL; user=user->next) {
-    printf("USER: %s, pass='%s'  (", user->name, user->passwd);
+    Rprintf("USER: %s, pass='%s'  (", user->name, user->passwd);
     for (grant = user->grants; grant != NULL; grant=grant->next) {
-      printf("%s ", grant->corpus);
+      Rprintf("%s ", grant->corpus);
     }
-    printf(")\n");
+    Rprintf(")\n");
   }
 }
 

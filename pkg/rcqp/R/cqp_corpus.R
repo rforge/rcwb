@@ -2,9 +2,9 @@
 # 'make easy to read corpus as a tabulated file (as typically produced by part-of-speech tagger).
 setClass("cqp_corpus", representation(cqp_corpus.name="character"));
 
-Appeler TabulatedCWB ou CQPCorpus
-implémenter les fonctions de cette classe
-size() -> N()
+# Appeler TabulatedCWB ou CQPCorpus
+# implémenter les fonctions de cette classe
+# size() -> N()
 
 ##############################################################
 setGeneric("N", function(corpus) standardGeneric("N"));
@@ -175,7 +175,7 @@ write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
 	if (is.null(attribute)) {
 		return(corpus_name);
 	} else {
-		return(.attr_qualified_name(corpus_name, attribute);
+		return(.attr_qualified_name(corpus_name, attribute));
 	}
 }
 

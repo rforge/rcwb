@@ -194,7 +194,7 @@ compress_reversed_index(Attribute *attr, char *output_fn)
   int new_pos;
 
 
-  printf("COMPRESSING INDEX of %s.%s\n", corpus_id_cwb_compress_rdx, attr->any.name);
+  Rprintf("COMPRESSING INDEX of %s.%s\n", corpus_id_cwb_compress_rdx, attr->any.name);
 
   /* ensure that we do NOT use the compressed index while building the
    * compressed index (yeah, a nasty thing that). That is, load the
@@ -248,14 +248,14 @@ compress_reversed_index(Attribute *attr, char *output_fn)
     perror(data_fname);
     compressrdx_cleanup(1);
   }
-  printf("- writing compressed index to %s\n", data_fname);
+  Rprintf("- writing compressed index to %s\n", data_fname);
   
   if ((index_file = fopen(index_fname, "wb")) == NULL) {
     Rprintf( "ERROR: can't create file %s\n", index_fname);
     perror(index_fname);
     compressrdx_cleanup(1);
   }
-  printf("- writing compressed index offsets to %s\n", index_fname);
+  Rprintf("- writing compressed index offsets to %s\n", index_fname);
 
   for (i = 0; i < nr_elements; i++) {
     
@@ -345,7 +345,7 @@ decompress_check_reversed_index(Attribute *attr, char *output_fn)
   int true_pos;
 
 
-  printf("VALIDATING %s.%s\n", corpus_id_cwb_compress_rdx, attr->any.name);
+  Rprintf("VALIDATING %s.%s\n", corpus_id_cwb_compress_rdx, attr->any.name);
 
   nr_elements = cl_max_id(attr);
   if ((nr_elements <= 0) || (cl_errno != CDA_OK)) {
@@ -378,14 +378,14 @@ decompress_check_reversed_index(Attribute *attr, char *output_fn)
     perror(data_fname);
     compressrdx_cleanup(1);
   }
-  printf("- reading compressed index from %s\n", data_fname);
+  Rprintf("- reading compressed index from %s\n", data_fname);
   
   if ((index_file = fopen(index_fname, "r")) == NULL) {
     Rprintf( "ERROR: can't open file %s\n", index_fname);
     perror(index_fname);
     compressrdx_cleanup(1);
   }
-  printf("- reading compressed index offsets from %s\n", index_fname);
+  Rprintf("- reading compressed index offsets from %s\n", index_fname);
 
 
   for (i = 0; i < nr_elements; i++) {
@@ -434,9 +434,9 @@ decompress_check_reversed_index(Attribute *attr, char *output_fn)
   BFclose(&data_file);
 
   /* tell the user it's safe to delete the REVCORP and REVCIDX components now */
-  printf("!! You can delete the file <%s> now.\n",
+  Rprintf("!! You can delete the file <%s> now.\n",
          component_full_name(attr, CompRevCorpus, NULL));
-  printf("!! You can delete the file <%s> now.\n",
+  Rprintf("!! You can delete the file <%s> now.\n",
          component_full_name(attr, CompRevCorpusIdx, NULL));
   
   return;
@@ -487,7 +487,7 @@ compressrdx_cleanup(int error_code)
   if (corpus)
     cl_delete_corpus(corpus);
 
-  if (debug_output != stderr)
+  if (debug_output != NULL)
     fclose(debug_output);
 
   rcqp_receive_error(error_code);

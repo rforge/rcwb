@@ -51,13 +51,13 @@
 
 #define UMASK              0644
 
-/** printf format string for path of file storing ranges of given structural attribute */
+/** Rprintf format string for path of file storing ranges of given structural attribute */
 #define RNG_RNG "%s" SUBDIR_SEP_STRING "%s.rng"
 
-/** printf format string for path of attribute value index of a given structural attribute */
+/** Rprintf format string for path of attribute value index of a given structural attribute */
 #define RNG_AVX "%s" SUBDIR_SEP_STRING "%s.avx"
 
-/** printf format string for path of attribute values of a given structural attribute */
+/** Rprintf format string for path of attribute values of a given structural attribute */
 #define RNG_AVS "%s" SUBDIR_SEP_STRING "%s.avs"
 
 
@@ -781,7 +781,7 @@ main(int argc, char **argv)
         rcqp_receive_error(1);
       }
       if (!silent)
-        printf("[Loading previous <%s> regions]\n", new_satt.name);
+        Rprintf("[Loading previous <%s> regions]\n", new_satt.name);
 
       N = cl_max_struc(att);
       for (i = 0; i < N; i++) {
@@ -792,13 +792,13 @@ main(int argc, char **argv)
     }
     else {
       if (!silent)
-        printf("[No <%s> regions defined (skipped)]\n", new_satt.name);
+        Rprintf("[No <%s> regions defined (skipped)]\n", new_satt.name);
     }
   }
 
   /* loop reading input (stdin or -f <file>) */
   if (in_memory && (!silent))
-    printf("[Reading input data]\n");
+    Rprintf("[Reading input data]\n");
   input_line = 0;
   S_annotations_dropped = 0;
   while (fgets(buf, CL_MAX_LINE_LENGTH, text_fd)) {
@@ -858,7 +858,7 @@ main(int argc, char **argv)
     SL item;
 
     if (!silent)
-      printf("[Creating encoded disk file(s)]\n");
+      Rprintf("[Creating encoded disk file(s)]\n");
     SL_rewind();
     while ((item = SL_next()) != NULL)
       sencode_write_region(item->start, item->end, item->annot);

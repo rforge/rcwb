@@ -306,11 +306,11 @@ open_stream(struct Redir *rd, CorpusCharset charset)
     }
   }
   else { /* i.e. if rd->name is NULL */
-    if (pager && paging && isatty(fileno(stdout))) {
+    if (pager && paging && isatty(fileno(NULL))) {
       if (insecure) {
         cqpmessage(Error, "Insecure mode, paging not allowed.\n");
         /* ... and default back to bare stdout */
-        rd->stream = stdout;
+        rd->stream = NULL;
         rd->is_paging = False;
         rd->is_pipe = False;
       }
@@ -321,7 +321,7 @@ open_stream(struct Redir *rd, CorpusCharset charset)
           set_integer_option_value("Paging", 0);
           rd->is_pipe = False;
           rd->is_paging = False;
-          rd->stream = stdout;
+          rd->stream = NULL;
         }
         else {
           rd->is_pipe = 1;
@@ -335,7 +335,7 @@ open_stream(struct Redir *rd, CorpusCharset charset)
       }
     }
     else {
-      rd->stream = stdout;
+      rd->stream = NULL;
       rd->is_paging = False;
       rd->is_pipe = False;
     }
@@ -359,7 +359,7 @@ close_stream(struct Redir *rd)
   if (rd->stream) {
     if (rd->is_pipe)
       rv = ! pclose(rd->stream); /* pclose returns 0 = success, non-zero = failure */
-    else if (rd->stream != stdout)
+    else if (rd->stream != NULL)
       rv = ! fclose(rd->stream); /* fclose the same */
 
     rd->stream = NULL;
@@ -675,7 +675,7 @@ corpus_info(CorpusList *cl)
   if (cl->type == SYSTEM) {
 
     stream_ok = open_stream(&rd, ascii);
-    outfd = (stream_ok) ? rd.stream : stdout; /* use pager, or simply print to stdout if it fails */
+    outfd = (stream_ok) ? rd.stream : NULL; /* use pager, or simply print to stdout if it fails */
     /* print size (should be the mother_size entry) */
     fprintf(outfd, "Size:    %d\n", cl->mother_size);
     /* print charset */

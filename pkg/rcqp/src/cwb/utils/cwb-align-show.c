@@ -185,7 +185,7 @@ alignshow_goodbye(int error_level)
     af = NULL;
   }
   if (error_level == 0)
-    printf("Goodbye.\n");
+    Rprintf("Goodbye.\n");
   rcqp_receive_error(error_level);
 }
 
@@ -197,7 +197,7 @@ alignshow_goodbye(int error_level)
 void
 alignshow_end_of_alignment(void)
 {
-  printf("=========================== END OF ALIGNMENT FILE ============================\n");
+  Rprintf("=========================== END OF ALIGNMENT FILE ============================\n");
   alignshow_goodbye(0);
 }
 
@@ -256,9 +256,9 @@ alignshow_print_next_region(FILE *f)
   else
     sprintf(line, "%s-alignment [%d, %d] x [%d, %d] ", type, f1, l1, f2, l2);
   n = (2 * COL_WIDTH + COL_SEP) - strlen(line);
-  printf("%s", line);
-  while ((n--) > 0) printf("=");
-  printf("\n\n");
+  Rprintf("%s", line);
+  while ((n--) > 0) Rprintf("=");
+  Rprintf("\n\n");
 
   i1 = f1; i2 = f2;
   while ((i1 <= l1) || (i2 <= l2)) {
@@ -280,13 +280,13 @@ alignshow_print_next_region(FILE *f)
         w++;
       }
     }
-    printf("%s", col);                /* print left column and fill */
+    Rprintf("%s", col);                /* print left column and fill */
     while ((w++) < COL_WIDTH)
-      printf(" ");
+      Rprintf(" ");
 
     /* print column separator */
     for (n = COL_SEP; n > 0; n--)
-      printf(" ");
+      Rprintf(" ");
 
     /* fill right column */
     w = 0; col[0] = 0;
@@ -307,9 +307,9 @@ alignshow_print_next_region(FILE *f)
         w++;
       }
     }
-    printf("%s", col);                /* print right column (no need to fill) */
+    Rprintf("%s", col);                /* print right column (no need to fill) */
 
-    printf("\n");
+    Rprintf("\n");
   }
 }
 
@@ -400,14 +400,14 @@ main(int argc, char** argv)
     alignshow_goodbye(1);
   }
 
-  printf("Displaying alignment for [%s, %s] from file %s\n",
+  Rprintf("Displaying alignment for [%s, %s] from file %s\n",
          corpus1_name, corpus2_name, align_name);
-  printf("Enter 'h' for help.\n");
+  Rprintf("Enter 'h' for help.\n");
 
   /* main loop: read commands from stdin and display alignment */
   while (42) { /* :-) */
     /* command prompt */
-    printf(">> "); fflush(stdout);
+    Rprintf(">> "); rcqp_flush();
     fgets(cmd, CL_MAX_LINE_LENGTH, stdin);
 
     /* "parse" command, i.e. look at first character */
@@ -422,7 +422,7 @@ main(int argc, char** argv)
           n = 1;
         while ((n--) > 0) {
           alignshow_print_next_region(af);
-          if (n > 0) printf("\n");
+          if (n > 0) Rprintf("\n");
         }
         break;
       }

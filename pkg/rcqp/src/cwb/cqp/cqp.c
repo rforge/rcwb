@@ -170,8 +170,10 @@ initialize_cqp(int argc, char **argv)
 
   /* let's always run stdout unbuffered */
   /*  if (batchmode || rangeoutput || insecure || !isatty(fileno(stdout))) */
-  if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
-    perror("unbuffer stdout");
+  /* 
+   * if (setvbuf(stdout, NULL, _IONBF, 0) != 0)
+   *   perror("unbuffer stdout");
+   */
 
   yydebug = parser_debug;
 
@@ -221,7 +223,7 @@ initialize_cqp(int argc, char **argv)
         if (!cqp_parse_file(cqprc, 1)) {
           Rprintf( "Parse errors while reading %s, exiting.\n",
                   init_file_fullname);
-          exit(1);
+          rcqp_receive_error(1);
         }
         reading_cqprc = 0;
 
@@ -230,7 +232,7 @@ initialize_cqp(int argc, char **argv)
       else if (cqp_init_file) {
         Rprintf( "Can't read initialization file %s\n",
                 init_file_fullname);
-        exit(1);
+        rcqp_receive_error(1);
       }
     }
   }
@@ -259,7 +261,7 @@ initialize_cqp(int argc, char **argv)
         if (!cqp_parse_file(cqprc, 1)) {
           Rprintf( "Parse errors while reading %s, exiting.\n",
                   init_file_fullname);
-          exit(1);
+          rcqp_receive_error(1);
         }
         reading_cqprc = 0;
 
@@ -268,7 +270,7 @@ initialize_cqp(int argc, char **argv)
       else if (macro_init_file) {
         Rprintf( "Can't read macro initialization file %s\n",
                 init_file_fullname);
-        exit(1);
+        rcqp_receive_error(1);
       }
     }
   } /* ends if (!child_process || (batchmode ... ) ... ) */
@@ -279,7 +281,7 @@ initialize_cqp(int argc, char **argv)
   if ((default_corpus) && !set_current_corpus_name(default_corpus, 0)) {
     Rprintf( "Can't set current corpus to default corpus %s, exiting.\n",
             default_corpus);
-    exit(1);
+    rcqp_receive_error(1);
   }
 
 #ifndef __MINGW__
@@ -337,14 +339,14 @@ cqp_parse_file(FILE *fd, int exit_on_parse_errors)
       if (!quiet) {
         if (current_corpus != NULL)
           if (STREQ(current_corpus->name, current_corpus->mother_name))
-            printf("%s> ", current_corpus->name);
+            Rprintf("%s> ", current_corpus->name);
           else
-            printf("%s:%s[%d]> ",
+            Rprintf("%s:%s[%d]> ",
                    current_corpus->mother_name,
                    current_corpus->name,
                    current_corpus->size);
         else
-          printf("[no corpus]> ");
+          Rprintf("[no corpus]> ");
       }
 
       cqp_status = yyparse();
@@ -357,10 +359,10 @@ cqp_parse_file(FILE *fd, int exit_on_parse_errors)
       if (child_process && !reading_cqprc) {
 #if 0
         /* empty lines after commands in child mode have been disabled as of version 2.2.b94 */
-        printf("\n");                /* print empty line as separator in child mode */
+        Rprintf("\n");                /* print empty line as separator in child mode */
 #endif
-        fflush(stdout);
-        fflush(stderr);
+        rcqp_flush();
+		/* rcqp_flush(); */
       }
 
     } /* endwhile */

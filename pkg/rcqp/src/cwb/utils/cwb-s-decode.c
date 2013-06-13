@@ -163,20 +163,20 @@ main(int argc, char **argv)
       rcqp_receive_error(1);
     }
     if (show_regions) {
-      printf("%d\t%d", start, end);
+      Rprintf("%d\t%d", start, end);
       if (show_values)
-        printf("\t");
+        Rprintf("\t");
     }
     if (show_values) {
       annot = cl_struc2str(att, n);
       if (annot == NULL) {
-        printf("<no annotation>");
+        Rprintf("<no annotation>");
       }
       else {
-        printf("%s", annot);
+        Rprintf("%s", annot);
       }
     }
-    printf("\n");
+    Rprintf("\n");
   }
 
   /* that was all ...  */

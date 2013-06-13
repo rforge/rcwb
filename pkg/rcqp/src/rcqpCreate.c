@@ -17,6 +17,9 @@ int R_cwb_makeall(char *corpus_name, char* registry);
 int R_cwb_huffcode(char *corpus_name, char *registry_dir);
 int main_cwb_encode(int argc, char **argv);
 
+#define RCQP_ATT_HASH_SIZE 16384
+
+
 /* 
  * ------------------------------------------------------------------------
  * 

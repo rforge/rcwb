@@ -230,9 +230,9 @@ main(int argc, char *argv[])
   }
   if (verbose) {
     if (reverse)
-      printf("Encoding alignment for [%s, %s] from file %s\n", corpus2_name, corpus1_name, align_name);
+      Rprintf("Encoding alignment for [%s, %s] from file %s\n", corpus2_name, corpus1_name, align_name);
     else
-      printf("Encoding alignment for [%s, %s] from file %s\n", corpus1_name, corpus2_name, align_name);
+      Rprintf("Encoding alignment for [%s, %s] from file %s\n", corpus1_name, corpus2_name, align_name);
   }
 
   /* open corpora and determine their sizes (for validity checks and compatibility mode) */
@@ -311,7 +311,7 @@ main(int argc, char *argv[])
     rcqp_receive_error(1);
   }
   if (verbose)
-    printf("Writing file %s ...\n", alx_name);
+    Rprintf("Writing file %s ...\n", alx_name);
 
   if (compatibility) {
     alg = fopen(alg_name, "wb");
@@ -322,7 +322,7 @@ main(int argc, char *argv[])
     }
 
     if (verbose)
-      printf("Writing file %s ...\n", alg_name);
+      Rprintf("Writing file %s ...\n", alg_name);
   }
 
   /* main encoding loop */
@@ -390,7 +390,7 @@ main(int argc, char *argv[])
   }
 
   if (verbose) {
-    printf("I skipped %d 0:1 alignments and %d 1:0 alignments.\n", n_0_1, n_1_0);
+    Rprintf("I skipped %d 0:1 alignments and %d 1:0 alignments.\n", n_0_1, n_1_0);
   }
 
   /* that's it; close file handles */

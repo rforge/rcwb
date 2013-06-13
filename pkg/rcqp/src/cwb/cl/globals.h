@@ -114,7 +114,7 @@ extern size_t cl_memory_limit;
 #endif
 
 #ifndef __MINGW__
-/* for use with [fs]printf(), all decimal or floating-point conversions, as follows:
+/* for use with [fs]Rprintf(), all decimal or floating-point conversions, as follows:
  * "%" COMMA_SEP_THOUSANDS_CONVSPEC "d" (or equivalent) */
 #define COMMA_SEP_THOUSANDS_CONVSPEC "'"
 #else
@@ -147,7 +147,7 @@ extern size_t cl_memory_limit;
 #define TODO {(void)Rprintf("TODO point reached: file \"%s\", line %d\n", \
 			    __FILE__,  \
 			    __LINE__); \
-			    exit(1);}
+			    rcqp_receive_error(1);}
 
 
 #endif

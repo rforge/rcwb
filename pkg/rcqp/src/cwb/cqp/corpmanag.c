@@ -2022,7 +2022,7 @@ show_corpora_files1(enum corpus_type ct)
     qsort(list, N, sizeof(char *), show_corpora_files_sort);
 
     if (pretty_print) {
-      printf("System corpora:\n");
+      Rprintf("System corpora:\n");
       start_indented_list(0,0,0);       /* now print sorted list */
     }
     for (i = 0; i < N; i++) {
@@ -2035,7 +2035,7 @@ show_corpora_files1(enum corpus_type ct)
         print_indented_list_item(list[i]);
       }
       else {
-        printf("%s\n", list[i]);
+        Rprintf("%s\n", list[i]);
       }
     }
     if (pretty_print)
@@ -2045,10 +2045,10 @@ show_corpora_files1(enum corpus_type ct)
   }
   else if (ct == SUB) {
     if (pretty_print)
-      printf("Named Query Results:\n");
+      Rprintf("Named Query Results:\n");
     for (cl = corpuslist; cl; cl = cl->next)
       if (cl->type == SUB)
-          printf(pretty_print ? "   %c%c%c  %s:%s [%d]\n" : "%c%c%c\t%s:%s\t%d\n",
+          Rprintf(pretty_print ? "   %c%c%c  %s:%s [%d]\n" : "%c%c%c\t%s:%s\t%d\n",
                  cl->loaded ? 'm' : '-',
                  cl->saved ? 'd' : '-',
                  cl->needs_update ? '*' : '-',

@@ -75,10 +75,10 @@ lexdecode_print_item_info(Attribute *attr, int id, char *fallback_s)
   }
 
   format = (dont_pad_cols ? "%d\t" : "%7d\t" );
-  if (print_nr)    printf(format, id);
-  if (print_freqs) printf(format, freq);
-  if (print_len)   printf(format, slen);
-  printf("%s\n", item ? item : fallback_s);
+  if (print_nr)    Rprintf(format, id);
+  if (print_freqs) Rprintf(format, freq);
+  if (print_len)   Rprintf(format, slen);
+  Rprintf("%s\n", item ? item : fallback_s);
 }
 
 /**
@@ -123,8 +123,8 @@ lexdecode_show(char *attr_name, char *rx, int rx_flags)
   }
 
   if (show_size_only) {
-    printf("Tokens:\t%d\n", attr_size);
-    printf("Types:\t%d\n", size);
+    Rprintf("Tokens:\t%d\n", attr_size);
+    Rprintf("Types:\t%d\n", size);
   }
   else {                        /* without -S option */
 

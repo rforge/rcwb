@@ -44,7 +44,7 @@ main(int argc, char *argv[])
 
   if (!initialize_cqp(argc, argv)) {
     Rprintf( "Can't initialize CQP\n");
-    exit(1);
+    rcqp_receive_error(1);
   }
 
   paging = 0;
@@ -53,14 +53,14 @@ main(int argc, char *argv[])
   if (query_string) {
     if (!cqp_parse_string(query_string)) {
       Rprintf( "Syntax error in %s, exiting\n", query_string);
-      exit(1);
+      rcqp_receive_error(1);
     }
   }
   else {
     for (i = optind; i < argc; i++)
       if (!cqp_parse_string(argv[i])) {
         Rprintf( "Syntax error, exiting\n");
-        exit(1);
+        rcqp_receive_error(1);
       }
   }
 
