@@ -13,7 +13,7 @@ License: GPL-2
 Lazyload: yes
 URL: http://www.r-project.org
 Collate: cqi.R cqp_attr.R cqp_corpus.R cqp_flist.R cqp_ftable.R cqp_kwic.R
-         cqp_subcorpus.R create.R generics.R zzz.R
+         cqp_subcorpus.R create.R cqp_object.R zzz.R
 Encoding: latin1
 SystemRequirements: GNU make, pcre (>= 7), glib2 (>= 2)
 OS_type: unix
