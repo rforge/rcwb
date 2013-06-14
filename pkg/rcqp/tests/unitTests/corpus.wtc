@@ -1,0 +1,32 @@
+<txmcorpus lang="fr">
+<teiCorpus >
+<TEI >
+<text base="montesquieu" project="default" id="pensees_1">
+<div1 >
+<p id="corpus_lem_p_0">
+Pensées	NOM	pensée	w_1
+volume	NOM	volume	w_2
+I	NUM	I	w_3
+</p>
+<div2  id="pn1" n="0001">
+<p id="corpus_lem_p_1">
+Quelques	ADJ	unknown	w_4
+refflections	NOM	unknown	w_5
+ou	KON	ou	w_6
+pensées	VER:pper	penser	w_7
+detachées	NOM	unknown	w_8
+que	PRO:REL	que	w_9
+je	PRO:PER	je	w_10
+n’ay	NOM	unknown	w_11
+pas	ADV	pas	w_12
+mises	VER:pper	mettre	w_13
+dans	PRP	dans	w_14
+mes	DET:POS	mon	w_15
+ouvrages	NOM	ouvrage	w_16
+</p>
+</div2>
+</div1>
+</text>
+</TEI>
+</teiCorpus>
+</txmcorpus>
