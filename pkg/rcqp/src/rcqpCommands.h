@@ -41,7 +41,6 @@ SEXP rcqpCmd_lexicon_size(SEXP inAttribute);
 SEXP rcqpCmd_list_corpora();
 SEXP rcqpCmd_list_subcorpora(SEXP inCorpus);
 SEXP rcqpCmd_properties(SEXP inCorpus);
-/*SEXP rcqpCmd_cqp(SEXP inQuery); */
 SEXP rcqpCmd_query(SEXP inMother, SEXP inChild, SEXP inQuery);
 SEXP rcqpCmd_regex2id(SEXP inAttribute, SEXP inRegex);
 SEXP rcqpCmd_str2id(SEXP inAttribute, SEXP inStrs);
