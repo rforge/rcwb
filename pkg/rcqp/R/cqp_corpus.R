@@ -204,9 +204,6 @@ setMethod("print", signature(x="cqp_corpus"), function(x, from=0, to=20, use_val
  #
  # ------------------------------------------------------------------------
  ##
-# TODO = Tabulated object in lexicalStat package
-setGeneric("as.data.frame", function(x, row.names = NULL, optional = FALSE, ...) standardGeneric("as.data.frame"));
-
 setMethod("as.data.frame", "cqp_corpus", function(x, row.names = from:to, optional = FALSE, from, to, use_value=TRUE) {
    .check_cpos(x, from, to);
 
@@ -222,9 +219,6 @@ setMethod("as.data.frame", "cqp_corpus", function(x, row.names = from:to, option
  #
  # ------------------------------------------------------------------------
  ##
- # TODO = FullText object in lexicalStat package
-setGeneric("as.list", function(x, ...) standardGeneric("as.list"));
-
 setMethod("as.list", c("cqp_corpus", "cqp_attr_positional", "cqp_attr_structural"), function(x, positional=x$word, structural=x$text, from=0, to=N(x)-1) {
   .check_cpos(x, from, to);
 

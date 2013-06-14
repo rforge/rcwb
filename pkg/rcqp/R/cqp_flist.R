@@ -36,7 +36,6 @@ setMethod("cqp_flist", c("missing", "cqp_attr"), function(corpus, attribute, cut
  #
  # ------------------------------------------------------------------------
  ##
-setGeneric("cqp_flist", function(corpus, attribute_name, cutoff, ...) standardGeneric("cqp_flist"));
 
 setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute_name, cutoff=0, ...) {
   x <- corpus;
@@ -173,8 +172,7 @@ setMethod("cqp_flist", "cqp_subcorpus",
  # 
  # ------------------------------------------------------------------------
  ##
-summary.cqp_flist <- function(object, ...) {
-
+setMethod("summary", signature(object = "cqp_corpus"), function(object){
 	cat("A frequency list\n");
 	cat(paste("  Number of tokens:", sum(object), "\n"));
 	cat(paste("  Number of types:", length(object), "\n"));
@@ -194,7 +192,7 @@ summary.cqp_flist <- function(object, ...) {
 		cat(paste("  attribute:", attr(object, "attribute"), "\n"));
 		cat(paste("  offset:", attr(object, "offset"), "\n"));
 	}
-}
+});
 
 ## 
  # ------------------------------------------------------------------------
@@ -202,9 +200,9 @@ summary.cqp_flist <- function(object, ...) {
  #
  # ------------------------------------------------------------------------
  ##
-print.cqp_flist <- function(x, ...) {
+setMethod("print", signature(x="cqp_kwic"), function(x) {
 	df <- data.frame(names(x), as.numeric(x));
 	colnames(df) <- c("type", "frequency");
 	print(df, row.names=FALSE);
-}
+});
 

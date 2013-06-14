@@ -181,6 +181,41 @@ setMethod("print", signature(x="cqp_subcorpus"), function(x, positional.attribut
 	print(k, from=from, to=to);
 });
 
+## 
+ # ------------------------------------------------------------------------
+ #
+ # Convert the corpus into a data.frame representation.
+ #
+ # ------------------------------------------------------------------------
+ ##
+setMethod("as.data.frame", "cqp_subcorpus", function(x, optional = FALSE, use_value=TRUE, from=1, to=nmatch(x)) {
+   if (from < 1 || from >= to || to < nmatch(x))
+     stop("illegal value for 'from' or 'to'");
+   return(.cqp_subcorpus2matrix(x, use_value, from, to));
+});
+
+## 
+ # ------------------------------------------------------------------------
+ #
+ # Convert the corpus into a list representation (character given by 
+ # a positional attribute ; splitted in list elements by a structural attribute).
+ #
+ # ------------------------------------------------------------------------
+ ##
+setMethod("as.list",
+      c("cqp_subcorpus", "cqp_attr_positional", "cqp_attr_structural"),
+      function(x, positional=x$word, structural=x$text, from=1, to=nmatch(x))
+  {
+   if (from < 1 || from >= to || to < nmatch(x))
+     stop("illegal value for 'from' or 'to'");
+
+  x <- .cqp_subcorpus2matrix(x, use_value, from, to);
+
+  y <- split(x[, .cqp.name(positional)], x$Match);
+
+  return(y);
+});
+
 ######################################################################
 #
 # Privates
@@ -214,18 +249,15 @@ setMethod("print", signature(x="cqp_subcorpus"), function(x, positional.attribut
 	}
 }
 
-.cqp_subcorpus2matrix <- function(x, use_value=use_value) {
-	cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
-	qualified_subcorpus_name <- .cqp_name(x);
+.cqp_subcorpus2matrix <- function(x, use_value=use_value, from, to) {
+	corpus_name <- .cqp_name(.get.corpus(x));
+	qualified_subcorpus_name <- .cqp_name(x, qualified=TRUE);
 
 	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
+	dump <- dump[from:to,];
 	cpos_list <- mapply(`:`, dump[,1], dump[,2])
 	cpos <- unlist(cpos_list);
-    m <- .cqp_cpos2matrix(cqp_corpus.name, cpos, use_value);
-#    m$Match <- rep(1:length(cpos_list), each=sapply(cpos_list, length));
+    m <- .cqp_cpos2matrix(corpus_name, cpos, use_value);
+    m$Match <- rep(1:length(cpos_list), each=sapply(cpos_list, length));
     return(m);
 }
-
-#Erreur dans `$<-.data.frame`(`*tmp*`, "Match", value = c(1L, 1L, 1L, 1L,  : 
-#  replacement has 76475 rows, data has 61443
-
