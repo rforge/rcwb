@@ -1,10 +1,10 @@
 /* ===========================================================================
  * File: "makeRCompatible.h"
  *                        Created: 2012-01-13 18:49:02
- *              Last modification: 2012-01-19 12:02:10
+ *              Last modification: 2013-06-14 10:35:42
  * Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
  *          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
- * (c) Copyright: 2011-2012
+ * (c) Copyright: 2011-2013
  * All rights reserved.
  * ===========================================================================
  */
@@ -14,9 +14,7 @@
 
 #include "R_ext/Print.h"
 
-/* #include <stdio.h> */
 
-void rcqp_send_error();
 void rcqp_receive_error(int x);
 int rcqp_flush();
 

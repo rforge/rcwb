@@ -125,6 +125,8 @@
 #define _cwb_cl_h
 
 #include <strings.h>                /* for size_t */
+#include <stdio.h>
+#include "../../makeRCompatible.h"
 
 
 
