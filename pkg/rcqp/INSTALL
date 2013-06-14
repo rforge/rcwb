@@ -59,7 +59,7 @@ the rcqp/ directory, execute the following command:
 
 You may have to call explicitly R64 (on some 64-bits machines the architecture
 is not correctly recognized by R):
-	R64 CMD install rcqp
+	R64 CMD INSTALL rcqp
 
 R will automatically find the configure script, run it, execute the make 
 command and finally install the package in the appropriate location.

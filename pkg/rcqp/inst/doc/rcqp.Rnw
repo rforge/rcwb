@@ -2,6 +2,8 @@
 
 %\VignetteIndexEntry{Introduction to rcqp}
 %\VignetteDepends{reshape}
+\usepackage[utf8]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{makeidx}
 \usepackage{hyperref}
@@ -807,7 +809,6 @@ In the following example, get all part-of-speech tags :
 Get a cross-tabulated table of the string values of a given positional
 attribute in a subcorpus \index{subcorpus} against the string values of
 another positional attribute.
-
 
 \section{Integrating CQP into R S3 objects and quantitative structures}
 

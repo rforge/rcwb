@@ -1,3 +1,24 @@
+- Second Release
+  New :
+  size(subcorpus) -> nmatch(subcorpus)
+  size(corpus) -> N(corpus);
+  size() is suppressed
+  new function: N(subcorpus)
+
+ntype -> ntypes
+nvalue -> nvalues 
+ntoken -> ntokens
+nregion -> nregions
+
+cqi_dump_subcorpus now return NULL if the subcorpus contains no match (rather than crashing).
+
+corpus[[attribute]] is no more allowed; use corpus$attribute
+
+"[" operator for easily retreiving vector (or list of vectors) of tokens from the corpus.
+
+as.data.frame() for corpus and subcorpus
+as.list() for corpus and subcorpus
+
 - First release 2012/06/25
   svn revision : 298
 

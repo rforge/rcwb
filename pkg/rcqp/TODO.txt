@@ -1,0 +1,251 @@
+1. cross-compilation -> BD
+2. PAVEL -> ensemble ?
+3. mettre à jour le code CWB -> BD
+4. correction dans la vignette -> SLV
+5. S3->S4 -> SLV
+6. ntype-> ntypes -> SLV
+7. fonction demandée par un contributeur : récupérer les structures de données
+   objet de type 'kwic' <- kwic(...) 
+   as.matrix.kwic
+   as.list.kwic
+   print.kwic
+-> SLV
+8. faire des requêtes sur un sous-corpus.
+-> SLV
+
+
+
+# TODO : tokens => as.vector.cqp_attr ?
+# table.cqp_attr
+
+# c[ 1, ] # le premier token
+# c[ text_date == "1997", ] # les régions "textes_date" avec la valeur 1997
+# c[ text_date == 1997, ] # la région "textes_date" avec l'id (struc) 1997
+# c[ text_date == "1997", word ] # pourrait être une expression pratique pour avoir une liste de vecteurs (un par région sélectionnée) contenant les formes fléchies.
+# c[ query(' [lemma="interesting"] [] "in" ' ) , ] # pour utiliser la requête cqp
+
+# Indexer les sous-corpus différemment ; pouvoir s'interroger sur les régions dans un sous-corpus...
+# sc[ "pos" ] # => liste de vecteurs ?
+
+# Ou bien distinguer l'indexation du corpus => liste de vecteur ; la fonction query => un objet cqp_subcorpus ?
+
+# as.list, as.data.frame (avec les structural att comme facteur) sur n'importe quel objet (c ou sc).
+
+# A query returning all the tokens (="ligne" of the data.frame) in the region with id 1 in structural attribut "text"
+# corpus[region(text = 1), ]
+=> pas assez R-ish
+=> cqi_query("DICKENS", "<text>[]*</text>")
+=> cqi_struc2cpos(4, cpos)
+
+# 
+# # A query returning all the tokens (="ligne" of the data.frame) in the region(s) with value "chapitr_premier" in structural attribute "chapter_title"
+# corpus[region(chapitre_title = "chapitre premier"), ]
+# 
+# # A query returning all the tokens (="ligne" of the data.frame) in the region(s) with id != -1 in structural attribute "s_head"
+# corpus[region(s_head = TRUE), ]
+# 
+# # A query returning all the tokens with lemma "toujours":
+# corpus[context(lemma="toujours"),]
+# 
+# # with five token on both side :
+# corpus[context(lemma="toujours", 5, 5),]
+
+
+
+
+###########################################################################
+# Matrix-like interface for accessing cqp object
+###########################################################################
+
+# création d'un sous-corpus
+`[.cqp_corpus` <- function(i, j, k, ...) {
+#	.create_cqp_attr(i, j);
+#	.cqp_corpus2matrix <- function(x, from, to, use_value=use_value) {	
+
+}
+
+
+
+
+
+
+
+
+
+
+
+===============================================================
+
+
+
+
+Corpus
+======
+x   y   title  phrase  text	
+9 Un	un	1	1 1
+10 Conpte	conte	1	1	1
+11 DE 	de	1	2	1
+12 Noël	Noël	1	2	1
+13 X	x
+
+<title=1>[]* "noël" []* </title> within phrase
+
+Sous corpus
+===========
+
+dump :
+1 3 -1 -1
+4 4 -1 -1
+
+représenté comme :
+
+x   y  cat  match target keyword
+9 Un	un	det 1    -1  -1
+10 Conte	n conte 1 1
+11 DE 	de prep 1
+12 Noël	n Noël 2
+
+
+[lemma="un"] [cat="n"] within match
+
+Sous-sous corpus
+==========
+
+x   y  cat  match target keyword
+9 Un	un	det 1    -1  -1
+10 Conte	n conte 1 - 1	-1
+
+
+
+
+
+
+
+
+
+Appeler TabulatedCWB ou CQPCorpus
+implémenter les fonctions de cette classe
+
+Dans la vignette : mettre le haut niveau en premier.
+
+################################################################
+
+.cqp_name <- function (x, ...) UseMethod(".cqp_name");
+
+.cqp_name.cqp_subcorpus <- function(x, qualified=TRUE) {
+	parent.corpus <- attr(x, "parent.cqp_corpus.name");
+	cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
+	if (qualified) {
+		return(paste(parent.corpus, cqp_subcorpus.name, sep=":"));
+	} else {
+		return(cqp_subcorpus.name);
+	}
+}
+
+
+
+.cqp_name.cqp_corpus <- function(x, attribute=NULL) {
+	corpus_name <- attr(x, "cqp_corpus.name");
+	if (is.null(attribute)) {
+		return(corpus_name);
+	} else {
+		return(paste(corpus_name, attribute, sep="."));
+	}
+}
+
+
+################################################################
+
+
+
+
+asLexicalTable <- function (x, attr="word", ...) UseMethod("asLexicalTable");
+
+asLexicalTable.cqp_corpus <- function(x, region, attr="word") {
+    stop("to be implemented");
+}
+
+asLexicalTable.cqp_subcorpus <- function(x, attr="word") {
+	cqp_corpus.name <- attr(x, "parent.cqp_corpus.name");
+	qualified_subcorpus_name <- .cqp_name(x);
+
+	dump <- cqi_dump_subcorpus(qualified_subcorpus_name);
+	cpos_list <- mapply(`:`, (dump[,1]), dump[,2], SIMPLIFY = FALSE);
+
+	part_size <- lapply(cpos_list, length);
+	part_id <- rep(1:length(n), times=part_size);
+
+	cpos <- unlist(cpos_list);
+	ids <- cqi_cpos2id(paste(cqp_corpus.name, attr, sep="."), cpos);
+
+    f <- count(data.frame(ids, part_id));
+    i <- f[,1];
+    j <- f[,2];
+
+    #compress the ids to value between 1 and length(unique(i))
+    fac <- as.factor(i);
+    ids_unique <- levels(fac);
+    i_new <- as.numeric(fac);
+    ids_ordered <- ids_unique[sort(unique(i_new))]
+
+    m <- sparseMatrix(i=i_new, j=j, x=f[,3]);
+    str <- cqi_id2str(paste(cqp_corpus.name, attr, sep="."), ids_unique);
+    rownames(m) <- str;
+    colnames(m) <- 1:length(n);
+
+    return(lexicalTable(m));
+}
+
+
+#######
+
+
+[.cqp_corpus <- function (i, j, ... , drop = TRUE) {
+    s
+}
+
+`[[.cqp_corpus` <- function(i, j, ...) {
+	.create_cqp_attr(i, j);
+}
+
+
+[.cqp_subcorpus <- function (subcorpus) {
+  
+}
+
+
+query <- function (...) {
+     F <- match.call(expand.dots = FALSE)$`...`
+     return(F);
+}
+
+
+
+f <-  function(...){
+     match.call(expand.dots = FALSE)$`...`  
+}
+
+
+> y
+[1] 0  1  0  2  10
+Levels: 0 1 2 10
+
+> F <- f(x=y)
+> F$x
+y
+> eval(F$x)
+[1] 0  1  0  2  10
+Levels: 0 1 2 10
+> F <- f(x=2)
+> eval(F$x)
+[1] 2
+> 
+
+tokens.cqp_subcorpus <- function(subcorpus, attr) {
+	parent.corpus_name <- attr(subcorpus, "parent.cqp_corpus.name");
+	attribute_qualified_name <- .attr_qualified_name(parent.corpus_name, attr);
+	cpos <- .get.ids(subcorpus);
+	str <- cqi_cpos2str(attribute_qualified_name, cpos);
+	return(str);
+}
+

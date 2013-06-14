@@ -40,7 +40,8 @@
 	\code{cqi_subcorpus_size} returns an integer which is the number of
 	matches in the specified subcorpus.
 
-	\code{cqi_dump_subcorpus} returns a matrix with four columns corresponding to the
+	\code{cqi_dump_subcorpus} returns \code{NULL} if the subcorpus has zero match or
+	a matrix with four columns corresponding to the
 	\emph{match}, \emph{matchend}, \emph{target}, and \emph{keyword} fields
 	respectively. Each row corresponds to a query match. The number of rows
 	is \code{last-first+1}. This is the size of the subcorpus if the

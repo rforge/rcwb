@@ -1,3 +1,58 @@
+
+# functions exported from file "R/cqp_object.R"
+exportMethods(.cqp_name);
+
+# functions exported from file "R/cqp_corpus.R"
+export(corpus);
+
+exportMethods(subcorpus)
+exportMethods([)
+exportMethods(summary)
+exportMethods(print)
+exportMethods(N)
+exportMethods(size)
+exportMethods(as.data.frame)
+exportMethods(as.list)
+exportMethods(.is_cqp_corpus)
+export(write)
+
+# functions exported from file "R/cqp_subcorpus.R"
+exportMethods(nmatch)
+exportMethods([)
+exportMethods(part_size)
+exportMethods(N)
+exportMethods(summary)
+exportMethods(print)
+exportMethods(as.data.frame)
+exportMethods(as.list)
+
+# functions exported from file "R/cqp_attr.R"
+exportMethods([[)
+exportMethods($)
+exportMethods(get.corpus)
+exportMethods(ntypes)
+exportMethods(nvalues)
+exportMethods(ntokens)
+exportMethods(nregions)
+exportMethods(tokens)
+exportMethods(types)
+exportMethods(regions)
+exportMethods(values)
+exportMethods(region_sizes)
+exportMethods(summary)
+exportMethods(print)
+
+# functions exported from file "R/cqp_kwic.R"
+exportMethods(kwic)
+exportMethods(sort)
+exportMethods(as.matrix)
+exportMethods(print)
+
+# functions exported from file "R/cqp_flist.R"
+exportMethods(cqp_flist)
+exportMethods(summary)
+exportMethods(print)
+
 export(
 	"cqi_attribute_size",
 	"cqi_attributes",
@@ -20,7 +75,7 @@ export(
 	"cqi_lexicon_size",
 	"cqi_list_corpora",
 	"cqi_list_subcorpora",
-#	"cqi_cqp",
+	"cqi_cqp",
 	"cqi_query",
 	"cqi_regex2id",
 	"cqi_str2id",
