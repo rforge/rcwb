@@ -21,12 +21,11 @@ setMethod("kwic", "cqp_subcorpus", function(subcorpus, right.context=20, left.co
 	if (nm == 0) {
 		stop("empty subcorpus");
 	}
-	
+
 	s <- .get.kwic.matrix(subcorpus, right.context, left.context);	
 
     obj <- new("cqp_kwic", cqp_corpus=subcorpus@parent, subcorpus=subcorpus, right.context=right.context, left.context=left.context);
     return(obj);
-
 });
 
 ## 

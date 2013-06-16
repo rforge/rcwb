@@ -14,7 +14,6 @@ exportMethods(size)
 exportMethods(as.data.frame)
 exportMethods(as.list)
 exportMethods(.is_cqp_corpus)
-export(write.cqp_corpus)
 
 # functions exported from file "R/cqp_subcorpus.R"
 exportMethods(nmatch)

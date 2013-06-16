@@ -239,25 +239,6 @@ setMethod("as.list", c("cqp_corpus"), function(x, positional=x$word, structural=
   return(l);
 });
 
-##
- # ------------------------------------------------------------------------
- # 
- # "write.cqp_corpus(corpus, filename)" --
- #
- # Save a cqp corpus as a matrix.
- # 
- # Example:
- #              c <- corpus("DICKENS")
- #              write.cqp_corpus(c, "dickens.tab")
- #
- # ------------------------------------------------------------------------
- ##
-write.cqp_corpus <- function(corpus, filename, from=0, to=1000, ...) {
-	size <- N(corpus);
-	mat <- .cqp_corpus2matrix(corpus, 0, size);
-	write.table(mat, file=filename, ...);
-}
-
 ## 
  # ------------------------------------------------------------------------
  #
