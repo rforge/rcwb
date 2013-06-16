@@ -8,11 +8,11 @@ Create a corpus object
 Create a corpus object wrapping a CWB corpus object.
 }
 \usage{
-corpus(corpus.name)
+corpus(name)
 }
 
 \arguments{
-  \item{corpus.name}{
+  \item{name}{
 The name of a corpus in the CWB registry (must be uppercase).
 }
 }
