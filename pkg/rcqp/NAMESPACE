@@ -84,64 +84,9 @@ export(
 	"cqi_structural_attribute_has_values",
 	"cqi_subcorpus_size",
 
-	"corpus",
-	"summary.cqp_corpus",
-	"print.cqp_corpus",
-	"write.cqp_corpus",
-
-	"[[.cqp_corpus",
-	"$.cqp_corpus",
-
-
-	"ntype",
-	"ntype.cqp_attr",
-	"types",
-	"types.cqp_attr",
-
-	"ntoken",
-	"ntoken.cqp_attr",
-	"tokens",
-	"tokens.cqp_attr",
-
-	"nregion",
-	"nregion.cqp_attr",
-	"regions",
-	"regions.cqp_attr",
-
-	"region_sizes",
-	"region_sizes.cqp_attr",
-
-	"summary.cqp_attr",
-	"print.cqp_attr",
-
-	"subcorpus",
-	"summary.cqp_subcorpus",
-	"print.cqp_subcorpus",
-
-	"cqp_flist",
-	"cqp_flist.cqp_attr",
-  	"cqp_flist.cqp_corpus",
-  	"cqp_flist.cqp_subcorpus",
-	"summary.cqp_flist",
-	"print.cqp_flist",
-
-	"cqp_ftable",
- 	"cqp_ftable.cqp_subcorpus",
- 	"cqp_ftable.cqp_corpus",
-
-	"cqp_kwic",
-	"cqp_kwic.cqp_subcorpus",
-	"sort.cqp_kwic",
-	"print.cqp_kwic",
-
-	"size",
-	"size.cqp_corpus",
-	"size.cqp_subcorpus",
-
         "create.corpus",
 
 	"cqp_undump"
-
 )
 
 # 	"cqi_charset",
