@@ -1,4 +1,4 @@
-setClass("cqp_kwic", representation(kwic="matrix", corpus="cqp_corpus", parent="cqp_queryable", right.context="numeric", left.context="numeric"));
+setClass("cqp_kwic", representation(kwic="matrix", corpus="cqp_corpus", subcorpus="cqp_subcorpus", right.context="numeric", left.context="numeric"));
 
 ## 
  # ------------------------------------------------------------------------
@@ -24,7 +24,7 @@ setMethod("kwic", "cqp_subcorpus", function(subcorpus, right.context=20, left.co
 	
 	s <- .get.kwic.matrix(subcorpus, right.context, left.context);	
 
-    obj <- new("cqp_kwic", cqp_corpus=get.corpus(subcorpus), parent=subcorpus, right.context=right.context, left.context=left.context);
+    obj <- new("cqp_kwic", cqp_corpus=subcorpus@parent, subcorpus=subcorpus, right.context=right.context, left.context=left.context);
     return(obj);
 
 });
