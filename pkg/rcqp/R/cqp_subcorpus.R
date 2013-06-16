@@ -40,54 +40,6 @@ setMethod("nmatch", "cqp_subcorpus", function(subcorpus) {
 ## 
  # ------------------------------------------------------------------------
  # 
- # Easy extraction of tokens from the subcorpus
- #
- #              c <- corpus("DICKENS");
- #              sc <- subcorpus(c, '"interesting"')
- #              sc[1:10, "word"]
- #              #sc[region(match=1), "word"]
- # 
- # ------------------------------------------------------------------------
- ##
-setMethod("[", signature(x = "cqp_subcorpus", i = "missing", j = "character", drop = "logical"),
-          function (x, i,j, ..., drop) {
-
-    stop("to be implemented");
-
-    cqp_corpus.name <- parent.corpus <- attr(x, "parent.cqp_corpus.name");
-    cqp_subcorpus.name <- attr(x, "cqp_subcorpus.name");
-    qualified.attribute.name <- paste(parent.cqp_corpus.name, cqp_subcorpus.name, sep=".");
-	
-	x <- cqi_dump(...)
-	start <- x[,1];
-	end <- y[,2];
-	
-	y <- mapply(`:`, start, end, SIMPLIFY=FALSE)
-	y <- unlist(y);
-	
-	z <- cqi_cpos2id(qualified.attribute.name, y);
-	cqp_attr_subcorpus <- id2str(qualified.attribute.name, z);
-	
-	class(cqp_attr) <- "cqp_attr";
-	attr(cqp_attr, "cqp_subcorpus") <- x;
-	attr(cqp_attr, "cqp_corpus.name") <- cqp_corpus.name;
-	attr(cqp_attr, "cqp_subcorpus.name") <- cqp_subcorpus;
-	attr(cqp_attr, "name") <- attribute;
-	attr(cqp_attr, "qualified.attribute.name") <- qualified.attribute.name;
-	attr(cqp_attr, "type") <- "cap_attr_subcorpus";
-	return(cqp_attr);
-
-	return(cqp_attr_subcorpus);
-          
-          })
-
-#size.cqp_subcorpus <- function(x) {
-#   stop("use 'nmatch' (for the number of matches) or 'N' (for the number of tokens)")
-#}
-
-## 
- # ------------------------------------------------------------------------
- # 
  # "part_size(subcorpus)" --
  #
  # Get the number of tokens of each part (matched pattern) of a subcorpus
