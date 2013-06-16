@@ -114,8 +114,7 @@ setMethod("cqp_flist", "cqp_subcorpus",
 	qualified.subcorpus.name <- .cqp_name(x);
 	qualified.attribute <- paste(parent.cqp_corpus.name, attribute, sep=".");
 
-	flist <- 0;
-	
+	flist <- 0; 
 	if (length(anchor) == 1 & left.context == 0 & right.context == 0) {
 		fdist <- cqi_fdist1(qualified.subcorpus.name, anchor, attribute, cutoff=cutoff, offset=offset);
 		id <- fdist[,1];
@@ -161,7 +160,7 @@ setMethod("cqp_flist", "cqp_subcorpus",
    attr(flist, "offset") <- offset;
 
    return(flist);
-}
+});
 
 ## 
  # ------------------------------------------------------------------------

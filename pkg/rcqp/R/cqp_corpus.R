@@ -11,6 +11,11 @@ setClass("cqp_corpus", contains="cqp_queryable");
  ##
 setClass("cqp_corpus", representation(cqp_name="character"));
 
+setMethod(".cqp_name", "cqp_corpus", function(x, qualified=TRUE) {
+  cqp_name <- x@cqp_name;
+  return(cqp_name);
+});
+
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -70,10 +75,15 @@ setMethod("subcorpus", "cqp_corpus", function(corpus, query) {
  ##
 setMethod("[", signature(x = "cqp_corpus", i = "ANY", j = "character", drop = "logical"),
           function (x, i,j, ..., drop) {
+  stop("To be implemented");
+# ----------------------
+# ----------------------
+# ----------------------
+# ----------------------
   i <- substitute(i);
   if (is.numeric(i)) {
     attr <- x$j;
-    return(cqi_cpos2str(.cqp_names(attr), i);
+    return(cqi_cpos2str(.cqp_names(attr), i));
   } else if (is.call(i)) {
     region <- function(...) {
       args <- match.call(expand.dots = FALSE)$`...`;
@@ -84,28 +94,27 @@ setMethod("[", signature(x = "cqp_corpus", i = "ANY", j = "character", drop = "l
       val <- args[[1]];
       cpos <- integer(0);
       attr <- x$key;
-        if (is.numeric(val)) {
-          for (v in val) {
-            range <- cqi_struc2cpos(.cqp_name(attr), val)
-            cpos <- c(cpos, range[1]..range[2]);
-          }
-        } else if (is.character(val)) {
-          if (!is(attr, "cqp_attr_structural")) {
-            stop("no character indexing with non-structural attribute");
-          }
-          strucs <- get.struc(val);
-          for (struc in strucs) {
-            range <- cqi_struc2cpos(.cqp_name(attr), struc)
-            cpos <- c(cpos, range[1]..range[2]);
-          }
-        }
+      if (is.numeric(val)) {
+	for (v in val) {
+	  range <- cqi_struc2cpos(.cqp_name(attr), val)
+	    cpos <- c(cpos, (range[1]):(range[2]));
+	}
+      } else if (is.character(val)) {
+	if (!is(attr, "cqp_attr_structural")) {
+	  stop("no character indexing with non-structural attribute");
+	}
+	strucs <- get.struc(val);
+	for (struc in strucs) {
+	  range <- cqi_struc2cpos(.cqp_name(attr), struc)
+	    cpos <- c(cpos, (range[1]):(range[2]));
+	}
       }
     }
     query <- function(...) {
     }
     i <- eval(i, envir=1, enclos=parent.frame());
     if (is.numeric(i) || is.integer(i)) {
-    } else if {
+      stop("Not implemented yet");
     } else {
       stop("Illegal request");
     }
@@ -219,7 +228,7 @@ setMethod("as.data.frame", "cqp_corpus", function(x, row.names = from:to, option
  #
  # ------------------------------------------------------------------------
  ##
-setMethod("as.list", c("cqp_corpus", "cqp_attr_positional", "cqp_attr_structural"), function(x, positional=x$word, structural=x$text, from=0, to=N(x)-1) {
+setMethod("as.list", c("cqp_corpus"), function(x, positional=x$word, structural=x$text, from=0, to=N(x)-1) {
   .check_cpos(x, from, to);
 
   cpos <- from:to;
@@ -298,7 +307,7 @@ setMethod(".is_cqp_corpus", "ANY", function(corpus) {
 	for (i in 1:nbr_structural) {
 		qualified_structural_attribute <- paste(cqp_name, structural[i], sep=".");
 		ids <- cqi_cpos2struc(qualified_structural_attribute, cpos);
-		if (use_value & cqi_structural_attribute_has_values(qualified_structural_attribute) {
+		if (use_value & cqi_structural_attribute_has_values(qualified_structural_attribute)) {
 		  printed[,i] <- cqi_struc2str(qualified_structural_attribute, ids);
 		} else {
 		  printed[,i] <- ids

@@ -18,12 +18,11 @@ setClass("cqp_attr_structural",
 # Constructors
 ###########################################################################
 
-setMethod("[[", signature(x = "cqp_corpus", i = "character", exact = TRUE),
-function (x, i, exact) {
+setMethod("[[", signature(x = "cqp_corpus", i = "character"), function (x, i, exact) {
 	stop("deprecated; use '$' operator instead");
 })
 
-setMethod("$", signature(x = "cqp_corpus", name = "character"),
+setMethod("$", signature(x = "cqp_corpus"),
 function (x, name) {
   corpus <- x;
   attribute <- name;
@@ -85,7 +84,7 @@ setMethod("get.corpus", "cqp_attr", function(attribute) {
  #
  # ------------------------------------------------------------------------
  ##
-setGeneric("ntypes", function(corpus) standardGeneric("ntypes"));
+setGeneric("ntypes", function(attribute) standardGeneric("ntypes"));
 
 setMethod("ntypes", "cqp_attr_positional", function(attribute) {
 	name <- .cqp_name(attribute);
@@ -106,7 +105,7 @@ setMethod("ntypes", "cqp_attr_positional", function(attribute) {
  #
  # ------------------------------------------------------------------------
  ##
-setGeneric("nvalues", function(corpus) standardGeneric("nvalues"));
+setGeneric("nvalues", function(attribute) standardGeneric("nvalues"));
 
 setMethod("nvalues", "cqp_attr_structural", function(attribute) {
 
@@ -133,7 +132,7 @@ setMethod("nvalues", "cqp_attr_structural", function(attribute) {
  #
  # ------------------------------------------------------------------------
  ##
-setGeneric("ntokens", function(corpus) standardGeneric("ntokens"));
+setGeneric("ntokens", function(attribute) standardGeneric("ntokens"));
 
 setMethod("ntokens", "cqp_attr_positional", function(attribute) {
 	name <- .cqp_name(attribute);
@@ -154,7 +153,7 @@ setMethod("ntokens", "cqp_attr_positional", function(attribute) {
  #
  # ------------------------------------------------------------------------
  ##
-setGeneric("nregions", function(corpus) standardGeneric("nregions"));
+setGeneric("nregions", function(attribute) standardGeneric("nregions"));
 
 setMethod("nregions", "cqp_attr_structural", function(attribute) {
 	name <- .cqp_name(attribute);
@@ -343,10 +342,9 @@ setMethod("summary", signature(object = "cqp_attr"), function(object){
 				sep=""));
 		}
 	}
-}
 });
 
-setMethod("print", signature(object = "cqp_attr"), function(x, ...){
+setMethod("print", signature(x = "cqp_attr"), function(x, ...){
 	print(tokens(x));
 });
 

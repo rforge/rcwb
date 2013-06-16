@@ -7,6 +7,15 @@
  ##
 setClass("cqp_subcorpus", contains="cqp_queryable", representation(parent="cqp_queryable", query="character"));
 
+setMethod(".cqp_name", "cqp_subcorpus", function(x, qualified=TRUE) {
+  cqp_name <- x@cqp_name;
+  if (qualified) {
+    parent <- x@parent@cqp_name
+    cqp_name <- paste(parent, cqp_name, sep=":");
+  }
+  return(cqp_name);
+});
+
 ## 
  # ------------------------------------------------------------------------
  # 
@@ -118,7 +127,7 @@ setMethod("part_size", "cqp_subcorpus", function(subcorpus) {
 
 # the generic is in cqp_corpus.R
 
-setMethod("N", "cqp_subcorpus", function(subcorpus) {
+setMethod("N", "cqp_subcorpus", function(corpus) {
     ntp <- part_size(subcorpus);
     nt <- sum(ntp);
     return(nt);
@@ -203,7 +212,7 @@ setMethod("as.data.frame", "cqp_subcorpus", function(x, optional = FALSE, use_va
  # ------------------------------------------------------------------------
  ##
 setMethod("as.list",
-      c("cqp_subcorpus", "cqp_attr_positional", "cqp_attr_structural"),
+      c("cqp_subcorpus"),
       function(x, positional=x$word, structural=x$text, from=1, to=nmatch(x))
   {
    if (from < 1 || from >= to || to < nmatch(x))
