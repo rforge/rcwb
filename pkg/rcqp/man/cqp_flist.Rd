@@ -5,11 +5,11 @@
 \alias{cqp_flist.cqp_subcorpus}
 
 \title{
- Create a frequency list
+ 
 }
 
 \description{
- Create a frequency list on any phenomenon available in a CWB corpus: frequency of forms of a positional attribute, frequency of a value of a structural attribute, or frequency of forms found in an anchor (\emph{match, matchend, target, keyword}) of a subcorpus.
+ 
 }
 
 \usage{

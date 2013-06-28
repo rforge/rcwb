@@ -1,4 +1,4 @@
-setClass("cqp_flist", contains="cqp_object");
+setClass("cqp_flist");
 
 ## 
  # ------------------------------------------------------------------------

@@ -5,7 +5,8 @@
  #
  # ------------------------------------------------------------------------
  ##
-setClass("cqp_subcorpus", contains="cqp_queryable", representation(parent="cqp_queryable", query="character"));
+setClass("cqp_subcorpus", contains="cqp_queryable", representation(corpus="cqp_corpus", superset="cqp_queryable", query="character"));
+# todo subset plutôt que parent
 
 setMethod(".cqp_name", "cqp_subcorpus", function(x, qualified=TRUE) {
   cqp_name <- x@cqp_name;

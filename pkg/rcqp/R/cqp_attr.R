@@ -225,7 +225,7 @@ setMethod("types", "cqp_attr_positional", function(attribute) {
  ##
 setGeneric("regions", function(attribute, from, to) standardGeneric("regions"));
 
-setMethod("regions", "cqp_attr_positional", function(attribute, from=0, to=nregions(attribute)-1) {
+setMethod("regions", "cqp_attr_structural", function(attribute, from=0, to=nregions(attribute)-1) {
 	if (!attribute@has_value) {
 		stop("cannot list region on structural without value");
 	}
