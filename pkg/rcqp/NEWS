@@ -1,4 +1,15 @@
-- Second Release
+- First release 2012/06/25
+  svn revision : 298
+
+- Release 0.2
+
+- Release 0.3
+  Correcting bug affecting linux users
+
+- Release 0.4
+  undump command
+  create corpus
+
   New :
   size(subcorpus) -> nmatch(subcorpus)
   size(corpus) -> N(corpus);
@@ -19,14 +30,28 @@ corpus[[attribute]] is no more allowed; use corpus$attribute
 as.data.frame() for corpus and subcorpus
 as.list() for corpus and subcorpus
 
-- First release 2012/06/25
-  svn revision : 298
+TODO
 
-- Release 0.2
+regions -> region_values
 
-- Release 0.3
-  Correcting bug affecting linux users
 
-- Release 0.4
-  undump command
-  create corpus
+property, tag, attribute.
+
+1/ pour les Positional ("property") :
+========================
+changer les signatures (c=corpus)
+ntokens -> N ; tokens -> (c)
+ntypes -> (c) ; types -> (c)
+plutôt que : ntokens(c$pos)
+faire : ntokens(c, "pos")
+
+2/ pour les sturcturals :
+========================
+nvalues : rien (nvalues de novel_title == nregions de novel)
+values -> (c) ex. : 'values (c, "novel", "title")' plutôt que 'values(c$novel_title)'
+nregions -> ntags ex. : ntags(c, "novel")
+regions -> Rien
+
+tag("np")
+tag(np=2)
+attribute("novel", "title", "A christmas ca.+")
