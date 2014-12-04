@@ -5,11 +5,11 @@
 \alias{cqp_flist.cqp_subcorpus}
 
 \title{
- 
+ Create a frequency list.
 }
 
 \description{
- 
+ Create a frequency list  either with a corpus or with a subcorpus.
 }
 
 \usage{
