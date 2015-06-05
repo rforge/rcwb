@@ -1,7 +1,7 @@
 # ===========================================================================
 # File: "Makefile.in"
 #                        Created: 2012-05-10 18:55:47
-#              Last modification: 2012-05-11 11:05:51
+#              Last modification: 2015-06-05 08:27:38
 # Authors: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 #          Sylvain Loiseau <sylvain.loiseau@univ-paris13.fr>
 # This is part of the R package 'rcqp'.
@@ -92,13 +92,12 @@ CL_C_SRC = cwb/cl/globals.c cwb/cl/macros.c cwb/cl/list.c cwb/cl/lexhash.c cwb/c
 CL_C_H = $(CL_C_SRC:.c=.h)
 CL_C_OBJ = $(CL_C_SRC:.c=.o)
 
+
 # cwb/utils directory
 # -------------------
 
 UTILS_C_SRC = cwb/utils/cwb-encode.c cwb/utils/cwb-compress-rdx.c cwb/utils/cwb-makeall.c cwb/utils/cwb-huffcode.c
 UTILS_C_OBJ = $(UTILS_C_SRC:.c=.o)
-
-
 
 CL_FLEX_SRC = cwb/cl/registry.l
 CL_FLEX_C = $(CL_FLEX_SRC:.l=.yy.c)
@@ -167,7 +166,7 @@ clean:
 		rm -rf ../autom4te.cache/*; \
 		rmdir ../autom4te.cache; \
 	fi
-	cd ../inst/doc/; \
+	cd ../vignettes/; \
 	rm -f *.tex *.aux *.log *.toc *.idx *.ind *.ilg *.out rcqp-*.pdf *.synctex.gz
 	rm -f ${CWB_C_OBJ} ${CWB_FLEX_OBJ} ${CWB_BISON_OBJ} ${RCQP_STATLIB}
 
@@ -180,7 +179,7 @@ clean-parsers:
 
 
 vignette:
-	cd ../inst/doc; \
+	cd ../vignettes; \
 	rm -f ${RCQP_VIGNETTE_TEX}; \
 	echo "library(\"utils\"); Sweave(\"${RCQP_VIGNETTE_RNW}\")" | R --no-save --no-restore ; \
 	pdflatex ${RCQP_VIGNETTE_TEX}; \
