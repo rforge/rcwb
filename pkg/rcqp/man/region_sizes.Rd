@@ -1,6 +1,6 @@
 \name{region_sizes}
 \alias{region_sizes}
-\alias{region_sizes.cqp_attr}
+\alias{region_sizes,cqp_attr_positional-method}
 
 \title{
 Size of regions of a structural attribute.
@@ -11,14 +11,16 @@ Compute the size (in number of tokens) of the regions of a structural attribute.
 }
 
 \usage{
- region_sizes(attribute)
- \method{region_sizes}{cqp_attr}(attribute)
+	region_sizes(attribute, from, to)
+	\S4method{region_sizes}{cqp_attr_positional}(attribute, from=0, to=nregions(attribute)-1)
 }
 
 \arguments{
   \item{attribute}{
-A cqp_attr (type: structural attribute) (created for instance with \code{\link{$.cqp_corpus}}).
-}
+	A cqp_attr (type: structural attribute) (created for instance with \code{\link{$,cqp_corpus-method}}).
+  }
+  \item{from}{Starting index}
+  \item{to}{End index}
 }
 
 \value{

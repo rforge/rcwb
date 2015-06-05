@@ -18,9 +18,9 @@ setClass("cqp_attr_structural",
 # Constructors
 ###########################################################################
 
-setMethod("[[", signature(x = "cqp_corpus", i = "character"), function (x, i, exact) {
-	stop("deprecated; use '$' operator instead");
-})
+# setMethod("[[", signature(x = "cqp_corpus", i = "character"), function (x, i, exact) {
+# 	stop("deprecated; use '$' operator instead");
+# })
 
 setMethod("$", signature(x = "cqp_corpus"),
 function (x, name) {
@@ -257,7 +257,7 @@ setMethod("regions", "cqp_attr_structural", function(attribute, from=0, to=nregi
  ##
 setGeneric("values", function(attribute, from, to) standardGeneric("values"));
 
-setMethod("values", "cqp_attr_positional", function(attribute, from=0, to=nregions(attribute)-1) {
+setMethod("values", "cqp_attr_structural", function(attribute, from=0, to=nregions(attribute)-1) {
 	return(unique(regions(attribute, from, to)));
 });
 

@@ -81,7 +81,7 @@ setMethod("part_size", "cqp_subcorpus", function(subcorpus) {
 # the generic is in cqp_corpus.R
 
 setMethod("N", "cqp_subcorpus", function(corpus) {
-    ntp <- part_size(subcorpus);
+    ntp <- part_size(corpus);
     nt <- sum(ntp);
     return(nt);
 });
@@ -150,10 +150,10 @@ setMethod("print", signature(x="cqp_subcorpus"), function(x, positional.attribut
  #
  # ------------------------------------------------------------------------
  ##
-setMethod("as.data.frame", "cqp_subcorpus", function(x, optional = FALSE, use_value=TRUE, from=1, to=nmatch(x)) {
+setMethod("as.data.frame", "cqp_subcorpus", function(x, from=1, to=nmatch(x), use_value=TRUE) {
    if (from < 1 || from >= to || to < nmatch(x))
      stop("illegal value for 'from' or 'to'");
-   return(.cqp_subcorpus2matrix(x, use_value, from, to));
+   return(.cqp_subcorpus2matrix(x, from, to, use_value));
 });
 
 ## 
@@ -171,7 +171,7 @@ setMethod("as.list",
    if (from < 1 || from >= to || to < nmatch(x))
      stop("illegal value for 'from' or 'to'");
 
-  x <- .cqp_subcorpus2matrix(x, use_value, from, to);
+  x <- .cqp_subcorpus2matrix(x, from, to, use_value);
 
   y <- split(x[, .cqp.name(positional)], x$Match);
 
@@ -211,7 +211,7 @@ setMethod("as.list",
 	}
 }
 
-.cqp_subcorpus2matrix <- function(x, use_value=use_value, from, to) {
+.cqp_subcorpus2matrix <- function(x, from, to, use_value=use_value) {
 	corpus_name <- .cqp_name(.get.corpus(x));
 	qualified_subcorpus_name <- .cqp_name(x, qualified=TRUE);
 

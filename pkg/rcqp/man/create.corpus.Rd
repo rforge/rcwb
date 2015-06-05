@@ -6,7 +6,7 @@ Create a CWB corpus thanks to input files
 }                                                             
 \description{                                                 
 Front-end for the "cwb-encode", "cwb-makeall", "cwb-huffcode" 
-and "cwb-compress-rdx" program : create a CWB corpus using    
+and "cwb-compress-rdx" tools : create a CWB corpus using    
 files (or directory containing files) in "vrt" format (mix of 
 xml tags, delimiting span of tokens, and tabulated section,   
 each column giving a type of information on a token.          

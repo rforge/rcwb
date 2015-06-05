@@ -57,10 +57,6 @@ From the directory containing the source code, i-e the directory containing
 the rcqp/ directory, execute the following command:
 	R CMD INSTALL rcqp
 
-You may have to call explicitly R64 (on some 64-bits machines the architecture
-is not correctly recognized by R):
-	R64 CMD INSTALL rcqp
-
 R will automatically find the configure script, run it, execute the make 
 command and finally install the package in the appropriate location.
 
@@ -83,7 +79,7 @@ Configuration
 You can specify platform-specific and site-specific settings on the
 ./configure command line using the RCQP_PLATFORM and RCQP_SITE variables.
 Their default values are 'linux' and 'standard' respectively. The possible
-values are the names mentionned in the commentys at the top of the the file
+values are the names mentionned in the comments at the top of the file
 cwb/configRcqp.mk.
 
 For cross-compilation for Windows, you should use mingw

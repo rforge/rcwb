@@ -8,7 +8,7 @@ Maintainer: Bernard Desgraupes <bernard.desgraupes@u-paris10.fr>
 Depends: R (>= 1.8.0), plyr, RUnit
 Suggests: reshape
 Description: Implements Corpus Query Protocol functions based on the CWB software. Relies on CWB (GPL v2), PCRE (BSD licence), glib2 (LGPL).
-License: GPL-2
+License: GPL-2 | file LICENCE
 Lazyload: yes
 URL: http://www.r-project.org
 Collate: cqi.R cqp_object.R cqp_corpus.R cqp_subcorpus.R cqp_attr.R cqp_flist.R cqp_ftable.R cqp_kwic.R

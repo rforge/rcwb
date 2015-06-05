@@ -13,7 +13,7 @@ lists or contingency tables, etc.
 
 This implementation is based on the CWB library developed by the IMS Open
 Corpus Workbench (http://cwb.sourceforge.net/). You do not need though to
-implement the CWB software: the extension is self-contained.
+implement the CWB software: the rcqp extension is self-contained.
 
 Instructions explaining how to compile rcqp on Mac OS X or on a Unix-like 
 system are found in the file INSTALL.
@@ -41,7 +41,7 @@ License
 rcqp is a free software conforming to a GPL>=2 license. See the file LICENSE 
 for details.
 
-    rcqp version 1.0, Copyright (C) 2012 Bernard Desgraupes & Sylvain Loiseau
+    rcqp version 0.5, Copyright (C) 2012-2015 Bernard Desgraupes & Sylvain Loiseau
     rcqp comes with ABSOLUTELY NO WARRANTY.
     This is free software, and you are welcome to redistribute it
     under certain conditions as stated in the license terms.

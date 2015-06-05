@@ -1,6 +1,6 @@
 \name{cqp_kwic}
 \alias{cqp_kwic}
-\alias{cqp_kwic.cqp_subcorpus}
+\alias{cqp_kwic,cqp_subcorpus-method}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Create a "keyword in context" list with a subcorpus.
@@ -12,7 +12,7 @@ arranging and filtering items. The list can then be printed chunk by chunk.
 \usage{
 cqp_kwic(x, ...)
 
- \method{cqp_kwic}{cqp_subcorpus}(x, right.context = 20, left.context = 20, ...)
+	\S4method{cqp_kwic}{cqp_subcorpus}(x, right.context = 20, left.context = 20, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -32,7 +32,7 @@ Ignored.
 }
 
 \value{
-Create a \code{cqp_kwic} object ready to be printed (with more options for the display) with \code{print} (see \code{\link{print.cqp_kwic}}).
+Create a \code{cqp_kwic} object ready to be printed (with more options for the display) with \code{print} (see \code{\link{print,cqp_kwic-method}}).
 }
 
 \references{                                                                    
@@ -46,6 +46,5 @@ Create a \code{cqp_kwic} object ready to be printed (with more options for the d
 \seealso{
 \code{\link{corpus}}, 
 \code{\link{subcorpus}}, 
-\code{\link{print.cqp_kwic}}
-\code{\link{write.cqp_corpus}}.
+\code{\link{print,cqp_kwic-method}}.
 }

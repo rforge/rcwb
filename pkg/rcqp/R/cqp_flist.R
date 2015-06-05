@@ -199,7 +199,7 @@ setMethod("summary", signature(object = "cqp_corpus"), function(object){
  #
  # ------------------------------------------------------------------------
  ##
-setMethod("print", signature(x="cqp_kwic"), function(x) {
+setMethod("print", signature(x="cqp_flist"), function(x) {
 	df <- data.frame(names(x), as.numeric(x));
 	colnames(df) <- c("type", "frequency");
 	print(df, row.names=FALSE);

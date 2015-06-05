@@ -1,7 +1,7 @@
 \name{size}
 \alias{size}
-\alias{size.cqp_corpus}
-\alias{size.cqp_subcorpus}
+\alias{size,cqp_corpus-method}
+\alias{size,cqp_subcorpus-method}
 \title{
 Size of a corpus or subcorpus
 }
@@ -9,15 +9,15 @@ Size of a corpus or subcorpus
 Size of a corpus (number of tokens) or size of a subcorpus (number of matches).
 }
 \usage{
-size(x)
+size(corpus)
 
-\method{size}{cqp_corpus}(x)
+\S4method{size}{cqp_corpus}(corpus)
 
-\method{size}{cqp_subcorpus}(x)
+\S4method{size}{cqp_subcorpus}(corpus)
 
 }
 \arguments{
-  \item{x}{
+  \item{corpus}{
  A \code{cqp_corpus} object (created with the function \code{\link{corpus}})
  or a \code{cqp_subcorpus} object (created with the function \code{\link{subcorpus}})
  
@@ -38,8 +38,8 @@ or the number of matches if it is a subcorpus.
 \seealso{
 \code{\link{corpus}}, 
 \code{\link{subcorpus}}, 
-\code{\link{summary.cqp_corpus}}, 
-\code{\link{summary.cqp_subcorpus}}.
+\code{\link{summary,cqp_corpus-method}}, 
+\code{\link{summary,cqp_subcorpus-method}}.
 }
 
 \examples{

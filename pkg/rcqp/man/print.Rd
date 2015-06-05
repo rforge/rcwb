@@ -1,9 +1,9 @@
 \name{print.cqp_flist}
-\alias{print.cqp_flist}
-\alias{print.cqp_subcorpus}
-\alias{print.cqp_corpus}
-\alias{print.cqp_kwic}
-\alias{print.cqp_attr}
+\alias{print,cqp_flist-method}
+\alias{print,cqp_corpus-method}
+\alias{print,cqp_subcorpus-method}
+\alias{print,cqp_kwic-method}
+\alias{print,cqp_attr-method}
 
 \title{
 Print a CWB object
@@ -17,21 +17,27 @@ printed... as expected.
 }
 \usage{
 
- \method{print}{cqp_flist}(x, ...)
+	\S4method{print}{cqp_flist}(x)
 
- \method{print}{cqp_corpus}(x, from = 0, to = 20, use_value = TRUE, ...)
+	\S4method{print}{cqp_corpus}(x, from = 0, to = 20, use_value = TRUE, ...)
 
- \method{print}{cqp_subcorpus}(x, positional.attribute = "word", from = 0, to = 10, ...)
+	\S4method{print}{cqp_subcorpus}(x, positional.attribute="word", from=0, to=10, ...)
 
- \method{print}{cqp_kwic}(x, from = 0, to = min(20, nrow(x)-1), print_tokens = function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep = "."), cpos), left.separator = " <<", right.separator = ">> ", ...)
+	\S4method{print}{cqp_kwic}(x, 
+	from=0,
+	to=min(20, nrow(x)-1),
+	print_tokens=function(x, cpos) cqi_cpos2str(paste(x@corpus, "word", sep="."), cpos),
+	left.separator=" <<",
+	right.separator=">> ",
+	...)
 
- \method{print}{cqp_attr}(x, ...)
+	\S4method{print}{cqp_attr}(x, ...)
 
 }
 
 \arguments{
   \item{x}{
-An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}, \code{\link{cqp_kwic}}, or \code{\link{$.cqp_corpus}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}, \code{\link{cqp_kwic}}, or \code{\link{$,cqp_corpus-method}}.
 }
   \item{from}{
 Select first tokens (for a corpus object) or matches (for a subcorpus or cqp_kwic object) to be printed. As for all CWB data, this index is 0-based.
@@ -85,11 +91,11 @@ Creating a \code{cqp_kwic} object gives more control on the printing options.
 \code{\link{cqp_kwic}}, 
 \code{\link{cqp_flist}}, 
 \code{\link{cqp_ftable}}, 
-\code{\link{summary.cqp_flist}}, 
-\code{\link{size.cqp_corpus}}, 
-\code{\link{size.cqp_subcorpus}}, 
-\code{\link{summary.cqp_corpus}}, 
-\code{\link{summary.cqp_subcorpus}}.
+\code{\link{summary,cqp_flist-method}}, 
+\code{\link{size,cqp_corpus-method}}, 
+\code{\link{size,cqp_subcorpus-method}}, 
+\code{\link{summary,cqp_corpus-method}}, 
+\code{\link{summary,cqp_subcorpus-method}}.
 }
 
 \examples{

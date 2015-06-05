@@ -249,3 +249,28 @@ tokens.cqp_subcorpus <- function(subcorpus, attr) {
 	return(str);
 }
 
+
+
+regions -> region_values
+
+
+property, tag, attribute.
+
+1/ pour les Positional ("property") :
+========================
+changer les signatures (c=corpus)
+ntokens -> N ; tokens -> (c)
+ntypes -> (c) ; types -> (c)
+plutôt que : ntokens(c$pos)
+faire : ntokens(c, "pos")
+
+2/ pour les structurals :
+========================
+nvalues : rien (nvalues de novel_title == nregions de novel)
+values -> (c) ex. : 'values (c, "novel", "title")' plutôt que 'values(c$novel_title)'
+nregions -> ntags ex. : ntags(c, "novel")
+regions -> Rien
+
+tag("np")
+tag(np=2)
+attribute("novel", "title", "A christmas ca.+")

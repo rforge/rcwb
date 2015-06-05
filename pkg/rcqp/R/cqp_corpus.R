@@ -73,55 +73,57 @@ setMethod("subcorpus", "cqp_corpus", function(corpus, query) {
  # 
  # ------------------------------------------------------------------------
  ##
-setMethod("[", signature(x = "cqp_corpus", i = "ANY", j = "character", drop = "logical"),
-          function (x, i,j, ..., drop) {
-  stop("To be implemented");
-# ----------------------
-# ----------------------
-# ----------------------
-# ----------------------
-  i <- substitute(i);
-  if (is.numeric(i)) {
-    attr <- x$j;
-    return(cqi_cpos2str(.cqp_names(attr), i));
-  } else if (is.call(i)) {
-    region <- function(...) {
-      args <- match.call(expand.dots = FALSE)$`...`;
-      if (length(args) > 1) {
-        stop("only one argument is allowed in 'region'");
-      }
-      key <- names(args)[1];
-      val <- args[[1]];
-      cpos <- integer(0);
-      attr <- x$key;
-      if (is.numeric(val)) {
-	for (v in val) {
-	  range <- cqi_struc2cpos(.cqp_name(attr), val)
-	    cpos <- c(cpos, (range[1]):(range[2]));
-	}
-      } else if (is.character(val)) {
-	if (!is(attr, "cqp_attr_structural")) {
-	  stop("no character indexing with non-structural attribute");
-	}
-	strucs <- get.struc(val);
-	for (struc in strucs) {
-	  range <- cqi_struc2cpos(.cqp_name(attr), struc)
-	    cpos <- c(cpos, (range[1]):(range[2]));
-	}
-      }
-    }
-    query <- function(...) {
-    }
-    i <- eval(i, envir=1, enclos=parent.frame());
-    if (is.numeric(i) || is.integer(i)) {
-      stop("Not implemented yet");
-    } else {
-      stop("Illegal request");
-    }
-  } else {
-    stop("unknown call");
-  }
-});
+# # TODO
+# # -----
+# setMethod("[", signature(x = "cqp_corpus", i = "ANY", j = "character", drop = "logical"),
+#           function (x, i,j, ..., drop) {
+#   stop("To be implemented");
+# # ----------------------
+# # ----------------------
+# # ----------------------
+# # ----------------------
+#   i <- substitute(i);
+#   if (is.numeric(i)) {
+#     attr <- x$j;
+#     return(cqi_cpos2str(.cqp_names(attr), i));
+#   } else if (is.call(i)) {
+#     region <- function(...) {
+#       args <- match.call(expand.dots = FALSE)$`...`;
+#       if (length(args) > 1) {
+#         stop("only one argument is allowed in 'region'");
+#       }
+#       key <- names(args)[1];
+#       val <- args[[1]];
+#       cpos <- integer(0);
+#       attr <- x$key;
+#       if (is.numeric(val)) {
+# 	for (v in val) {
+# 	  range <- cqi_struc2cpos(.cqp_name(attr), val)
+# 	    cpos <- c(cpos, (range[1]):(range[2]));
+# 	}
+#       } else if (is.character(val)) {
+# 	if (!is(attr, "cqp_attr_structural")) {
+# 	  stop("no character indexing with non-structural attribute");
+# 	}
+# 	strucs <- get.struc(val);
+# 	for (struc in strucs) {
+# 	  range <- cqi_struc2cpos(.cqp_name(attr), struc)
+# 	    cpos <- c(cpos, (range[1]):(range[2]));
+# 	}
+#       }
+#     }
+#     query <- function(...) {
+#     }
+#     i <- eval(i, envir=1, enclos=parent.frame());
+#     if (is.numeric(i) || is.integer(i)) {
+#       stop("Not implemented yet");
+#     } else {
+#       stop("Illegal request");
+#     }
+#   } else {
+#     stop("unknown call");
+#   }
+# });
 
 ## 
  # ------------------------------------------------------------------------
@@ -183,7 +185,7 @@ setMethod("N", "cqp_corpus", function(corpus) {
 setGeneric("size", function(corpus) standardGeneric("size"));
 
 setMethod("size", "cqp_corpus", function(corpus) {
-  warning("deprecated; use 'N' rather");
+  warning("method 'size' is deprecated; use 'N' rather");
   N(corpus);
 });
 
@@ -213,7 +215,7 @@ setMethod("print", signature(x="cqp_corpus"), function(x, from=0, to=20, use_val
  #
  # ------------------------------------------------------------------------
  ##
-setMethod("as.data.frame", "cqp_corpus", function(x, row.names = from:to, optional = FALSE, from, to, use_value=TRUE) {
+setMethod("as.data.frame", "cqp_corpus", function(x, from, to, use_value=TRUE) {
    .check_cpos(x, from, to);
 
 	df <- .cqp_corpus2matrix(x, from, to, use_value=use_value);
@@ -246,10 +248,10 @@ setMethod("as.list", c("cqp_corpus"), function(x, positional=x$word, structural=
  #
  # ------------------------------------------------------------------------
  ##
-setGeneric(".is_cqp_corpus", function(corpus) standardGeneric(".is_cqp_corpus"));
+setGeneric(".is_cqp_corpus", function(x) standardGeneric(".is_cqp_corpus"));
 
-setMethod(".is_cqp_corpus", "ANY", function(corpus) {
-  if (class(corpus) == "cqp_corpus") {
+setMethod(".is_cqp_corpus", "ANY", function(x) {
+  if (class(x) == "cqp_corpus") {
     return(TRUE);
   } else {
     return(FALSE);

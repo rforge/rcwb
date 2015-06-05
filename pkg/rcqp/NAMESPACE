@@ -6,7 +6,7 @@ exportMethods(.cqp_name);
 export(corpus);
 
 exportMethods(subcorpus)
-exportMethods("[")
+# exportMethods("[")
 exportMethods(summary)
 exportMethods(print)
 exportMethods(N)
@@ -17,7 +17,7 @@ exportMethods(.is_cqp_corpus)
 
 # functions exported from file "R/cqp_subcorpus.R"
 exportMethods(nmatch)
-exportMethods("[")
+# exportMethods("[")
 exportMethods(part_size)
 exportMethods(N)
 exportMethods(summary)
@@ -26,7 +26,7 @@ exportMethods(as.data.frame)
 exportMethods(as.list)
 
 # functions exported from file "R/cqp_attr.R"
-exportMethods("[[")
+# exportMethods("[[")
 exportMethods("$")
 exportMethods(get.corpus)
 exportMethods(ntypes)

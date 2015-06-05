@@ -1,8 +1,8 @@
 \name{summary.cqp_flist}
-\alias{summary.cqp_flist}
-\alias{summary.cqp_corpus}
-\alias{summary.cqp_subcorpus}
-\alias{summary.cqp_attr}
+\alias{summary,cqp_flist-method}
+\alias{summary,cqp_corpus-method}
+\alias{summary,cqp_subcorpus-method}
+\alias{summary,cqp_attr-method}
 
 \title{
 Print summary for CWB objects.
@@ -12,18 +12,18 @@ Print a summary for a corpus, a subcorpus, or a frequency list.
 }
 \usage{
 
- \method{summary}{cqp_flist}(object, ...)
+	\S4method{summary}{cqp_flist}(object)
 
- \method{summary}{cqp_corpus}(object, ...)
+	\S4method{summary}{cqp_corpus}(object)
 
- \method{summary}{cqp_subcorpus}(object, ...)
+	\S4method{summary}{cqp_subcorpus}(object)
 
- \method{summary}{cqp_attr}(object, ...)
+	\S4method{summary}{cqp_attr}(object)
 }
 
 \arguments{
   \item{object}{
-An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}, or \code{\link{$.cqp_corpus}}.
+An \code{rcqp} object, created with \code{\link{cqp_flist}}, \code{\link{corpus}}, \code{\link{subcorpus}}, or \code{\link{$,cqp_corpus-method}}.
 }
   \item{...}{
 Ignored.
@@ -42,9 +42,8 @@ Ignored.
 \seealso{
 \code{\link{corpus}}, 
 \code{\link{subcorpus}}, 
-\code{\link{write.cqp_corpus}}, 
-\code{\link{size.cqp_corpus}}, 
-\code{\link{size.cqp_subcorpus}}, 
+\code{\link{size,cqp_corpus-method}}, 
+\code{\link{size,cqp_subcorpus-method}}, 
 \code{\link{cqp_kwic}}.
 }
 

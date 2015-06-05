@@ -1,5 +1,5 @@
 \name{sort.cqp_kwic}
-\alias{sort.cqp_kwic}
+\alias{sort,cqp_kwic-method}
 
 \title{
 Sort a kwic list
@@ -8,7 +8,7 @@ Sort a kwic list
 Sort a kwic list with respect to an anchor and a positional attribute.
 }
 \usage{
- \method{sort}{cqp_kwic}(x, decreasing = FALSE, sort.anchor = "match", sort.attribute = "word", sort.offset = 0, ...)
+	\S4method{sort}{cqp_kwic}(x, decreasing = FALSE, sort.anchor = "match", sort.attribute = "word", sort.offset = 0, ...)
 }
 
 \arguments{
@@ -43,7 +43,7 @@ Ignored.
 
 \seealso{ 
 \code{\link{cqp_kwic}}, 
-\code{\link{print.cqp_kwic}}.
+\code{\link{print,cqp_kwic-method}}.
 }
 
 \examples{

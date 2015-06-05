@@ -1,57 +1,46 @@
-- First release 2012/06/25
-  svn revision : 298
+HISTORY
+=======
 
-- Release 0.2
+Release 0.1
+-----------
+	First release 2012/06/25
+    svn revision : 298
 
-- Release 0.3
-  Correcting bug affecting linux users
+Release 0.2
+-----------
 
-- Release 0.4
-  undump command
-  create corpus
+Release 0.3
+-----------
+    Correcting bug affecting linux users
+
+Release 0.4
+-----------
+    undump command
+    create corpus
 
   New :
-  size(subcorpus) -> nmatch(subcorpus)
-  size(corpus) -> N(corpus);
-  size() is suppressed
-  new function: N(subcorpus)
+    size(subcorpus) -> nmatch(subcorpus)
+    size(corpus) -> N(corpus);
+    size() is suppressed
+    new function: N(subcorpus)
 
-ntype -> ntypes
-nvalue -> nvalues 
-ntoken -> ntokens
-nregion -> nregions
+	ntype -> ntypes
+	nvalue -> nvalues 
+	ntoken -> ntokens
+	nregion -> nregions
 
-cqi_dump_subcorpus now return NULL if the subcorpus contains no match (rather than crashing).
+	cqi_dump_subcorpus now return NULL if the subcorpus contains no match (rather than crashing).
 
-corpus[[attribute]] is no more allowed; use corpus$attribute
+	corpus[[attribute]] is no more allowed; use corpus$attribute
 
-"[" operator for easily retreiving vector (or list of vectors) of tokens from the corpus.
+	"[" operator for easily retreiving vector (or list of vectors) of tokens from the corpus.
 
-as.data.frame() for corpus and subcorpus
-as.list() for corpus and subcorpus
+	as.data.frame() for corpus and subcorpus
+	as.list() for corpus and subcorpus
 
-TODO
+Release 0.5
+-----------
+	Created vignettes/ dir as required by new R standards
+	Added cleanup script
+	svn revision 412
 
-regions -> region_values
-
-
-property, tag, attribute.
-
-1/ pour les Positional ("property") :
-========================
-changer les signatures (c=corpus)
-ntokens -> N ; tokens -> (c)
-ntypes -> (c) ; types -> (c)
-plutôt que : ntokens(c$pos)
-faire : ntokens(c, "pos")
-
-2/ pour les sturcturals :
-========================
-nvalues : rien (nvalues de novel_title == nregions de novel)
-values -> (c) ex. : 'values (c, "novel", "title")' plutôt que 'values(c$novel_title)'
-nregions -> ntags ex. : ntags(c, "novel")
-regions -> Rien
-
-tag("np")
-tag(np=2)
-attribute("novel", "title", "A christmas ca.+")

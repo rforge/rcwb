@@ -1,7 +1,7 @@
 \name{cqp_ftable}
 \alias{cqp_ftable}
-\alias{cqp_ftable.cqp_corpus}
-\alias{cqp_ftable.cqp_subcorpus}
+\alias{cqp_ftable,cqp_corpus-method}
+\alias{cqp_ftable,cqp_subcorpus-method}
 
 \title{
 Create a frequency table
@@ -18,9 +18,9 @@ and a positional attribute for each anchor.
 \usage{
 cqp_ftable(x, ...)
 
- \method{cqp_ftable}{cqp_corpus}(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, ...)
+	\S4method{cqp_ftable}{cqp_corpus}(x, attribute1, attribute2, attribute1.use.id = FALSE, attribute2.use.id = FALSE, structural.attribute.unique.id = FALSE, ...)
  
- \method{cqp_ftable}{cqp_subcorpus}(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
+	\S4method{cqp_ftable}{cqp_subcorpus}(x, anchor1, attribute1, anchor2, attribute2, cutoff = 0, ...)
 }
 
 \arguments{
@@ -201,8 +201,7 @@ text2      2      2
 
 \bold{For subcorpus:}
 
-Cross-counting of two modalities on two list of tokens. For a contingency table (token *
-range from match to match end), see \code{\link{asLexicalTable}}.
+Cross-counting of two modalities on two list of tokens. 
 
 }
 
@@ -223,7 +222,6 @@ column the observed frequency of the cooccurrence.
 }
 
 \seealso{
-\code{\link{asLexicalTable}},
 \code{\link{cqp_flist}},
 \code{\link{cqp_kwic}},
 \code{\link{subcorpus}}.

@@ -1,8 +1,8 @@
 \name{cqp_flist}
 \alias{cqp_flist}
-\alias{cqp_flist.cqp_attr}
-\alias{cqp_flist.cqp_corpus}
-\alias{cqp_flist.cqp_subcorpus}
+\alias{cqp_flist,cqp_attr-method}
+\alias{cqp_flist,cqp_corpus-method}
+\alias{cqp_flist,cqp_subcorpus-method}
 
 \title{
  Create a frequency list.
@@ -13,17 +13,17 @@
 }
 
 \usage{
-cqp_flist(x, ...)
+cqp_flist(corpus, attribute, cutoff, ...)
 
- \method{cqp_flist}{cqp_attr}(x, cutoff = 0, ...)
+	\S4method{cqp_flist}{cqp_attr}(corpus, cutoff = 0, ...)
  
- \method{cqp_flist}{cqp_corpus}(x, attribute, cutoff = 0, ...)
+	\S4method{cqp_flist}{cqp_corpus}(corpus, attribute, cutoff = 0, ...)
  
- \method{cqp_flist}{cqp_subcorpus}(x, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
+	\S4method{cqp_flist}{cqp_subcorpus}(corpus, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
+  \item{corpus}{
 An attribute, a corpus or a subcorpus object, created with the function \code{\link{corpus}} or \code{\link{subcorpus}}.
 }
   \item{attribute}{

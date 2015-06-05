@@ -1,16 +1,21 @@
 \name{Type and token}
-\alias{ntype}
-\alias{types}
-\alias{nregion}
+\alias{nregions}
 \alias{regions}
-\alias{ntoken}
+\alias{ntokens}
 \alias{tokens}
-\alias{ntype.cqp_attr}
-\alias{types.cqp_attr}
-\alias{nregion.cqp_attr}
-\alias{regions.cqp_attr}
-\alias{ntoken.cqp_attr}
-\alias{tokens.cqp_attr}
+\alias{ntypes}
+\alias{types}
+\alias{nvalues}
+\alias{values}
+\alias{ntokens,cqp_attr_positional-method}
+\alias{tokens,cqp_attr_positional-method}
+\alias{ntypes,cqp_attr_positional-method}
+\alias{types,cqp_attr_positional-method}
+\alias{nregions,cqp_attr_structural-method}
+\alias{regions,cqp_attr_structural-method}
+\alias{nvalues,cqp_attr_structural-method}
+\alias{values,cqp_attr_structural-method}
+\alias{get.corpus,cqp_attr-method}
 
 \title{
 Print values of cqp attribute
@@ -20,47 +25,53 @@ Get vectors of tokens or types for a cqp attribute.
 }
 \usage{
 
-ntype(attribute, ...)
+	ntokens(attribute)
 
-types(attribute, ...)
+	tokens(attribute, from, to)
 
-nregion(attribute, ...)
+	ntypes(attribute)
 
-regions(attribute, ...)
+	types(attribute)
 
-ntoken(attribute, ...)
+	nregions(attribute)
 
-tokens(attribute, ...)
+	regions(attribute, from, to)
 
- \method{ntype}{cqp_attr}(attribute, ...)
- \method{types}{cqp_attr}(attribute, ...)
- \method{nregion}{cqp_attr}(attribute, ...)
- \method{regions}{cqp_attr}(attribute, ...)
- \method{ntoken}{cqp_attr}(attribute, ...)
- \method{tokens}{cqp_attr}(attribute, ...)
+	nvalues(attribute)
 
+	values(attribute, from, to)
+
+	\S4method{tokens}{cqp_attr_positional}(attribute, from=0, to=ntokens(attribute) - 1)
+	\S4method{ntokens}{cqp_attr_positional}(attribute)
+	\S4method{types}{cqp_attr_positional}(attribute)
+	\S4method{ntypes}{cqp_attr_positional}(attribute)
+	\S4method{regions}{cqp_attr_structural}(attribute, from=0, to=nregions(attribute)-1)
+	\S4method{nregions}{cqp_attr_structural}(attribute)
+	\S4method{values}{cqp_attr_structural}(attribute, from=0, to=nregions(attribute)-1)
+	\S4method{nvalues}{cqp_attr_structural}(attribute)
+
+	\S4method{get.corpus}{cqp_attr}(attribute)
 }
 
 \arguments{
   \item{attribute}{
-    A \code{cqp_attr} object, created with \code{\link{$.cqp_corpus}}.
+    A \code{cqp_attr} object, created with \code{\link{$,cqp_corpus-method}}.
   }
-  \item{...}{
-    Ignored.
-  }
+  \item{from}{Starting index}
+  \item{to}{End index}
 }
 
 \value{                                                                    
   For positional attributes :
   \itemize{
-    \item ntoken is the number of tokens (== size(corpus))
+    \item ntokens is the number of tokens (== size(corpus))
     \item tokens is a character vector with the actual list of tokens
-    \item ntype is the number of different values
+    \item ntypes is the number of different values
     \item types is a character vector with the actual different values
   }
   For structural attributes :
   \itemize{
-    \item nregion is the actual number of regions (a numeric vector of length 1)
+    \item nregions is the actual number of regions (a numeric vector of length 1)
     \item tokens the region id ("struc") of each token (a numeric vector)
 	\item regions (only if the structural attribute "has values") : the values found on each region (a character vector)
   }
@@ -76,7 +87,7 @@ tokens(attribute, ...)
 }
 
 \seealso{
-\code{\link{$.cqp_corpus}}.
+\code{\link{$,cqp_corpus-method}}.
 }
 
 \examples{
