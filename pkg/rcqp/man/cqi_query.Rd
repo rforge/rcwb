@@ -1,5 +1,6 @@
 \name{cqi_query}
 \alias{cqi_query}
+\alias{cqi_cqp}
 
 \title{Query an indexed corpus}
 
@@ -11,12 +12,14 @@
 
 \usage{
 	cqi_query(mother, child, query)
+	cqi_cqp(cmd)
 }
 
 \arguments{
 	\item{mother}{(\emph{string}) the name of the corpus.}
 	\item{child}{(\emph{string}) the name given to the subcorpus which will contain the results of the query.}
 	\item{query}{(\emph{string}) the query string.}
+	\item{cmd}{(\emph{string}) a CQP command.}
 }
 
 \details{

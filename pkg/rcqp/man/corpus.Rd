@@ -1,6 +1,7 @@
 \name{corpus}
 \alias{corpus}
-\alias{.is_cqp_corpus}
+\alias{N}
+\alias{.is_cqp_corpus,ANY-method}
 \alias{.cqp_name,cqp_corpus-method}
 \alias{N,cqp_corpus-method}
 \alias{as.data.frame,cqp_corpus-method}
@@ -15,6 +16,7 @@ Create a corpus object wrapping a CWB corpus object.
 }
 \usage{
 	corpus(name)
+	N(corpus)
 
 	\S4method{subcorpus}{cqp_corpus}(corpus, query)
 	\S4method{.is_cqp_corpus}{ANY}(x)

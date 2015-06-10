@@ -1,6 +1,8 @@
 \name{cqp_kwic}
 \alias{cqp_kwic}
-\alias{cqp_kwic,cqp_subcorpus-method}
+\alias{kwic}
+\alias{kwic,cqp_subcorpus-method}
+\alias{as.matrix,cqp_kwic-method}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Create a "keyword in context" list with a subcorpus.
@@ -11,11 +13,18 @@ arranging and filtering items. The list can then be printed chunk by chunk.
 }
 \usage{
 cqp_kwic(x, ...)
+kwic(subcorpus, ...)
 
-	\S4method{cqp_kwic}{cqp_subcorpus}(x, right.context = 20, left.context = 20, ...)
+	\S4method{kwic}{cqp_subcorpus}(subcorpus, right.context=20, left.context=20)
+	\S4method{as.matrix}{cqp_kwic}(x, from=0, to=min(20, nrow(x)-1),
+	print_tokens=function(x, cpos) cqi_cpos2str(paste(attr(x, "parent.cqp_corpus.name"), "word", sep="."), cpos),
+	...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
+  \item{subcorpus}{
+An object created with \code{\link{subcorpus}}.
+}
   \item{x}{
 An object created with \code{\link{subcorpus}}.
 }
@@ -25,9 +34,10 @@ The number of characters on the right.
   \item{left.context}{
 The number of characters on the left.
 }
-  \item{...}{
-Ignored.
-}
+  \item{from}{Starting index}
+  \item{to}{End index}
+  \item{print_tokens}{Formatting function}
+  \item{...}{Ignored.}
 
 }
 

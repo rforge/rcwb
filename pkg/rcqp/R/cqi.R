@@ -567,7 +567,7 @@ cqp_undump <- function(file, corpus, subcorpus, target=FALSE, keyword=FALSE) {
 ## 
  # ------------------------------------------------------------------------
  # 
- # "cqi_cqpCmd(cmd)" --
+ # "cqi_cqp(cmd)" --
  #
  # This function allows for sending any CQP command and must be used carefully
  # 

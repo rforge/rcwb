@@ -1,5 +1,7 @@
 \name{subcorpus}
 \alias{subcorpus}
+\alias{nmatch}
+\alias{part_size}
 \alias{.cqp_name,cqp_subcorpus-method}
 \alias{nmatch,cqp_subcorpus-method}
 \alias{part_size,cqp_subcorpus-method}
@@ -17,7 +19,9 @@ Create a subcorpus held in the CWB library.
 
 \usage{
 	subcorpus(corpus, query)
-
+	nmatch(subcorpus)
+	part_size(subcorpus)
+	
 	\S4method{.cqp_name}{cqp_subcorpus}(x, qualified=TRUE)
 	\S4method{nmatch}{cqp_subcorpus}(subcorpus)
 	\S4method{part_size}{cqp_subcorpus}(subcorpus)

@@ -21,7 +21,7 @@
 
 
 ## Read configuration settings and standard definitions
-TOP = $(shell pwd)/..
+TOP = `pwd`/..
 include $(TOP)/config.mk
 
 ## The following targets are available:

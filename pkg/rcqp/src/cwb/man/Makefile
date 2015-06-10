@@ -16,7 +16,7 @@
 ##  WWW at http://www.gnu.org/copyleft/gpl.html).
 
 ## Read configuration settings and standard definitions
-TOP = $(shell pwd)/..
+TOP = `pwd`/..
 include $(TOP)/config.mk
 
 ## The following targets are available:

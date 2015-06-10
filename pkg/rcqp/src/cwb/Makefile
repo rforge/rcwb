@@ -44,7 +44,7 @@
 #  doxygen      to update the HTML code documentation (requires doxygen to be installed)
 #  
 
-TOP = $(shell pwd)
+TOP = `pwd`
 include $(TOP)/config.mk
 
 # targets for external libraries

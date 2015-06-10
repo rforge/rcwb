@@ -1,8 +1,10 @@
 \name{cqp_flist}
 \alias{cqp_flist}
-\alias{cqp_flist,cqp_attr-method}
+\alias{cqp_flist,missing,cqp_attr-method}
 \alias{cqp_flist,cqp_corpus-method}
+\alias{cqp_flist,cqp_corpus,ANY-method}
 \alias{cqp_flist,cqp_subcorpus-method}
+\alias{cqp_flist,cqp_subcorpus,ANY-method}
 
 \title{
  Create a frequency list.
@@ -15,11 +17,11 @@
 \usage{
 cqp_flist(corpus, attribute, cutoff, ...)
 
-	\S4method{cqp_flist}{cqp_attr}(corpus, cutoff = 0, ...)
+	\S4method{cqp_flist}{missing,cqp_attr}(corpus, attribute, cutoff=0, ...)
  
-	\S4method{cqp_flist}{cqp_corpus}(corpus, attribute, cutoff = 0, ...)
+	\S4method{cqp_flist}{cqp_corpus}(corpus, attribute, cutoff=0, ...)
  
-	\S4method{cqp_flist}{cqp_subcorpus}(corpus, anchor, attribute, left.context = 0, right.context = 0, cutoff = 0, offset = 0, ...)
+	\S4method{cqp_flist}{cqp_subcorpus}(corpus, attribute, cutoff=0, anchor, left.context=0, right.context=0, offset=0, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

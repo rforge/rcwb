@@ -7,6 +7,7 @@
 \alias{types}
 \alias{nvalues}
 \alias{values}
+\alias{get.corpus}
 \alias{ntokens,cqp_attr_positional-method}
 \alias{tokens,cqp_attr_positional-method}
 \alias{ntypes,cqp_attr_positional-method}
@@ -40,6 +41,8 @@ Get vectors of tokens or types for a cqp attribute.
 	nvalues(attribute)
 
 	values(attribute, from, to)
+	
+	get.corpus(attribute)
 
 	\S4method{tokens}{cqp_attr_positional}(attribute, from=0, to=ntokens(attribute) - 1)
 	\S4method{ntokens}{cqp_attr_positional}(attribute)

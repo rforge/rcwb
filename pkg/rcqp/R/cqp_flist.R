@@ -37,7 +37,7 @@ setMethod("cqp_flist", c("missing", "cqp_attr"), function(corpus, attribute, cut
  # ------------------------------------------------------------------------
  ##
 
-setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute_name, cutoff=0, ...) {
+setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute, cutoff=0, ...) {
   x <- corpus;
   cqp_corpus.name <- .cqp_name(x);
 	positional <- cqi_attributes(cqp_corpus.name, "p");
@@ -75,7 +75,7 @@ setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute_name, cutoff=0, 
 		}
 	}
 
-   obj <- new("cqp_flist", flist, attribute=corpus$attribute_name);
+   obj <- new("cqp_flist", flist, attribute=corpus$attribute);
    class(flist) <- "cqp_flist";
 
    attr(flist, "cqp_corpus.name") <- cqp_corpus.name;
@@ -86,7 +86,7 @@ setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute_name, cutoff=0, 
 ## 
  # ------------------------------------------------------------------------
  # 
- # "cqp_flist(subcorpus, anchor, attribute, left.context, right.context)" --
+ # "cqp_flist(subcorpus, attribute, cutoff, anchor, left.context, right.context)" --
  #
  # Create a frequency list as a named numeric vector.
  # 
@@ -102,7 +102,7 @@ setMethod("cqp_flist", "cqp_corpus", function(corpus, attribute_name, cutoff=0, 
  # ------------------------------------------------------------------------
  ##
 setMethod("cqp_flist", "cqp_subcorpus",
-    function(corpus, attribute_name, cutoff=0, anchor, left.context=0, right.context=0, offset=0, ...) {
+    function(corpus, attribute, cutoff=0, anchor, left.context=0, right.context=0, offset=0, ...) {
 	
 	if (length(anchor) > 2 || length(anchor) < 1) {
 		stop("anchor must be a vector of lenth 1 or 2");
