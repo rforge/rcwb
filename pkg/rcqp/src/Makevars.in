@@ -29,7 +29,7 @@ PKG_CFLAGS=@CFLAGS@ @RCQP_PCRE_CFLAGS@ @RCQP_GLIB_CFLAGS@ ${RCQP_REGISTRY_DEFAUL
 PKG_LIBS=@LDFLAGS@ @LIBS@ @RCQP_PCRE_LFLAGS@ @RCQP_GLIB_LFLAGS@
 
 #  
-#  => de toute faon il y a la production de fichier avec dump
+#  => de toute fa\c{c}on il y a la production de fichier avec dump
 # 
 #define exit(x) rcqp_receive_error(x)
 #define fprintf(x, y) Rprintf(y)
