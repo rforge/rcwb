@@ -577,7 +577,7 @@ cqp_undump <- function(file, corpus, subcorpus, target=FALSE, keyword=FALSE) {
  # ------------------------------------------------------------------------
  ##
 cqi_cqp <- function(cmd) {
-  .Call("rcqpCmd_cqpCmd", query, PACKAGE="rcqp");
+  .Call("rcqpCmd_cqpCmd", cmd, PACKAGE="rcqp");
   return(invisible());
 }
 
